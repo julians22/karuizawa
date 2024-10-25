@@ -4,7 +4,7 @@ namespace App\Domains\Auth\Http\Requests\Frontend\Auth;
 
 use App\Domains\Auth\Rules\UnusedPassword;
 use Illuminate\Foundation\Http\FormRequest;
-use LangleyFoxall\LaravelNISTPasswordRules\PasswordRules;
+use Illuminate\Validation\Rules\Password;
 
 /**
  * Class UpdatePasswordRequest.
@@ -35,10 +35,7 @@ class UpdatePasswordRequest extends FormRequest
                     'max:100',
                     new UnusedPassword($this->user()),
                 ],
-                PasswordRules::changePassword(
-                    $this->email,
-                    config('boilerplate.access.user.password_history') ? 'current_password' : null
-                )
+                Password::min(8)
             ),
         ];
     }

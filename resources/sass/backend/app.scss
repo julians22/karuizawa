@@ -3,3 +3,12 @@
 // Coreui
 @import '~@coreui/coreui/scss/coreui';
 @import '~@coreui/icons/css/free.min.css';
+
+// This was added some time before
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    --bs-table-bg-type: var(--bs-body-bg) !important;
+}
+
+.laravel-livewire-tables-odd {
+    --bs-table-bg-type: var(--bs-body-bg) !important;
+}

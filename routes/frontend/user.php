@@ -4,6 +4,7 @@ use App\Http\Controllers\Frontend\User\AccountController;
 use App\Http\Controllers\Frontend\User\DashboardController;
 use App\Http\Controllers\Frontend\User\ProfileController;
 use Tabuna\Breadcrumbs\Trail;
+use Illuminate\Support\Facades\Route;
 
 /*
  * These frontend controllers require the user to be logged in

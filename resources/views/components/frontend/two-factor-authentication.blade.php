@@ -5,7 +5,7 @@
         </x-utils.alert>
     @enderror
 
-    <form wire:submit.prevent="validateCode" class="form-horizontal">
+    <form wire:submit="validateCode" class="form-horizontal">
         <div class="form-group row">
             <label for="code" class="col-md-4 col-form-label text-md-right">@lang('Authorization Code')</label>
 
@@ -13,7 +13,7 @@
                 <input
                     type="text"
                     id="code"
-                    wire:model.lazy="code"
+                    wire:model.live.blur="code"
                     minlength="6"
                     class="form-control"
                     placeholder="{{ __('Authorization Code') }}"

@@ -12,6 +12,8 @@ use App\Domains\Auth\Http\Controllers\Frontend\Auth\TwoFactorAuthenticationContr
 use App\Domains\Auth\Http\Controllers\Frontend\Auth\UpdatePasswordController;
 use App\Domains\Auth\Http\Controllers\Frontend\Auth\VerificationController;
 use Tabuna\Breadcrumbs\Trail;
+use Illuminate\Support\Facades\Route;
+
 
 /*
  * Frontend Access Controllers
