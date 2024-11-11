@@ -23,8 +23,9 @@
 
                             <div class="col-md-10">
                                 <select name="type" class="form-control" required x-on:change="userType = $event.target.value">
-                                    <option value="{{ $model::TYPE_USER }}" {{ $user->type === $model::TYPE_USER ? 'selected' : '' }}>@lang('User')</option>
                                     <option value="{{ $model::TYPE_ADMIN }}" {{ $user->type === $model::TYPE_ADMIN ? 'selected' : '' }}>@lang('Administrator')</option>
+                                    <option value="{{ $model::TYPE_CASHIER }}" {{ $user->type === $model::TYPE_CASHIER ? 'selected' : '' }}>@lang('Cashier')</option>
+                                    <option value="{{ $model::TYPE_CREW }}" {{ $user->type === $model::TYPE_CREW ? 'selected' : '' }}>@lang('Crew')</option>
                                 </select>
                             </div>
                         </div><!--form-group-->
@@ -35,6 +36,20 @@
 
                         <div class="col-md-10">
                             <input type="text" name="name" class="form-control" placeholder="{{ __('Name') }}" value="{{ old('name') ?? $user->name }}" maxlength="100" required />
+                        </div>
+                    </div><!--form-group-->
+
+                    <div class="form-group row">
+                        <label for="stores" class="col-md-2 col-form-label">@lang('Stores')</label>
+
+                        <div class="col-md-10">
+                            <div x-show="userType === '{{ $model::TYPE_CREW }}' || userType === '{{ $model::TYPE_CASHIER }}'">
+                                <select name="store" class="form-control" required>
+                                    @foreach ($stores as $store)
+                                        <option value="{{ $store->id }}" {{ $user->store_id == $store->id ? 'selected' : '' }}>{{ $store->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div><!--form-group-->
 

@@ -27,3 +27,12 @@ Route::group(['as' => 'frontend.'], function () {
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function () {
     includeRouteFiles(__DIR__.'/backend/');
 });
+
+/*
+ * Crew Routes
+ *
+ * These routes can only be accessed by users with type `crew`
+ */
+Route::group(['prefix' => 'crew', 'as' => 'crew.', 'middleware' => 'crew'], function () {
+    includeRouteFiles(__DIR__.'/crew/');
+});

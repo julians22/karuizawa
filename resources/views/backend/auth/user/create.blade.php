@@ -22,8 +22,9 @@
 
                         <div class="col-md-10">
                             <select name="type" class="form-control" required x-on:change="userType = $event.target.value">
-                                <option value="{{ $model::TYPE_USER }}">@lang('User')</option>
                                 <option value="{{ $model::TYPE_ADMIN }}">@lang('Administrator')</option>
+                                <option value="{{ $model::TYPE_CASHIER }}">@lang('Cashier')</option>
+                                <option value="{{ $model::TYPE_CREW }}">@lang('Crew')</option>
                             </select>
                         </div>
                     </div><!--form-group-->
@@ -106,6 +107,20 @@
                             </div><!--form-group-->
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label for="stores" class="col-md-2 col-form-label">@lang('Stores')</label>
+
+                        <div class="col-md-10">
+                            <div x-show="userType === '{{ $model::TYPE_CREW }}' || userType === '{{ $model::TYPE_CASHIER }}'">
+                                <select name="store" class="form-control" required>
+                                    @foreach ($stores as $store)
+                                        <option value="{{ $store->id }}" {{ old('store') == $store->id ? 'selected' : '' }}>{{ $store->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div><!--form-group-->
 
                     @include('backend.auth.includes.roles')
 

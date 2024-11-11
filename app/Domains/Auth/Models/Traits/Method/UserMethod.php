@@ -28,6 +28,22 @@ trait UserMethod
     /**
      * @return mixed
      */
+    public function isCrew(): bool
+    {
+        return $this->type === self::TYPE_CREW;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function isCashier(): bool
+    {
+        return $this->type === self::TYPE_CASHIER;
+    }
+
+    /**
+     * @return mixed
+     */
     public function isUser(): bool
     {
         return $this->type === self::TYPE_USER;

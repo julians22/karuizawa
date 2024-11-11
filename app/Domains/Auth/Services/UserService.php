@@ -120,6 +120,7 @@ class UserService extends BaseService
                 'password' => $data['password'],
                 'email_verified_at' => isset($data['email_verified']) && $data['email_verified'] === '1' ? now() : null,
                 'active' => isset($data['active']) && $data['active'] === '1',
+                'store_id' => $data['store'] ?? null,
             ]);
 
             $user->syncRoles($data['roles'] ?? []);
@@ -161,6 +162,7 @@ class UserService extends BaseService
                 'type' => $user->isMasterAdmin() ? $this->model::TYPE_ADMIN : $data['type'] ?? $user->type,
                 'name' => $data['name'],
                 'email' => $data['email'],
+                'store_id' => $data['store'] ?? null,
             ]);
 
             if (! $user->isMasterAdmin()) {

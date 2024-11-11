@@ -58,6 +58,11 @@ class Kernel extends HttpKernel
             'auth',
             'password.expires',
             'is_admin'
+        ],
+
+        'crew' => [
+            'auth',
+            'is_crew'
         ]
     ];
 
@@ -79,6 +84,7 @@ class Kernel extends HttpKernel
         'is_admin' => \App\Domains\Auth\Http\Middleware\AdminCheck::class,
         'is_super_admin' => \App\Domains\Auth\Http\Middleware\SuperAdminCheck::class,
         'is_user' => \App\Domains\Auth\Http\Middleware\UserCheck::class,
+        'is_crew' => \App\Http\Middleware\CrewCheck::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'password.expires' => \App\Domains\Auth\Http\Middleware\PasswordExpires::class,
         'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,

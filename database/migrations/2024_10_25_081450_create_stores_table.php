@@ -13,7 +13,15 @@ return new class extends Migration
     {
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('code')->unique();
+            $table->string('address')->nullable();
             $table->timestamps();
+        });
+
+        // User has one store
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreignId('store_id')->nullable()->constrained();
         });
     }
 
@@ -22,6 +30,12 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['store_id']);
+            $table->dropColumn('store_id');
+        });
+
         Schema::dropIfExists('stores');
+
     }
 };

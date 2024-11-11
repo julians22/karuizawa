@@ -10,6 +10,7 @@ use App\Domains\Auth\Models\User;
 use App\Domains\Auth\Services\PermissionService;
 use App\Domains\Auth\Services\RoleService;
 use App\Domains\Auth\Services\UserService;
+use App\Models\Store;
 
 /**
  * Class UserController.
@@ -58,10 +59,13 @@ class UserController
      */
     public function create()
     {
+        $stores = Store::all();
+
         return view('backend.auth.user.create')
             ->withRoles($this->roleService->get())
             ->withCategories($this->permissionService->getCategorizedPermissions())
-            ->withGeneral($this->permissionService->getUncategorizedPermissions());
+            ->withGeneral($this->permissionService->getUncategorizedPermissions())
+            ->withStores($stores);
     }
 
     /**
@@ -95,12 +99,15 @@ class UserController
      */
     public function edit(EditUserRequest $request, User $user)
     {
+        $stores = Store::all();
+
         return view('backend.auth.user.edit')
             ->withUser($user)
             ->withRoles($this->roleService->get())
             ->withCategories($this->permissionService->getCategorizedPermissions())
             ->withGeneral($this->permissionService->getUncategorizedPermissions())
-            ->withUsedPermissions($user->permissions->modelKeys());
+            ->withUsedPermissions($user->permissions->modelKeys())
+            ->withStores($stores);
     }
 
     /**

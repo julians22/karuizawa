@@ -1,4 +1,5 @@
 @if (Breadcrumbs::has())
+<nav aria-label="breadcrumb">
     <ol class="breadcrumb border-0 m-0">
         @foreach (Breadcrumbs::current() as $crumb)
             @if ($crumb->url() && !$loop->last)
@@ -12,4 +13,5 @@
             @endif
         @endforeach
     </ol>
+</nav>
 @endif

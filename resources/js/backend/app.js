@@ -1,8 +1,10 @@
+window.Popper = require('popper.js').default;
 window.$ = window.jQuery = require('jquery');
 window.Swal = require('sweetalert2');
-
-// CoreUI
-require('@coreui/coreui');
+// Import all of CoreUI's JS
+import * as coreui from '@coreui/coreui'
 
 // Boilerplate
 require('../plugins');
+
+window.coreui = coreui

@@ -30,13 +30,14 @@ class StoreUserRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => ['required', Rule::in([User::TYPE_ADMIN, User::TYPE_USER])],
+            'type' => ['required', Rule::in([User::TYPE_ADMIN, User::TYPE_USER, User::TYPE_CREW, User::TYPE_CASHIER])],
             'name' => ['required', 'max:100'],
             'email' => ['required', 'max:255', 'email', Rule::unique('users')],
             'password' => ['max:100', Password::min(8)],
             'active' => ['sometimes', 'in:1'],
             'email_verified' => ['sometimes', 'in:1'],
             'send_confirmation_email' => ['sometimes', 'in:1'],
+            'store' => ['required_if:type,'.User::TYPE_CREW.'|'.User::TYPE_CASHIER, 'exists:stores,id'],
             'roles' => ['sometimes', 'array'],
             'roles.*' => [Rule::exists('roles', 'id')->where('type', $this->type)],
             'permissions' => ['sometimes', 'array'],

@@ -18,7 +18,7 @@
 <body class="c-app">
     @include('backend.includes.sidebar')
 
-    <div class="c-wrapper c-fixed-components">
+    <div class="wrapper d-flex flex-column min-vh-100 bg-light">
         @include('backend.includes.header')
         @include('includes.partials.read-only')
         @include('includes.partials.logged-in-as')

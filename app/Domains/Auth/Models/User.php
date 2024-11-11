@@ -41,6 +41,8 @@ class User extends Authenticatable implements MustVerifyEmail, TwoFactorAuthenti
         UserScope;
 
     public const TYPE_ADMIN = 'admin';
+    public const TYPE_CREW = 'crew';
+    public const TYPE_CASHIER = 'cashier';
     public const TYPE_USER = 'user';
 
     /**
@@ -62,6 +64,7 @@ class User extends Authenticatable implements MustVerifyEmail, TwoFactorAuthenti
         'to_be_logged_out',
         'provider',
         'provider_id',
+        'store_id'
     ];
 
     /**
