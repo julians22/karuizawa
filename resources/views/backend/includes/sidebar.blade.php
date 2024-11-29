@@ -1,4 +1,4 @@
-<div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
+<div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
     <div class="sidebar-brand">
         <svg class="sidebar-brand-full d-none d-md-block" width="118" height="46" alt="CoreUI Logo">
             <use xlink:href="{{ asset('img/brand/coreui.svg#full') }}"></use>

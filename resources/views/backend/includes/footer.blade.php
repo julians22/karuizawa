@@ -1,4 +1,4 @@
-<footer class="c-footer">
+<footer class="footer">
     <div>
         <strong>
             @lang('Copyright') &copy; {{ date('Y') }}

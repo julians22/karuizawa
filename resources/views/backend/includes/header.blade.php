@@ -1,5 +1,10 @@
-<header class="header header-sticky bg-light p-0 mb-4">
+<header class="header header-sticky p-0 mb-4">
     <div class="container-fluid border-bottom px-4">
+    <button class="header-toggler" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()" style="margin-inline-start: -14px;">
+        {{-- Icon menu --}}
+        <i class="icon icon-lg cil-menu"></i>
+        {{-- Icon menu --}}
+    </button>
       <ul class="header-nav d-none d-lg-flex">
         <li class="nav-item px-3"><a class="nav-link" href="{{ route('frontend.index') }}">@lang('Home')</a></li>
 
