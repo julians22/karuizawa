@@ -34,6 +34,15 @@
             <li class="nav-item">
                 <x-utils.link
                     class="nav-link"
+                    :href="route('admin.product.index')"
+                    :active="activeClass(Route::is('admin.product.*'), 'active')"
+                    icon="nav-icon fas fa-box"
+                    :text="__('Product Management')" />
+            </li>
+
+            <li class="nav-item">
+                <x-utils.link
+                    class="nav-link"
                     :href="route('admin.store.index')"
                     :active="activeClass(Route::is('admin.store.*'), 'active')"
                     icon="nav-icon cil-speedometer"
@@ -84,7 +93,7 @@
         @endif
 
         @if ($logged_in_user->hasAllAccess())
-            <li class="nav-group ">
+            <li class="nav-group" aria-expanded="false">
                 <x-utils.link
                     href="#"
                     icon="nav-icon cil-list"

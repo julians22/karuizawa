@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\StoreController;
 use Tabuna\Breadcrumbs\Trail;
 use Illuminate\Support\Facades\Route;
@@ -28,4 +29,22 @@ Route::group(['prefix' => 'store', 'as' => 'store.'], function() {
         });
 
     Route::post('/', [StoreController::class, 'store'])->name('store');
+});
+
+// Product Routes
+Route::group(['prefix' => 'product', 'as' => 'product.'], function() {
+    Route::get('/', [ProductController::class, 'index'])
+        ->name('index')
+        ->breadcrumbs(function (Trail $trail) {
+            $trail->push(__('Product'), route('admin.product.index'));
+        });
+
+    Route::get('create', [ProductController::class, 'create'])
+        ->name('create')
+        ->breadcrumbs(function (Trail $trail) {
+            $trail->parent('admin.product.index');
+            $trail->push(__('Create'), route('admin.product.create'));
+        });
+
+    Route::post('/', [ProductController::class, 'store'])->name('store');
 });

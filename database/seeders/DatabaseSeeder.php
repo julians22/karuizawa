@@ -20,6 +20,16 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
+        // $this->truncateMultiple([
+        //     'products',
+        //     'stock_movements',
+        // ]);
+
+        // $this->call([
+        //     ProductSeeder::class,
+        //     StockMovementSeeder::class,
+        // ]);
+
         $this->truncateMultiple([
             'activity_log',
             'failed_jobs',

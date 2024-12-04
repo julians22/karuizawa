@@ -22,7 +22,6 @@ mix.setPublicPath('public')
         'alpinejs',
         'jquery',
         'bootstrap',
-        'popper.js',
         'axios',
         'sweetalert2',
         'lodash'
