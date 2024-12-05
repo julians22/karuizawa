@@ -7,6 +7,10 @@
 require('../bootstrap');
 require('../plugins');
 
+import Splide from '@splidejs/splide';
+import '@splidejs/splide/css';
+window.Splide = Splide;
+
 import Vue from 'vue';
 
 /**
@@ -21,6 +25,8 @@ import Vue from 'vue';
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+
+Vue.component('rtw-component', require('./components/user/Rtw.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

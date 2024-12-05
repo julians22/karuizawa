@@ -15,7 +15,14 @@ module.exports = {
                 lg: "960px",
                 xl: "1140px",
                 xxl: "1320px"
-            }
+            },
+        },
+        letterSpacing: {
+            tightest: '-.075em',
+            tighter: '-.05em',
+            normal: '0',
+            wider: '.05em',
+            widest: '.15em',
         },
         extend: {
             colors: {
@@ -30,6 +37,11 @@ module.exports = {
                     50: '#715745',
                 },
                 danger: '#FF0000'
+            },
+            fontFamily: {
+                'myriad': ['"Myriad Pro"'],
+                'roboto': ['"Roboto"'],
+                'josefin': ['"Josefin Sans"'],
             },
         },
       },

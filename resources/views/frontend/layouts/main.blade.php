@@ -10,23 +10,25 @@
     @yield('meta')
 
     @stack('before-styles')
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    {{-- <link href="{{ asset('fonts/base/stylesheet.css') }}" rel="stylesheet" /> --}}
     <link href="{{ mix('css/styles.css') }}" rel="stylesheet">
     <livewire:styles />
     @stack('after-styles')
 </head>
 <body>
-
     <div id="app">
-        @include('frontend.includes.main.nav')
+        @if (!Route::is('frontend.auth.login'))
+            @include('frontend.includes.main.nav')
+        @endif
         {{-- @include('includes.partials.messages') --}}
 
         <main>
             @yield('content')
         </main>
 
-        @include('frontend.includes.main.footer')
+        @if (!Route::is('frontend.auth.login'))
+            @include('frontend.includes.main.footer')
+        @endif
     </div><!--app-->
 
     @stack('before-scripts')

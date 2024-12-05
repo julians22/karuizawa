@@ -5,14 +5,59 @@
                 <img src="{{ asset('img/brand/logo-01.png') }}" alt="">
             </div>
             <div class="col-span-4 -mb-4">
-                <ul class="flex gap-[5%] text-primary-50 font-medium uppercase w-full justify-center">
-                    <li><a href="#">Ready To Wear</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contacts</a></li>
-                    <li class="self-center"><div class="h-[1px] w-40 bg-primary-50"></div></li>
-                    <li><a class="flex" href="#"><img class="self-center size-4 " class="inline-block" src="{{ asset('img/icons/icon-lock.svg') }}" alt=""> Login</a></li>
-                </ul>
+                @if ($logged_in_user && Route::is('frontend.user.*'))
+                    <ul class="flex gap-[5%] text-primary-50 font-medium uppercase w-full tracking-widest">
+                        <li>
+                            <div class="relative inline-block dropdown group">
+                                <button class="font-medium uppercase text-primary-50 active group-hover:before:bg-transparent">
+                                    Shop
+                                </button>
+                                <div class="absolute z-10 hidden group-hover:block top-[1.3rem] inset-x-0">
+                                    <div class="w-0 h-0 border-l-[1rem] border-y-8 border-y-transparent border-l-primary-50"></div>
+                                </div>
+                                <ul class="absolute z-10 hidden shadow-xl dropdown-menu group-hover:block bg-primary-50 top-7">
+                                  <li class=""><a class="block px-4 py-2 text-white whitespace-no-wrap hover:text-primary-200" href="{{ route('frontend.user.rtw') }}">RTW</a></li>
+                                  <li><div class="h-[1px] w-[88%] bg-white opacity-75 mx-auto"></div></li>
+                                  <li class=""><a class="block px-4 py-2 text-white whitespace-pre hover:text-primary-200" href="#">semi custom</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li><a href="#" class="py-1">CUSTOMER BOOKING</a></li>
+                    </ul>
+                @else
+                    <ul class="flex gap-[5%] text-primary-50 font-medium uppercase w-full justify-center tracking-widest">
+                        <li><a href="#">Ready To Wear</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contacts</a></li>
+                        <li class="self-center"><div class="h-[1px] w-40 bg-primary-50"></div></li>
+                        @if ($logged_in_user)
+                        <li>
+                            <div class="relative inline-block dropdown group">
+                                <button class="font-medium uppercase text-primary-50">
+                                    {{ $logged_in_user->name }}
+                                </button>
+                                <div class="absolute inset-x-0 z-10 hidden group-hover:block top-[1.3rem]">
+                                    <div class="w-0 h-0 border-l-[1rem] border-y-8 border-y-transparent border-l-primary-50"></div>
+                                </div>
+                                <ul class="absolute hidden dropdown-menu group-hover:block bg-primary-50 top-7">
+                                  <li class=""><a class="block px-4 py-2 text-white whitespace-no-wrap hover:text-primary-200" href="{{ route('frontend.user.dashboard') }}">Profile</a></li>
+                                  <li><div class="h-[1px] w-[88%] bg-white opacity-75 mx-auto"></div></li>
+                                  <li class="">
+                                    <form method="POST" action="{{ route('frontend.auth.logout') }}">
+                                        @csrf
+                                        <button type="submit" class="block px-4 py-2 text-white uppercase whitespace-pre hover:text-primary-200">Log out</button>
+                                    </form>
+                                  </li>
+                                </ul>
+                            </div>
+                        </li>
+                        @else
+                        <li><a class="flex" href="{{ route('frontend.auth.login') }}"><img class="self-auto size-4 " class="inline-block" src="{{ asset('img/icons/icon-lock.svg') }}" alt=""> Login</a></li>
+                        @endif
+                    </ul>
+                @endif
             </div>
         </div>
     </div>
 </nav>
+
