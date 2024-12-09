@@ -16,6 +16,7 @@ mix.setPublicPath('public')
     .vue()
     .sass('resources/sass/frontend/app.scss', 'css/frontend.css')
     .sass('resources/sass/backend/app.scss', 'css/backend.css')
+    .copy('node_modules/@coreui/coreui/dist/js/coreui.bundle.js', 'public/js')
     .js('resources/js/frontend/app.js', 'js/frontend.js')
     .js('resources/js/backend/app.js', 'js/backend.js')
     .extract([

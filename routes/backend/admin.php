@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\StoreController;
+use App\Models\Product;
 use Tabuna\Breadcrumbs\Trail;
 use Illuminate\Support\Facades\Route;
 
@@ -47,4 +48,24 @@ Route::group(['prefix' => 'product', 'as' => 'product.'], function() {
         });
 
     Route::post('/', [ProductController::class, 'store'])->name('store');
+
+    Route::group(['prefix' => '{product}'], function() {
+
+        Route::get('/', [ProductController::class, 'show'])
+            ->name('show')
+            ->breadcrumbs(function (Trail $trail, Product $product) {
+                $trail->parent('admin.product.index');
+                $trail->push(__('Show'), route('admin.product.show', $product));
+            });
+
+        Route::get('edit', [ProductController::class, 'edit'])
+            ->name('edit')
+            ->breadcrumbs(function (Trail $trail, Product $product) {
+                $trail->parent('admin.product.index');
+                $trail->push(__('Edit'), route('admin.product.edit', $product));
+            });
+
+        Route::put('/', [ProductController::class, 'update'])->name('update');
+        Route::delete('/', [ProductController::class, 'destroy'])->name('destroy');
+    });
 });

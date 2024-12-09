@@ -8,7 +8,7 @@
         </svg>
     </div><!--sidebar-brand-->
 
-    <ul class="sidebar-nav">
+    <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
         <li class="nav-item">
             <x-utils.link
                 class="nav-link"
@@ -51,11 +51,14 @@
 
             <li class="nav-title">@lang('System')</li>
 
-            <li class="nav-group {{ activeClass(Route::is('admin.auth.user.*') || Route::is('admin.auth.role.*'), 'open show') }}">
+            <li
+                aria-expanded="false"
+                class="nav-group {{ activeClass(Route::is('admin.auth.user.*') || Route::is('admin.auth.role.*'), 'open show') }}">
                 <x-utils.link
                     href="#"
                     icon="nav-icon cil-user"
                     class="nav-link nav-group-toggle"
+                    data-coreui-toggle="dropdown"
                     :text="__('Access')" />
 
                 <ul class="nav-group-items">
@@ -93,7 +96,9 @@
         @endif
 
         @if ($logged_in_user->hasAllAccess())
-            <li class="nav-group" aria-expanded="false">
+            <li
+                class="nav-group"
+                aria-expanded="false">
                 <x-utils.link
                     href="#"
                     icon="nav-icon cil-list"

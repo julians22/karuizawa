@@ -36,6 +36,8 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
-        "popper.js": "^1.16.1"
+        "popper.js": "^1.16.1",
+        "resize-observer-polyfill": "^1.5.1",
+        "simplebar": "^6.2.7"
     }
 }

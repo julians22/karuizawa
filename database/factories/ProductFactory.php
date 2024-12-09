@@ -20,9 +20,10 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
+            'sku' => $this->faker->unique()->word,
             'product_name' => $this->faker->word,
             'description' => $this->faker->sentence,
-            'price' => $this->faker->randomFloat(2, 10, 100),
+            'price' => $this->faker->randomFloat(2, 1000, 10000),
         ];
     }
 }
