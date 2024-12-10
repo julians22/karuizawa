@@ -9,7 +9,7 @@
                     <ul class="flex gap-[5%] text-primary-50 font-medium uppercase w-full tracking-widest">
                         <li>
                             <div class="relative inline-block dropdown group">
-                                <button class="font-medium uppercase text-primary-50 active group-hover:before:bg-transparent">
+                                <button class="font-medium uppercase text-primary-50 group-hover:before:bg-transparent {{ Route::is('frontend.user.rtw') || Route::is('frontend.user.semi-custom')  ? 'active' : '' }}">
                                     Shop
                                 </button>
                                 <div class="absolute z-10 hidden group-hover:block top-[1.3rem] inset-x-0">
@@ -18,17 +18,16 @@
                                 <ul class="absolute z-10 hidden shadow-xl dropdown-menu group-hover:block bg-primary-50 top-7">
                                   <li class=""><a class="block px-4 py-2 text-white whitespace-no-wrap hover:text-primary-200" href="{{ route('frontend.user.rtw') }}">RTW</a></li>
                                   <li><div class="h-[1px] w-[88%] bg-white opacity-75 mx-auto"></div></li>
-                                  <li class=""><a class="block px-4 py-2 text-white whitespace-pre hover:text-primary-200" href="#">semi custom</a></li>
+                                  <li class=""><a class="block px-4 py-2 text-white whitespace-pre hover:text-primary-200" href="{{ route('frontend.user.semi-custom') }}">semi custom</a></li>
                                 </ul>
                             </div>
                         </li>
-                        <li><a href="#" class="py-1">CUSTOMER BOOKING</a></li>
+                        <li class="{{ Route::is('frontend.user.booking') ? 'active' : '' }}"><a href="{{ route('frontend.user.booking') }}" class="py-1">CUSTOMER BOOKING</a></li>
                     </ul>
                 @else
                     <ul class="flex gap-[5%] text-primary-50 font-medium uppercase w-full justify-center tracking-widest">
-                        <li><a href="#">Ready To Wear</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contacts</a></li>
+                        <li><a href="{{ route('frontend.user.rtw') }}">Ready To Wear</a></li>
+                        <li><a href="{{ route('frontend.about-us') }}">About Us</a></li>
                         <li class="self-center"><div class="h-[1px] w-40 bg-primary-50"></div></li>
                         @if ($logged_in_user)
                         <li>

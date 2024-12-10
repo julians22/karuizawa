@@ -1,3 +1,13 @@
+<script setup>
+    import { defineEmits } from 'vue';
+
+    const $emit = defineEmits(['btn-next']);
+
+    const btnProcess = () => {
+        $emit('btn-next', 'payment')
+    }
+</script>
+
 <template>
     <div class="space-y-10">
         <section>
@@ -74,11 +84,11 @@
                 </div>
             </div>
             <div class="absolute bottom-0 right-0 flex">
-                        <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50">
-                            <span>PROCEED TO PAYMENT</span>
-                            <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
-                        </button>
-                    </div>
+                <button @click="btnProcess()" class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50">
+                    <span>PROCEED TO PAYMENT</span>
+                    <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+                </button>
+            </div>
         </section>
     </div>
 </template>

@@ -31,6 +31,7 @@ module.exports = {
                     50: '#294634',
                     100: '#41695b',
                     200: '#5d7261',
+                    300: '#AFC30A',
                 },
                 secondary: {
                     DEFAULT: '#dcd3cb',

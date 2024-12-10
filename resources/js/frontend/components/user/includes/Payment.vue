@@ -66,17 +66,56 @@
             <div class="flex items-center justify-between py-7 px-14 bg-primary-50">
                 <div class="text-2xl font-bold tracking-widest text-white uppercase">DETAIL ORDER</div>
             </div>
-            <div class="font-roboto text-[#606060]">
-                <div>Ordered number your shirt </div>
-                <div>BSC0425</div>
-            </div>
-            <div class="h-0.5 w-full bg-[#606060] opacity-40"></div>
-            <div class="grid grid-cols-3">
-                <div>Product</div>
-                <div>Qty</div>
-                <div>Price</div>
+
+            <div class="pt-12 pb-32 space-y-5 px-14">
+                <div class="font-roboto text-[#606060]">
+                    <div>Ordered number your shirt </div>
+                    <div>BSC0425</div>
+                </div>
+                <div class="h-0.5 w-full bg-[#606060] opacity-40"></div>
+                <div>
+                    <div class="grid grid-cols-3 font-bold font-roboto text-secondary-50">
+                        <div>Product</div>
+                        <div>Qty</div>
+                        <div>Price</div>
+                    </div>
+                    <div class="grid grid-cols-3 mt-2">
+                        <div class="font-roboto">
+                            <div class="text-[#606060] font-bold">Kemeja Karuizawa Shirt Limited Luxury Lengan Pendek</div>
+                            <div class="text-[#A3A3A3]">KXS 004 Ukuran L</div>
+                        </div>
+                        <div class="text-[#606060] font-bold">1x</div>
+                        <div class="text-[#606060] font-bold">Rp 898.000,-</div>
+                    </div>
+                </div>
+                <div class="h-0.5 w-full bg-[#606060] opacity-40"></div>
+                <div class="grid grid-cols-3 font-bold font-roboto text-secondary-50">
+                    <div class="col-span-2">Subtotal</div>
+                    <div>Rp 898.000,-</div>
+                    <div class="col-span-2">Discount (0)</div>
+                    <div>Rp 0,-</div>
+                    <div class="col-span-2">Total</div>
+                    <div>Rp 898.000,-</div>
+                </div>
+                <div class="grid grid-cols-3 px-4 pt-4 pb-3 text-2xl font-bold text-primary-50 bg-secondary">
+                    <div class="col-span-2">TOTAL AMOUNT TO BE PAID</div>
+                    <div class="">Rp 898.000,-</div>
+                </div>
+                <div class="grid grid-cols-3 font-roboto text-[#606060] text-xs mt-1">
+                    <div class="col-span-2"></div>
+                    <div>
+                        (Termasuk biaya pajak)
+                    </div>
+                </div>
             </div>
         </section>
+
+        <div class="absolute bottom-0 right-0 flex">
+            <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50">
+                <span>PROCEED TO PAYMENT</span>
+                <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+            </button>
+        </div>
     </div>
 </template>
 
