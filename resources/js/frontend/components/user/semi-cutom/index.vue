@@ -19,163 +19,175 @@
                     <div>
                         <div class="text-4xl tracking-widest text-center uppercase font-josefin">ORDER SUMMARY</div>
                         <div class="w-4/6 h-0.5 bg-white mx-auto opacity-70 my-10"></div>
-                        <div class="*:space-y-4">
-                            <tr class="whitespace-nowrap">
-                                <td>Fabric </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">E004 </td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Collar</td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">10. Stand</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Sleeve</td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">Short Sleeve</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Body Type</td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">
-                                    <div>Front - 2. French Palette</div>
-                                    <div>Back - 4. No Pleats</div>
-                                    <div>Hem - Standard Hem</div>
-                                </td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Pocket </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">Round</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Button</td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">
-                                    <div>Button - Purple </div>
-                                    <div>Type - None</div>
-                                    <div>Fabric - None </div>
-                                </td>
-                            </tr>
+                        <div>
+                            <table>
+                                <tbody class="*:space-y-4">
+                                    <tr class="whitespace-nowrap">
+                                        <td>Fabric </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">E004 </td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Collar</td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">10. Stand</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Sleeve</td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">Short Sleeve</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Body Type</td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">
+                                            <div>Front - 2. French Palette</div>
+                                            <div>Back - 4. No Pleats</div>
+                                            <div>Hem - Standard Hem</div>
+                                        </td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Pocket </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">Round</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Button</td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">
+                                            <div>Button - Purple </div>
+                                            <div>Type - None</div>
+                                            <div>Fabric - None </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="mt-20">
                         <div class="text-4xl tracking-widest text-center uppercase font-josefin">ACTUAL</div>
                         <div class="w-4/6 h-0.5 bg-white mx-auto opacity-70 my-10"></div>
-                        <div class="*:space-y-4">
-                            <tr class="whitespace-nowrap">
-                                <td>Order </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">New Order</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Body Type </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">2. Slim</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Sleeve </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">Regular Sleeve</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Neck </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">43</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Shirt’s Right Sleeve  </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">92</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Shirt’s Left Sleeve </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">89</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Shirt’s Chest </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">43</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Shirt’s Waist </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">92</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Shirt’s Shoulder </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">89</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Actual’s Right Sleeve  </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">43</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Actual’s Left Sleeve </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">43</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Actual’s Chest </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">43</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Actual’s Waist </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">43</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>Actual’s Shoulder </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">93</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>SA Neck Size  </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">-</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>SA Shoulder  </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">-</td>
-                            </tr>
-                            <tr class="whitespace-nowrap">
-                                <td>SA Back Length  </td>
-                                <td class="w-full text-center">:</td>
-                                <td class="">-</td>
-                            </tr>
+                        <div>
+                            <table>
+                                <tbody class="*:space-y-4">
+                                    <tr class="whitespace-nowrap">
+                                        <td>Order </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">New Order</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Body Type </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">2. Slim</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Sleeve </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">Regular Sleeve</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Neck </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">43</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Shirt’s Right Sleeve  </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">92</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Shirt’s Left Sleeve </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">89</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Shirt’s Chest </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">43</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Shirt’s Waist </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">92</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Shirt’s Shoulder </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">89</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Actual’s Right Sleeve  </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">43</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Actual’s Left Sleeve </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">43</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Actual’s Chest </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">43</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Actual’s Waist </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">43</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>Actual’s Shoulder </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">93</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>SA Neck Size  </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">-</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>SA Shoulder  </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">-</td>
+                                    </tr>
+                                    <tr class="whitespace-nowrap">
+                                        <td>SA Back Length  </td>
+                                        <td class="w-full text-center">:</td>
+                                        <td class="">-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="text-white font-roboto">
                 <div class="py-8 bg-secondary-50 px-[5%] xl:px-[10%] 2xl:px-[20%]">
-                    <div class="*:space-y-4 font-bold">
-                        <tr class="whitespace-nowrap">
-                            <td>Base Price </td>
-                            <td class="w-full text-center">:</td>
-                            <td class="">1.089.000</td>
-                        </tr>
-                        <tr class="whitespace-nowrap">
-                            <td>Option</td>
-                            <td class="w-full text-center">:</td>
-                            <td class="">150.000</td>
-                        </tr>
-                        <tr class="whitespace-nowrap">
-                            <td>Discount</td>
-                            <td class="w-full text-center">:</td>
-                            <td class="">10%</td>
-                        </tr>
-                        <tr class="whitespace-nowrap">
-                            <td>Total Price</td>
-                            <td class="w-full text-center">:</td>
-                            <td class=""></td>
-                        </tr>
+                    <div>
+                        <table>
+                            <tbody class="*:space-y-4 font-bold">
+                                <tr class="whitespace-nowrap">
+                                    <td>Base Price </td>
+                                    <td class="w-full text-center">:</td>
+                                    <td class="">1.089.000</td>
+                                </tr>
+                                <tr class="whitespace-nowrap">
+                                    <td>Option</td>
+                                    <td class="w-full text-center">:</td>
+                                    <td class="">150.000</td>
+                                </tr>
+                                <tr class="whitespace-nowrap">
+                                    <td>Discount</td>
+                                    <td class="w-full text-center">:</td>
+                                    <td class="">10%</td>
+                                </tr>
+                                <tr class="whitespace-nowrap">
+                                    <td>Total Price</td>
+                                    <td class="w-full text-center">:</td>
+                                    <td class=""></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <div class="pt-3 pb-2 text-lg font-bold tracking-widest text-center uppercase bg-black lg:text-xl xl:text-2xl 2xl:text-3xl font-josefin">
