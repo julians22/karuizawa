@@ -11,7 +11,9 @@ import Splide from '@splidejs/splide';
 import '@splidejs/splide/css';
 window.Splide = Splide;
 
-import Vue from 'vue';
+// import Vue from 'vue';
+import { createApp } from "vue";
+const Vue = createApp()
 
 /**
  * The following block of code may be used to automatically register your
@@ -28,8 +30,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 Vue.component('rtw-component', require('./components/user/rtw/index.vue').default);
 
-Vue.component('semi-custom', require('./components/user/semi-cutom/index.vue').default);
-Vue.component('booking-component', require('./components/user/booking/index.vue').default);
+// Vue.component('semi-custom', require('./components/user/semi-cutom/index.vue').default);
+
+// Vue.component('booking-component', require('./components/user/booking/index.vue').default);
 
 
 /**
@@ -38,6 +41,7 @@ Vue.component('booking-component', require('./components/user/booking/index.vue'
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app',
-});
+// const app = new Vue({
+//     el: '#app',
+// });
+Vue.mount("#app");

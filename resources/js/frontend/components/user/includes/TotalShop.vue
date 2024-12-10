@@ -28,10 +28,12 @@
             <div class="py-10 px-14">
                 <table class="w-full">
                     <thead>
+                        <tr>
                             <th class="py-3 pr-6 text-left uppercase text-primary-50 ">Product</th>
                             <th class="px-6 py-3 text-center uppercase text-primary-50 ">Price</th>
                             <th class="px-6 py-3 text-center uppercase text-primary-50 ">qty</th>
                             <th class="px-6 py-3 text-center uppercase text-primary-50 ">Total</th>
+                        </tr>
                     </thead>
                     <tbody>
                         <tr class="border-b" v-for="i in 3">
