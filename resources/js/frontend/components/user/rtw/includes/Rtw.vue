@@ -1,10 +1,20 @@
 <script setup>
-    import { defineEmits, ref } from 'vue';
+    import { defineEmits, reactive, ref } from 'vue';
+
+    const form = reactive({
+        shirtsSelected: [],
+    })
+
+    const formError = ref([]);
 
     const $emit = defineEmits(['btn-next']);
-
     const btnProcess = () => {
-        $emit('btn-next', 'total-shop')
+        if (form.shirtsSelected.length) {
+            $emit('btn-next', 'total-shop')
+        }else{
+            formError.value = ['Please select at least one item']
+            console.log(formError.value);
+        }
     }
 
 </script>
@@ -66,7 +76,7 @@
         <div class="container py-20">
             <div class="grid grid-cols-4 gap-20">
                 <div v-for="i in 8">
-                    <input class="hidden" :value="i" type="checkbox" :id="`check-round0${i}`">
+                    <input class="hidden" v-model="form.shirtsSelected" :value="i" type="checkbox" :id="`check-round0${i}`">
                     <label class="flex flex-col items-center px-2 rounded cursor-pointer" :for="`check-round0${i}`">
                         <div class="text-[#606060] text-center">KCS516-11M</div>
                         <div class="text-[#A3A3A3] text-sm text-center">100304</div>

@@ -32,7 +32,7 @@ Vue.component('rtw-component', require('./components/user/rtw/index.vue').defaul
 
 Vue.component('semi-custom', require('./components/user/semi-cutom/index.vue').default);
 
-// Vue.component('booking-component', require('./components/user/booking/index.vue').default);
+Vue.component('booking-component', require('./components/user/booking/index.vue').default);
 
 
 /**

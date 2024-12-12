@@ -2,7 +2,9 @@
     <div class="container py-7">
         <div class="grid items-end grid-cols-5 gap-10">
             <div class="col-span-1">
-                <img src="{{ asset('img/brand/logo-01.png') }}" alt="">
+                <a href="{{ route('frontend.index') }}">
+                    <img src="{{ asset('img/brand/logo-01.png') }}" alt="">
+                </a>
             </div>
             <div class="col-span-4 -mb-4">
                 @if ($logged_in_user && Route::is('frontend.user.*'))

@@ -53,20 +53,12 @@
                     <label for="time" class="block mt-1 mb-2 uppercase text-primary-50">set date</label>
                     <div class="flex">
                         <input type="date" id="time" class="rounded-full bg-transparent border text-primary-50 leading-none block flex-1 w-full  border-primary-50 p-2.5 relative before:-z-10 before:content-['']  before:absolute before:right-0 before:w-10 before:bg-primary-50 before:block before:inset-y-0" required >
-                        <!-- <span class="inline-flex items-center px-3 text-gray-900 border bg-primary-50 border-primary-50 rounded-s-0 border-s-0 rounded-e-full">
-                            <i class="text-white fa fa-calendar" aria-hidden="true"></i>
-                        </span> -->
                     </div>
                 </div>
                 <div class="flex items-center gap-6">
                     <label for="time" class="block mt-1 mb-2 uppercase text-primary-50">set time</label>
                     <div class="flex">
-                        <input type="time" id="time" class="rounded-none rounded-s-full bg-transparent border text-primary-50 leading-none block flex-1 w-full  border-primary-50 p-2.5" min="00:00" max="23:00" value="00:00" required>
-                        <span class="inline-flex items-center px-3 text-gray-900 border bg-primary-50 border-primary-50 rounded-s-0 border-s-0 rounded-e-full">
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z" clip-rule="evenodd"/>
-                            </svg>
-                        </span>
+                        <input type="time" id="time" class="rounded-full bg-transparent border text-primary-50 leading-none block flex-1 w-full  border-primary-50 p-2.5 relative before:-z-10 before:content-['']  before:absolute before:right-0 before:w-10 before:bg-primary-50 before:block before:inset-y-0" min="00:00" max="23:00" value="00:00" required>
                     </div>
                 </div>
             </div>
@@ -86,9 +78,13 @@
 
 
 <style>
-input[type="date"]::-webkit-calendar-picker-indicator {
-  color: white;
-  /* background: none; */
-  z-index: 1;
-}
+    input[type="date"]::-webkit-calendar-picker-indicator {
+        background-image: url("/img/icons/calendar.png");
+        z-index: 1;
+    }
+    input[type="time"]::-webkit-calendar-picker-indicator {
+        background-image: url("/img/icons/time.png");
+        margin-left: 2rem;
+        z-index: 1;
+    }
 </style>

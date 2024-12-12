@@ -37,7 +37,13 @@ module.exports = {
                     DEFAULT: '#dcd3cb',
                     50: '#715745',
                 },
-                danger: '#FF0000'
+                danger: '#FF0000',
+                blue: {
+                    ka: '#3A80D5',
+                },
+                pink: {
+                    ka: '#F2089E',
+                }
             },
             fontFamily: {
                 'myriad': ['"Myriad Pro"'],
