@@ -1,0 +1,31 @@
+@import "../../_global";
+
+// tailwind
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+    body {
+        @apply font-josefin;
+    }
+}
+
+.arrow-right {
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+
+    border-left: 60px solid green;
+}
+
+nav {
+    .active {
+        @apply relative;
+        &::before {
+            content: "";
+            @apply absolute bottom-0 w-full h-0.5 bg-primary-50;
+        }
+    }
+}
