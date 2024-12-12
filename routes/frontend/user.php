@@ -28,4 +28,18 @@ Route::group(['as' => 'user.', 'middleware' => ['auth', 'password.expires', conf
         });
 
     Route::patch('profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+
+    Route::get('ready-to-wear', function () {
+        return view('frontend.user.rtw');
+    })->name('rtw');
+
+    Route::get('semi-custom', function () {
+        return view('frontend.user.semi-custom');
+    })->name('semi-custom');
+
+    Route::get('customer-booking', function () {
+        return view('frontend.user.booking');
+    })->name('booking');
+
 });

@@ -13,7 +13,17 @@ const mix = require('laravel-mix');
 
 mix.setPublicPath('public')
     .setResourceRoot('../') // Turns assets paths in css relative to css file
-    .vue()
+    .vue({
+        version: 3,
+        template: {
+            compilerOptions: {
+              compatConfig: {
+                MODE: 2
+              }
+            }
+          }
+    })
+    .sass('resources/sass/frontend/main/main.scss', 'css/styles.css')
     .sass('resources/sass/frontend/app.scss', 'css/frontend.css')
     .sass('resources/sass/backend/app.scss', 'css/backend.css')
     .js('resources/js/frontend/app.js', 'js/frontend.js')
@@ -34,6 +44,6 @@ if (mix.inProduction()) {
 } else {
     // Uses inline source-maps on development
     mix.webpackConfig({
-        devtool: 'inline-source-map'
+        devtool: 'inline-source-map',
     });
 }
