@@ -4,6 +4,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
+/**
+ * Product Model
+ *
+ * @description Model to represent products (Ready To Wear)
+ */
 class Product extends Model
 {
     use HasFactory;
@@ -13,6 +19,7 @@ class Product extends Model
         'product_name',
         'description',
         'price',
+        'category_id',
     ];
 
     public function stockMovements()
@@ -37,5 +44,20 @@ class Product extends Model
         $totalSold = $this->subtractions()->sum('quantity');
 
         return $totalAdded - $totalSold;
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function colors()
+    {
+        return $this->belongsToMany(Color::class);
+    }
+
+    public function sizes()
+    {
+        return $this->belongsToMany(Size::class);
     }
 }

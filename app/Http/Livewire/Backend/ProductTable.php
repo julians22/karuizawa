@@ -40,6 +40,9 @@ class ProductTable extends DataTableComponent
             Column::make("ID", "id")
                 ->deselected()
                 ->sortable(),
+            Column::make("Category", "category.name")
+                ->searchable()
+                ->sortable(),
             Column::make("SKU", "sku"),
             Column::make("Product name", "product_name")
                 ->searchable()
