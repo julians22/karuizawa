@@ -11,7 +11,7 @@
     const Layout = defineAsyncComponent(() => import('../../utils/Layout.vue'));
     const CustomRequest = defineAsyncComponent(() => import('./includes/CustomRequest.vue'));
 
-    const currentSection = ref('custom-shirt')
+    const currentSection = ref('custom-shirt');
 </script>
 
 <template>
@@ -199,11 +199,7 @@
             </div>
         </template>
 
-        <template v-if="currentSection == 'custom-request'">
-            <CustomRequest />
-        </template>
-
-        <template v-if="currentSection == 'custom-shirt'">
+        <!-- <template v-if="currentSection == 'custom-shirt'"> -->
             <div class="relative min-h-svh">
                 <div class="flex items-center justify-between py-7 px-14 bg-primary-50">
                     <div class="text-2xl font-bold tracking-widest text-white uppercase">CUSTOM MADE SHIRT</div>
@@ -755,8 +751,11 @@
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                 </button>
             </div>
-        </template>
+        <!-- </template> -->
 
+        <!-- <template v-if="currentSection == 'custom-request'"> -->
+            <CustomRequest />
+        <!-- </template> -->
     </Layout>
 </template>
 
