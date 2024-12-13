@@ -1,9 +1,5 @@
 <template>
-    <div class="relative min-h-svh">
-        <div class="flex items-center justify-between py-7 px-14 bg-primary-50">
-            <div class="text-2xl font-bold tracking-widest text-white uppercase">CUSTOM MADE SHIRT</div>
-        </div>
-
+    <div class="relative min-h-svh mb-28">
         <!-- collar -->
         <div>
             <div class="flex items-center justify-between py-2 px-14 bg-blue-ka">
@@ -343,6 +339,172 @@
                 </div>
             </div>
         </div>
+
+        <!-- cleric -->
+        <div class="mt-4">
+            <div class="flex items-center justify-between py-2 px-14 bg-blue-ka">
+                <div class="text-xl font-bold tracking-widest text-white uppercase">10. Cleric</div>
+            </div>
+
+            <div class="grid grid-cols-5 p-4 my-4 border mx-14 border-pink-ka">
+                <div class="grid grid-cols-3 col-span-3 gap-2">
+                    <div>
+                        <input class="hidden" type="radio" name="cleric-collar-01" :id="`cleric-collar-01`">
+                        <label class="flex items-center h-full gap-4 rounded cursor-pointer" :for="`cleric-collar-01`">
+                            <span class="checkbox-inner"></span>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-primary-50">collar</div>
+                        </label>
+                    </div>
+                    <div>
+                        <input class="hidden" type="radio" name="cleric-collar-stand-01" :id="`cleric-collar-stand-01`">
+                        <label class="flex items-center h-full gap-4 rounded cursor-pointer" :for="`cleric-collar-stand-01`">
+                            <span class="checkbox-inner"></span>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-primary-50">collar stand</div>
+                        </label>
+                    </div>
+                    <div>
+                        <input class="hidden" type="radio" name="cleric-cuffs-01" :id="`cleric-cuffs-01`">
+                        <label class="flex items-center h-full gap-4 rounded cursor-pointer" :for="`cleric-cuffs-01`">
+                            <span class="checkbox-inner"></span>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-primary-50">cuffs</div>
+                        </label>
+                    </div>
+                    <div>
+                        <input class="hidden" type="radio" name="cleric-collar-02" :id="`cleric-collar-02`">
+                        <label class="flex items-center h-full gap-4 rounded cursor-pointer" :for="`cleric-collar-02`">
+                            <span class="checkbox-inner"></span>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-primary-50">collar</div>
+                        </label>
+                    </div>
+                    <div>
+                        <input class="hidden" type="radio" name="cleric-collar-stand-02" :id="`cleric-collar-stand-02`">
+                        <label class="flex items-center h-full gap-4 rounded cursor-pointer" :for="`cleric-collar-stand-02`">
+                            <span class="checkbox-inner"></span>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-primary-50">collar stand</div>
+                        </label>
+                    </div>
+                    <div>
+                        <input class="hidden" type="radio" name="cleric-cuffs-02" :id="`cleric-cuffs-02`">
+                        <label class="flex items-center h-full gap-4 rounded cursor-pointer" :for="`cleric-cuffs-02`">
+                            <span class="checkbox-inner"></span>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-primary-50">cuffs</div>
+                        </label>
+                    </div>
+                    <div class="flex col-span-3 gap-4">
+                        <div>
+                            <input class="hidden" type="radio" name="cleric-inner-collar-stand" :id="`cleric-inner-collar-stand`">
+                            <label class="flex items-center h-full gap-4 rounded cursor-pointer" :for="`cleric-inner-collar-stand`">
+                                <span class="checkbox-inner"></span>
+                                <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-primary-50">inner coller stand</div>
+                            </label>
+                        </div>
+                        <div>
+                            <input class="hidden" type="radio" name="cleric-inner-cuffs" :id="`cleric-inner-cuffs`">
+                            <label class="flex items-center h-full gap-4 rounded cursor-pointer" :for="`cleric-inner-cuffs`">
+                                <span class="checkbox-inner"></span>
+                                <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-primary-50">inner cuffs</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-2">
+                    <div class="w-full h-8"></div>
+                    <div>
+                        <input class="hidden" type="radio" name="cleric-front-placket" :id="`cleric-front-placket`">
+                        <label class="flex items-center h-full gap-4 rounded cursor-pointer" :for="`cleric-front-placket`">
+                            <span class="checkbox-inner"></span>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-primary-50">front placket</div>
+                        </label>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <div class="flex-col items-center col-span-2 gap-4 mt-4 fabric-code">
+                            <label for="fabric-code" class="tracking-widest uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
+                            <div class="flex font-roboto">
+                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border size-8 border-primary-50">
+                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                            </div>
+                        </div>
+                        <div class="self-end">
+                            <input class="hidden" type="radio" name="cleric-snap-100" :id="`cleric-snap-50`">
+                            <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cleric-snap-50`">
+                                <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-pink-ka">Rp 50.000 </div>
+                                <span class="checkbox-inner pink"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 p-4 my-4 border mx-14 border-pink-ka">
+                <div class="flex gap-20 ">
+                    <div>
+                        <input class="hidden" type="radio" name="cleric-inner-collar-stand-02" :id="`cleric-inner-collar-stand-02`">
+                        <label class="flex items-center h-full gap-4 rounded cursor-pointer" :for="`cleric-inner-collar-stand-02`">
+                            <span class="checkbox-inner"></span>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-primary-50">inner collar stand</div>
+                        </label>
+                    </div>
+                    <div>
+                        <input class="hidden" type="radio" name="cleric-inner-cuffs-02" :id="`cleric-inner-cuffs-02`">
+                        <label class="flex items-center h-full gap-4 rounded cursor-pointer" :for="`cleric-inner-cuffs-02`">
+                            <span class="checkbox-inner"></span>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-primary-50">inner cuffs</div>
+                        </label>
+                    </div>
+                    <div>
+                        <input class="hidden" type="radio" name="cleric-lower-placket" :id="`cleric-lower-placket`">
+                        <label class="flex items-center h-full gap-4 rounded cursor-pointer" :for="`cleric-lower-placket`">
+                            <span class="checkbox-inner"></span>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-primary-50">lower placket</div>
+                        </label>
+                    </div>
+                </div>
+                <div class="self-end justify-items-end">
+                    <div class="flex gap-10">
+                        <div class="flex-col items-center col-span-2 gap-4 mt-4 fabric-code">
+                            <label for="fabric-code" class="tracking-widest uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
+                            <div class="flex font-roboto">
+                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border size-8 border-primary-50">
+                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                            </div>
+                        </div>
+                        <div class="self-end">
+                            <input class="hidden" type="radio" name="cleric-snap-100" :id="`cleric-snap-100`">
+                            <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cleric-snap-100`">
+                                <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-pink-ka">Rp 100.000 </div>
+                                <span class="checkbox-inner pink"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- button hole, button thread, stitch thread -->
+         <!-- <div class="flex">
+            <div>
+                <div class="flex items-center justify-between py-2 px-14 bg-blue-ka">
+                    <div class="text-xl font-bold tracking-widest text-white uppercase">11. BUTTON Hole</div>
+                </div>
+                <div class="grid grid-cols-2 p-2 mt-4 border border-pink-ka mx-14">
+                    <div>
+                        <div>
+                            <input class="hidden" type="radio" name="btn-hole" :id="`btn-hole-white`">
+                            <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`btn-hole-white`">
+                                <span class="checkbox-inner"></span>
+                                <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-sm text-primary-50">white</div>
+                            </label>
+                        </div>
+                    </div>
+                    <div></div>
+                </div>
+            </div>
+         </div> -->
     </div>
 </template>
 

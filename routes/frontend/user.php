@@ -29,6 +29,9 @@ Route::group(['as' => 'user.', 'middleware' => ['auth', 'password.expires', conf
 
     Route::patch('profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
+    Route::get('edit-profile', function () {
+       return view('frontend.user.edit-profile');
+    })->name('edit-profile');
 
     Route::get('ready-to-wear', function () {
         return view('frontend.user.rtw');
