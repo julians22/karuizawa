@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Traits\DisableForeignKeys;
 use Database\Seeders\Traits\TruncateTable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Seeder;
@@ -11,7 +12,7 @@ use Illuminate\Database\Seeder;
  */
 class DatabaseSeeder extends Seeder
 {
-    use TruncateTable;
+    use TruncateTable, DisableForeignKeys;
 
     /**
      * Seed the application's database.
@@ -20,14 +21,28 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
+        $this->disableForeignKeys();
+
         $this->truncateMultiple([
-            'activity_log',
-            'failed_jobs',
+            'products',
+            'stock_movements',
         ]);
 
-        $this->call(AuthSeeder::class);
-        $this->call(AnnouncementSeeder::class);
-        $this->call(StoreSeeder::class);
+        $this->call([
+            ProductSeeder::class,
+            StockMovementSeeder::class,
+        ]);
+
+        $this->enableForeignKeys();
+
+        // $this->truncateMultiple([
+        //     'activity_log',
+        //     'failed_jobs',
+        // ]);
+
+        // $this->call(AuthSeeder::class);
+        // $this->call(AnnouncementSeeder::class);
+        // $this->call(StoreSeeder::class);
 
         Model::reguard();
     }
