@@ -1,5 +1,6 @@
 <script setup>
     import { defineAsyncComponent, ref } from 'vue';
+import IncomingOrder from './includes/IncomingOrder.vue';
 
     const props = defineProps({
         csrf: String,
@@ -10,6 +11,9 @@
 
     const Layout = defineAsyncComponent(() => import('../../utils/Layout.vue'));
     const OrderHistory = defineAsyncComponent(() => import('./includes/OrderHistory.vue'));
+    const incomingOrder = defineAsyncComponent(() => import('./includes/IncomingOrder.vue'));
+
+    const currentPage = ref('order-history')
 
 
 </script>
@@ -33,9 +37,9 @@
         <div class="flex items-center justify-between py-4 bg-primary-100 px-14">
             <div class="flex justify-between w-full">
                 <div class="flex gap-5 tracking-wider text-white">
-                    <div>INCOMING ORDER</div>
-                    <div>ORDER HISTORY</div>
-                    <div>FITTING HISTORY</div>
+                    <button :class="{ active: currentPage === 'incoming-order' }" @click="currentPage = 'incoming-order'">INCOMING ORDER</button>
+                    <button :class="{ active: currentPage === 'order-history' }" @click="currentPage = 'order-history'">ORDER HISTORY</button>
+                    <button >FITTING HISTORY</button>
                 </div>
                 <div>
                     <i class="text-white fa fa-filter fill-white" aria-hidden="true"></i>
@@ -43,7 +47,13 @@
             </div>
         </div>
 
-        <OrderHistory />
+        <template v-if="currentPage === 'incoming-order'">
+            <IncomingOrder />
+        </template>
+
+        <template v-if="currentPage === 'order-history'">
+            <OrderHistory />
+        </template>
 
         <div class="absolute bottom-0 right-0 flex">
             <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-primary-50">
@@ -57,3 +67,15 @@
         </div>
     </Layout>
 </template>
+
+
+<style scoped>
+    .active {
+        @apply relative;
+
+        &::before {
+            content: '';
+            @apply absolute bottom-0 left-0 w-full h-0.5 bg-white opacity-70;
+        }
+    }
+</style>
