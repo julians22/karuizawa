@@ -1,6 +1,6 @@
 <x-forms.patch :action="route('frontend.user.profile.update')">
     <div class="form-group row">
-        <label for="name" class="col-md-3 col-form-label text-md-right">@lang('Name')</label>
+        <label for="name" class="col-md-3 col-form-label text-md-end">@lang('Name')</label>
 
         <div class="col-md-9">
             <input type="text" name="name" class="form-control" placeholder="{{ __('Name') }}" value="{{ old('name') ?? $logged_in_user->name }}" required autofocus autocomplete="name" />
@@ -9,7 +9,7 @@
 
     @if ($logged_in_user->canChangeEmail())
         <div class="form-group row">
-            <label for="email" class="col-md-3 col-form-label text-md-right">@lang('E-mail Address')</label>
+            <label for="email" class="col-md-3 col-form-label text-md-end">@lang('E-mail Address')</label>
 
             <div class="col-md-9">
                 <x-utils.alert type="info" class="mb-3" :dismissable="false">

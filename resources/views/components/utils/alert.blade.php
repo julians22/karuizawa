@@ -1,8 +1,12 @@
 @props(['dismissable' => true, 'type' => 'success', 'ariaLabel' => __('Close')])
 
-<div {{ $attributes->merge(['class' => 'alert alert-'.$type]) }} role="alert">
+@php
+    $dismissableClass = $dismissable ? 'alert-dismissible' : '';
+@endphp
+
+<div {{ $attributes->merge(['class' => 'fade show alert alert-'.$type. ' ' . $dismissableClass]) }} role="alert">
     @if ($dismissable)
-        <button type="button" class="close" data-dismiss="alert" aria-label="{{ $ariaLabel }}">
+        <button type="button" class="btn-close" data-coreui-dismiss="alert" aria-label="{{ $ariaLabel }}">
             <span aria-hidden="true">&times;</span>
         </button>
     @endif

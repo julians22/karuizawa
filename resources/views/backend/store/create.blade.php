@@ -20,27 +20,27 @@
         </x-slot>
 
         <x-slot name="body">
-            <div class="form-group row">
-                <label for="name" class="col-md-2 col-form-label">@lang('Name')</label>
+            <div class="row mb-3">
+                <label for="name" class="col-md-2 form-label">@lang('Name')</label>
 
                 <div class="col-md-10">
-                    <input type="text" name="name" class="form-control" placeholder="{{ __('Name') }}" value="{{ old('name') }}" maxlength="100" required />
+                    <input type="text" name="name" id="name" class="form-control" placeholder="{{ __('Name') }}" value="{{ old('name') }}" maxlength="100" required />
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label for="phone" class="col-md-2 col-form-label">@lang('Store Code')</label>
+            <div class="row mb-3">
+                <label for="phone" class="col-md-2 form-label">@lang('Store Code')</label>
 
                 <div class="col-md-10">
-                    <input type="text" name="code" class="form-control" placeholder="{{ __('Store Code') }}" value="{{ old('code') }}" maxlength="100" required />
+                    <input type="text" name="code" id="code" class="form-control" placeholder="{{ __('Store Code') }}" value="{{ old('code') }}" maxlength="100" required />
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label for="address" class="col-md-2 col-form-label">@lang('Address')</label>
+            <div class="row mb-3">
+                <label for="address" class="col-md-2 form-label">@lang('Address')</label>
 
                 <div class="col-md-10">
-                    <textarea name="address" class="form-control" placeholder="{{ __('Address') }}" required>{{ old('address') }}</textarea>
+                    <textarea name="address" id="address" class="form-control" placeholder="{{ __('Address') }}" required>{{ old('address') }}</textarea>
                 </div>
             </div>
 

@@ -1,6 +1,6 @@
 <x-forms.patch :action="route('frontend.auth.password.change')">
     <div class="form-group row">
-        <label for="current_password" class="col-md-3 col-form-label text-md-right">@lang('Current Password')</label>
+        <label for="current_password" class="col-md-3 col-form-label text-md-end">@lang('Current Password')</label>
 
         <div class="col-md-9">
             <input type="password" name="current_password" class="form-control" placeholder="{{ __('Current Password') }}" maxlength="100" required autofocus />
@@ -8,7 +8,7 @@
     </div><!--form-group-->
 
     <div class="form-group row">
-        <label for="password" class="col-md-3 col-form-label text-md-right">@lang('New Password')</label>
+        <label for="password" class="col-md-3 col-form-label text-md-end">@lang('New Password')</label>
 
         <div class="col-md-9">
             <input type="password" name="password" class="form-control" placeholder="{{ __('New Password') }}" maxlength="100" required />
@@ -16,7 +16,7 @@
     </div><!--form-group-->
 
     <div class="form-group row">
-        <label for="password_confirmation" class="col-md-3 col-form-label text-md-right">@lang('New Password Confirmation')</label>
+        <label for="password_confirmation" class="col-md-3 col-form-label text-md-end">@lang('New Password Confirmation')</label>
 
         <div class="col-md-9">
             <input type="password" name="password_confirmation" class="form-control" placeholder="{{ __('New Password Confirmation') }}" maxlength="100" required />
