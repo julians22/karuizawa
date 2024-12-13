@@ -6,9 +6,25 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class ProductTable extends DataTableComponent
 {
+    public $categories = [];
+
+    public function mount()
+    {
+        $categories = Product::query()
+            ->select('category_id')
+            ->with('category')
+            ->groupBy('category_id')
+            ->get()
+            ->pluck('category.name', 'category_id')
+            ->toArray();
+
+        // push the first option
+        $this->categories = ['' => 'All Categories'] + $categories;
+    }
 
     public function configure(): void
     {
@@ -25,6 +41,9 @@ class ProductTable extends DataTableComponent
                 'class' => 'laravel-livewire-tables-odd rappasoft-striped-row',
             ];
         });
+
+        $this->setDefaultSort('products.updated_at', 'desc');
+        $this->setDefaultSortingLabels('Asc', 'Desc');
     }
 
     function builder(): Builder
@@ -43,7 +62,9 @@ class ProductTable extends DataTableComponent
             Column::make("Category", "category.name")
                 ->searchable()
                 ->sortable(),
-            Column::make("SKU", "sku"),
+            Column::make("SKU", "sku")
+                ->searchable()
+                ->sortable(),
             Column::make("Product name", "product_name")
                 ->searchable()
                 ->sortable(),
@@ -60,6 +81,18 @@ class ProductTable extends DataTableComponent
                 ->sortable(),
             Column::make(__('Actions'))
                 ->label(fn($row, Column $column) => view('backend.product.includes.actions', ['product' => $row])),
+        ];
+    }
+
+    public function filters(): array
+    {
+        return [
+            SelectFilter::make('Category')
+                ->options($this->categories)
+                ->setFirstOption('All Categories')
+                ->filter(function(Builder $builder, $value) {
+                    $builder->where('category_id', $value);
+                }),
         ];
     }
 }

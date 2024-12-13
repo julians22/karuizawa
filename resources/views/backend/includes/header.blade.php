@@ -39,7 +39,7 @@
 
                 <x-utils.link
                     class="dropdown-item"
-                    icon="c-icon mr-2 cil-account-logout"
+                    icon="c-icon me-2 cil-account-logout"
                     onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                     <x-slot name="text">
                         @lang('Logout')
@@ -92,7 +92,7 @@
         @endif
     </ul>
 
-    <ul class="header-nav ml-auto mr-4">
+    <ul class="header-nav ml-auto me-4">
         <li class="nav-item dropdown">
             <x-utils.link class="nav-link" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 <x-slot name="text">
@@ -109,7 +109,7 @@
 
                 <x-utils.link
                     class="dropdown-item"
-                    icon="c-icon mr-2 cil-account-logout"
+                    icon="c-icon me-2 cil-account-logout"
                     onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                     <x-slot name="text">
                         @lang('Logout')

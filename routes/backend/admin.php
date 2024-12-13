@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\StoreController;
+use App\Models\Customer;
 use App\Models\Product;
 use Tabuna\Breadcrumbs\Trail;
 use Illuminate\Support\Facades\Route;
@@ -65,7 +67,25 @@ Route::group(['prefix' => 'product', 'as' => 'product.'], function() {
                 $trail->push(__('Edit'), route('admin.product.edit', $product));
             });
 
-        Route::put('/', [ProductController::class, 'update'])->name('update');
+        Route::patch('/', [ProductController::class, 'update'])->name('update');
         Route::delete('/', [ProductController::class, 'destroy'])->name('destroy');
+    });
+});
+
+// Customers Routes
+Route::group(['prefix' => 'customer', 'as' => 'customer.'], function() {
+    Route::get('/', [CustomerController::class, 'index'])
+        ->name('index')
+        ->breadcrumbs(function (Trail $trail) {
+            $trail->push(__('Customer'), route('admin.customer.index'));
+        });
+
+    Route::group(['prefix' => '{customer}'], function() {
+        Route::get('/', [CustomerController::class, 'show'])
+            ->name('show')
+            ->breadcrumbs(function (Trail $trail, Customer $customer) {
+                $trail->parent('admin.customer.index');
+                $trail->push(__('Show'), route('admin.customer.show', $customer));
+            });
     });
 });

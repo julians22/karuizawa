@@ -10,7 +10,7 @@
     @yield('meta')
 
     @stack('before-styles')
-    {{-- <link href="{{ asset('fonts/base/stylesheet.css') }}" rel="stylesheet" /> --}}
+    <link href="{{ asset('fonts/base/stylesheet.css') }}" rel="stylesheet" />
     <link href="{{ mix('css/styles.css') }}" rel="stylesheet">
     <livewire:styles />
     @stack('after-styles')
