@@ -8,7 +8,7 @@
         route_logout: String
     });
 
-    const Layout = defineAsyncComponent(() => import('../../utils/Layout.vue'));
+    const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
     const CustomRequest = defineAsyncComponent(() => import('./includes/CustomRequest.vue'));
 
     const currentSection = ref('custom-shirt');
@@ -20,43 +20,43 @@
             <div class="h-full py-20 bg-primary-50">
                 <div class="mx-[5%] xl:mx-[10%] 2xl:mx-[20%] font-roboto text-white">
                     <div>
-                        <div class="text-4xl tracking-widest text-center uppercase font-josefin">ORDER SUMMARY</div>
+                        <div class="text-2xl tracking-widest text-center uppercase xl:text-4xl font-josefin">ORDER SUMMARY</div>
                         <div class="w-4/6 h-0.5 bg-white mx-auto opacity-70 my-10"></div>
                         <div>
                             <table>
                                 <tbody class="*:space-y-4">
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Fabric </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">E004 </td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Collar</td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">10. Stand</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Sleeve</td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">Short Sleeve</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Body Type</td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">
                                             <div>Front - 2. French Palette</div>
                                             <div>Back - 4. No Pleats</div>
                                             <div>Hem - Standard Hem</div>
                                         </td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Pocket </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">Round</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Button</td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">
                                             <div>Button - Purple </div>
                                             <div>Type - None</div>
@@ -68,94 +68,94 @@
                         </div>
                     </div>
                     <div class="mt-20">
-                        <div class="text-4xl tracking-widest text-center uppercase font-josefin">ACTUAL</div>
+                        <div class="text-2xl tracking-widest text-center uppercase xl:text-4xl font-josefin">ACTUAL</div>
                         <div class="w-4/6 h-0.5 bg-white mx-auto opacity-70 my-10"></div>
                         <div>
                             <table>
                                 <tbody class="*:space-y-4">
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Order </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">New Order</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Body Type </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">2. Slim</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Sleeve </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">Regular Sleeve</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Neck </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">43</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Shirt’s Right Sleeve  </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">92</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Shirt’s Left Sleeve </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">89</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Shirt’s Chest </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">43</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Shirt’s Waist </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">92</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Shirt’s Shoulder </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">89</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Actual’s Right Sleeve  </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">43</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Actual’s Left Sleeve </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">43</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Actual’s Chest </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">43</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Actual’s Waist </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">43</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>Actual’s Shoulder </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">93</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>SA Neck Size  </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">-</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>SA Shoulder  </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">-</td>
                                     </tr>
-                                    <tr class="whitespace-nowrap">
+                                    <tr class="lg:whitespace-pre-wrap">
                                         <td>SA Back Length  </td>
-                                        <td class="w-full text-center">:</td>
+                                        <td class="w-4 text-center">:</td>
                                         <td class="">-</td>
                                     </tr>
                                 </tbody>
@@ -169,22 +169,22 @@
                     <div>
                         <table>
                             <tbody class="*:space-y-4 font-bold">
-                                <tr class="whitespace-nowrap">
-                                    <td>Base Price </td>
-                                    <td class="w-full text-center">:</td>
+                                <tr class="lg:whitespace-nowrap">
+                                    <td>Base Price</td>
+                                    <td class="text-center">:</td>
                                     <td class="">1.089.000</td>
                                 </tr>
-                                <tr class="whitespace-nowrap">
-                                    <td>Option</td>
-                                    <td class="w-full text-center">:</td>
-                                    <td class="">150.000</td>
-                                </tr>
-                                <tr class="whitespace-nowrap">
+                                <tr class="lg:whitespace-nowrap">
                                     <td>Discount</td>
-                                    <td class="w-full text-center">:</td>
+                                    <td class="text-center">:</td>
                                     <td class="">10%</td>
                                 </tr>
-                                <tr class="whitespace-nowrap">
+                                <tr class="lg:whitespace-nowrap">
+                                    <td>Option</td>
+                                    <td class="text-center">:</td>
+                                    <td class="">150.000</td>
+                                </tr>
+                                <tr class="lg:whitespace-nowrap">
                                     <td>Total Price</td>
                                     <td class="w-full text-center">:</td>
                                     <td class=""></td>
@@ -193,7 +193,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="pt-3 pb-2 text-lg font-bold tracking-widest text-center uppercase bg-black lg:text-xl xl:text-2xl 2xl:text-3xl font-josefin">
+                <div class="pt-3 pb-2 font-bold tracking-widest text-center uppercase bg-black lg:text-lg xl:text-xl xl:text-2xl 2xl:text-3xl font-josefin">
                     IDR 1.138.200,-
                 </div>
             </div>
@@ -201,17 +201,17 @@
 
         <!-- <template v-if="currentSection == 'custom-shirt'"> -->
             <div class="relative min-h-svh">
-                <div class="flex items-center justify-between py-7 px-14 bg-primary-50">
-                    <div class="text-2xl font-bold tracking-widest text-white uppercase">CUSTOM MADE SHIRT</div>
+                <div class="flex items-center justify-between p-6 lg:py-7 lg:px-14 bg-primary-50">
+                    <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">CUSTOM MADE SHIRT</div>
                 </div>
 
                 <!-- fabric code -->
                 <div>
-                    <div class="flex items-center justify-between py-2 px-14 bg-primary-300">
-                        <div class="text-xl font-bold tracking-widest text-white uppercase">01. FABRIC</div>
+                    <div class="flex items-center justify-between px-4 py-2 lg:px-14 bg-primary-300">
+                        <div class="font-bold tracking-widest text-white uppercase lg:text-xl">01. FABRIC</div>
                     </div>
-                    <div class="flex items-center gap-8 my-5 px-14 fabric-code">
-                        <label for="fabric-code" class="tracking-widest uppercase text-primary-50 whitespace-nowrap">fabric code</label>
+                    <div class="flex items-center gap-8 px-6 my-5 lg:px-10 xl:px-14 fabric-code">
+                        <label for="fabric-code" class="tracking-widest uppercase text-primary-50 lg:whitespace-pre-wrap">fabric code</label>
                         <div class="flex font-roboto">
                             <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-2 size-10 border-primary-50">
                             <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r-2 size-10 border-y-2 border-primary-50">
@@ -224,10 +224,10 @@
 
                 <!-- collar -->
                 <div>
-                    <div class="flex items-center justify-between py-2 px-14 bg-primary-300">
-                        <div class="text-xl font-bold tracking-widest text-white uppercase">02. COLLAR</div>
+                    <div class="flex items-center justify-between px-4 py-2 lg:px-14 bg-primary-300">
+                        <div class="font-bold tracking-widest text-white uppercase lg:text-xl">02. COLLAR</div>
                     </div>
-                    <div class="grid grid-cols-6 my-10 px-14">
+                    <div class="grid grid-cols-6 px-6 my-10 lg:px-10 xl:px-14">
                         <div>
                             <input class="hidden" type="radio" name="collar" :id="`regular`">
                             <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="`regular`">
@@ -290,10 +290,10 @@
                 <div class="grid grid-cols-2 gap-4">
                     <!-- cuffs -->
                     <div>
-                        <div class="flex items-center justify-between py-2 px-14 bg-primary-300">
-                            <div class="text-xl font-bold tracking-widest text-white uppercase">03. CUFFS</div>
+                        <div class="flex items-center justify-between px-4 py-2 lg:px-14 bg-primary-300">
+                            <div class="font-bold tracking-widest text-white uppercase lg:text-xl">03. CUFFS</div>
                         </div>
-                        <div class="grid grid-cols-3 my-10 px-14">
+                        <div class="grid grid-cols-3 px-6 my-10 lg:px-10 xl:px-14">
                             <div>
                                 <input class="hidden" type="radio" name="cuffs" :id="`round`">
                                 <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="`round`">
@@ -319,7 +319,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="flex items-center gap-12 mx-20 my-10">
+                        <div class="flex items-center gap-12 px-6 my-10 xl:mx-20">
                             <div class="text-xs font-bold tracking-widest uppercase xl:text-base 2xl:text-lg text-primary-50">OPTION NUMBER</div>
                             <div class="flex font-roboto">
                                 <input type="number" class="block p-2 text-sm text-center text-gray-900 border-2 size-10 border-primary-50">
@@ -329,10 +329,10 @@
                     </div>
                     <!-- front body -->
                     <div>
-                        <div class="flex items-center justify-between py-2 px-14 bg-primary-300">
-                            <div class="text-xl font-bold tracking-widest text-white uppercase">04. FRONT BODY</div>
+                        <div class="flex items-center justify-between px-4 py-2 lg:px-14 bg-primary-300">
+                            <div class="font-bold tracking-widest text-white uppercase lg:text-xl">04. FRONT BODY</div>
                         </div>
-                        <div class="grid grid-cols-3 my-10 px-14">
+                        <div class="grid grid-cols-2 px-6 my-10 lg:px-10 xl:px-14">
                             <div>
                                 <input class="hidden" type="radio" name="front-body" :id="`standard`">
                                 <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="`standard`">
@@ -350,7 +350,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="flex items-center gap-12 mx-20 my-10">
+                        <div class="flex items-center gap-12 px-6 my-10 lg:px-10 xl:mx-20">
                             <div class="text-xs font-bold tracking-widest uppercase xl:text-base 2xl:text-lg text-primary-50">OPTION NUMBER</div>
                             <div class="flex font-roboto">
                                 <input type="number" class="block p-2 text-sm text-center text-gray-900 border-2 size-10 border-primary-50">
@@ -364,10 +364,10 @@
                 <div class="grid grid-cols-2 gap-4">
                     <!-- pocket -->
                      <div>
-                         <div class="flex items-center justify-between py-2 px-14 bg-primary-300">
-                             <div class="text-xl font-bold tracking-widest text-white uppercase">05. POCKET</div>
+                         <div class="flex items-center justify-between px-4 py-2 lg:px-14 bg-primary-300">
+                             <div class="font-bold tracking-widest text-white uppercase lg:text-xl">05. POCKET</div>
                          </div>
-                         <div class="grid grid-cols-3 my-10 px-14">
+                         <div class="grid grid-cols-3 px-4 my-10 lg:px-10 xl:px-14">
                             <div>
                                 <input class="hidden" type="radio" name="pocket" :id="`nopocket`">
                                 <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="`nopocket`">
@@ -396,10 +396,10 @@
                      </div>
                     <!-- hem -->
                      <div>
-                         <div class="flex items-center justify-between py-2 px-14 bg-primary-300">
-                             <div class="text-xl font-bold tracking-widest text-white uppercase">06. HEM</div>
+                         <div class="flex items-center justify-between px-4 py-2 lg:px-14 bg-primary-300">
+                             <div class="font-bold tracking-widest text-white uppercase lg:text-xl">06. HEM</div>
                          </div>
-                         <div class="grid grid-cols-3 my-10 px-14">
+                         <div class="grid grid-cols-2 px-4 my-10 lg:px-10 xl:px-14">
                             <div>
                                 <input class="hidden" type="radio" name="hem" :id="`hem-standard`">
                                 <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="`hem-standard`">
@@ -422,10 +422,10 @@
 
                 <!-- back body -->
                 <div>
-                    <div class="flex items-center justify-between py-2 px-14 bg-primary-300">
-                        <div class="text-xl font-bold tracking-widest text-white uppercase">07. BACK BODY</div>
+                    <div class="flex items-center justify-between px-4 py-2 lg:px-14 bg-primary-300">
+                        <div class="font-bold tracking-widest text-white uppercase lg:text-xl">07. BACK BODY</div>
                     </div>
-                    <div class="grid grid-cols-4 my-10 px-14">
+                    <div class="grid grid-cols-4 p-6 my-8 xl:my-10 lg:px-10 xl:px-14">
                         <div>
                             <input class="hidden" type="radio" name="back-body" :id="`side-tuck`">
                             <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="`side-tuck`">
@@ -463,10 +463,10 @@
 
                 <!-- button -->
                 <div>
-                    <div class="flex items-center justify-between py-2 px-14 bg-primary-300">
-                        <div class="text-xl font-bold tracking-widest text-white uppercase">08. BUTTON</div>
+                    <div class="flex items-center justify-between px-4 py-2 lg:px-14 bg-primary-300">
+                        <div class="font-bold tracking-widest text-white uppercase lg:text-xl">08. BUTTON</div>
                     </div>
-                    <div class="grid grid-cols-9 my-10 px-14">
+                    <div class="grid grid-cols-5 px-6 my-10 xl:grid-cols-9 lg:px-10 xl:px-14">
                         <div>
                             <input class="hidden" type="radio" name="button" :id="`white`">
                             <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="`white`">
@@ -544,10 +544,10 @@
 
                 <!-- size -->
                 <div>
-                    <div class="flex items-center justify-between py-2 px-14 bg-primary-300">
-                        <div class="text-xl font-bold tracking-widest text-white uppercase">SIZE</div>
+                    <div class="flex items-center justify-between px-4 py-2 lg:px-14 bg-primary-300">
+                        <div class="font-bold tracking-widest text-white uppercase lg:text-xl">SIZE</div>
                     </div>
-                    <div class="grid grid-cols-4 gap-2 my-10 px-14">
+                    <div class="grid grid-cols-3 gap-2 px-6 my-10 xl:grid-cols-4 lg:px-10 xl:px-14">
                         <div>
                             <input class="hidden" type="radio" name="size" :id="`new-order`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`new-order`">
@@ -555,7 +555,7 @@
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
-                        <div class="col-span-2 justify-self-center">
+                        <div class="xl:col-span-2 justify-self-center">
                             <input class="hidden" type="radio" name="size" :id="`repeat-order`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`repeat-order`">
                                 <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-base 2xl:text-lg text-primary-50">2. REPEAT ORDER</div>
@@ -571,46 +571,46 @@
                         </div>
                     </div>
                     <!-- body type -->
-                    <div class="grid grid-cols-4 grid-rows-2 gap-2 px-14">
-                        <div class="row-span-2">
+                    <div class="grid grid-cols-4 grid-rows-2 gap-2 px-6 my-10 lg:px-10 xl:px-14">
+                        <div class="max-xl:col-span-4 xl:row-span-2">
                             <div class="inline-block pt-1.5 px-2 text-xs font-bold tracking-widest uppercase border-2 xl:text-base 2xl:text-lg text-primary-50 border-primary-50">BODY TYPE</div>
                         </div>
-                        <div>
+                        <div class="max-xl:col-span-2">
                             <input class="hidden" type="radio" name="body-type" :id="`slim`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`slim`">
                                 <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-base 2xl:text-lg text-primary-50">2. SLIM</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
-                        <div>
+                        <div class="max-xl:col-span-2">
                             <input class="hidden" type="radio" name="body-type" :id="`standard-1`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-1`">
                                 <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-base 2xl:text-lg text-primary-50">3. STANDARD I</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
-                        <div>
+                        <div class="max-xl:col-span-2">
                             <input class="hidden" type="radio" name="body-type" :id="`standard-2`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-2`">
                                 <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-base 2xl:text-lg text-primary-50">4. STANDARD II</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
-                        <div>
+                        <div class="max-xl:col-span-2">
                             <input class="hidden" type="radio" name="body-type" :id="`big-1`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`big-1`">
                                 <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-base 2xl:text-lg text-primary-50">5. BIG I</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
-                        <div>
+                        <div class="max-xl:col-span-2">
                             <input class="hidden" type="radio" name="body-type" :id="`big-2`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`big-2`">
                                 <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-base 2xl:text-lg text-primary-50">7. BIG II</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
-                        <div>
+                        <div class="max-xl:col-span-2">
                             <input class="hidden" type="radio" name="body-type" :id="`standard-3`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-3`">
                                 <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-base 2xl:text-lg text-primary-50">3. STANDARD II</div>
@@ -620,18 +620,18 @@
                     </div>
 
                     <!-- sleeve -->
-                    <div class="grid grid-cols-4 grid-rows-2 gap-2 mt-6 px-14">
-                        <div class="row-span-2">
+                    <div class="grid grid-cols-4 grid-rows-2 gap-2 px-6 mt-6 lg:px-10 xl:px-14">
+                        <div class="max-xl:col-span-4 xl:row-span-2">
                             <div class="inline-block pt-1.5 px-2 text-xs font-bold tracking-widest uppercase border-2 xl:text-base 2xl:text-lg text-primary-50 border-primary-50">SLEEVE</div>
                         </div>
-                        <div>
+                        <div class="max-xl:col-span-2">
                             <input class="hidden" type="radio" name="sleeve" :id="`slim-sleeve`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`slim-sleeve`">
                                 <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-base 2xl:text-lg text-primary-50">1. SLIM SLEEVE</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
-                        <div>
+                        <div class="max-xl:col-span-2">
                             <input class="hidden" type="radio" name="sleeve" :id="`regular-sleeve`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`regular-sleeve`">
                                 <div class="text-xs font-bold tracking-widest text-center uppercase xl:text-base 2xl:text-lg text-primary-50">2. REGULAR SLEEVE</div>
@@ -640,66 +640,68 @@
                         </div>
                     </div>
 
-                    <div class="px-14">
-                        <table class="w-full text-primary-50">
-                            <thead>
-                                <tr class="*:px-2 *:pt-2 *:pb-1 *:border-2 *:border-primary-50">
-                                    <th>MEASURE</th>
-                                    <th>NECK</th>
-                                    <th>R.SLEEVE</th>
-                                    <th>L.SLEEVE</th>
-                                    <th>CHEST</th>
-                                    <th>WAIST</th>
-                                    <th>SHOULDER</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="*:border-2 *:border-primary-50 *:text-center">
-                                    <td>SHIRT</td>
-                                    <td>
-                                        <input type="text" class="w-full text-center font-roboto">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="w-full text-center font-roboto">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="w-full text-center font-roboto">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="w-full text-center font-roboto">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="w-full text-center font-roboto">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="w-full text-center font-roboto">
-                                    </td>
-                                </tr>
-                                <tr class="*:border-2 *:border-primary-50 *:text-center">
-                                    <td>ACTUAL</td>
-                                    <td>
-                                        <input type="text" class="w-full text-center font-roboto">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="w-full text-center font-roboto">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="w-full text-center font-roboto">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="w-full text-center font-roboto">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="w-full text-center font-roboto">
-                                    </td>
-                                    <td>
-                                        <input type="text" class="w-full text-center font-roboto">
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="px-6 mt-4 lg:px-10 xl:px-14">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-primary-50">
+                                <thead>
+                                    <tr class="*:px-2 *:pt-2 *:pb-1 *:border-2 *:border-primary-50">
+                                        <th>MEASURE</th>
+                                        <th>NECK</th>
+                                        <th>R.SLEEVE</th>
+                                        <th>L.SLEEVE</th>
+                                        <th>CHEST</th>
+                                        <th>WAIST</th>
+                                        <th>SHOULDER</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="*:border-2 *:border-primary-50 *:text-center">
+                                        <td>SHIRT</td>
+                                        <td>
+                                            <input type="text" class="w-full text-center font-roboto">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="w-full text-center font-roboto">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="w-full text-center font-roboto">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="w-full text-center font-roboto">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="w-full text-center font-roboto">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="w-full text-center font-roboto">
+                                        </td>
+                                    </tr>
+                                    <tr class="*:border-2 *:border-primary-50 *:text-center">
+                                        <td>ACTUAL</td>
+                                        <td>
+                                            <input type="text" class="w-full text-center font-roboto">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="w-full text-center font-roboto">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="w-full text-center font-roboto">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="w-full text-center font-roboto">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="w-full text-center font-roboto">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="w-full text-center font-roboto">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
 
-                        <div class="grid grid-cols-4 mt-10 mb-10 tracking-widest text-primary-50 *:pt-2 *:pb-1 *:px-2 whitespace-pre">
+                        <div class="grid grid-cols-2 xl:grid-cols-4 mt-10 mb-10 tracking-widest text-primary-50 *:pt-2 *:pb-1 *:px-2 whitespace-pre">
                             <div class="border-2 border-primary-50">SPECIAL ADJUSTMENT</div>
                             <div class="flex border-r-2 border-y-2 border-primary-50">
                                 <div>NECK SIZE :</div>
@@ -707,7 +709,7 @@
                                     <input type="text" class="w-full text-center font-roboto">
                                 </div>
                             </div>
-                            <div class="flex border-r-2 border-y-2 border-primary-50">
+                            <div class="flex border-r-2 max-xl:border-l-2 border-y-2 border-primary-50">
                                 <div>SHOULDER :</div>
                                 <div>
                                     <input type="text" class="w-full text-center font-roboto">
@@ -724,16 +726,16 @@
                 </div>
 
                 <div class="mb-32">
-                    <div class="flex items-center justify-between py-2 px-14 bg-primary-300">
-                        <div class="text-xl font-bold tracking-widest text-white uppercase">ADDITIONAL NOTES</div>
+                    <div class="flex items-center justify-between px-4 py-2 lg:px-14 bg-primary-300">
+                        <div class="font-bold tracking-widest text-white uppercase lg:text-xl">ADDITIONAL NOTES</div>
                     </div>
-                    <div class="grid grid-cols-5 gap-3 my-10 px-14">
+                    <div class="grid grid-cols-5 gap-3 px-6 my-10 lg:px-10 xl:px-14">
                         <div class="col-span-3">
                             <textarea class="w-full h-full p-2 border-2 placeholder:font-josefin font-roboto border-primary-50 placeholder-primary-50 placeholder:tracking-widest" name="" id="" placeholder="NOTE"></textarea>
                         </div>
                         <div class="col-span-2 space-y-2">
-                            <div class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50">DISCOUNT </div>
-                            <div class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50">RP </div>
+                            <input type="text"  class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50" placeholder="DISCOUNT"/>
+                            <input type="text" class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50" placeholder="RP" />
                             <div>
                                 <button class="w-full px-5 pt-3 pb-2 text-center text-primary-50 bg-secondary">APPLY PRICE</button>
                             </div>
@@ -779,7 +781,7 @@
         background-size: 14px 10px;
     }
     .checkbox-inner {
-        @apply flex items-center justify-center text-transparent border-2 size-10 border-primary-50;
+        @apply flex items-center justify-center text-transparent border-2 size-7 border-primary-50;
         background: transparent no-repeat center;
     }
 </style>

@@ -15,12 +15,12 @@
 <template>
     <div class="space-y-10">
         <section>
-            <div class="flex justify-between items-center bg-primary-50 px-14 py-7">
-                <div class="font-bold text-2xl text-white uppercase tracking-widest">Total shop</div>
+            <div class="flex items-center justify-between p-6 lg:py-7 lg:px-14 bg-primary-50">
+                <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">Total shop</div>
                 <!-- <form class="w-2/5">
-                    <label for="default-search" class="mb-2 font-medium text-gray-900 text-sm dark:text-white sr-only">Search</label>
+                    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                     <div class="relative">
-                        <input type="search" id="default-search" class="block bg-white px-4 py-2 rounded-full w-full text-gray-900 text-sm pe-10" required />
+                        <input type="search" id="default-search" class="block w-full px-4 py-2 text-sm text-gray-900 bg-white rounded-full pe-10" required />
                         <button type="submit" class="absolute inset-y-0 flex items-center end-0 pe-4">
                             <svg class="text-primary-50 size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
@@ -29,14 +29,14 @@
                     </div>
                 </form> -->
             </div>
-            <div class="px-14 py-10">
+            <div class="p-6 lg:py-10 lg:px-14">
                 <table class="w-full">
                     <thead>
                         <tr>
-                            <th class="py-3 pr-6 text-left text-primary-50 uppercase">Product</th>
-                            <th class="px-6 py-3 text-center text-primary-50 uppercase">Pricee</th>
-                            <th class="px-6 py-3 text-center text-primary-50 uppercase">qty</th>
-                            <th class="px-6 py-3 text-center text-primary-50 uppercase">Total</th>
+                            <th class="py-3 pr-6 text-left uppercase text-primary-50">Product</th>
+                            <th class="px-6 py-3 text-center uppercase text-primary-50">Pricee</th>
+                            <th class="px-6 py-3 text-center uppercase text-primary-50">qty</th>
+                            <th class="px-6 py-3 text-center uppercase text-primary-50">Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -46,22 +46,22 @@
                                 <div class="text-[#A3A3A3] text-sm">{{product.sku}}</div>
                             </td>
                             <td class="px-6 py-3 text-center text-primary-50">
-                                <div class="text-[#606060] text-center text-lg">Rp {{ product.price }}</div>
+                                <div class="text-[#606060] text-center lg:text-lg">Rp {{ product.price }}</div>
                             </td>
                             <td class="px-6 py-3 text-center text-primary-50">
                                 <div class="flex justify-center w-full text-left number-input" data-controller="quantity">
-                                    <button class="flex items-center border-primary-50 bg-off-white hover:bg-grey-lightest p-2 border border-r-0 font-bold text-grey-darker no-underline">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-3 h-3 fill-current"><path d="M424 318.2c13.3 0 24-10.7 24-24v-76.4c0-13.3-10.7-24-24-24H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h400z"/></svg>
+                                    <button class="flex items-center p-2 font-bold no-underline border border-r-0 border-primary-50 bg-off-white hover:bg-grey-lightest text-grey-darker">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M424 318.2c13.3 0 24-10.7 24-24v-76.4c0-13.3-10.7-24-24-24H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h400z"/></svg>
                                     </button>
-                                    <input type="number" class="border-primary-50 p-2 border w-10 text-center" value="1" data-target="quantity.value">
+                                    <input type="number" class="w-10 p-2 text-center border border-primary-50" value="1" data-target="quantity.value">
 
-                                    <button class="flex items-center border-primary-50 bg-off-white hover:bg-grey-lightest p-2 border border-l-0 font-bold text-grey-darker no-underline">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="w-3 h-3 fill-current"><path d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"/></svg>
+                                    <button class="flex items-center p-2 font-bold no-underline border border-l-0 border-primary-50 bg-off-white hover:bg-grey-lightest text-grey-darker">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"/></svg>
                                     </button>
                                 </div>
                             </td>
                             <td class="px-6 py-3 text-center text-primary-50">
-                                <div class="text-center text-lg text-secondary-50">Rp {{ product.price }}</div>
+                                <div class="text-center lg:text-lg text-secondary-50">Rp {{ product.price }}</div>
                             </td>
                         </tr>
                     </tbody>
@@ -70,10 +70,10 @@
         </section>
 
         <section>
-            <div class="flex justify-between items-center bg-primary-50 px-14 py-7">
-                <div class="font-bold text-2xl text-white uppercase tracking-widest">COUPON CODE & POINTS</div>
+            <div class="flex items-center justify-between p-6 lg:py-7 lg:px-14 bg-primary-50">
+                <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">COUPON CODE & POINTS</div>
             </div>
-            <div class="px-14 py-10">
+            <div class="p-6 lg:py-10 lg:px-14">
                 <div class="flex items-center gap-4">
                     <div class="text-[#606060] uppercase tracking-widest whitespace-pre">Coupon Code</div>
                     <div class="relative">
@@ -89,8 +89,8 @@
                     </div>
                 </div>
             </div>
-            <div class="right-0 bottom-0 absolute flex">
-                <button @click="btnProcess()" class="flex items-center gap-2 bg-secondary-50 p-6 text-white tracking-widest">
+            <div class="absolute bottom-0 right-0 flex">
+                <button @click="btnProcess()" class="flex items-center gap-2 p-4 tracking-widest text-white lg:p-6 bg-secondary-50">
                     <span>PROCEED TO PAYMENT</span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                 </button>

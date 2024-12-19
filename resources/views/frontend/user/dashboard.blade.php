@@ -3,11 +3,11 @@
 @section('title', __('Dashboard'))
 
 @section('content')
-    <div class="grid grid-cols-8 min-h-[86svh]">
+    <div class="grid grid-cols-8 lg:min-h-[86svh]">
         <div class="col-span-2">
-            <div class="flex flex-col items-center min-h-[86svh] py-20 bg-right-bottom bg-no-repeat bg-cover px-7" style="background-image: url('{{ asset('img/bg-02.jpg') }}');">
-                <div class="border-4 border-white border-solid rounded-full size-36 bg-primary-50"></div>
-                <div class="mt-4 text-xl tracking-widest text-center text-white uppercase">
+            <div class="flex flex-col items-center lg:min-h-[86svh] py-20 bg-right-bottom bg-no-repeat bg-cover px-7" style="background-image: url('{{ asset('img/bg-02.jpg') }}');">
+                <div class="border-4 border-white border-solid rounded-full size-32 lg:size-36 bg-primary-50"></div>
+                <div class="mt-4 tracking-widest text-center text-white uppercase lg:text-xl">
                     Hi, <br>
                     {{ $logged_in_user->name }}
                 </div>
@@ -25,7 +25,7 @@
         <div class="col-span-6 bg-no-repeat bg-cover" style="background-image: url('{{ asset('img/bg-03.jpg') }}'); background-position: bottom; background-size: 100% 110%;">
             <div class="flex items-center justify-center h-full">
                 <div class="max-w-md p-9 bg-secondary-50 bg-opacity-85">
-                    <div class="mx-4 text-xl tracking-widest text-center text-white uppercase">
+                    <div class="mx-4 tracking-widest text-center text-white uppercase lg:text-xl">
                         WELCOME TO
                         KARUIZAWA’S CUSTOMER
                         ORDER PLATFORM

@@ -13,13 +13,13 @@
                     <div class="space-y-3 font-roboto">
                         <div class="text-xl font-bold">Booking Time</div>
                         <div>19 Dec 2023 | 14:00</div>
-                        <button class="flex items-center justify-between w-full gap-4 px-6 py-4 tracking-widest text-white bg-primary-50 font-josefin">
-                            <span class="mt-1">PAY NOW</span>
-                            <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+                        <button class="flex items-center gap-3 px-4 py-2 tracking-widest text-white lg:py-2 lg:px-3 bg-primary-50 font-josefin">
+                            <span class="mt-1 text-xs">PAY NOW</span>
+                            <img class="inline-block size-4" src="img/icons/arrw-ck-right.png" alt="">
                         </button>
-                        <button class="flex items-center gap-4 px-6 py-4 tracking-widest text-white bg-secondary-50 font-josefin">
-                            <span class="mt-1">CANCEL ORDER</span>
-                            <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+                        <button class="flex items-center gap-3 px-4 py-2 tracking-widest text-white lg:py-2 lg:px-3 bg-secondary-50 font-josefin">
+                            <span class="mt-1 text-xs">CANCEL ORDER</span>
+                            <img class="inline-block size-4" src="img/icons/arrw-ck-right.png" alt="">
                         </button>
                     </div>
                 </div>

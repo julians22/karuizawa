@@ -9,7 +9,7 @@ import IncomingOrder from './includes/IncomingOrder.vue';
         route_logout: String
     });
 
-    const Layout = defineAsyncComponent(() => import('../../utils/Layout.vue'));
+    const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
     const OrderHistory = defineAsyncComponent(() => import('./includes/OrderHistory.vue'));
     const incomingOrder = defineAsyncComponent(() => import('./includes/IncomingOrder.vue'));
 
@@ -20,8 +20,8 @@ import IncomingOrder from './includes/IncomingOrder.vue';
 
 <template>
     <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" >
-        <div class="flex items-center justify-between py-7 px-14 bg-primary-50">
-            <div class="text-2xl font-bold tracking-widest text-white uppercase">CUSTOMER BOOKING</div>
+        <div class="flex items-center justify-between p-6 lg:py-7 xl:px-14 bg-primary-50">
+            <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">CUSTOMER BOOKING</div>
             <form class="w-2/5">
                 <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                 <div class="relative">
@@ -34,9 +34,9 @@ import IncomingOrder from './includes/IncomingOrder.vue';
                 </div>
             </form>
         </div>
-        <div class="flex items-center justify-between py-4 bg-primary-100 px-14">
+        <div class="flex items-center justify-between p-6 py-4 bg-primary-100 xl:px-14">
             <div class="flex justify-between w-full">
-                <div class="flex gap-5 tracking-wider text-white">
+                <div class="flex gap-5 tracking-wider text-white max-lg:text-sm">
                     <button :class="{ active: currentPage === 'incoming-order' }" @click="currentPage = 'incoming-order'">INCOMING ORDER</button>
                     <button :class="{ active: currentPage === 'order-history' }" @click="currentPage = 'order-history'">ORDER HISTORY</button>
                     <button >FITTING HISTORY</button>
