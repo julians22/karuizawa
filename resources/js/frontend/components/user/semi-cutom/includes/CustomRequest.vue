@@ -1,8 +1,75 @@
 <script setup>
-    import { ref, watch } from 'vue'
+    import { ref, defineProps, watch } from 'vue'
+
+    const props = defineProps({
+        dataCustomRequest: Object
+    })
 
     const cleric = ref(null);
     const selectCleric = ref([]);
+
+    const form = ref({
+        collar: null,
+        cuffs: null,
+        frontBody: null,
+        button: null,
+        bodySnapBtn: null,
+        cleric: null
+    });
+
+    const buttonCode = ref({
+        code1: null,
+        code2: null,
+        code3: null,
+        code4: null
+    })
+
+    const dataPrice = ref(null);
+
+    watch(form.value, (items) => {
+        const groupedData = groupAndCountByPrice(items);
+        dataPrice.value = groupedData;
+    });
+
+    const groupAndCountByPrice = (data) => {
+        const result = {
+            grouped: {},
+            optionTotal: 0,
+        };
+
+        for (const key in data) {
+            const item = data[key];
+
+            if (!item || item.price == null) {
+                continue;
+            }
+
+            const { price } = data[key];
+
+            if (!result.grouped[price]) {
+                result.grouped[price] = { quantity: 1, subTotal: price };
+            } else {
+                result.grouped[price].quantity++;
+                result.grouped[price].subTotal += price;
+            }
+
+            result.optionTotal += price;
+        }
+
+        return {
+            ...result.grouped,
+            optionTotal: result.optionTotal,
+        };
+    }
+
+    const fabricCode = ref({
+        collar: {
+            code1: null,
+            code2: null,
+            code3: null,
+            code4: null
+        }
+    })
 
     const onChangeCleric = () => {
         selectCleric.value = [];
@@ -19,53 +86,25 @@
 
             <div class="grid grid-cols-6 gap-2 my-10 px-14 whitespace-nowrap">
                 <div class="col-span-6 pt-2 xl:col-span-2">
-                    <div>
-                        <input class="hidden" type="radio" name="collar" :id="`low-regular`">
-                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`low-regular`">
+                    <div v-for="(collar, index) in dataCustomRequest.collar[0]" :key="index">
+                        <input class="hidden"v-model="form.collar" :value="collar" type="radio" name="collar" :id="'collar-'+collar.slug">
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="'collar-'+collar.slug">
                             <span class="checkbox-inner"></span>
-                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">2. LOW REGULAR</div>
+                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ collar.name }}</div>
                         </label>
                     </div>
-                    <div>
-                        <input class="hidden" type="radio" name="collar" :id="`low-semi-wide`">
-                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`low-semi-wide`">
-                            <span class="checkbox-inner"></span>
-                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">5. LOW SEMI WIDE</div>
-                        </label>
-                    </div>
-                    <div>
-                        <input class="hidden" type="radio" name="collar" :id="`wide`">
-                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`wide`">
-                            <span class="checkbox-inner"></span>
-                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">6. WIDE</div>
-                        </label>
-                    </div>
-                    <div>
-                        <input class="hidden" type="radio" name="collar" :id="`round`">
-                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`round`">
-                            <span class="checkbox-inner"></span>
-                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">8. ROUND</div>
-                        </label>
-                    </div>
-                    <div>
-                        <input class="hidden" type="radio" name="collar" :id="`large-round`">
-                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`large-round`">
-                            <span class="checkbox-inner"></span>
-                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">9. LARGE ROUND</div>
-                        </label>
-                    </div>
-                    <div>
-                        <input class="hidden" type="radio" name="collar" :id="`low-bottom-down`">
-                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`low-bottom-down`">
-                            <span class="checkbox-inner"></span>
-                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">12. LOW BOTTOM DOWN</div>
-                        </label>
-                    </div>
-                    <div class="mt-6 text-xs text-pink-ka font-roboto">*No Additional Charge for above items</div>
+                    <div class="mt-2 mb-3 text-xs text-pink-ka font-roboto">*No Additional Charge for above items</div>
                 </div>
                 <div class="col-span-6 xl:col-span-4">
-                    <div class="grid grid-cols-1 gap-4 p-2 border 2xl:grid-cols-3 border-pink-ka">
-                        <div class="col-1">
+                    <div class="grid grid-cols-1 p-2 border 2xl:grid-cols-2 border-pink-ka">
+                        <div class="w-full" v-for="(collar50, index) in dataCustomRequest.collar[50]" :key="index">
+                            <input class="hidden" type="radio" name="collar" v-model="form.collar" :value="collar50" :id="'collar-'+collar50.slug">
+                            <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="'collar-'+collar50.slug">
+                                <span class="checkbox-inner"></span>
+                                <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ collar50.name }}</div>
+                            </label>
+                        </div>
+                        <!-- <div class="col-1">
                             <div>
                                 <input class="hidden" type="radio" name="collar" :id="`due-wide`">
                                 <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`due-wide`">
@@ -87,8 +126,8 @@
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">16. TAB HOOK</div>
                                 </label>
                             </div>
-                        </div>
-                        <div class="col-2">
+                        </div> -->
+                        <!-- <div class="col-2">
                             <div>
                                 <input class="hidden" type="radio" name="collar" :id="`pin-hole`">
                                 <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`pin-hole`">
@@ -103,55 +142,34 @@
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">18. SNAP DOWN </div>
                                 </label>
                             </div>
-                        </div>
-                        <div class="self-end col-3 justify-items-end">
+                        </div> -->
+                        <div class="self-end col-span-2 justify-items-end">
                             <div class="">
                                 <input class="hidden" type="radio" name="collar-50" :id="`50rb`">
                                 <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`50rb`">
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka"> Rp 50.000 </div>
-                                    <span class="checkbox-inner pink"></span>
+                                    <!-- <span class="checkbox-inner pink"></span> -->
                                 </label>
                             </div>
                         </div>
                     </div>
                     <div class="grid grid-cols-3 p-2 border border-pink-ka">
                         <div class="col-span-3">
-                            <div>
-                                <input class="hidden" type="radio" name="collar" :id="`mitre-btn-down`">
-                                <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`mitre-btn-down`">
+                            <div v-for="(collar100, index) in dataCustomRequest.collar[100]" :key="index">
+                                <input class="hidden" v-model="form.collar" :value="collar100" type="radio" name="collar" :id="`collar-${collar100.slug}`">
+                                <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`collar-${collar100.slug}`">
                                     <span class="checkbox-inner"></span>
-                                    <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">19. MITRE BUTTON DOWN </div>
-                                </label>
-                            </div>
-                            <div>
-                                <input class="hidden" type="radio" name="collar" :id="`joining-due-btn-down`">
-                                <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`joining-due-btn-down`">
-                                    <span class="checkbox-inner"></span>
-                                    <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">20. JOINING DUE BUTTON DOWN</div>
-                                </label>
-                            </div>
-                            <div>
-                                <input class="hidden" type="radio" name="collar" :id="`pieces-collar-due-btn-down`">
-                                <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`pieces-collar-due-btn-down`">
-                                    <span class="checkbox-inner"></span>
-                                    <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">21. 2 PIECES COLLAR DUE BUTTON DOWN</div>
-                                </label>
-                            </div>
-                            <div>
-                                <input class="hidden" type="radio" name="collar" :id="`wing-collar`">
-                                <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`wing-collar`">
-                                    <span class="checkbox-inner"></span>
-                                    <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">22. WING COLAR</div>
+                                    <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ collar100.name }}</div>
                                 </label>
                             </div>
                         </div>
                         <div class="flex items-center col-span-2 mt-4 lg:gap-4 fabric-code max-xl:flex-wrap">
                             <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
                             <div class="flex font-roboto">
-                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border size-8 border-primary-50">
-                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
-                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
-                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                                <input type="text" v-model="fabricCode.collar.code1" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border size-8 border-primary-50">
+                                <input type="text" v-model="fabricCode.collar.code2" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                                <input type="text" v-model="fabricCode.collar.code3" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                                <input type="text" v-model="fabricCode.collar.code4" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
                             </div>
                         </div>
                         <div class="self-end col-3 justify-items-end">
@@ -159,7 +177,7 @@
                                 <input class="hidden" type="radio" name="collar-100" :id="`100rb`">
                                 <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`100rb`">
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka">Rp 100.000 </div>
-                                    <span class="checkbox-inner pink"></span>
+                                    <!-- <span class="checkbox-inner pink"></span> -->
                                 </label>
                             </div>
                         </div>
@@ -222,34 +240,31 @@
                 </div>
                 <div class="col-span-6 xl:col-span-4">
                     <div>
-                        <div class="grid grid-cols-1 gap-4 p-2 border 2xl:grid-cols-3 border-pink-ka">
-                            <div class="">
-                                <div>
-                                    <input class="hidden" type="radio" name="cuffs" :id="`double-cuffs`">
-                                    <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`double-cuffs`">
-                                        <span class="checkbox-inner"></span>
-                                        <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">10. DOUBLE CUFFS</div>
-                                    </label>
-                                </div>
+                        <div class="grid grid-cols-1 gap-4 p-2 border 2xl:grid-cols-2 border-pink-ka">
+                            <div v-for="(cuffs, index) in dataCustomRequest.cuffs[70]" :key="index">
+                                <input class="hidden" v-model="form.cuffs" :value="cuffs" type="radio" name="cuffs" :id="`cuffs-${cuffs.slug}`">
+                                <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cuffs-${cuffs.slug}`">
+                                    <span class="checkbox-inner"></span>
+                                    <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ cuffs.name }}</div>
+                                </label>
                             </div>
-                            <div></div>
                             <div class="self-end col-3 justify-items-end">
                                 <div class="">
                                     <input class="hidden" type="radio" name="cuffs-70" :id="`cuffs-70rb`">
                                     <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cuffs-70rb`">
                                         <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka">Rp 70.000 </div>
-                                        <span class="checkbox-inner pink"></span>
+                                        <!-- <span class="checkbox-inner pink"></span> -->
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <div class="grid grid-cols-3 p-2 border border-pink-ka">
                             <div class="col-span-3">
-                                <div>
-                                    <input class="hidden" type="radio" name="cuffs" :id="`joining-cuffs`">
-                                    <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`joining-cuffs`">
+                                <div v-for="(cuffs, index) in dataCustomRequest.cuffs[100]" :key="index">
+                                    <input class="hidden" v-model="form.cuffs" :value="cuffs" type="radio" name="cuffs" :id="`cuffs-${cuffs.slug}`">
+                                    <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cuffs-${cuffs.slug}`">
                                         <span class="checkbox-inner"></span>
-                                        <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">11. JOINING CUFFS</div>
+                                        <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ cuffs.name }}</div>
                                     </label>
                                 </div>
                             </div>
@@ -267,30 +282,31 @@
                                     <input class="hidden" type="radio" name="cuffs-100" :id="`cuffs-100rb`">
                                     <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cuffs-100rb`">
                                         <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka">Rp 100.000 </div>
-                                        <span class="checkbox-inner pink"></span>
+                                        <!-- <span class="checkbox-inner pink"></span> -->
                                     </label>
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    <!-- Front Body -->
                     <div class="my-6">
                         <div class="flex items-center justify-between py-2 px-14 bg-blue-ka">
                             <div class="text-xl font-bold tracking-wider text-white uppercase">04. FRONT BODY</div>
                         </div>
                         <div class="flex justify-between p-2 mt-4 border border-pink-ka">
-                            <div>
-                                <input class="hidden" type="radio" name="front-body" :id="`hidden-placket`">
+                            <div v-for="(frontBody, index) in dataCustomRequest.frontBody[100]" :key="index">
+                                <input class="hidden" type="radio" name="front-body" :value="frontBody" v-model="form.frontBody"  :id="`hidden-placket`">
                                 <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`hidden-placket`">
                                     <span class="checkbox-inner"></span>
-                                    <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">3. HIDDEN PLACKET</div>
+                                    <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ frontBody.name }}</div>
                                 </label>
                             </div>
                             <div class="">
                                 <input class="hidden" type="radio" name="front-bdy-100" :id="`front-bdy-100`">
                                 <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`front-bdy-100`">
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka">Rp 100.000 </div>
-                                    <span class="checkbox-inner pink"></span>
+                                    <!-- <span class="checkbox-inner pink"></span> -->
                                 </label>
                             </div>
                         </div>
@@ -306,24 +322,24 @@
                     <div class="text-xl font-bold tracking-wider text-white uppercase">08. BUTTON</div>
                 </div>
                 <div class="flex justify-between p-2 mt-4 border border-pink-ka ml-14 max-xl:mx-6 max-xl:mb-4">
-                    <div>
-                        <input class="hidden" type="radio" name="button" :id="`shell-placket`">
-                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`shell-placket`">
+                    <div v-for="(button, index) in dataCustomRequest.button[100]" :key="index">
+                        <input class="hidden" type="radio" :value="button" v-model="form.button" name="button" :id="`btn-${button.slug}`">
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`btn-${button.slug}`">
                             <span class="checkbox-inner"></span>
-                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">SHELL BUTTON</div>
+                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ button.name }}</div>
                         </label>
                     </div>
                     <div class="flex font-roboto">
-                        <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border size-8 border-primary-50">
-                        <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
-                        <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
-                        <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                        <input v-model="buttonCode.code1" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border size-8 border-primary-50">
+                        <input v-model="buttonCode.code2" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                        <input v-model="buttonCode.code3" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                        <input v-model="buttonCode.code4" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
                     </div>
                     <div class="">
                         <input class="hidden" type="radio" name="button-100" :id="`button-100`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`button-100`">
                             <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka">Rp 100.000</div>
-                            <span class="checkbox-inner pink"></span>
+                            <!-- <span class="checkbox-inner pink"></span> -->
                         </label>
                     </div>
                 </div>
@@ -333,18 +349,18 @@
                     <div class="text-xl font-bold tracking-wider text-white uppercase">09. BODY SNAP BUTTON</div>
                 </div>
                 <div class="flex justify-between p-2 mt-4 border border-pink-ka mr-14 max-xl:mx-6">
-                    <div>
-                        <input class="hidden" type="radio" name="body-snap-btn" :id="`snap-btn`">
-                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`snap-btn`">
+                    <div v-for="bodySnapButton in dataCustomRequest.bodySnapButton" :key="bodySnapButton">
+                        <input class="hidden" :value="bodySnapButton" v-model="form.bodySnapButton" type="radio" name="body-snap-btn" :id="`${bodySnapButton.slug}`">
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`${bodySnapButton.slug}`">
                             <span class="checkbox-inner"></span>
-                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">2.5 SNAP BUTTON</div>
+                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ bodySnapButton.name }}</div>
                         </label>
                     </div>
                     <div class="">
                         <input class="hidden" type="radio" name="bdy-snap-100" :id="`bdy-snap-50`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`bdy-snap-50`">
                             <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka">Rp 50.000 </div>
-                            <span class="checkbox-inner pink"></span>
+                            <!-- <span class="checkbox-inner pink"></span> -->
                         </label>
                     </div>
                 </div>
@@ -356,7 +372,48 @@
              <div class="flex items-center justify-between py-2 px-14 bg-blue-ka">
                  <div class="text-xl font-bold tracking-wider text-white uppercase">10. Cleric</div>
              </div>
-             <div class="p-4 mx-6 mt-4 space-y-4 border xl:mx-14 border-pink-ka">
+
+             <div v-for="(dataCleric, index) in dataCustomRequest.cleric" :key="index"
+                class="p-4 mx-6 mt-4 space-y-4 border xl:mx-14 border-pink-ka">
+                <div v-for="(subCeleric, index) in dataCleric" :key="index" class="flex gap-2">
+                    <div>
+                        <input v-model="form.cleric" @change="onChangeCleric" class="hidden" type="radio" name="cleric"  :value="subCeleric" :id="`${subCeleric.slug}`">
+                        <label class="grid items-center h-full grid-cols-2 gap-1 rounded cursor-pointer" :for="`${subCeleric.slug}`">
+                            <div class="text-sm font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ subCeleric.no }}</div>
+                            <span class="checkbox-inner"></span>
+                        </label>
+                    </div>
+                    <div class="flex gap-2 checkbox-cleric" :class="{ 'pointer-events-none': form.cleric?.slug != subCeleric.slug}">
+                        <div v-for="clericItems in subCeleric.data" :key="cleric">
+                            <input class="hidden" type="checkbox" name="clericItems" v-model="selectCleric" :value="clericItems" :id="`cleric-${subCeleric.no}-${clericItems.slug}`">
+                            <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`cleric-${subCeleric.no}-${clericItems.slug}`">
+                                <span class="checkbox-inner"></span>
+                                <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ clericItems.name }}</div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex self-end gap-2 justify-self-end">
+                    <div class="flex flex-col col-span-2 gap-1 mt-4 fabric-code">
+                            <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
+                            <div class="flex font-roboto">
+                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border size-8 border-primary-50">
+                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                                <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                            </div>
+                        </div>
+                    <div class="self-end">
+                        <input class="hidden" type="radio" name="cleric-50rb" :id="`cleric-50rb`">
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cleric-50rb`">
+                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka">{{ 'rp '+index+'.000' }}</div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+             <!-- <div class="p-4 mx-6 mt-4 space-y-4 border xl:mx-14 border-pink-ka">
                 <div class="flex gap-2">
                     <div>
                         <input v-model="cleric" @change="onChangeCleric" class="hidden" type="radio" value="cleric-01" :id="`cleric-01`">
@@ -470,13 +527,12 @@
                         <input class="hidden" type="radio" name="cleric-50rb" :id="`cleric-50rb`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cleric-50rb`">
                             <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka"> Rp 50.000 </div>
-                            <span class="checkbox-inner pink"></span>
                         </label>
                     </div>
                 </div>
-             </div>
+             </div> -->
 
-             <div class="p-4 mx-6 mt-4 space-y-4 border xl:mx-14 border-pink-ka">
+             <!-- <div class="p-4 mx-6 mt-4 space-y-4 border xl:mx-14 border-pink-ka">
                 <div class="flex gap-2">
                     <div>
                         <input v-model="cleric" @change="onChangeCleric" class="hidden" type="radio" value="cleric-04" :id="`cleric-04`">
@@ -528,7 +584,7 @@
                         </label>
                     </div>
                 </div>
-             </div>
+             </div> -->
          </div>
 
          <!-- button hole, button thread, stitch thread -->
@@ -806,6 +862,7 @@
 
             <div class="mx-6 mt-4 space-y-4 border xl:mx-14 border-pink-ka">
                 <div class="grid grid-cols-3">
+                    <!-- position -->
                     <div class="p-4 space-y-4 border-b border-r border-b-dashed border-pink-ka max-xl:col-span-3">
                         <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">position</div>
                         <div>
@@ -838,75 +895,76 @@
                         </div>
                     </div>
 
+                    <!-- color -->
                     <div class="p-4 space-y-4 border-b border-r border-b-dashed border-pink-ka max-xl:col-span-3">
                         <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">color</div>
                         <div class="grid grid-cols-2 gap-2">
                             <div>
-                                <input class="hidden" type="radio" name="button-hole"  :id="`botton-hole-white`">
-                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-hole-white`">
+                                <input class="hidden" type="radio" name="embroidery-color"  :id="`embroidery-color-white`">
+                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-color-white`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">1. white</div>
                                 </label>
                             </div>
                             <div>
-                                <input class="hidden" type="radio" name="button-hole"  :id="`botton-hole-saxe`">
-                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-hole-saxe`">
+                                <input class="hidden" type="radio" name="embroidery-color"  :id="`embroidery-color-saxe`">
+                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-color-saxe`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">2. saxe</div>
                                 </label>
                             </div>
                             <div>
-                                <input class="hidden" type="radio" name="button-hole"  :id="`botton-hole-navy`">
-                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-hole-navy`">
+                                <input class="hidden" type="radio" name="embroidery-color"  :id="`embroidery-color-navy`">
+                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-color-navy`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">3. navy</div>
                                 </label>
                             </div>
                             <div>
-                                <input class="hidden" type="radio" name="button-hole"  :id="`botton-hole-lavender`">
-                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-hole-lavender`">
+                                <input class="hidden" type="radio" name="embroidery-color"  :id="`embroidery-color-lavender`">
+                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-color-lavender`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">4. lavender</div>
                                 </label>
                             </div>
                             <div>
-                                <input class="hidden" type="radio" name="button-hole"  :id="`botton-hole-brown`">
-                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-hole-brown`">
+                                <input class="hidden" type="radio" name="embroidery-color"  :id="`embroidery-color-brown`">
+                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-color-brown`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">5. brown</div>
                                 </label>
                             </div>
                             <div>
-                                <input class="hidden" type="radio" name="button-hole"  :id="`botton-hole-pink`">
-                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-hole-pink`">
+                                <input class="hidden" type="radio" name="embroidery-color"  :id="`embroidery-color-pink`">
+                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-color-pink`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">6. pink</div>
                                 </label>
                             </div>
                             <div>
-                                <input class="hidden" type="radio" name="button-hole"  :id="`botton-hole-wine-red`">
-                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-hole-wine-red`">
+                                <input class="hidden" type="radio" name="embroidery-color"  :id="`embroidery-color-wine-red`">
+                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-color-wine-red`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">7. wine red</div>
                                 </label>
                             </div>
                             <div>
-                                <input class="hidden" type="radio" name="button-hole"  :id="`botton-hole-purple`">
-                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-hole-purple`">
+                                <input class="hidden" type="radio" name="embroidery-color"  :id="`embroidery-color-purple`">
+                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-color-purple`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">8. purple</div>
                                 </label>
                             </div>
                             <div>
-                                <input class="hidden" type="radio" name="button-hole"  :id="`botton-hole-grey`">
-                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-hole-grey`">
+                                <input class="hidden" type="radio" name="embroidery-color"  :id="`embroidery-color-grey`">
+                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-color-grey`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">9. grey</div>
                                 </label>
                             </div>
                             <div>
-                                <input class="hidden" type="radio" name="button-hole"  :id="`botton-hole-black`">
-                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-hole-black`">
+                                <input class="hidden" type="radio" name="embroidery-color"  :id="`embroidery-color-black`">
+                                <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-color-black`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">10. black</div>
                                 </label>
@@ -914,6 +972,7 @@
                         </div>
                     </div>
 
+                    <!-- font type -->
                     <div class="p-4 space-y-4 border-b border-b-dashed border-pink-ka max-xl:col-span-3">
                         <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">font type</div>
                         <div>
@@ -947,7 +1006,7 @@
                     </div>
 
                     <div class="col-span-3 p-4">
-                        <div class="flex flex-wrap items-end gap-4">
+                        <div class="flex items-end gap-4 max-xl:flex-wrap">
                             <div class="flex items-end font-roboto">
                                 <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border size-10 border-primary-50">
                                 <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 size-5 border-y border-primary-50">
@@ -971,26 +1030,172 @@
             </div>
          </div>
 
-        <!-- button hole, button thread, stitch thread -->
-         <!-- <div class="flex">
-            <div>
-                <div class="flex items-center justify-between py-2 px-14 bg-blue-ka">
-                    <div class="text-xl font-bold tracking-wider text-white uppercase">11. BUTTON Hole</div>
-                </div>
-                <div class="grid grid-cols-2 p-2 mt-4 border border-pink-ka mx-14">
+         <div class="mt-6">
+            <div class="flex items-center justify-between py-2 px-14 bg-blue-ka">
+                <div class="text-lg font-bold tracking-wider text-white uppercase">15. interlining</div>
+            </div>
+
+            <div class="flex items-center justify-between mx-6 mt-4 xl:mx-14">
+                <div class="p-4 border lg:w-1/2 border-pink-ka">
                     <div>
-                        <div>
-                            <input class="hidden" type="radio" name="btn-hole" :id="`btn-hole-white`">
-                            <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`btn-hole-white`">
-                                <span class="checkbox-inner"></span>
-                                <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">white</div>
-                            </label>
-                        </div>
+                        <input class="hidden" type="radio" name="interlining"  :id="`interlining-soft`">
+                        <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`interlining-soft`">
+                            <span class="checkbox-inner"></span>
+                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">soft</div>
+                        </label>
                     </div>
-                    <div></div>
+                </div>
+                <div class="flex items-center justify-between w-full p-4 border border-pink-ka">
+                    <div>
+                        <input class="hidden" type="radio" name="interlining"  :id="`interlining-non-fusible`">
+                        <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`interlining-non-fusible`">
+                            <span class="checkbox-inner"></span>
+                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">non fusible (furashi)</div>
+                        </label>
+                    </div>
+                    <div class="whitespace-nowrap">
+                        <input class="hidden" type="radio" name="interlining-100rb" :id="`interlining-100rb`">
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`interlining-100rb`">
+                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka"> Rp 100.000 </div>
+                            <span class="checkbox-inner pink"></span>
+                        </label>
+                    </div>
                 </div>
             </div>
-         </div> -->
+        </div>
+
+         <div class="mt-6">
+            <div class="flex items-center justify-between py-2 px-14 bg-blue-ka">
+                <div class="text-lg font-bold tracking-wider text-white uppercase">15. sewing option</div>
+            </div>
+
+            <div class="flex flex-col items-center justify-between mx-6 mt-4 xl:mx-14">
+                <div class="flex items-center justify-between w-full p-4 border border-pink-ka">
+                    <div>
+                        <input class="hidden" type="radio" name="sewing"  :id="`sewing-1`">
+                        <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`sewing-1`">
+                            <span class="checkbox-inner"></span>
+                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">1. DOUBLE NEEDLE STITCHING</div>
+                        </label>
+                    </div>
+                    <div class="whitespace-nowrap">
+                        <input class="hidden" type="radio" name="sewing-100rb" :id="`sewing-100rb`">
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`sewing-100rb`">
+                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka"> Rp 100.000 </div>
+                            <span class="checkbox-inner pink"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between w-full p-4 border border-pink-ka">
+                    <div>
+                        <input class="hidden" type="radio" name="sewing" :id="`sewing-2`">
+                        <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`sewing-2`">
+                            <span class="checkbox-inner"></span>
+                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">2. SINGLE NEEDLE STITCHING (ROLLING THE EDGES INSIDE THE SEAMS)</div>
+                        </label>
+                    </div>
+                    <div class="whitespace-nowrap">
+                        <input class="hidden" type="radio" name="sewing-200rb" :id="`sewing-200rb`">
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`sewing-200rb`">
+                            <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka"> Rp 200.000 </div>
+                            <span class="checkbox-inner pink"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <div class="flex items-center justify-between py-2 px-14 bg-blue-ka">
+                <div class="text-lg font-bold tracking-wider text-white uppercase">17. TAPE (INNER COLLAR STAND & LOWER PLACKET)</div>
+            </div>
+
+            <div class="flex items-center justify-between gap-4 p-4 mx-6 mt-4 border xl:mx-14 border-pink-ka">
+                <div class="flex font-roboto">
+                    <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border size-8 border-primary-50">
+                    <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                    <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                    <input type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-r size-8 border-y border-primary-50">
+                </div>
+                <div class="w-9/12">
+                    <input type="text" class="block w-full h-8 p-2 text-sm text-center text-gray-900 border border-primary-50">
+                </div>
+                <div class="whitespace-nowrap">
+                    <input class="hidden" type="radio" name="sewing-200rb" :id="`sewing-200rb`">
+                    <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`sewing-200rb`">
+                        <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka"> Rp 200.000 </div>
+                        <span class="checkbox-inner pink"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6 mb-32">
+            <div class="flex items-center justify-between px-4 py-2 lg:px-14 bg-blue-ka">
+                <div class="font-bold tracking-widest text-white uppercase lg:text-xl">ADDITIONAL NOTES</div>
+            </div>
+            <div class="grid grid-cols-5 gap-3 px-6 my-10 xl:px-14">
+                <div class="col-span-3">
+                    <textarea class="w-full h-full p-2 border placeholder:font-josefin font-roboto border-primary-50 placeholder-primary-50 placeholder:tracking-widest" name="" id="" placeholder="NOTE"></textarea>
+                </div>
+                <div class="col-span-2 space-y-2">
+                    <input type="text"  class="w-full px-4 pt-2 pb-1 border border-pink-ka text-primary-50" placeholder="DISCOUNT"/>
+                    <input type="text" class="w-full px-4 pt-2 pb-1 border border-pink-ka text-primary-50" placeholder="RP" />
+                    <div>
+                        <button class="w-full px-5 pt-3 pb-2 text-center text-pink-ka bg-secondary">APPLY PRICE</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="px-6 xl:px-14">
+                <table class="text-sm uppercase text-primary-50">
+                    <thead>
+                        <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50 *:text-center">
+                            <th colspan="2">option</th>
+                            <th>quantity</th>
+                            <th>sub total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50 *:text-center">
+                            <td>a</td>
+                            <td>30.000</td>
+                            <td>{{ dataPrice?.[30000]?.quantity }}</td>
+                            <td>{{ dataPrice?.[30000]?.subTotal }}</td>
+                        </tr>
+                        <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50 *:text-center">
+                            <td>b</td>
+                            <td>50.000</td>
+                            <td>{{ dataPrice?.[50000]?.quantity }}</td>
+                            <td>{{ dataPrice?.[50000]?.subTotal }}</td>
+                        </tr>
+                        <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50 *:text-center">
+                            <td>c</td>
+                            <td>70.000</td>
+                            <td>{{ dataPrice?.[70000]?.quantity }}</td>
+                            <td>{{ dataPrice?.[70000]?.subTotal }}</td>
+                        </tr>
+                        <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50 *:text-center">
+                            <td>d</td>
+                            <td>100.000</td>
+                            <td>{{ dataPrice?.[100000]?.quantity }}</td>
+                            <td>{{ dataPrice?.[100000]?.subTotal }}</td>
+                        </tr>
+                        <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50 *:text-center">
+                            <td>e</td>
+                            <td>200.000</td>
+                            <td>{{ dataPrice?.[200000]?.quantity }}</td>
+                            <td>{{ dataPrice?.[200000]?.subTotal }}</td>
+                        </tr>
+                        <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50 *:text-center">
+                            <td colspan="3">option total</td>
+                            <td>{{ dataPrice?.optionTotal }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 </template>
 

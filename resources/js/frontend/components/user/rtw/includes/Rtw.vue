@@ -1,16 +1,23 @@
 <script setup>
-    import { defineEmits, onMounted, reactive, ref } from 'vue';
+    import { defineEmits, onMounted, reactive, ref, watch } from 'vue';
     import { TailwindPagination } from 'laravel-vue-pagination';
-
-    const form = reactive({
-        shirtsSelected: [],
-    })
 
     const props = defineProps({
         api_product_url: String,
     });
 
     const products = ref({});
+
+    const form = reactive({
+        shirtsSelected: [],
+    });
+
+    watch(form, () => {
+        // add qty to form shirtsSelected
+        form.shirtsSelected.forEach(shirt => {
+            shirt.qty = 1;
+        })
+    })
 
     onMounted(() => {
 
@@ -128,9 +135,8 @@
             <TailwindPagination
                 v-if="products"
                 :data="products"
-                :limit="5"
-                :keepLength="true"
-                active-classes="bg-primary-50 text-white"
+                :limit="2"
+                :active-classes="['bg-primary-50', 'text-white']"
                 @pagination-change-page="getResults"
             />
         </div>

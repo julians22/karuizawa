@@ -13,7 +13,7 @@
         let total = 0;
         props.selected.forEach(product => {
             // parse float to remove comma
-            total += parseFloat(product.price);
+            total += parseFloat(product.total);
         });
 
         totalPayment.value = total;
@@ -108,8 +108,8 @@
                             <div class="font-bold text-[#606060]">{{ product.product_name }}</div>
                             <div class="text-[#A3A3A3]">{{ product.sku }}</div>
                         </div>
-                        <div class="font-bold text-[#606060]">1x</div>
-                        <div class="font-bold text-[#606060]">Rp {{ product.price }}</div>
+                        <div class="font-bold text-[#606060]">{{ product.qty }}</div>
+                        <div class="font-bold text-[#606060]">Rp {{ product.total }}</div>
                     </div>
                 </div>
                 <div class="bg-[#606060] opacity-40 w-full h-0.5"></div>

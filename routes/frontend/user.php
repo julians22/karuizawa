@@ -3,6 +3,7 @@
 use App\Http\Controllers\Frontend\User\AccountController;
 use App\Http\Controllers\Frontend\User\DashboardController;
 use App\Http\Controllers\Frontend\User\ProfileController;
+use App\Http\Controllers\Frontend\User\SemiCustomConteroller;
 use Tabuna\Breadcrumbs\Trail;
 use Illuminate\Support\Facades\Route;
 
@@ -37,9 +38,7 @@ Route::group(['as' => 'user.', 'middleware' => ['auth', 'password.expires', conf
         return view('frontend.user.rtw');
     })->name('rtw');
 
-    Route::get('semi-custom', function () {
-        return view('frontend.user.semi-custom');
-    })->name('semi-custom');
+    Route::get('semi-custom', [SemiCustomConteroller::class, 'index'])->name('semi-custom');
 
     Route::get('customer-booking', function () {
         return view('frontend.user.booking');

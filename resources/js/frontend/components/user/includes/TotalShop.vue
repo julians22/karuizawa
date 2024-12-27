@@ -1,9 +1,32 @@
 <script setup>
-    import { defineEmits } from 'vue';
+    import { forEach } from 'lodash';
+import { defineEmits, onMounted } from 'vue';
 
     const props = defineProps({
         selected: Array,
     });
+
+    const plusQty = (index) => {
+        props.selected[index].qty += 1;
+        props.selected[index].total = props.selected[index].price * props.selected[index].qty
+
+    }
+
+
+    const minQty = (index) => {
+        if (props.selected[index].qty <= 1) {
+            return;
+        }
+        // sum total of qty and price
+        props.selected[index].qty -= 1;
+        props.selected[index].total = props.selected[index].price * props.selected[index].qty
+    }
+
+    onMounted(() => {
+        forEach(props.selected, (product, index) => {
+            product.total = product.price * product.qty
+        })
+    })
 
     const $emit = defineEmits(['btn-next']);
 
@@ -40,7 +63,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-b" v-for="product in selected">
+                        <tr class="border-b" v-for="(product, index) in selected">
                             <td class="py-3 pr-6 text-left text-primary-50">
                                 <div class="text-[#606060]">{{ product.product_name }}</div>
                                 <div class="text-[#A3A3A3] text-sm">{{product.sku}}</div>
@@ -50,18 +73,18 @@
                             </td>
                             <td class="px-6 py-3 text-center text-primary-50">
                                 <div class="flex justify-center w-full text-left number-input" data-controller="quantity">
-                                    <button class="flex items-center p-2 font-bold no-underline border border-r-0 border-primary-50 bg-off-white hover:bg-grey-lightest text-grey-darker">
+                                    <button @click="minQty(index)" class="flex items-center p-2 font-bold no-underline border border-r-0 border-primary-50 bg-off-white hover:bg-grey-lightest text-grey-darker">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M424 318.2c13.3 0 24-10.7 24-24v-76.4c0-13.3-10.7-24-24-24H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h400z"/></svg>
                                     </button>
-                                    <input type="number" class="w-10 p-2 text-center border border-primary-50" value="1" data-target="quantity.value">
+                                    <input type="number" class="w-10 p-2 text-center border border-primary-50" :value="product.qty" data-target="quantity.value">
 
-                                    <button class="flex items-center p-2 font-bold no-underline border border-l-0 border-primary-50 bg-off-white hover:bg-grey-lightest text-grey-darker">
+                                    <button @click="plusQty(index)" class="flex items-center p-2 font-bold no-underline border border-l-0 border-primary-50 bg-off-white hover:bg-grey-lightest text-grey-darker">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"/></svg>
                                     </button>
                                 </div>
                             </td>
                             <td class="px-6 py-3 text-center text-primary-50">
-                                <div class="text-center lg:text-lg text-secondary-50">Rp {{ product.price }}</div>
+                                <div class="text-center lg:text-lg text-secondary-50">Rp {{ product.total ?? product.price }}</div>
                             </td>
                         </tr>
                     </tbody>
