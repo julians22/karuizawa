@@ -13,7 +13,7 @@ import IncomingOrder from './includes/IncomingOrder.vue';
     const OrderHistory = defineAsyncComponent(() => import('./includes/OrderHistory.vue'));
     const incomingOrder = defineAsyncComponent(() => import('./includes/IncomingOrder.vue'));
 
-    const currentPage = ref('order-history')
+    const currentPage = ref('incoming-order')
 
 
 </script>

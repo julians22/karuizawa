@@ -5,9 +5,6 @@
         dataCustomShirt: JSON
     });
 
-    console.log(props.dataCustomShirt);
-
-
     const emitFrom = defineEmits(['form-custom-shirt']);
 
     const form = ref({
@@ -49,6 +46,11 @@
         }
     });
 
+    const amount = ref({
+        price: null,
+        discount: null
+    });
+
     const data = ref({
         fabricCode1: '',
         fabricCode2: '',
@@ -59,15 +61,16 @@
         collarOptionNumber2: '',
 
     });
+
     watch(data.value, () => {
         form.value.fabric.name = `${data.value.fabricCode1}` + `${data.value.fabricCode2}` + `${data.value.fabricCode3}` + `${data.value.fabricCode4}`;
         form.value.fabric.text = data.value.fabricCodeText;
         form.value.collar.optionNumber = `${data.value.collarOptionNumber1}` + `${data.value.collarOptionNumber2}`;
-    })
+    });
 
     watch(form.value, () => {
         emitFrom('form-custom-shirt', form.value);
-    })
+    });
 </script>
 
 <template>
@@ -430,10 +433,10 @@
                         <textarea class="w-full h-full p-2 border-2 placeholder:font-josefin font-roboto border-primary-50 placeholder-primary-50 placeholder:tracking-widest" name="" id="" placeholder="NOTE"></textarea>
                     </div>
                     <div class="col-span-2 space-y-2">
-                        <input type="text"  class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50" placeholder="DISCOUNT"/>
-                        <input type="text" class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50" placeholder="RP" />
+                        <input v-model="amount.discount" type="text"  class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50" placeholder="DISCOUNT"/>
+                        <input v-model="amount.price" type="text" class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50" placeholder="RP" />
                         <div>
-                            <button class="w-full px-5 pt-3 pb-2 text-center text-primary-50 bg-secondary">APPLY PRICE</button>
+                            <button @click="$emit('price-custom-shirt', amount)" class="w-full px-5 pt-3 pb-2 text-center text-primary-50 bg-secondary">APPLY PRICE</button>
                         </div>
                     </div>
                 </div>

@@ -85,6 +85,38 @@ return [
         ]
     ],
     'cuffs' => [
+        0 => [
+            [
+                'slug' => 'large-round',
+                'name' => '3. large round',
+                'price' => 0
+            ],
+            [
+                'slug' => 'large-mitreed',
+                'name' => '4. large mitreed',
+                'price' => 0
+            ],
+            [
+                'slug' => 'square',
+                'name' => '5. square',
+                'price' => 0
+            ],
+            [
+                'slug' => 'mitred-twin-button',
+                'name' => '6. mitred twin button',
+                'price' => 0
+            ],
+            [
+                'slug' => 'round-twin-button',
+                'name' => '7. round twin button',
+                'price' => 0
+            ],
+            [
+                'slug' => 'short-round',
+                'name' => '8. short round',
+                'price' => 0
+            ]
+        ],
         70 => [
             [
                 'slug' => 'double-cuffs',
@@ -383,15 +415,15 @@ return [
             ],
             [
                 'slug' => 'left-cuff-diagonal',
-                'name' => 'left cuff diagonal'
+                'name' => '2. left cuff diagonal'
             ],
             [
                 'slug' => 'left-cuff',
-                'name' => 'left cuff'
+                'name' => '3. left cuff'
             ],
             [
                 'slug' => 'pocket',
-                'name' => 'pocket'
+                'name' => '4. pocket'
             ],
         ],
         'color' => [
@@ -464,9 +496,11 @@ return [
             ]
         ],
         100 => [
-            'slug' => 'non-fusible',
-            'name' => 'non fusible (furahsi)',
-            'price' => 100000
+            [
+                'slug' => 'non-fusible',
+                'name' => 'non fusible (furahsi)',
+                'price' => 100000
+            ]
         ]
     ],
     'sewingOption' => [

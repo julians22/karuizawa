@@ -19,6 +19,13 @@
     const formCustomShirt = (from) => {
         formCustom.value = from;
     };
+
+    const customShirtPrice = ref(null);
+
+    const priceCustomShirt = (amount) => {
+        console.log(amount);
+        customShirtPrice.value = amount;
+    }
 </script>
 
 <template>
@@ -180,7 +187,7 @@
                                 <tr class="lg:whitespace-nowrap">
                                     <td>Base Price</td>
                                     <td class="text-center">:</td>
-                                    <td class="">1.089.000</td>
+                                    <td class="">{{ customShirtPrice?.price ?? '0' }}</td>
                                 </tr>
                                 <tr class="lg:whitespace-nowrap">
                                     <td>Discount</td>
@@ -201,14 +208,14 @@
                         </table>
                     </div>
                 </div>
-                <div class="pt-3 pb-2 font-bold tracking-widest text-center uppercase bg-black lg:text-lg xl:text-xl xl:text-2xl 2xl:text-3xl font-josefin">
+                <div class="pt-3 pb-2 font-bold tracking-widest text-center uppercase bg-black lg:text-lg xl:text-xl 2xl:text-3xl font-josefin">
                     IDR 1.138.200,-
                 </div>
             </div>
         </template>
 
         <!-- <template v-if="currentSection == 'custom-shirt'"> -->
-            <CustomShirt @formCustomShirt="formCustomShirt" :dataCustomShirt="props.data_custom_shirt" />
+            <CustomShirt @formCustomShirt="formCustomShirt" @priceCustomShirt="priceCustomShirt" :dataCustomShirt="props.data_custom_shirt" />
         <!-- </template> -->
 
         <!-- <template v-if="currentSection == 'custom-request'"> -->

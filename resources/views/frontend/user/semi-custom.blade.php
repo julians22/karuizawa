@@ -12,3 +12,14 @@
         route_logout="{{ route('frontend.auth.logout') }}">
     </semi-custom>
 @endsection
+
+
+@push('after-scripts')
+    <script>
+        document.querySelectorAll('input[type=radio]').forEach((el) => {
+            el.checked = false
+            console.log('sdf');
+
+        })
+    </script>
+@endpush
