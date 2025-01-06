@@ -1,12 +1,12 @@
 <nav class="bg-secondary">
     <div class="container py-7">
-        <div class="grid items-end grid-cols-5 gap-10">
-            <div class="col-span-1">
+        <div class="grid items-end grid-cols-7 gap-10">
+            <div class="col-span-2">
                 <a href="{{ route('frontend.index') }}">
                     <img src="{{ asset('img/brand/logo-01.png') }}" alt="">
                 </a>
             </div>
-            <div class="col-span-4 -mb-4">
+            <div class="col-span-5 -mb-4">
                 @if ($logged_in_user && Route::is('frontend.user.*'))
                     <ul class="flex gap-[5%] text-primary-50 font-medium uppercase w-full tracking-widest">
                         <li>
@@ -27,10 +27,10 @@
                         <li class="{{ Route::is('frontend.user.booking') ? 'active' : '' }}"><a href="{{ route('frontend.user.booking') }}" class="py-1">CUSTOMER BOOKING</a></li>
                     </ul>
                 @else
-                    <ul class="flex gap-[5%] text-primary-50 font-medium uppercase w-full justify-center tracking-widest">
+                    <ul class="flex gap-4 lg:gap-[5%] text-primary-50 font-medium uppercase w-full justify-center tracking-wider text-sm lg:text-base">
                         <li><a href="{{ route('frontend.user.rtw') }}">Ready To Wear</a></li>
                         <li><a href="{{ route('frontend.about-us') }}">About Us</a></li>
-                        <li class="self-center"><div class="h-[1px] w-40 bg-primary-50"></div></li>
+                        <li class="self-center"><div class="h-[1px] w-20 lg:w-40 bg-primary-50"></div></li>
                         @if ($logged_in_user)
                         <li>
                             <div class="relative inline-block dropdown group">

@@ -9,7 +9,7 @@
         api_product_url: String,
     });
 
-    const Layout = defineAsyncComponent(() => import('../../utils/Layout.vue'));
+    const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
     const Customer = defineAsyncComponent(() => import('../includes/CustomerData.vue'));
     const TotalShop = defineAsyncComponent(() => import('../includes/TotalShop.vue'));
     const Payment = defineAsyncComponent(() => import('../includes/Payment.vue'));

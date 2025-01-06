@@ -11,7 +11,7 @@
     <div class="relative pt-40 pb-14 bg-secondary">
         <div class="container">
             <div class="absolute -translate-x-1/2 -top-28 left-1/2">
-                <div class="max-w-4xl p-16 mx-auto bg-white border-y-4 border-primary-50 relative
+                <div class="md:w-[650px] lg:max-w-4xl p-8 lg:p-16 mx-auto bg-white border-y-4 border-primary-50 relative
                     after:content-[''] after:block after:aspect-[40/3] after:h-2 after:bg-primary-50 after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2
                     before:content-[''] before:block before:aspect-[40/3] before:h-2 before:bg-primary-50 before:absolute before:top-0 before:left-1/2 before:-translate-x-1/2
                 ">
@@ -27,13 +27,13 @@
         </p>
     </div>
     <div class="bg-white py-14">
-        <div class="container grid grid-cols-5 gap-14">
-            <div class="col-span-3 space-y-10 text-xl leading-loose text-justify font-roboto text-primary-50">
+        <div class="container grid-cols-5 lg:grid gap-14">
+            <div class="order-2 col-span-2 max-lg:w-1/2 max-lg:float-right max-lg:ml-4 max-lg:mt-4">
+                <img src="{{ asset('img/about/abotu-img.png') }}" alt="">
+            </div>
+            <div class="float-none col-span-3 space-y-10 text-xl leading-loose text-justify font-roboto text-primary-50">
                 <p>Karuizawa is also well known as Sports Resort, with golf, tennis, horseback riding in the summer, and curling, skating, skiing and hockey in winter, and it was even selected as the site for curling championship during the 1998 Winter Olympic Games held in Nagano.</p>
                 <p>Captivated by the refreshing air and the unique atmosphere of Karuizawa, many men of letters have lived and worked here since the Meiji Period. Up to Taisho Period, there were many literary men who spent summers staying in Karuizawa and writing in hotels or villas, but since the Showa Period, many writers such as Saisei Muro bought their own cottages in the area. One attractive point of Karuizawa is that it became a place for literati to spend time together, as they could visit each other's cottages in spare moments from writing. Today, as both the transportation network and the means of communication have improved so much compared with the days of the past, there are more and more literary men like Yasuo Uchida, who settle down here in Karuizawa.</p>
-            </div>
-            <div class="col-span-2">
-                <img src="{{ asset('img/about/abotu-img.png') }}" alt="">
             </div>
         </div>
     </div>

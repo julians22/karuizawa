@@ -8,7 +8,7 @@
         route_logout: String
     });
 
-    const Layout = defineAsyncComponent(() => import('../utils/Layout.vue'));
+    const Layout = defineAsyncComponent(() => import('../includes/Layout.vue'));
 </script>
 
 <template>
