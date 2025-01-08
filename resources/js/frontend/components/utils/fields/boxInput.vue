@@ -1,5 +1,6 @@
 <script setup>
 
+import { type } from 'jquery';
 import { ref, reactive } from 'vue';
 
 const props = defineProps({
@@ -8,6 +9,11 @@ const props = defineProps({
     digitCount: {
       type: Number,
       required: true
+    },
+
+    inputType: {
+      type: String,
+      default: 'text'
     }
 });
 
@@ -37,7 +43,7 @@ const isDigitsFull = function () {
 }
 
 const handleKeyDown = function (event, index) {
-    if (event.key !== "Tab" && 
+    if (event.key !== "Tab" &&
         event.key !== "ArrowRight" &&
         event.key !== "ArrowLeft"
     ) {
@@ -49,7 +55,7 @@ const handleKeyDown = function (event, index) {
 
       if (index != 0) {
         (inputCont.value.children)[index-1].focus();
-      } 
+      }
 
       emit('update:input', digits.join(''))
       return;
@@ -78,10 +84,21 @@ const handleKeyDown = function (event, index) {
             v-model="digits[index]"
             :key="digit+index"
             :autofocus="index === 0"
-            type="text"
+            :type="inputType"
             maxlength="1"
             class="box-input"
             @keydown="handleKeyDown($event, index)"
             >
     </div>
 </template>
+
+<style scoped>
+    input[type="number"] {
+        appearance: textfield;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        appearance: none;
+    }
+</style>

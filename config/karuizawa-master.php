@@ -46,17 +46,83 @@ return [
             "options" => [
                 "option_1" => [
                     [
-
+                        'slug' => 'low-reguler',
+                        'name' => '2. low reguler',
+                        'price' => 0
+                    ],
+                    [
+                        'slug' => 'low-semi-wide',
+                        'name' => '5. low semi wide',
+                        'price' => 0
+                    ],
+                    [
+                        'slug' => 'wide',
+                        'name' => '6. wide',
+                        'price' => 0
+                    ],
+                    [
+                        'slug' => 'round',
+                        'name' => '8. round',
+                        'price' => 0
+                    ],
+                    [
+                        'slug' => 'large-round',
+                        'name' => '9. large round',
+                        'price' => 0
+                    ],
+                    [
+                        'slug' => 'low-bottom-down',
+                        'name' => '12. low bottom down',
+                        'price' => 0
                     ],
                 ],
                 "option_2" => [
                     [
-
+                        'slug' => 'due-wide',
+                        'name' => '14. due wide',
+                        'price' => 50000
+                    ],
+                    [
+                        'slug' => 'due-button-down',
+                        'name' => '15. due bottom down',
+                        'price' => 50000
+                    ],
+                    [
+                        'slug' => 'tab-hook',
+                        'name' => '16. tab hook',
+                        'price' => 50000
+                    ],
+                    [
+                        'slug' => 'pin-hole',
+                        'name' => '17. pin hole',
+                        'price' => 50000
+                    ],
+                    [
+                        'slug' => 'snap-down',
+                        'name' => '18. snap down',
+                        'price' => 50000
                     ],
                 ],
                 "option_3" => [
                     [
-
+                        'slug' => 'mitre-button-down',
+                        'name' => '19. mitre button down',
+                        'price' => 100000
+                    ],
+                    [
+                        'slug' => 'joining-due-button-down',
+                        'name' => '20. joinning due button down',
+                        'price' => 100000
+                    ],
+                    [
+                        'slug' => '2-pieces-collar-due-button-down',
+                        'name' => '21.2 pieces collar due button down',
+                        'price' => 100000
+                    ],
+                    [
+                        'slug' => 'wing-collar',
+                        'name' => '22. wing collar',
+                        'price' => 100000
                     ],
                 ],
             ]
@@ -84,12 +150,60 @@ return [
                     "price" => 0,
                     "image" => asset("img/custom-shirt/cuffs/3.short-sleeve.png")
                 ]
+                ],
+            "options" => [
+                "option_1" => [
+                    [
+                        'slug' => 'large-round',
+                        'name' => '3. large round',
+                        'price' => 0
+                    ],
+                    [
+                        'slug' => 'large-mitreed',
+                        'name' => '4. large mitreed',
+                        'price' => 0
+                    ],
+                    [
+                        'slug' => 'square',
+                        'name' => '5. square',
+                        'price' => 0
+                    ],
+                    [
+                        'slug' => 'mitred-twin-button',
+                        'name' => '6. mitred twin button',
+                        'price' => 0
+                    ],
+                    [
+                        'slug' => 'round-twin-button',
+                        'name' => '7. round twin button',
+                        'price' => 0
+                    ],
+                    [
+                        'slug' => 'short-round',
+                        'name' => '8. short round',
+                        'price' => 0
+                    ]
+                ],
+                "option_2" => [
+                    [
+                        'slug' => 'double-cuffs',
+                        'name' => '10. double cuffs',
+                        'price' => 70000
+                    ]
+                ],
+                "option_3" => [
+                    [
+                        'slug' => 'joining-cuffs',
+                        'name' => '11. joining cuffs',
+                        'price' => 100000
+                    ]
+                ]
             ]
         ]
     ],
     "front_body" => [
         "data" => [
-            "basics" => [
+            "basic" => [
                 [
                     "name" => "1. STANDARD",
                     "slug" => "standard",
@@ -102,12 +216,21 @@ return [
                     "price" => 0,
                     "image" => asset("img/custom-shirt/front-body/1.french.png")
                 ]
+            ],
+            "options" => [
+                "option_1" => [
+                    [
+                        'slug' => 'hidden-placket',
+                        'name' => '3. hidden placket',
+                        'price' => 100000
+                    ]
+                ]
             ]
         ]
     ],
     "pocket" => [
         "data" => [
-            "basics" => [
+            "basic" => [
                 [
                     "name" => "1. NO POCKET",
                     "slug" => "no-pocket",
@@ -131,7 +254,7 @@ return [
     ],
     "hem" => [
         "data" => [
-            "basics" => [
+            "basic" => [
                 [
                     "name" => "STANDARD",
                     "slug" => "standard",
@@ -149,7 +272,7 @@ return [
     ],
     "back_body" => [
         "data" => [
-            "basics" => [
+            "basic" => [
                 [
                     "name" => "1. SIDE TUCK",
                     "slug" => "side-tuck",
@@ -179,7 +302,7 @@ return [
     ],
     "button" => [
         "data" => [
-            "basics" => [
+            "basic" => [
                 [
                     "name" => "1. WHITE",
                     "slug" => "white",
@@ -233,6 +356,430 @@ return [
                     "slug" => "navy",
                     "price" => 0,
                     "image" => asset("img/custom-shirt/button/9.navy.png")
+                ]
+            ],
+            "details" => [
+                [
+                    "name" => "1. LONG",
+                    "slug" => "long",
+                    "price" => 0,
+                    "image" => asset("img/custom-shirt/button/1.long.png")
+                ],
+                [
+                    "name" => "2. SHORT",
+                    "slug" => "short",
+                    "price" => 0,
+                    "image" => asset("img/custom-shirt/button/2.short.png")
+                ]
+            ],
+            "options" => [
+                "option_1" => [
+                    [
+                        'slug' => 'shell-button',
+                        'name' => 'shell button',
+                        'price' => 100000
+                    ]
+                ]
+            ]
+        ]
+    ],
+    "body_snap_button" => [
+        "data" => [
+            "options" => [
+                'option_1' => [
+                    [
+                        'slug' => 'snap-button',
+                        'name' => '2.5 snap button',
+                        'price' => 50000
+                    ]
+                ]
+            ]
+        ]
+    ],
+    "cleric" => [
+        "data" => [
+            "options" => [
+                "option_1" => [
+                    [
+                        'no' => 1,
+                        'slug' => 'cleric-01',
+                        'name' => '1. cleric 01',
+                        'price' => 50000,
+                        'data' => [
+                            [
+                                'slug' => 'collar-01',
+                                'name' => 'collar',
+                            ],
+                            [
+                                'slug' => 'collar-stand-01',
+                                'name' => 'collar stand',
+                            ],
+                            [
+                                'slug' => 'cuffs-01',
+                                'name' => 'cuffs',
+                            ],
+                        ],
+                    ],
+                    [
+                        'no' => 2,
+                        'slug' => 'cleric-02',
+                        'name' => '2. cleric 02',
+                        'price' => 50000,
+                        'data' => [
+                            [
+                                'slug' => 'collar-02',
+                                'name' => 'collar',
+                            ],
+                            [
+                                'slug' => 'collar-stand-02',
+                                'name' => 'collar stand',
+                            ],
+                            [
+                                'slug' => 'cuffs-02',
+                                'name' => 'cuffs',
+                            ],
+                            [
+                                'slug' => 'front-placket-02',
+                                'name' => 'front placket',
+                            ],
+                        ],
+                    ],
+                    [
+                        'no' => 3,
+                        'slug' => 'cleric-03',
+                        'name' => '3. cleric 03',
+                        'price' => 50000,
+                        'data' => [
+                            [
+                                'slug' => 'inner-collar-stand-03',
+                                'name' => 'inner collar stand',
+                            ],
+                            [
+                                'slug' => 'inner-cuffs-03',
+                                'name' => 'inner cuffs',
+                            ],
+                        ],
+                    ],
+                ],
+                "option_2" => [
+                    [
+                        'no' => 4,
+                        'slug' => 'cleric-04',
+                        'name' => '4. cleric 04',
+                        'price' => 100000,
+                        'data' => [
+                            [
+                                'slug' => 'inner-collar-stand-04',
+                                'name' => 'inner collar stand',
+                            ],
+                            [
+                                'slug' => 'inner-cuffs-04',
+                                'name' => 'inner cuffs',
+                            ],
+                            [
+                                'slug' => 'lower-placket-04',
+                                'name' => 'lower placket',
+                            ],
+                        ]
+                    ]
+                ]
+            ]
+        ],
+    ],
+    "button_hole" => [
+        "data" => [
+            "options" => [
+                "option_1" => [
+                    [
+                        'slug' => 'white',
+                        'name' => 'white',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'saxe',
+                        'name' => 'saxe',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'navy',
+                        'name' => 'navy',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'lavender',
+                        'name' => 'lavender',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'brown',
+                        'name' => 'brown',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'pink',
+                        'name' => 'pink',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'wine-red',
+                        'name' => 'wine red',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'purple',
+                        'name' => 'purple',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'grey',
+                        'name' => 'grey',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'black',
+                        'name' => 'black',
+                        'price' => 30000
+                    ],
+                ],
+            ],
+        ]
+    ],
+    "button_thread" => [
+        "data" => [
+            "options" => [
+                "option_1" => [
+                    [
+                        'slug' => 'white',
+                        'name' => 'white',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'saxe',
+                        'name' => 'saxe',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'navy',
+                        'name' => 'navy',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'lavender',
+                        'name' => 'lavender',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'brown',
+                        'name' => 'brown',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'pink',
+                        'name' => 'pink',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'wine-red',
+                        'name' => 'wine red',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'purple',
+                        'name' => 'purple',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'grey',
+                        'name' => 'grey',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'black',
+                        'name' => 'black',
+                        'price' => 30000
+                    ],
+                ],
+            ],
+        ]
+    ],
+    "stitch_thread" => [
+        "data" => [
+            "options" => [
+                "option_1" => [
+                    [
+                        'slug' => 'white',
+                        'name' => 'white',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'saxe',
+                        'name' => 'saxe',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'navy',
+                        'name' => 'navy',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'lavender',
+                        'name' => 'lavender',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'brown',
+                        'name' => 'brown',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'pink',
+                        'name' => 'pink',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'wine-red',
+                        'name' => 'wine red',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'purple',
+                        'name' => 'purple',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'grey',
+                        'name' => 'grey',
+                        'price' => 30000
+                    ],
+                    [
+                        'slug' => 'black',
+                        'name' => 'black',
+                        'price' => 30000
+                    ],
+                ],
+            ]
+        ]
+    ],
+    "embroidery" => [
+        "data" => [
+            "options" => [
+                "position" => [
+                    [
+                        'slug' => 'left-sleeve',
+                        'name' => '1. left sleeve'
+                    ],
+                    [
+                        'slug' => 'left-cuff-diagonal',
+                        'name' => '2. left cuff diagonal'
+                    ],
+                    [
+                        'slug' => 'left-cuff',
+                        'name' => '3. left cuff'
+                    ],
+                    [
+                        'slug' => 'pocket',
+                        'name' => '4. pocket'
+                    ],
+                ],
+                "color" => [
+                    [
+                        'slug' => 'white',
+                        'name' => 'white',
+                    ],
+                    [
+                        'slug' => 'saxe',
+                        'name' => 'saxe',
+                    ],
+                    [
+                        'slug' => 'navy',
+                        'name' => 'navy',
+                    ],
+                    [
+                        'slug' => 'lavender',
+                        'name' => 'lavender',
+                    ],
+                    [
+                        'slug' => 'brown',
+                        'name' => 'brown',
+                    ],
+                    [
+                        'slug' => 'pink',
+                        'name' => 'pink',
+                    ],
+                    [
+                        'slug' => 'wine-red',
+                        'name' => 'wine red',
+                    ],
+                    [
+                        'slug' => 'purple',
+                        'name' => 'purple',
+                    ],
+                    [
+                        'slug' => 'grey',
+                        'name' => 'grey',
+                    ],
+                    [
+                        'slug' => 'black',
+                        'name' => 'black',
+                    ],
+                ],
+                "font_type" => [
+                    [
+                        'slug' => 'fancy-letter',
+                        'name' => 'fancy letter'
+                    ],
+                    [
+                        'slug' => 'gothic',
+                        'name' => 'gothic'
+                    ],
+                    [
+                        'slug' => 'curvise-writing',
+                        'name' => 'curvise writing'
+                    ],
+                    [
+                        'slug' => 'curvise-writing-long',
+                        'name' => 'curvise writing long'
+                    ],
+                ]
+            ],
+        ],
+    ],
+    "interlining" => [
+        "data" => [
+            "options" => [
+                "option_1" => [
+                    [
+                        'slug' => 'soft',
+                        'name' => 'soft',
+                        'price' => 0
+                    ]
+                ],
+                "option_2" => [
+                    [
+                        'slug' => 'non-fusible',
+                        'name' => 'non fusible (furahsi)',
+                        'price' => 100000
+                    ]
+                ]
+            ]
+        ]
+    ],
+    "sewing_option" => [
+        "data" => [
+            "options" => [
+                "option_1" => [
+                    [
+                        'slug' => 'double-needle-stitching',
+                        'name' => 'double needle stitching',
+                        'price' => 100000
+                    ]
+                ],
+                "option_2" => [
+                    [
+                        'slug' => 'single-needle-stitching',
+                        'name' => 'single needle stitching (rolling the edges inside the seams',
+                        'price' => 200000
+                    ]
                 ]
             ]
         ]

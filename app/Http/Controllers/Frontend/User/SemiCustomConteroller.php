@@ -13,7 +13,8 @@ class SemiCustomConteroller extends Controller
     {
         return view('frontend.user.semi-custom', [
             'dataCustomShirt' => $this->dataCustomShirt(),
-            'dataCustomRequest' => $this->getCustomRequest()
+            'dataCustomRequest' => $this->getCustomRequest(),
+            'dataSemiCustom' => collect(config('karuizawa-master'))
         ]);
     }
 

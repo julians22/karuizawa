@@ -13,12 +13,19 @@ import IncomingOrder from './includes/IncomingOrder.vue';
     const OrderHistory = defineAsyncComponent(() => import('./includes/OrderHistory.vue'));
     const incomingOrder = defineAsyncComponent(() => import('./includes/IncomingOrder.vue'));
 
+    const FilterDialog = defineAsyncComponent(() => import('./utils/FilterDialog.vue'))
+
     const currentPage = ref('incoming-order')
 
-
+    const childFilter = ref(null);
+    const onClikFilter = () => {
+        childFilter.value.dialog = true;
+    }
 </script>
 
 <template>
+    <FilterDialog ref="childFilter" />
+
     <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" >
         <div class="flex items-center justify-between p-6 lg:py-7 xl:px-14 bg-primary-50">
             <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">CUSTOMER BOOKING</div>
@@ -41,7 +48,7 @@ import IncomingOrder from './includes/IncomingOrder.vue';
                     <button :class="{ active: currentPage === 'order-history' }" @click="currentPage = 'order-history'">ORDER HISTORY</button>
                     <button >FITTING HISTORY</button>
                 </div>
-                <div>
+                <div @click="onClikFilter()">
                     <i class="text-white fa fa-filter fill-white" aria-hidden="true"></i>
                 </div>
             </div>
@@ -65,6 +72,7 @@ import IncomingOrder from './includes/IncomingOrder.vue';
                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
             </button>
         </div>
+
     </Layout>
 </template>
 

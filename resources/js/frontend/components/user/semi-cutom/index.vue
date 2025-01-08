@@ -1,5 +1,5 @@
 <script setup>
-    import { defineAsyncComponent, ref } from 'vue';
+    import { defineAsyncComponent, ref, watch } from 'vue';
 
     const props = defineProps({
         csrf: String,
@@ -7,7 +7,8 @@
         route_edit_profile: String,
         route_logout: String,
         data_custom_shirt: Object,
-        data_custom_request: Object
+        data_custom_request: Object,
+        data_semi_custom: Object
     });
 
     const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
@@ -20,12 +21,43 @@
         formCustom.value = from;
     };
 
-    const customShirtPrice = ref(null);
+    const basicAmount = ref({});
+    const optionAmount = ref({});
+    const amount = ref({
+        basic: {},
+        option: {}
+    });
 
-    const priceCustomShirt = (amount) => {
-        console.log(amount);
-        customShirtPrice.value = amount;
-    }
+    const totalPrice = ref(0);
+
+    watch(amount.value, (items) => {
+        let basic = parseInt(items.basic?.total ?? 0);
+        let option = parseInt(items.option?.total ?? 0);
+
+        totalPrice.value = basic + option;
+    });
+
+    const additionalBasic = (price) => {
+        amount.value.basic = price;
+    };
+
+    const additionalOption = (price) => {
+        amount.value.option = price;
+    };
+
+    const stingConvert = (text) => {
+        const string = text.replace(/([A-Z])/g, " $1");
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    };
+
+    const currencyFormat = (value) => {
+        if (!value){
+            return ''
+        }
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(
+            value,
+        )
+    };
 </script>
 
 <template>
@@ -41,9 +73,9 @@
                                 <tbody class="*:space-y-4">
                                     <tr class="lg:whitespace-pre-wrap"
                                         v-for="(summary, key) in formCustom" :key="key">
-                                        <td class="capitalize">{{ summary.index }} </td>
+                                        <td class="capitalize">{{ stingConvert(key) }} </td>
                                         <td class="w-4 text-center">:</td>
-                                        <td class="">{{ summary.name ?? 'None' }}</td>
+                                        <td class="">{{ (summary?.name ?? summary?.fabricCode) ?? 'none' }}</td>
                                     </tr>
                                     <!-- <tr class="lg:whitespace-pre-wrap">
                                         <td>Collar</td>
@@ -187,39 +219,39 @@
                                 <tr class="lg:whitespace-nowrap">
                                     <td>Base Price</td>
                                     <td class="text-center">:</td>
-                                    <td class="">{{ customShirtPrice?.price ?? '0' }}</td>
+                                    <td class="">{{ currencyFormat(amount?.basic?.price) ?? '0' }}</td>
                                 </tr>
                                 <tr class="lg:whitespace-nowrap">
                                     <td>Discount</td>
                                     <td class="text-center">:</td>
-                                    <td class="">10%</td>
+                                    <td class="">{{ amount?.basic?.discount ?? '0' }}%</td>
                                 </tr>
                                 <tr class="lg:whitespace-nowrap">
                                     <td>Option</td>
                                     <td class="text-center">:</td>
-                                    <td class="">150.000</td>
+                                    <td class="">{{ currencyFormat(amount?.option?.total) ?? '0' }}</td>
                                 </tr>
                                 <tr class="lg:whitespace-nowrap">
                                     <td>Total Price</td>
                                     <td class="w-full text-center">:</td>
-                                    <td class=""></td>
+                                    <td class="">{{ currencyFormat(totalPrice) }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
                 <div class="pt-3 pb-2 font-bold tracking-widest text-center uppercase bg-black lg:text-lg xl:text-xl 2xl:text-3xl font-josefin">
-                    IDR 1.138.200,-
+                    IDR {{ currencyFormat(totalPrice) ?? '0' }},-
                 </div>
             </div>
         </template>
 
         <!-- <template v-if="currentSection == 'custom-shirt'"> -->
-            <CustomShirt @formCustomShirt="formCustomShirt" @priceCustomShirt="priceCustomShirt" :dataCustomShirt="props.data_custom_shirt" />
+            <CustomShirt @formCustomShirt="formCustomShirt" @additionalBasic="additionalBasic" :dataSemiCustom="props.data_semi_custom" />
         <!-- </template> -->
 
         <!-- <template v-if="currentSection == 'custom-request'"> -->
-            <CustomRequest :dataCustomRequest="props.data_custom_request"/>
+            <CustomRequest :dataCustomRequest="props.data_custom_request" @additionalOption="additionalOption" :dataOptions="props.data_semi_custom"/>
         <!-- </template> -->
     </Layout>
 </template>
