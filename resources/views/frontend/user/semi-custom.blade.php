@@ -7,19 +7,9 @@
         csrf="{{ csrf_token() }}"
         :data_custom_shirt="{{ $dataCustomShirt }}"
         :data_custom_request="{{ $dataCustomRequest }}"
+        :data_semi_custom="{{ $dataSemiCustom }}"
         :user="{{ $logged_in_user }}"
         route_edit_profile="{{ route('frontend.user.edit-profile') }}"
         route_logout="{{ route('frontend.auth.logout') }}">
     </semi-custom>
 @endsection
-
-
-@push('after-scripts')
-    <script>
-        document.querySelectorAll('input[type=radio]').forEach((el) => {
-            el.checked = false
-            console.log('sdf');
-
-        })
-    </script>
-@endpush

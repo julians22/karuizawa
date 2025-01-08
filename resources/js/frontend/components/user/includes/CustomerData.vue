@@ -50,9 +50,9 @@
             </div>
             <div class="container flex gap-10 py-10">
                 <div class="flex items-center gap-6">
-                    <label for="time" class="block mt-1 mb-2 uppercase text-primary-50">set date</label>
+                    <label for="date" class="block mt-1 mb-2 uppercase text-primary-50">set date</label>
                     <div class="flex">
-                        <input type="date" id="time" class="rounded-full bg-transparent border text-primary-50 leading-none block flex-1 w-full  border-primary-50 p-2.5 relative before:-z-10 before:content-['']  before:absolute before:right-0 before:w-10 before:bg-primary-50 before:block before:inset-y-0" required >
+                        <input type="date" id="date" class="rounded-full bg-transparent border text-primary-50 leading-none block flex-1 w-full  border-primary-50 p-2.5 relative before:-z-10 before:content-['']  before:absolute before:right-0 before:w-10 before:bg-primary-50 before:block before:inset-y-0" required >
                     </div>
                 </div>
                 <div class="flex items-center gap-6">

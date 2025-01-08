@@ -18,11 +18,20 @@
     }
 
     .box-input-wrapper .box-input {
-        @apply block border-2 border-primary-50 p-2 text-center text-gray-900 text-sm size-10;
+        @apply block border border-primary-50 p-2 text-center text-gray-900 text-sm size-8;
     }
 
     .box-input-wrapper .box-input:not(:first-child) {
-        @apply border-y-2 border-r-2 border-l-0;
+        @apply border-y border-r border-l-0;
+    }
+
+    .number-input {
+        appearance: textfield;
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            appearance: none;
+        }
     }
 }
 

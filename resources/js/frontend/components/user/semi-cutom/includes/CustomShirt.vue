@@ -1,208 +1,178 @@
 <script setup>
-    import { ref, watch, defineEmits } from 'vue';
+    import { ref, watch, defineEmits, computed } from 'vue';
 
     import boxInput from '../../../utils/fields/boxInput.vue';
 
     const props = defineProps({
-        dataCustomShirt: JSON
+        dataSemiCustom: Object
     });
 
-    const emitFrom = defineEmits(['form-custom-shirt']);
+    const dataCustomShirt = computed(() => {
+        return props.dataSemiCustom
+    });
+
+    const emitFrom = defineEmits({
+        'form-custom-shirt': 'form-custom-shirt',
+        'additional-basic': 'additional-basic',
+    });
 
     const form = ref({
         fabric: {
-            index: 'Fabric',
-            name: null,
-            text: ''
+            text: '',
         },
-        collar: {
-            index: 'Collar',
-            name: null,
-            optionNumber: null
-        },
-        cuff: {
-            index: 'Cuff',
-            name: null,
-            optionNumber: null
-        },
-        frontBody: {
-            index: 'Front Body',
-            name: null,
-            optionNumber: null
-        },
-        pocket: {
-            index: 'Pocket',
-            name: null
-        },
-        hem: {
-            index: 'Hem',
-            name: null
-        },
-        backBody: {
-            index: 'Back Body',
-            name: null
-        },
-        button: {
-            index: 'Button',
-            name: null
-        }
+        collar: null,
+        cuff: null,
+        frontBody: null,
+        pocket: null,
+        hem: null,
+        backBody: null,
+        button: null,
+        basicNote: null
     });
+
+    const price = ref(null);
+    const discount = ref(null);
 
     const amount = ref({
-        price: null,
-        discount: null
+            price: 0,
+            discount: 0,
+            total: 0
     });
 
-    const data = ref({
-        fabricCode1: '',
-        fabricCode2: '',
-        fabricCode3: '',
-        fabricCode4: '',
-        fabricCodeText: '',
-        fabricCode: '',
-        collarOptionNumber1: '',
-        collarOptionNumber2: '',
+    const basicAmount = () => {
+        let x = parseInt(price?.value) ? parseInt(price?.value) : 0;
+        let disc = parseInt(discount?.value) ? parseInt(discount?.value) : 0;
+        let z = x - (x * disc / 100);
+        amount.value.price = x;
+        amount.value.discount = disc;
+        amount.value.total = z;
 
-    });
-
-    watch(data.value, () => {
-        form.value.fabric.name = data.value.fabricCode;
-        form.value.fabric.text = data.value.fabricCodeText;
-        form.value.collar.optionNumber = `${data.value.collarOptionNumber1}` + `${data.value.collarOptionNumber2}`;
-    });
-
+        emitFrom('additional-basic', amount);
+    }
 
 
     watch(form.value, () => {
         emitFrom('form-custom-shirt', form.value);
     });
 
-    function onInputBox(val, key = 'fabricCode')
+    function onInputBox(val, key = 'fabric', key2 = 'fabricCode')
     {
-        console.log({val, key});
-
-        data.value[key] = val;
-        
+        form.value[key][key2] = val;
     }
-    
+
+    const currencyFormat = (value) => {
+        if (!value || value == null || value == undefined || value == ''){
+            return ''
+        }
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(
+            value,
+        )
+    };
 </script>
 
 <template>
     <div>
         <div class="relative min-h-svh">
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">CUSTOM MADE SHIRT</div>
+            <div class="flex items-center justify-between p-6 bg-primary-50 lg:px-14 lg:py-7">
+                <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">CUSTOM MADE SHIRT</div>
             </div>
 
             <!-- fabric code -->
             <div>
-                <div class="flex justify-between items-center bg-primary-300 px-4 lg:px-14 py-2">
-                    <div class="font-bold text-white lg:text-xl uppercase tracking-widest">01. FABRIC</div>
+                <div class="flex items-center justify-between px-4 py-2 bg-primary-300 lg:px-14">
+                    <div class="font-bold tracking-widest text-white uppercase lg:text-xl">01. FABRIC</div>
                 </div>
-                <div class="flex items-center gap-8 my-5 px-6 lg:px-10 xl:px-14 fabric-code">
-                    <label for="fabric-code" class="text-primary-50 uppercase tracking-widest lg:whitespace-pre-wrap">fabric code</label>
-                    <boxInput :digitCount="4" @update:input="onInputBox($event)"/> 
-                    <input v-model="data.fabricCodeText" type="text" class="block border-2 border-primary-50 p-2 border-r-2 w-full h-10 font-roboto text-gray-900 text-sm">
+                <div class="flex items-center gap-8 px-6 my-5 lg:px-10 xl:px-14 fabric-code">
+                    <label for="fabric-code" class="tracking-widest uppercase text-primary-50 lg:whitespace-pre-wrap">fabric code</label>
+                    <boxInput :digitCount="4" @update:input="onInputBox($event, 'fabric', 'fabricCode')"/>
+                    <input v-model="form.fabric.text" type="text" class="block w-full h-8 p-2 text-sm text-gray-900 border border-r border-primary-50 font-roboto">
                 </div>
             </div>
 
             <!-- collar -->
             <div>
-                <div class="flex justify-between items-center bg-primary-300 px-4 lg:px-14 py-2">
-                    <div class="font-bold text-white lg:text-xl uppercase tracking-widest">02. COLLAR</div>
+                <div class="flex items-center justify-between px-4 py-2 bg-primary-300 lg:px-14">
+                    <div class="font-bold tracking-widest text-white uppercase lg:text-xl">02. COLLAR</div>
                 </div>
-                <div class="grid grid-cols-6 my-10 px-6 lg:px-10 xl:px-14">
-                    <div v-for="collar in props.dataCustomShirt.collar">
-                        <input class="hidden" type="radio" v-model="form.collar.name" :value="collar.name"  :id="'collar-' + collar.slug">
-                        <label class="flex flex-col justify-between items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'collar-' + collar.slug">
+                <div class="grid grid-cols-6 px-6 my-10 lg:px-10 xl:px-14">
+                    <div v-for="collar in dataCustomShirt.collar.data.basic">
+                        <input class="hidden" type="radio" v-model="form.collar" :value="collar" name="collar"  :id="'collar-' + collar.slug">
+                        <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'collar-' + collar.slug">
                             <img class="h-24" :src="collar.image" alt="">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">{{ collar.name }}</div>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ collar.name }}</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
-
-                    <!-- Change by jul: get data from cnew config file: config/karuizawa-master.php -->
-                    <!-- <div v-for="collar in props.dataCustomShirt.collar">
-                        <input class="hidden" type="radio" v-model="form.collar.name" :value="collar.name"  :id="'collar-' + collar.slug">
-                        <label class="flex flex-col justify-between items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'collar-' + collar.slug">
-                            <img class="h-24" :src="collar.img" alt="">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">{{ collar.name }}</div>
-                            <span class="checkbox-inner"></span>
-                        </label>
-                    </div> -->
                 </div>
                 <div class="flex items-center gap-12 mx-20 my-10">
-                    <div class="font-bold text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">OPTION NUMBER</div>
+                    <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg xl:text-base">OPTION NUMBER</div>
                     <div class="flex font-roboto">
-                        <input type="number" v-model="data.collarOptionNumber1" class="block border-2 border-primary-50 p-2 text-center text-gray-900 text-sm size-10">
-                        <input type="number" v-model="data.collarOptionNumber2" class="block border-primary-50 border-y-2 p-2 border-r-2 text-center text-gray-900 text-sm size-10">
+                        <boxInput :digitCount="2" inputType="number" @update:input="onInputBox($event, 'collar', 'optionNumber')"/>
                     </div>
                 </div>
             </div>
 
             <!-- cuffs and  front body -->
-            <div class="gap-4 grid grid-cols-2">
+            <div class="grid grid-cols-2 gap-4">
                 <!-- cuffs -->
                 <div>
-                    <div class="flex justify-between items-center bg-primary-300 px-4 lg:px-14 py-2">
-                        <div class="font-bold text-white lg:text-xl uppercase tracking-widest">03. CUFFS</div>
+                    <div class="flex items-center justify-between px-4 py-2 bg-primary-300 lg:px-14">
+                        <div class="font-bold tracking-widest text-white uppercase lg:text-xl">03. CUFFS</div>
                     </div>
-                    <div class="grid grid-cols-3 my-10 px-6 lg:px-10 xl:px-14">
-                        <div v-for="cuff in props.dataCustomShirt.cuffs">
-                            <input class="hidden" type="radio" v-model="form.cuff.name" name="cuff" :value="cuff.name" :id="'cuff-' + cuff.slug">
-                            <label class="flex flex-col justify-between items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'cuff-' + cuff.slug">
-                                <img class="h-28" :src="cuff.img" alt="">
-                                <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">{{ cuff.name }}</div>
+                    <div class="grid grid-cols-3 px-6 my-10 lg:px-10 xl:px-14">
+                        <div v-for="cuff in dataCustomShirt.cuffs.data.basic">
+                            <input class="hidden" type="radio" v-model="form.cuff" name="cuff" :value="cuff" :id="'cuff-' + cuff.slug">
+                            <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'cuff-' + cuff.slug">
+                                <img class="h-28" :src="cuff.image" alt="">
+                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ cuff.name }}</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
                     </div>
-                    <div class="flex items-center gap-12 xl:mx-20 my-10 px-6">
-                        <div class="font-bold text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">OPTION NUMBER</div>
+                    <div class="flex items-center gap-12 px-6 my-10 xl:mx-20">
+                        <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg xl:text-base">OPTION NUMBER</div>
                         <div class="flex font-roboto">
-                            <input type="number" class="block border-2 border-primary-50 p-2 text-center text-gray-900 text-sm size-10">
-                            <input type="number" class="block border-primary-50 border-y-2 p-2 border-r-2 text-center text-gray-900 text-sm size-10">
+                            <boxInput :digitCount="2" inputType="number" @update:input="onInputBox($event, 'cuff', 'optionNumber')"/>
                         </div>
                     </div>
                 </div>
                 <!-- front body -->
                 <div>
-                    <div class="flex justify-between items-center bg-primary-300 px-4 lg:px-14 py-2">
-                        <div class="font-bold text-white lg:text-xl uppercase tracking-widest">04. FRONT BODY</div>
+                    <div class="flex items-center justify-between px-4 py-2 bg-primary-300 lg:px-14">
+                        <div class="font-bold tracking-widest text-white uppercase lg:text-xl">04. FRONT BODY</div>
                     </div>
-                    <div class="grid grid-cols-2 my-10 px-6 lg:px-10 xl:px-14">
-                        <div v-for="frontBody in props.dataCustomShirt.frontBody">
-                            <input class="hidden" type="radio" name="front-body" v-model="form.frontBody.name" :value="frontBody.name" :id="'front-body-' + frontBody.slug">
-                            <label class="flex flex-col justify-between items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'front-body-' + frontBody.slug">
-                                <img class="h-28" :src="frontBody.img" alt="">
-                                <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">{{ frontBody.name }}</div>
+                    <div class="grid grid-cols-2 px-6 my-10 lg:px-10 xl:px-14">
+                        <div v-for="frontBody in dataCustomShirt.front_body.data.basic">
+                            <input class="hidden" type="radio" name="front-body" v-model="form.frontBody" :value="frontBody" :id="'front-body-' + frontBody.slug">
+                            <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'front-body-' + frontBody.slug">
+                                <img class="h-28" :src="frontBody.image" alt="">
+                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ frontBody.name }}</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
                     </div>
-                    <div class="flex items-center gap-12 xl:mx-20 my-10 px-6 lg:px-10">
-                        <div class="font-bold text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">OPTION NUMBER</div>
+                    <div class="flex items-center gap-12 px-6 my-10 xl:mx-20 lg:px-10">
+                        <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg xl:text-base">OPTION NUMBER</div>
                         <div class="flex font-roboto">
-                            <input type="number" class="block border-2 border-primary-50 p-2 text-center text-gray-900 text-sm size-10">
-                            <input type="number" class="block border-primary-50 border-y-2 p-2 border-r-2 text-center text-gray-900 text-sm size-10">
+                            <boxInput :digitCount="2" inputType="number" @update:input="onInputBox($event, 'frontBody', 'optionNumber')"/>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- pocket and hem -->
-            <div class="gap-4 grid grid-cols-2">
+            <div class="grid grid-cols-2 gap-4">
                 <!-- pocket -->
                         <div>
-                            <div class="flex justify-between items-center bg-primary-300 px-4 lg:px-14 py-2">
-                                <div class="font-bold text-white lg:text-xl uppercase tracking-widest">05. POCKET</div>
+                            <div class="flex items-center justify-between px-4 py-2 bg-primary-300 lg:px-14">
+                                <div class="font-bold tracking-widest text-white uppercase lg:text-xl">05. POCKET</div>
                             </div>
-                            <div class="grid grid-cols-3 my-10 px-4 lg:px-10 xl:px-14">
-                            <div v-for="pocket in props.dataCustomShirt.pocket">
-                                <input class="hidden" type="radio" v-model="form.pocket.name" :value="pocket.name" name="pocket" :id="'pocket-'+pocket.slug">
-                                <label class="flex flex-col justify-between items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'pocket-'+pocket.slug">
-                                    <img class="h-28" :src="pocket.img" alt="">
-                                    <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">{{ pocket.name }}</div>
+                            <div class="grid grid-cols-3 px-4 my-10 lg:px-10 xl:px-14">
+                            <div v-for="pocket in dataCustomShirt.pocket.data.basic">
+                                <input class="hidden" type="radio" v-model="form.pocket" :value="pocket" name="pocket" :id="'pocket-'+pocket.slug">
+                                <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'pocket-'+pocket.slug">
+                                    <img class="h-28" :src="pocket.image" alt="">
+                                    <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ pocket.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
                             </div>
@@ -210,15 +180,15 @@
                     </div>
                 <!-- hem -->
                     <div>
-                        <div class="flex justify-between items-center bg-primary-300 px-4 lg:px-14 py-2">
-                            <div class="font-bold text-white lg:text-xl uppercase tracking-widest">06. HEM</div>
+                        <div class="flex items-center justify-between px-4 py-2 bg-primary-300 lg:px-14">
+                            <div class="font-bold tracking-widest text-white uppercase lg:text-xl">06. HEM</div>
                         </div>
-                        <div class="grid grid-cols-2 my-10 px-4 lg:px-10 xl:px-14">
-                        <div v-for="hem in props.dataCustomShirt.hem">
-                            <input class="hidden" type="radio" name="hem" v-model="form.hem.name"  :value="hem.name" :id="'hem-'+hem.slug">
-                            <label class="flex flex-col justify-between items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'hem-'+hem.slug">
-                                <img class="h-28" :src="hem.img" alt="">
-                                <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">{{ hem.name }}</div>
+                        <div class="grid grid-cols-2 px-4 my-10 lg:px-10 xl:px-14">
+                        <div v-for="hem in dataCustomShirt.hem.data.basic">
+                            <input class="hidden" type="radio" name="hem" v-model="form.hem"  :value="hem" :id="'hem-'+hem.slug">
+                            <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'hem-'+hem.slug">
+                                <img class="h-28" :src="hem.image" alt="">
+                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ hem.name }}</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
@@ -228,15 +198,15 @@
 
             <!-- back body -->
             <div>
-                <div class="flex justify-between items-center bg-primary-300 px-4 lg:px-14 py-2">
-                    <div class="font-bold text-white lg:text-xl uppercase tracking-widest">07. BACK BODY</div>
+                <div class="flex items-center justify-between px-4 py-2 bg-primary-300 lg:px-14">
+                    <div class="font-bold tracking-widest text-white uppercase lg:text-xl">07. BACK BODY</div>
                 </div>
-                <div class="grid grid-cols-4 my-8 xl:my-10 lg:px-10 xl:px-14 p-6">
-                    <div v-for="backBody in props.dataCustomShirt.backBody">
-                        <input class="hidden" type="radio" name="back-body" v-model="form.backBody.name" :value="backBody.name" :id="'back-body-'+backBody.slug">
-                        <label class="flex flex-col justify-between items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'back-body-'+backBody.slug">
-                            <img class="h-28" :src="backBody.img" alt="">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">{{ backBody.name }}</div>
+                <div class="grid grid-cols-4 p-6 my-8 xl:my-10 lg:px-10 xl:px-14">
+                    <div v-for="backBody in dataCustomShirt.back_body.data.basic">
+                        <input class="hidden" type="radio" name="back-body" v-model="form.backBody" :value="backBody" :id="'back-body-'+backBody.slug">
+                        <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'back-body-'+backBody.slug">
+                            <img class="h-28" :src="backBody.image" alt="">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ backBody.name }}</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
@@ -245,15 +215,15 @@
 
             <!-- button -->
             <div>
-                <div class="flex justify-between items-center bg-primary-300 px-4 lg:px-14 py-2">
-                    <div class="font-bold text-white lg:text-xl uppercase tracking-widest">08. BUTTON</div>
+                <div class="flex items-center justify-between px-4 py-2 bg-primary-300 lg:px-14">
+                    <div class="font-bold tracking-widest text-white uppercase lg:text-xl">08. BUTTON</div>
                 </div>
-                <div class="gap-4 grid grid-cols-5 xl:grid-cols-9 my-10 px-6 lg:px-10 xl:px-14">
-                    <div v-for="button in props.dataCustomShirt.button">
-                        <input class="hidden" type="radio" name="button" :id="`button-${button.slug}`" v-model="form.button.name" :value="button.name">
-                        <label class="flex flex-col justify-between items-center px-2 rounded h-full cursor-pointer" :for="`button-${button.slug}`">
-                            <img class="h-28" :src="button.img" alt="">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">{{ button.name }}</div>
+                <div class="grid grid-cols-5 gap-4 px-6 my-10 xl:grid-cols-9 lg:px-10 xl:px-14">
+                    <div v-for="button in dataCustomShirt.button.data.basic">
+                        <input class="hidden" type="radio" name="button" :id="`button-${button.slug}`" v-model="form.button" :value="button">
+                        <label class="flex flex-col items-center justify-between h-full px-2 rounded cursor-pointer" :for="`button-${button.slug}`">
+                            <img class="h-28" :src="button.image" alt="">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ button.name }}</div>
                             <span class="mt-4 checkbox-inner"></span>
                         </label>
                     </div>
@@ -262,103 +232,103 @@
 
             <!-- size -->
             <div>
-                <div class="flex justify-between items-center bg-primary-300 px-4 lg:px-14 py-2">
-                    <div class="font-bold text-white lg:text-xl uppercase tracking-widest">SIZE</div>
+                <div class="flex items-center justify-between px-4 py-2 bg-primary-300 lg:px-14">
+                    <div class="font-bold tracking-widest text-white uppercase lg:text-xl">SIZE</div>
                 </div>
-                <div class="gap-2 grid grid-cols-3 xl:grid-cols-4 my-10 px-6 lg:px-10 xl:px-14">
+                <div class="grid grid-cols-3 gap-2 px-6 my-10 xl:grid-cols-4 lg:px-10 xl:px-14">
                     <div>
                         <input class="hidden" type="radio" name="size" :id="`new-order`">
-                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`new-order`">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">1. NEW ORDER</div>
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`new-order`">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">1. NEW ORDER</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="justify-self-center xl:col-span-2">
                         <input class="hidden" type="radio" name="size" :id="`repeat-order`">
-                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`repeat-order`">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">2. REPEAT ORDER</div>
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`repeat-order`">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">2. REPEAT ORDER</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div>
                         <input class="hidden" type="radio" name="size" :id="`garment-sample`">
-                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`garment-sample`">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">3. GARMENT SAMPLE</div>
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`garment-sample`">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">3. GARMENT SAMPLE</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                 </div>
                 <!-- body type -->
-                <div class="gap-2 grid grid-cols-4 grid-rows-2 my-10 px-6 lg:px-10 xl:px-14">
+                <div class="grid grid-cols-4 grid-rows-2 gap-2 px-6 my-10 lg:px-10 xl:px-14">
                     <div class="max-xl:col-span-4 xl:row-span-2">
                         <div class="inline-block border-2 border-primary-50 px-2 pt-1.5 font-bold text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">BODY TYPE</div>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input class="hidden" type="radio" name="body-type" :id="`slim`">
-                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`slim`">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">2. SLIM</div>
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`slim`">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">2. SLIM</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input class="hidden" type="radio" name="body-type" :id="`standard-1`">
-                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`standard-1`">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">3. STANDARD I</div>
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-1`">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">3. STANDARD I</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input class="hidden" type="radio" name="body-type" :id="`standard-2`">
-                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`standard-2`">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">4. STANDARD II</div>
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-2`">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">4. STANDARD II</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input class="hidden" type="radio" name="body-type" :id="`big-1`">
-                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`big-1`">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">5. BIG I</div>
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`big-1`">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">5. BIG I</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input class="hidden" type="radio" name="body-type" :id="`big-2`">
-                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`big-2`">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">7. BIG II</div>
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`big-2`">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">7. BIG II</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input class="hidden" type="radio" name="body-type" :id="`standard-3`">
-                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`standard-3`">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">3. STANDARD II</div>
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-3`">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">3. STANDARD II</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                 </div>
 
                 <!-- sleeve -->
-                <div class="gap-2 grid grid-cols-4 grid-rows-2 mt-6 px-6 lg:px-10 xl:px-14">
+                <div class="grid grid-cols-4 grid-rows-2 gap-2 px-6 mt-6 lg:px-10 xl:px-14">
                     <div class="max-xl:col-span-4 xl:row-span-2">
                         <div class="inline-block border-2 border-primary-50 px-2 pt-1.5 font-bold text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">SLEEVE</div>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input class="hidden" type="radio" name="sleeve" :id="`slim-sleeve`">
-                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`slim-sleeve`">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">1. SLIM SLEEVE</div>
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`slim-sleeve`">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">1. SLIM SLEEVE</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input class="hidden" type="radio" name="sleeve" :id="`regular-sleeve`">
-                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`regular-sleeve`">
-                            <div class="font-bold text-center text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">2. REGULAR SLEEVE</div>
+                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`regular-sleeve`">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">2. REGULAR SLEEVE</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                 </div>
 
-                <div class="mt-4 px-6 lg:px-10 xl:px-14">
+                <div class="px-6 mt-4 lg:px-10 xl:px-14">
                     <div class="overflow-x-auto">
                         <table class="w-full text-primary-50">
                             <thead>
@@ -376,43 +346,43 @@
                                 <tr class="*:border-2 *:border-primary-50 *:text-center">
                                     <td>SHIRT</td>
                                     <td>
-                                        <input type="text" class="w-full font-roboto text-center">
+                                        <input type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full font-roboto text-center">
+                                        <input type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full font-roboto text-center">
+                                        <input type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full font-roboto text-center">
+                                        <input type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full font-roboto text-center">
+                                        <input type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full font-roboto text-center">
+                                        <input type="text" class="w-full text-center font-roboto">
                                     </td>
                                 </tr>
                                 <tr class="*:border-2 *:border-primary-50 *:text-center">
                                     <td>ACTUAL</td>
                                     <td>
-                                        <input type="text" class="w-full font-roboto text-center">
+                                        <input type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full font-roboto text-center">
+                                        <input type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full font-roboto text-center">
+                                        <input type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full font-roboto text-center">
+                                        <input type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full font-roboto text-center">
+                                        <input type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full font-roboto text-center">
+                                        <input type="text" class="w-full text-center font-roboto">
                                     </td>
                                 </tr>
                             </tbody>
@@ -421,22 +391,22 @@
 
                     <div class="grid grid-cols-2 xl:grid-cols-4 mt-10 mb-10 *:px-2 *:pt-2 *:pb-1 text-primary-50 tracking-widest whitespace-pre">
                         <div class="border-2 border-primary-50">SPECIAL ADJUSTMENT</div>
-                        <div class="flex border-primary-50 border-y-2 border-r-2">
+                        <div class="flex border-r-2 border-primary-50 border-y-2">
                             <div>NECK SIZE :</div>
                             <div>
-                                <input type="text" class="w-full font-roboto text-center">
+                                <input type="text" class="w-full text-center font-roboto">
                             </div>
                         </div>
-                        <div class="flex border-primary-50 border-y-2 border-r-2 max-xl:border-l-2">
+                        <div class="flex border-r-2 border-primary-50 border-y-2 max-xl:border-l-2">
                             <div>SHOULDER :</div>
                             <div>
-                                <input type="text" class="w-full font-roboto text-center">
+                                <input type="text" class="w-full text-center font-roboto">
                             </div>
                         </div>
-                        <div class="flex border-primary-50 border-y-2 border-r-2">
+                        <div class="flex border-r-2 border-primary-50 border-y-2">
                             <div>BACK LENGTH :</div>
                             <div>
-                                <input type="text" class="w-full font-roboto text-center">
+                                <input type="text" class="w-full text-center font-roboto">
                             </div>
                         </div>
                     </div>
@@ -444,29 +414,29 @@
             </div>
 
             <div class="mb-32">
-                <div class="flex justify-between items-center bg-primary-300 px-4 lg:px-14 py-2">
-                    <div class="font-bold text-white lg:text-xl uppercase tracking-widest">ADDITIONAL NOTES</div>
+                <div class="flex items-center justify-between px-4 py-2 bg-primary-300 lg:px-14">
+                    <div class="font-bold tracking-widest text-white uppercase lg:text-xl">ADDITIONAL NOTES</div>
                 </div>
-                <div class="gap-3 grid grid-cols-5 my-10 px-6 lg:px-10 xl:px-14">
+                <div class="grid grid-cols-5 gap-3 px-6 my-10 lg:px-10 xl:px-14">
                     <div class="col-span-3">
-                        <textarea class="border-2 border-primary-50 p-2 w-full h-full font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" name="" id="" placeholder="NOTE"></textarea>
+                        <textarea class="w-full h-full p-2 border-2 border-primary-50 font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" name="" id="" placeholder="NOTE"></textarea>
                     </div>
-                    <div class="space-y-2 col-span-2">
-                        <input v-model="amount.discount" type="text"  class="border-2 border-primary-50 px-4 pt-2 pb-1 w-full text-primary-50" placeholder="DISCOUNT"/>
-                        <input v-model="amount.price" type="text" class="border-2 border-primary-50 px-4 pt-2 pb-1 w-full text-primary-50" placeholder="RP" />
+                    <div class="col-span-2 space-y-2">
+                        <input v-model="discount" type="text"  class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50" placeholder="DISCOUNT"/>
+                        <input v-model="price" type="text" class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50" placeholder="RP" />
                         <div>
-                            <button @click="$emit('price-custom-shirt', amount)" class="bg-secondary px-5 pt-3 pb-2 w-full text-center text-primary-50">APPLY PRICE</button>
+                            <button @click="basicAmount()" class="w-full px-5 pt-3 pb-2 text-center bg-secondary text-primary-50">APPLY PRICE</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="right-0 bottom-0 absolute flex">
-            <button class="flex items-center gap-2 bg-primary-300 p-6 text-white tracking-widest">
+        <div class="absolute bottom-0 right-0 flex">
+            <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-primary-300">
                 <span>ADD CUSTOM REQUEST </span>
                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
             </button>
-            <button class="flex items-center gap-2 bg-secondary-50 p-6 text-white tracking-widest">
+            <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50">
                 <span>SUBMIT</span>
                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
             </button>
@@ -475,15 +445,6 @@
 </template>
 
 <style scoped>
-    input[type="number"] {
-        appearance: textfield;
-    }
-
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-        appearance: none;
-    }
-
     input[type="radio"] + label span.checkbox-inner {
         @apply border-primary-50;
     }
@@ -494,7 +455,7 @@
         background-size: 14px 10px;
     }
     .checkbox-inner {
-        @apply flex justify-center items-center border-2 border-primary-50 text-transparent size-7;
+        @apply flex justify-center items-center border border-primary-50 text-transparent size-7;
         background: transparent no-repeat center;
     }
 </style>
