@@ -1,5 +1,6 @@
 <script setup>
-    import { defineAsyncComponent, ref, watch } from 'vue';
+    import { add } from 'lodash';
+import { defineAsyncComponent, ref, watch, computed, onMounted } from 'vue';
 
     const props = defineProps({
         csrf: String,
@@ -15,14 +16,36 @@
     const CustomShirt = defineAsyncComponent(() => import('./includes/CustomShirt.vue'));
     const CustomRequest = defineAsyncComponent(() => import('./includes/CustomRequest.vue'));
 
-    const formCustom = ref(null);
+    const childBasic = ref(null);
+    const childOption = ref(null);
 
-    const formCustomShirt = (from) => {
-        formCustom.value = from;
-    };
+    const formBasic = computed(() => {
+        return childBasic.value?.form;
+    });
 
-    const basicAmount = ref({});
-    const optionAmount = ref({});
+    const basic = computed(() => {
+        let data = {
+            form: childBasic.value?.form,
+            amount: childBasic.value?.amount,
+            additionalNote: childBasic.value?.additionalNote
+        };
+        return data;
+    });
+
+    const option = computed(() => {
+        let data = {
+            form: childOption.value?.form,
+            amount: childOption.value?.amount,
+            additionalNote: childOption.value?.additionalNote
+        };
+        return data;
+    });
+
+    const formOptions = computed(() => {
+        return childOption.value?.form;
+    });
+
+
     const amount = ref({
         basic: {},
         option: {}
@@ -30,11 +53,24 @@
 
     const totalPrice = ref(0);
 
+    const bindForm = ref(null);
+
+    onMounted(() => {
+        bindForm.value = {
+            basic: basic,
+            option: option,
+        }
+    })
+
     watch(amount.value, (items) => {
         let basic = parseInt(items.basic?.total ?? 0);
         let option = parseInt(items.option?.total ?? 0);
 
         totalPrice.value = basic + option;
+
+        childBasic.value.amount = amount.value.basic;
+        childOption.value.amount = amount.value.option;
+        bindForm.value.totalPrice = totalPrice.value;
     });
 
     const additionalBasic = (price) => {
@@ -58,6 +94,11 @@
             value,
         )
     };
+
+    const btnSubmit = () => {
+        childBasic.value.basicAmount();
+        childOption.value.amountOption();
+    }
 </script>
 
 <template>
@@ -71,11 +112,11 @@
                         <div>
                             <table>
                                 <tbody class="*:space-y-4">
-                                    <tr class="lg:whitespace-pre-wrap"
-                                        v-for="(summary, key) in formCustom" :key="key">
-                                        <td class="capitalize">{{ stingConvert(key) }} </td>
+                                    <tr class="lg:whitespace-pre-wrap *:align-top"
+                                        v-for="(summaryBasic, key) in formBasic" :key="key">
+                                        <td class="capitalize">{{ stingConvert(key) }}</td>
                                         <td class="w-4 text-center">:</td>
-                                        <td class="">{{ (summary?.name ?? summary?.fabricCode) ?? 'none' }}</td>
+                                        <td class="">{{ (summaryBasic?.name ?? summaryBasic?.fabricCode) ?? 'none' }}</td>
                                     </tr>
                                     <!-- <tr class="lg:whitespace-pre-wrap">
                                         <td>Collar</td>
@@ -110,6 +151,31 @@
                                             <div>Fabric - None </div>
                                         </td>
                                     </tr> -->
+                                </tbody>
+                            </table>
+
+                            <table class="mt-10">
+                                <tbody>
+                                    <tr>
+                                        <td class="font-bold uppercase">Option:</td>
+                                    </tr>
+                                    <tr class="lg:whitespace-pre-wrap *:align-top"
+                                        v-for="(summaryBasic, key) in formOptions" :key="key">
+                                        <td class="capitalize">{{ stingConvert(key) }} </td>
+                                        <td class="w-4 text-center">:</td>
+                                        <td class="">
+                                            <div v-if="key == 'tape'">
+                                                <div>{{ summaryBasic?.collar ?? 'none' }}</div>
+                                                <div>{{ summaryBasic?.lower }}</div>
+                                            </div>
+                                            <div v-else>
+                                                {{ (summaryBasic?.name ?? summaryBasic?.fabricCode) ?? 'none' }}
+                                            </div>
+                                            <div v-for="option in summaryBasic?.data">
+                                                - {{ option.name }}
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -247,11 +313,22 @@
         </template>
 
         <!-- <template v-if="currentSection == 'custom-shirt'"> -->
-            <CustomShirt @formCustomShirt="formCustomShirt" @additionalBasic="additionalBasic" :dataSemiCustom="props.data_semi_custom" />
+            <CustomShirt @additionalBasic="additionalBasic" :dataSemiCustom="props.data_semi_custom" ref="childBasic" />
         <!-- </template> -->
 
         <!-- <template v-if="currentSection == 'custom-request'"> -->
-            <CustomRequest :dataCustomRequest="props.data_custom_request" @additionalOption="additionalOption" :dataOptions="props.data_semi_custom"/>
+            <CustomRequest @additionalOption="additionalOption" :dataOptions="props.data_semi_custom" ref="childOption"/>
         <!-- </template> -->
+
+        <div class="absolute bottom-0 right-0 flex">
+            <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-primary-300">
+                <span>ADD CUSTOM REQUEST </span>
+                <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+            </button>
+            <button @click="btnSubmit()" class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50">
+                <span>SUBMIT</span>
+                <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+            </button>
+        </div>
     </Layout>
 </template>

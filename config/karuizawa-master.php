@@ -403,7 +403,7 @@ return [
                     [
                         'no' => 1,
                         'slug' => 'cleric-01',
-                        'name' => '1. cleric 01',
+                        'name' => '1. cleric',
                         'price' => 50000,
                         'data' => [
                             [
@@ -423,7 +423,7 @@ return [
                     [
                         'no' => 2,
                         'slug' => 'cleric-02',
-                        'name' => '2. cleric 02',
+                        'name' => '2. cleric',
                         'price' => 50000,
                         'data' => [
                             [
@@ -447,7 +447,7 @@ return [
                     [
                         'no' => 3,
                         'slug' => 'cleric-03',
-                        'name' => '3. cleric 03',
+                        'name' => '3. cleric',
                         'price' => 50000,
                         'data' => [
                             [

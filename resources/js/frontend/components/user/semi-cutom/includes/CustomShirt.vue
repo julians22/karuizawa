@@ -27,8 +27,11 @@
         hem: null,
         backBody: null,
         button: null,
-        basicNote: null
     });
+
+    const additionalNote = ref(null);
+
+
 
     const price = ref(null);
     const discount = ref(null);
@@ -49,6 +52,13 @@
 
         emitFrom('additional-basic', amount);
     }
+
+    defineExpose({
+        form,
+        additionalNote,
+        amount,
+        basicAmount
+    });
 
 
     watch(form.value, () => {
@@ -419,27 +429,17 @@
                 </div>
                 <div class="grid grid-cols-5 gap-3 px-6 my-10 lg:px-10 xl:px-14">
                     <div class="col-span-3">
-                        <textarea class="w-full h-full p-2 border-2 border-primary-50 font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" name="" id="" placeholder="NOTE"></textarea>
+                        <textarea v-model="additionalNote" class="w-full h-full p-2 border-2 border-primary-50 font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" name="" id="" placeholder="NOTE"></textarea>
                     </div>
                     <div class="col-span-2 space-y-2">
-                        <input v-model="discount" type="text"  class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50" placeholder="DISCOUNT"/>
-                        <input v-model="price" type="text" class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50" placeholder="RP" />
+                        <input v-model="discount" type="number"  class="w-full px-4 pt-2 pb-1 border-2 number-input border-primary-50 text-primary-50" placeholder="DISCOUNT"/>
+                        <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border-2 number-input border-primary-50 text-primary-50" placeholder="RP" />
                         <div>
                             <button @click="basicAmount()" class="w-full px-5 pt-3 pb-2 text-center bg-secondary text-primary-50">APPLY PRICE</button>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="absolute bottom-0 right-0 flex">
-            <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-primary-300">
-                <span>ADD CUSTOM REQUEST </span>
-                <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
-            </button>
-            <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50">
-                <span>SUBMIT</span>
-                <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
-            </button>
         </div>
     </div>
 </template>
