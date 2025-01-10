@@ -53,6 +53,7 @@ import { defineAsyncComponent, ref, watch, computed, onMounted } from 'vue';
 
     const totalPrice = ref(0);
 
+    // form for send to backend
     const bindForm = ref(null);
 
     onMounted(() => {
