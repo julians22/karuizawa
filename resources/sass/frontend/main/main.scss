@@ -35,11 +35,6 @@
             -webkit-transition: all .5s;
             opacity: 1;
         }
-        /* MAGIC HAPPENS HERE */
-        .scroll-bar-wrap:hover .cover-bar {
-            opacity: 0;
-        -webkit-transition: all .5s;
-        }
     }
 }
 
