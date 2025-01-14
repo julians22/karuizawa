@@ -1,6 +1,5 @@
 <script setup>
-    import { add } from 'lodash';
-import { defineAsyncComponent, ref, watch, computed, onMounted } from 'vue';
+    import { defineAsyncComponent, ref, watch, computed, onMounted } from 'vue';
 
     const props = defineProps({
         csrf: String,
