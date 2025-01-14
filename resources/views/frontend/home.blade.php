@@ -112,6 +112,8 @@
     <script>
         new Splide( '#hero_splide', {
             perPage: 1,
+            type    : 'loop',
+            autoplay: true,
             arrows: false,
             pagination: false,
         }).mount();
