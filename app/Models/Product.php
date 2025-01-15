@@ -60,4 +60,9 @@ class Product extends Model
     {
         return $this->belongsToMany(Size::class);
     }
+
+    public function orderItems()
+    {
+        return $this->morphMany(OrderItem::class, 'product');
+    }
 }
