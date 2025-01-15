@@ -7,9 +7,9 @@ use App\Libraries\Api\Accurate\Oauth;
 use App\Libraries\Api\Accurate\ProductApi;
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\Products\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use ProductService;
 
 class ProductController extends Controller
 {
