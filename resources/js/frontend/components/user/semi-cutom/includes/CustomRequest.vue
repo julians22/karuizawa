@@ -1,19 +1,15 @@
 <script setup>
     import { isNull } from 'lodash';
-    import { ref, defineProps, watch, onMounted } from 'vue'
+    import { ref, defineProps, watch, defineExpose } from 'vue'
     import boxInput from '../../../utils/fields/boxInput.vue';
 
     const props = defineProps({
-        dataCustomRequest: Object,
         dataOptions: Object
     });
 
     const emitFrom = defineEmits({
         'additional-option': 'additional-option',
     });
-
-    const cleric = ref(null);
-    const selectCleric = ref([]);
 
     const form = ref({
         collar: {},
@@ -30,8 +26,25 @@
         interlining: {},
         sewingOption: {},
         tape: {},
-        optionNote: null
     });
+
+    const mainCleric = ref(null);
+    const selectCleric = ref([]);
+
+    const onSelectCleric = () => {
+        form.value.cleric.data = selectCleric.value;
+    }
+
+    const onChangeCleric = () => {
+        form.value.cleric = {
+            name: mainCleric.value.name,
+            slug: mainCleric.value.slug,
+            price: mainCleric.value.price
+        }
+        selectCleric.value = [];
+    };
+
+    const additionalNote = ref(null);
 
     const amount = ref({
         optionTotal: 0,
@@ -59,6 +72,13 @@
         emitFrom('additional-option', amount);
     };
 
+    defineExpose({
+        form,
+        additionalNote,
+        amount,
+        amountOption
+    });
+
 
     const initialName = ref({
         x: null,
@@ -78,7 +98,7 @@
         fontType: null,
         initialName: null,
         longName: null,
-        price: props.dataCustomRequest.embroidery.price
+        price: props.dataOptions.embroidery.price
     });
 
     watch(embroidery.value, (items) => {
@@ -169,18 +189,6 @@
         };
     };
 
-    const fabricCode = ref({
-        collar: {
-            code1: null,
-            code2: null,
-            code3: null,
-            code4: null
-        }
-    });
-
-    const onChangeCleric = () => {
-        selectCleric.value = [];
-    };
 
     const currencyFormat = (value) => {
         if (!value){
@@ -435,15 +443,15 @@
                 class="p-4 mx-6 mt-4 space-y-4 border xl:mx-14 border-pink-ka">
                 <div v-for="(subCeleric, index) in dataCleric" :key="index" class="flex gap-2">
                     <div>
-                        <input v-model="form.cleric" @change="onChangeCleric" class="hidden" type="radio" name="cleric"  :value="subCeleric" :id="`${subCeleric.slug}`">
+                        <input v-model="mainCleric" @change="onChangeCleric" class="hidden" type="radio" name="cleric"  :value="subCeleric" :id="`${subCeleric.slug}`">
                         <label class="grid items-center h-full grid-cols-2 gap-1 rounded cursor-pointer" :for="`${subCeleric.slug}`">
                             <div class="text-sm font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ subCeleric.no }}</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
-                    <div class="flex gap-2 checkbox-cleric" :class="{ 'pointer-events-none': form.cleric?.slug != subCeleric.slug}">
-                        <div v-for="clericItems in subCeleric.data" :key="cleric">
-                            <input class="hidden" type="checkbox" name="clericItems" v-model="selectCleric" :value="clericItems" :id="`cleric-${subCeleric.no}-${clericItems.slug}`">
+                    <div class="flex gap-2 checkbox-cleric" :class="{ 'pointer-events-none': mainCleric?.slug != subCeleric.slug}">
+                        <div v-for="clericItems in subCeleric.data">
+                            <input @change="onSelectCleric" class="hidden" type="checkbox" name="clericItems" v-model="selectCleric" :value="clericItems" :id="`cleric-${subCeleric.no}-${clericItems.slug}`">
                             <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`cleric-${subCeleric.no}-${clericItems.slug}`">
                                 <span class="checkbox-inner"></span>
                                 <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ clericItems.name }}</div>
@@ -612,7 +620,7 @@
                                 <div class="whitespace-nowrap">
                                     <input class="hidden" type="radio" name="embroidery-50rb" :id="`embroidery-50rb`">
                                     <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`embroidery-50rb`">
-                                        <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka">{{ currencyFormat(dataCustomRequest.embroidery.price) }}</div>
+                                        <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka">{{ currencyFormat(dataOptions.embroidery.price) }}</div>
                                         <!-- <span class="checkbox-inner pink"></span> -->
                                     </label>
                                 </div>
@@ -693,7 +701,7 @@
                     <boxInput :digitCount="5" @update:input="onInputTape($event)"/>
                 </div>
                 <div class="w-9/12">
-                    <input type="text" v-model="tape.lower" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50">
+                    <input type="text" v-model="tape.lower" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50 font-roboto">
                 </div>
                 <div class="whitespace-nowrap">
                     <input class="hidden" type="radio" name="sewing-200rb" :id="`sewing-200rb`">
@@ -711,7 +719,7 @@
             </div>
             <div class="grid grid-cols-5 gap-3 px-6 my-10 xl:px-14">
                 <div class="col-span-3">
-                    <textarea class="w-full h-full p-2 border placeholder:font-josefin font-roboto border-primary-50 placeholder-primary-50 placeholder:tracking-widest" v-model="form.optionNote" name="" id="" placeholder="NOTE"></textarea>
+                    <textarea class="w-full h-full p-2 border placeholder:font-josefin font-roboto border-primary-50 placeholder-primary-50 placeholder:tracking-widest" v-model="additionalNote" name="" id="" placeholder="NOTE"></textarea>
                 </div>
                 <div class="col-span-2 space-y-2">
                     <input v-model="discount" type="number"

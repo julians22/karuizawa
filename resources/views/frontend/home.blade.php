@@ -3,8 +3,38 @@
 @section('title', __('Home'))
 
 @section('content')
-    <div class="home_hero  lg:h-[88svh]">
-        <img class="object-cover w-full h-full" src="{{ asset('img/home/img-hero.jpg') }}" alt="">
+    <div class="home_hero xl:h-[88svh]">
+        <div id="hero_splide" class="splide" role="group">
+            <div class="splide__track">
+                  <div class="flex splide__list">
+                      <div class="relative splide__slide">
+                        <img class="object-cover w-full h-full" src="{{ asset('img/home/bg-hero-1.jpg') }}" alt="">
+                        <div class="absolute inset-0 z-10">
+                            <div class="flex flex-col items-center justify-center h-full gap-2 md:gap-4">
+                                <div class="tracking-widest text-center text-white uppercase md:text-5xl xl:text-7xl">
+                                    Grand <br>
+                                    Opening <br>
+                                    discount
+                                </div>
+                                <div class="text-xs tracking-wider text-center text-white md:text-sm xl:text-lg font-roboto">
+                                    Enjoy discount up to 50% <br>
+                                    on PIK Avenue Brach
+                                </div>
+                                <div>
+                                    <a href="#" class="flex items-center gap-2 pl-4 pr-2 pt-2 pb-1.5 border border-white rounded-full">
+                                        <span class="text-xs md:text-xl tracking-widest text-white uppercase mt-0.5">See More</span>
+                                        <span><img src="{{ asset('img/icons/arrw-ck-right.png') }}" alt=""></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="splide__slide">
+                        <img class="object-cover w-full h-full" src="{{ asset('img/home/img-hero.jpg') }}" alt="">
+                      </div>
+                  </div>
+            </div>
+          </div>
     </div>
     <div class="home_section_one">
         <div class="h-36 bg-secondary-50 lg:h-60"></div>
@@ -15,20 +45,15 @@
             </div>
             <div class="container isolate">
                 <div class="mb-10 text-xl font-bold tracking-widest text-center text-white uppercase lg:text-3xl">Our Collections</div>
-                {{-- <div class="grid grid-cols-3 gap-6">
-                    <div class="bg-gray-400 aspect-[9/12]"></div>
-                    <div class="bg-gray-400 aspect-[9/12]"></div>
-                    <div class="bg-gray-400 aspect-[9/12]"></div>
-                </div> --}}
-                <div class="splide" role="group" aria-label="Splide Basic HTML Example">
+                <div id="collection_splide" class="splide" role="group">
                     <div class="splide__track">
-                          <div class="splide__list">
+                          <div class="flex splide__list">
                                 @for ($i = 0; $i < 6; $i++)
                                     <div class="splide__slide aspect-[9/11]">
                                         <div class="relative w-full h-full bg-center bg-no-repeat bg-cover bg-secondary" style="background-image: url('{{ asset('img/home/collection-0'. ($i + 1) . '.jpg') }}');">
                                             <div class="absolute inset-x-0 -translate-y-1/2 top-1/2">
                                                 <div class="mx-auto w-fit">
-                                                    <div class="font-medium tracking-widest text-white uppercase lg:text-xl">
+                                                    <div class="font-medium tracking-widest text-white uppercase max-md:text-sm lg:text-xl">
                                                         @switch($i)
                                                             @case(0)
                                                                 shirt
@@ -44,7 +69,7 @@
                                                                 default
                                                         @endswitch
                                                     </div>
-                                                    <div class="h-1 mt-4 bg-white rounded"></div>
+                                                    <div class="h-1 mt-2 bg-white rounded md:mt-4"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -84,13 +109,21 @@
 @endpush
 
 @push('after-scripts')
-<script>
-    new Splide( '.splide', {
-        perPage: 3,
-        arrows: false,
-        pagination: true,
-        gap: '1rem',
-        autoHeight: true,
+    <script>
+        new Splide( '#hero_splide', {
+            perPage: 1,
+            type    : 'loop',
+            autoplay: true,
+            arrows: false,
+            pagination: false,
         }).mount();
-</script>
+
+        const splide = new Splide( '#collection_splide', {
+            perPage: 3,
+            arrows: false,
+            pagination: true,
+            gap: '1rem',
+            autoHeight: true,
+            }).mount();
+    </script>
 @endpush

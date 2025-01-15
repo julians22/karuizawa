@@ -13,6 +13,10 @@ window.Splide = Splide;
 
 // import Vue from 'vue';
 import { createApp } from "vue";
+import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+
+const pinia = createPinia()
 const Vue = createApp()
 
 /**
@@ -46,4 +50,6 @@ Vue.component('booking-component', require('./components/user/booking/index.vue'
 // const app = new Vue({
 //     el: '#app',
 // });
+pinia.use(piniaPluginPersistedstate)
+Vue.use(pinia)
 Vue.mount("#app");
