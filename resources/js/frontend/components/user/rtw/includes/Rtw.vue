@@ -1,6 +1,8 @@
 <script setup>
-    import { defineEmits, onMounted, reactive, ref, watch } from 'vue';
+    import { defineEmits, onMounted, ref, watch, nextTick } from 'vue';
     import { TailwindPagination } from 'laravel-vue-pagination';
+    import { useProducts } from '../../../../store/product';
+
 
     const props = defineProps({
         api_product_url: String,
@@ -8,18 +10,42 @@
 
     const products = ref({});
 
-    const form = reactive({
+    const storeProducts = useProducts();
+
+    const form = ref({
         shirtsSelected: [],
     });
 
-    watch(form, () => {
-        // add qty to form shirtsSelected
-        form.shirtsSelected.forEach(shirt => {
-            shirt.qty = 1;
-        })
-    })
+    const selectedProducts = ref([]);
+
+    watch(form.value, () => {
+        storeProducts.setSlug = form.value.shirtsSelected;
+    });
+
+    const selectProducts = () => {
+        axios.get(`/api/find-product/${form.value.shirtsSelected}`)
+            .then(response => {
+                selectedProducts.value = response.data;
+                selectedProducts.value.forEach(shirt => {
+                    shirt.qty = 1;
+                });
+
+                storeProducts.setProducts = selectedProducts.value;
+            })
+            .catch(error => {
+                // console.error('There was an error!', error.response.data.message);
+            });
+
+    }
 
     onMounted(() => {
+        nextTick(() => {
+            if (storeProducts.setSlug.length) {
+                form.value.shirtsSelected = storeProducts.getSlug;
+            }else {
+                storeProducts.setSlug = form.value.shirtsSelected;
+            }
+        });
 
         fetch(props.api_product_url)
             .then(response => response.json())
@@ -30,7 +56,8 @@
                 console.error('There was an error!', error);
             });
 
-    })
+
+    });
 
     const getResults = async (page = 1) => {
         fetch(`${props.api_product_url}?page=${page}`)
@@ -47,13 +74,18 @@
 
     const $emit = defineEmits(['btn-next']);
     const btnProcess = () => {
-        if (form.shirtsSelected.length) {
-            $emit('btn-next', 'total-shop', form.shirtsSelected);
+        if (form.value.shirtsSelected.length) {
+            selectProducts();
+            $emit('btn-next', 'total-shop');
         }else{
             formError.value = ['Please select at least one item']
             console.log(formError.value);
         }
-    }
+    };
+
+    defineExpose({
+        form,
+    })
 
 </script>
 
@@ -113,9 +145,9 @@
         </div>
         <div class="container py-20">
             <div class="grid grid-cols-3 gap-20 lg:grid-cols-4">
-                <div v-if="products.data" v-for="product in products.data">
-                    <input class="hidden" v-model="form.shirtsSelected" :value="product" type="checkbox" :id="`check-round0${product.id}`">
-                    <label class="flex flex-col items-center px-2 rounded cursor-pointer" :for="`check-round0${product.id}`">
+                <div v-if="products.data" v-for="(product) in products.data">
+                    <input v-model="form.shirtsSelected" class="hidden" type="checkbox" :value="product.sku" :id="`poduct-${product.id}`">
+                    <label class="flex flex-col items-center px-2 rounded cursor-pointer" :for="`poduct-${product.id}`">
                         <div class="text-[#606060] text-center">{{ product.product_name }}</div>
                         <div class="text-[#A3A3A3] text-center text-sm">{{ product.sku }}</div>
                         <div class="text-lg text-center text-secondary-50">Rp {{ product.price }}</div>

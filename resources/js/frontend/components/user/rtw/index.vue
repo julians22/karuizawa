@@ -1,5 +1,7 @@
 <script setup>
-    import { defineAsyncComponent, onMounted, ref } from 'vue';
+    import { defineAsyncComponent, onMounted, ref, watch, computed } from 'vue';
+    import { useRtw } from '../../../store/rtw';
+    import { useProducts } from '../../../store/product';
 
     const props = defineProps({
         csrf: String,
@@ -15,37 +17,51 @@
     const Payment = defineAsyncComponent(() => import('../includes/Payment.vue'));
     const Rtw = defineAsyncComponent(() => import('./includes/Rtw.vue'));
 
-    const selected = ref([]);
+    const storePage = useRtw();
+    const storeProducts = useProducts();
 
-    const currentSection = ref('customer-data')
+    const pageRtw = ref(null);
+    const pagePayment = ref(null);
+
+    const currentSection = ref('customer-data');
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const url = new URL(window.location.href);
+
+    onMounted(() => {
+        if (urlParams.get('page') != null) {
+            storePage.currentPage = urlParams.get('page');
+        }else{
+            storePage.currentPage = currentSection.value;
+            storeProducts.setSlug = [];
+            storeProducts.setProducts = [];
+        }
+    });
 
     const btnNext = (section, data) => {
-        currentSection.value = section;
-
-        if (section == 'total-shop') {
-            selected.value = data;
-            console.log(data);
-        }
+        url.searchParams.set('page', section);
+        window.history.pushState(null, '', url.toString());
+        storePage.currentPage = section;
     }
 
 </script>
 
 <template>
     <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" >
-            <template v-if="currentSection == 'total-shop'">
-                <TotalShop @btn-next="btnNext" :selected="selected"/>
+            <template v-if="storePage.get == 'total-shop'">
+                <TotalShop @btn-next="btnNext"/>
             </template>
 
-            <template v-if="currentSection == 'customer-data'">
+            <template v-if="storePage.get == 'customer-data'">
                 <Customer @btn-next="btnNext"/>
             </template>
 
-            <template v-if="currentSection == 'payment'">
-                <Payment @btn-next="btnNext" :selected="selected"/>
+            <template v-if="storePage.get == 'payment'">
+                <Payment @btn-next="btnNext"/>
             </template>
 
-            <template v-if="currentSection == 'rtw'">
-                <Rtw @btn-next="btnNext" :api_product_url="api_product_url"/>
+            <template v-if="storePage.get == 'products'">
+                <Rtw @btn-next="btnNext" :api_product_url="api_product_url" ref="pageRtw"/>
             </template>
     </Layout>
 </template>
