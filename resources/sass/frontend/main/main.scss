@@ -8,6 +8,33 @@
 @layer base {
     body {
         @apply font-josefin;
+
+
+        .scroll-box::-webkit-scrollbar {
+            width: .4em;
+
+            &.bg-green {
+                @apply bg-primary-50;
+            }
+        }
+        .scroll-box::-webkit-scrollbar,
+        .scroll-box::-webkit-scrollbar-thumb {
+            overflow:visible;
+        }
+        .scroll-box::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+        .cover-bar {
+            position: absolute;
+            background: #fff;;
+            height: 100%;
+            top: 0;
+            right: 0;
+            width: .4em;
+            -webkit-transition: all .5s;
+            opacity: 1;
+        }
     }
 }
 

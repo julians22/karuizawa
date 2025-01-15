@@ -1,30 +1,37 @@
 <script setup>
     import { forEach } from 'lodash';
-import { defineEmits, onMounted } from 'vue';
+    import { computed, defineEmits, onMounted, ref, nextTick, reactive } from 'vue';
+    import { useProducts } from '../../../store/product';
 
-    const props = defineProps({
-        selected: Array,
+    const storeProducts = useProducts();
+
+    const products = computed(function () {
+        let productsState = storeProducts.getProducts;
+        forEach(productsState, (product, index) => {
+            productsState[index].total = product.price * product.qty
+        });
+
+        return productsState;
     });
 
     const plusQty = (index) => {
-        props.selected[index].qty += 1;
-        props.selected[index].total = props.selected[index].price * props.selected[index].qty
+        products.value[index].qty += 1;
+        products.value[index].total = products.value[index].price * products.value[index].qty
 
     }
 
-
     const minQty = (index) => {
-        if (props.selected[index].qty <= 1) {
+        if (products.value[index].qty <= 1) {
             return;
         }
         // sum total of qty and price
-        props.selected[index].qty -= 1;
-        props.selected[index].total = props.selected[index].price * props.selected[index].qty
+        products.value[index].qty -= 1;
+        products.value[index].total = products.value[index].price * products.value[index].qty
     }
 
     onMounted(() => {
-        forEach(props.selected, (product, index) => {
-            product.total = product.price * product.qty
+        nextTick(() => {
+            storeProducts.setProducts = products.value
         })
     })
 
@@ -63,7 +70,10 @@ import { defineEmits, onMounted } from 'vue';
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="border-b" v-for="(product, index) in selected">
+                        <tr v-if="products.length == 0">
+                            <td colspan="4" class="py-3 text-center text-primary-50">Loading...</td>
+                        </tr>
+                        <tr class="border-b" v-for="(product, index) in products">
                             <td class="py-3 pr-6 text-left text-primary-50">
                                 <div class="text-[#606060]">{{ product.product_name }}</div>
                                 <div class="text-[#A3A3A3] text-sm">{{product.sku}}</div>

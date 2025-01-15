@@ -1,6 +1,6 @@
 <footer class=" bg-secondary">
-    <div class="container max-w-md py-20 space-y-4">
-        <img class="w-full" src="{{ asset('img/brand/logo-01.png') }}" alt="">
+    <div class="container max-w-md py-20 space-y-8 md:space-y-6">
+        <img class="w-1/2 max-md:mx-auto md:w-full" src="{{ asset('img/brand/logo-01.png') }}" alt="">
         <div class="flex items-center justify-around gap-4">
             <a href="#">
                 <img class="size-6" src="{{ asset('img/icons/fb.svg') }}" alt="">
@@ -33,6 +33,6 @@
         </div>
     </div>
     <div class="w-full py-8 bg-primary">
-        <div class="text-center text-white">© 2024 Karuizawa shirt  |  All Rights Reserved. Flex Japan, Inc.</div>
+        <div class="text-center text-secondary max-md:text-xs font-roboto">© 2024 Karuizawa shirt  |  All Rights Reserved. Flex Japan, Inc.</div>
     </div>
 </footer>

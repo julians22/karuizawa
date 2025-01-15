@@ -1,17 +1,15 @@
 <script setup>
-    import { onMounted, ref } from 'vue';
+    import { computed, onMounted, ref } from 'vue';
+    import { useProducts } from '../../../store/product';
 
-
-    const props = defineProps({
-        selected: Array,
-    });
+    const products = computed(() => useProducts().getProducts);
 
     const totalPayment = ref(0);
 
     onMounted(() => {
 
         let total = 0;
-        props.selected.forEach(product => {
+        products.value.forEach(product => {
             // parse float to remove comma
             total += parseFloat(product.total);
         });
@@ -103,7 +101,7 @@
                         <div>Qty</div>
                         <div>Price</div>
                     </div>
-                    <div class="grid grid-cols-3 mt-2" v-for="product in selected">
+                    <div class="grid grid-cols-3 mt-2" v-for="product in products">
                         <div class="font-roboto">
                             <div class="font-bold text-[#606060]">{{ product.product_name }}</div>
                             <div class="text-[#A3A3A3]">{{ product.sku }}</div>

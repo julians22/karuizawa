@@ -8,9 +8,9 @@
             WHAT IS KARUIZAWA?
         </div>
     </div>
-    <div class="relative pt-40 pb-14 bg-secondary">
+    <div class="relative pt-52 md:pt-40 pb-14 bg-secondary">
         <div class="container">
-            <div class="absolute -translate-x-1/2 -top-28 left-1/2">
+            <div class="absolute -translate-x-1/2 -top-28 left-1/2 max-md:inset-x-0 max-md:translate-x-0">
                 <div class="md:w-[650px] lg:max-w-4xl p-8 lg:p-16 mx-auto bg-white border-y-4 border-primary-50 relative
                     after:content-[''] after:block after:aspect-[40/3] after:h-2 after:bg-primary-50 after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2
                     before:content-[''] before:block before:aspect-[40/3] before:h-2 before:bg-primary-50 before:absolute before:top-0 before:left-1/2 before:-translate-x-1/2
