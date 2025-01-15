@@ -68,17 +68,30 @@ class ProductTable extends DataTableComponent
             Column::make("Product name", "product_name")
                 ->searchable()
                 ->sortable(),
-            Column::make("Stock")
-                ->sortable()
-                ->label(function ($row, Column $column) {
-                    return $row->current_stock;
-                }),
+            Column::make("Daily Stock", "daily_stock")
+                ->sortable(),
+            // Column::make("Stock")
+            //     ->sortable()
+            //     ->label(function ($row, Column $column) {
+            //         return $row->current_stock;
+            //     }),
             Column::make("Description", "description")
                 ->sortable(),
             Column::make("Price", "price")
-                ->sortable(),
+                ->sortable()
+                ->format(function($value) {
+                    return price_format($value);
+                }),
             Column::make("Created at", "created_at")
-                ->sortable(),
+                ->sortable()
+                ->format(function($value) {
+                    return $value->diffForHumans();
+                }),
+            Column::make("Last Update", "updated_at")
+                ->sortable()
+                ->format(function($value) {
+                    return $value->diffForHumans();
+                }),
             Column::make(__('Actions'))
                 ->label(fn($row, Column $column) => view('backend.product.includes.actions', ['product' => $row])),
         ];

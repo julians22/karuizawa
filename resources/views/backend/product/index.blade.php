@@ -22,6 +22,23 @@
                 :href="route('admin.product.create')"
                 :text="__('Create Product')"
             />
+
+            {{-- Fetch Stock Product --}}
+            <x-utils.link
+                icon="c-icon cil-sync"
+                class="card-header-action"
+                :href="route('admin.product.fetch-stock')"
+                :text="__('Fetch Stock')"
+            />
+
+            {{-- Fetch Price Product --}}
+            <x-utils.link
+                icon="c-icon cil-sync"
+                class="card-header-action"
+                :href="route('admin.product.fetch-price')"
+                :text="__('Fetch Price')"
+            />
+
         </x-slot>
     @endif
 

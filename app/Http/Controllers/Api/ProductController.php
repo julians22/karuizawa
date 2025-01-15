@@ -12,7 +12,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::paginate(8);
+        $products = Product::validProduct()->paginate(8);
         return response()->json($products);
     }
 
