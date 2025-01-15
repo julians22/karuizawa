@@ -62,8 +62,10 @@ if (! function_exists('price_format')) {
      * @param $price
      * @return string
      */
-    function price_format($price)
+    function price_format($price, $digit = 0)
     {
-        return 'Rp ' . number_format($price, 0, ',', '.');
+        return 'Rp ' . number_format($price, $digit, ',', '.');
     }
 }
+
+

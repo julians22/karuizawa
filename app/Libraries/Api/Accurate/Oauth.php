@@ -78,6 +78,7 @@ class Oauth
             $this->makeSignature();
             return;
         }
+        $this->makeSignature();
         return;
     }
 

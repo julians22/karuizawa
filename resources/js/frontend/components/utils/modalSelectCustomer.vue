@@ -32,9 +32,9 @@
     <Transition>
         <dialog v-if="open"
             @click.self="open = false"
-            class="fixed inset-0 z-10 flex items-start justify-center w-full h-full bg-black bg-opacity-25 backdrop-blur-sm"
+            class="z-10 fixed inset-0 flex justify-center items-start bg-black bg-opacity-25 backdrop-blur-sm w-full h-full"
         >
-            <div class="w-full max-w-2xl p-6 mt-20 bg-white rounded-2xl">
+            <div class="bg-white mt-20 p-6 rounded-2xl w-full max-w-2xl">
                 <VueSelect
                     v-model="selected"
                     :options="options"

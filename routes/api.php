@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Boolean;
@@ -52,4 +53,7 @@ Route::post('customer-store', function (Request $request) {
         ], 500);
     }
 });
+
+// store order
+Route::post('store-order', [OrderController::class, 'store']);
 

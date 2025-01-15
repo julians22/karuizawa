@@ -19,6 +19,8 @@ return new class extends Migration
             $table->decimal('total_price', 10, 2);
             $table->decimal('discount', 10, 2)->default(0);
             $table->json('discount_details')->nullable();
+            $table->string('payment');
+            $table->string('bank')->nullable();
             $table->string('status')->default('pending');
             $table->timestamps();
         });

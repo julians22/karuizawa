@@ -20,6 +20,7 @@ class Product extends Model
         'description',
         'price',
         'category_id',
+        'daily_stock',
     ];
 
     public function stockMovements()
@@ -64,5 +65,15 @@ class Product extends Model
     public function orderItems()
     {
         return $this->morphMany(OrderItem::class, 'product');
+    }
+
+    public function scopeSku($query, $sku)
+    {
+        return $query->where('sku', $sku);
+    }
+
+    public function scopeValidProduct($query)
+    {
+        return $query->where('price', '>', 0);
     }
 }

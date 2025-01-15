@@ -1,7 +1,10 @@
 <?php
 
+namespace App\Services\Products;
+
 use App\Models\Product;
 use App\Services\BaseService;
+use Illuminate\Support\Facades\DB;
 
 class ProductService extends BaseService
 {

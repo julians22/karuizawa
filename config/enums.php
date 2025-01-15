@@ -2,9 +2,9 @@
 
 return [
     'order_status' => [
-        'pending',
-        'processing',
-        'completed',
-        'cancelled',
+        'pending' => 'pending',
+        'processing' => 'processing',
+        'completed' => 'completed',
+        'cancelled' => 'cancelled',
     ],
 ];

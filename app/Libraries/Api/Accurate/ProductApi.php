@@ -4,6 +4,9 @@ namespace App\Libraries\Api\Accurate;
 
 use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
+use GuzzleHttp\Promise;
+use GuzzleHttp\Promise\Utils;
 
 class ProductApi
 {
@@ -32,6 +35,11 @@ class ProductApi
             $this->signature = $cachedAuth['sign'];
             $this->timestamp = $cachedAuth['timestamp'];
         }
+
+        return [
+            'signature' => $this->signature,
+            'timestamp' => $this->timestamp
+        ];
     }
 
     public function getProducts()
@@ -92,6 +100,7 @@ class ProductApi
      **/
     protected function fetchProduct($pageSize = 10, $page = 1, $itemCategoiry = 1009, $fields = 'id,name,no,unitPrice')
     {
+        $client = new Client();
         $endpoint = $this->appUrl . '/accurate/api/item/list.do';
 
         $headers = [
@@ -107,32 +116,43 @@ class ProductApi
             'filter.itemCategoryId.val' => $itemCategoiry,
         ];
 
-        $firstPage = Http::withHeaders($headers)
-            ->get($endpoint, $params);
+        $firstPage = $client->get($endpoint, [
+            'headers' => $headers,
+            'query' => $params
+        ]);
 
-        if ($firstPage->status() == 200) {
-            $firstPage = $firstPage->json();
+        if ($firstPage->getStatusCode() == 200) {
+            $firstPage = json_decode($firstPage->getBody(), true);
             $totalPage = $firstPage['sp']['pageCount'];
             $products = $firstPage['d'];
 
-            $responses = Http::pool(function (Pool $pool) use ($totalPage, $endpoint, $headers, $params) {
-                $arrayPool = [];
-                $page = 2;
-                $params['page'] = $page;
-
-                while ($page <= $totalPage) {
-                    $arrayPool[] = $pool->withHeaders($headers)
-                        ->get($endpoint, $params);
-                    $page++;
+            $promises = [];
+            for ($page = 2; $page <= $totalPage; $page++) {
+                if ($this->isSignatureExpired()) {
+                    $this->getSign();
+                    $headers['X-Api-Timestamp'] = $this->timestamp;
+                    $headers['X-Api-Signature'] = $this->signature;
                 }
-
-                return $arrayPool;
-            });
-
-            foreach ($responses as $response) {
-                $response = $response->json();
-                $products = array_merge($products, $response['d']);
+                $params['page'] = $page;
+                $promises[] = $client->getAsync($endpoint, [
+                    'headers' => $headers,
+                    'query' => $params
+                ]);
+                if (count($promises) == 8) {
+                    Utils::settle($promises)->wait();
+                    usleep(125000); // 8 requests per second
+                    $promises = [];
+                }
             }
+
+            $responses = Utils::settle($promises)->wait();
+            foreach ($responses as $response) {
+                if ($response['state'] == 'fulfilled') {
+                    $response = json_decode($response['value']->getBody(), true);
+                    $products = array_merge($products, $response['d']);
+                }
+            }
+
             return $products;
         }
 
@@ -149,6 +169,7 @@ class ProductApi
      **/
     public function fetchStock($pageSize = 10, $page = 1)
     {
+        $client = new Client();
         $endpoint = $this->appUrl . '/accurate/api/item/list-stock.do';
 
         $headers = [
@@ -165,34 +186,52 @@ class ProductApi
             'asOfDate' => date('d/m/Y'),
         ];
 
-        $firstPage = Http::withHeaders($headers)
-            ->get($endpoint, $params);
+        $firstPage = $client->get($endpoint, [
+            'headers' => $headers,
+            'query' => $params
+        ]);
 
-        if ($firstPage->status() == 200) {
-            $firstPage = $firstPage->json();
+        if ($firstPage->getStatusCode() == 200) {
+            $firstPage = json_decode($firstPage->getBody(), true);
             $totalPage = $firstPage['sp']['pageCount'];
             $stocks = $firstPage['d'];
 
-            $responses = Http::pool(function (Pool $pool) use ($totalPage, $endpoint, $headers, $params) {
-                $arrayPool = [];
-                $page = 2;
-
-                while ($page <= $totalPage) {
-                    $params['sp.page'] = $page;
-                    $arrayPool[] = $pool->withHeaders($headers)
-                        ->get($endpoint, $params);
-                    $page++;
+            $promises = [];
+            for ($page = 2; $page <= $totalPage; $page++) {
+                if ($this->isSignatureExpired()) {
+                    $this->getSign();
+                    $headers['X-Api-Timestamp'] = $this->timestamp;
+                    $headers['X-Api-Signature'] = $this->signature;
                 }
+                $params['sp.page'] = $page;
+                $promises[] = $client->getAsync($endpoint, [
+                    'headers' => $headers,
+                    'query' => $params
+                ]);
+                if (count($promises) == 8) {
+                    Utils::settle($promises)->wait();
+                    usleep(125000); // 8 requests per second
+                    $promises = [];
+                }
+            }
 
-                return $arrayPool;
-            });
-
+            $responses = Utils::settle($promises)->wait();
             foreach ($responses as $response) {
-                $response = $response->json();
-                $stocks = array_merge($stocks, $response['d']);
+                if ($response['state'] == 'fulfilled') {
+                    $response = json_decode($response['value']->getBody(), true);
+                    $stocks = array_merge($stocks, $response['d']);
+                }
             }
 
             return $stocks;
         }
+
+        return [];
+    }
+
+    private function isSignatureExpired()
+    {
+        $timestamp = strtotime($this->timestamp);
+        return (time() - $timestamp) > 400;
     }
 }
