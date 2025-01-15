@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\SyncProductPrice;
 use App\Libraries\Api\Accurate\Oauth;
 use App\Libraries\Api\Accurate\ProductApi;
 use App\Models\Category;
@@ -60,26 +61,33 @@ class ProductController extends Controller
     public function fetchPrice(ProductService $productService)
     {
         $auth = new Oauth();
-        $auth->makeSignature();
+        $auth->authInfo();
 
         $productApi = new ProductApi();
         $products = $productApi->getProducts();
 
         $prices = collect($products['products'])->map(function($product) {
-            return [
-                'sku' => $product['no'],
-                'price' => $product['unitPrice'],
-            ];
+            if (
+                array_key_exists('unitPrice', $product) &&
+                array_key_exists('no', $product)) {
+
+                return [
+                    'sku' => $product['no'],
+                    'price' => $product['unitPrice'],
+                ];
+            }
+            // skip mapping if the product doesn't have unitPrice and no
+            return null;
         });
 
-        // Chunk it to 200
-        $prices = $prices->chunk(200);
-
         foreach ($prices as $price) {
-            $data = $productService->upsertPrices($price->toArray());
+            // Job to update the product price
+            if ($price) {
+                dispatch(new SyncProductPrice(Product::sku($price['sku'])->first(), $price));
+            }
         }
 
-        return redirect()->route('admin.product.index')->withFlashSuccess(__('The product price was successfully fetched.'));
+        return redirect()->route('admin.product.index')->withFlashSuccess(__('The sync price was successfully fetched.'));
     }
 
     public function create()
