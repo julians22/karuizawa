@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\StoreController;
+use App\Http\Controllers\Backend\SystemInformationController;
 use App\Models\Customer;
 use App\Models\Product;
 use Tabuna\Breadcrumbs\Trail;
@@ -51,6 +52,12 @@ Route::group(['prefix' => 'product', 'as' => 'product.'], function() {
 
     Route::post('/', [ProductController::class, 'store'])->name('store');
 
+    Route::get('fetch-stock', [ProductController::class, 'fetchStock'])
+        ->name('fetch-stock');
+
+    Route::get('fetch-price', [ProductController::class, 'fetchPrice'])
+        ->name('fetch-price');
+
     Route::group(['prefix' => '{product}'], function() {
 
         Route::get('/', [ProductController::class, 'show'])
@@ -59,6 +66,7 @@ Route::group(['prefix' => 'product', 'as' => 'product.'], function() {
                 $trail->parent('admin.product.index');
                 $trail->push(__('Show'), route('admin.product.show', $product));
             });
+
 
         Route::get('edit', [ProductController::class, 'edit'])
             ->name('edit')
@@ -88,4 +96,15 @@ Route::group(['prefix' => 'customer', 'as' => 'customer.'], function() {
                 $trail->push(__('Show'), route('admin.customer.show', $customer));
             });
     });
+});
+
+Route::group(['prefix' => 'system-information', 'as' => 'system-information.'], function() {
+    Route::get('/', [SystemInformationController::class, 'index'])
+        ->name('index')
+        ->breadcrumbs(function (Trail $trail) {
+            $trail->push(__('System Information'), route('admin.system-information.index'));
+        });
+
+    Route::get('reload-auth-cache', [SystemInformationController::class, 'reloadAuthCache'])
+        ->name('reload-auth-cache');
 });

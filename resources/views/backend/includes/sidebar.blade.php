@@ -51,6 +51,15 @@
 
             <li class="nav-title">@lang('System')</li>
 
+            <li class="nav-item">
+                <x-utils.link
+                    class="nav-link"
+                    :href="route('admin.system-information.index')"
+                    :active="activeClass(Route::is('admin.system-information.*'), 'active')"
+                    icon="nav-icon cil-info"
+                    :text="__('System Information')" />
+            </li>
+
             <li
                 aria-expanded="false"
                 class="nav-group {{ activeClass(Route::is('admin.auth.user.*') || Route::is('admin.auth.role.*'), 'open show') }}">
