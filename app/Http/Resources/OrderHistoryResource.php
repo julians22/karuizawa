@@ -14,6 +14,10 @@ class OrderHistoryResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $code = $this->store->code;
+        $id = $this->id;
+        $bookingCode = $code . '-' . str_pad($id, 4, '0', STR_PAD_LEFT);
+
         return [
             'amount' => $this->total_price,
             'amount_formatted' => price_format($this->total_price, 0),
@@ -25,7 +29,7 @@ class OrderHistoryResource extends JsonResource
             'customer_phone' => $this->customer->phone,
             'customer_address' => $this->customer->address ?? 'N/A',
             'customer_gender' => $this->customer->is_male ? 'Male' : 'Female',
-            'booking_code' => $this->store->code . '-' . $this->id,
+            'booking_code' => $bookingCode,
             'items' => OrderItemResource::collection($this->orderItems),
         ];
     }

@@ -35,6 +35,15 @@ class OrderController extends Controller
         return response()->json($order);
     }
 
+
+    public function storeSemiCustom(Request $request){
+
+        return response()->json([
+            'success' => true,
+            'data' => $request->all(),
+        ], 200);
+    }
+
     function store(Request $request) {
 
         // use error

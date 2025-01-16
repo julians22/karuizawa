@@ -10,11 +10,12 @@
     });
 
     const sendingPayment = ref(false);
-    const doPayment = defineAsyncComponent(() => import('../../utils/paymentModal.vue')); 
+    const doPayment = defineAsyncComponent(() => import('../../utils/paymentModal.vue'));
 
     const childDoPayment = ref(null);
 
     const products = computed(() => useProducts().getProducts);
+    const customer = computed(() => useCustomer().getCustomer);
 
     const totalPayment = ref(0);
 
@@ -30,9 +31,6 @@
         sendingPayment.value = true;
         const doSend = await sendOrder();
 
-        console.log(doSend);
-        
-
         if (doSend) {
             window.location.href = '/customer-booking';
         }
@@ -44,6 +42,7 @@
             products: products.value,
             payment: selectedPayment.value,
             bank: preferredBank.value,
+            customer_id: customer.value.id,
         })
         .then(response => {
             if (response.data.success) {
@@ -81,7 +80,7 @@
 
 <template>
     <div>
-        <doPayment 
+        <doPayment
             :sending-payment="sendingPayment"
             ref="childDoPayment"/>
         <section>
@@ -91,11 +90,11 @@
             <div class="space-y-20 lg:px-14 lg:py-20 p-6">
                 <div class="items-end gap-20 grid grid-cols-4 w-full">
                     <div>
-                        <input 
+                        <input
                             v-model="selectedPayment"
-                            class="hidden" 
-                            type="radio" 
-                            name="check" 
+                            class="hidden"
+                            type="radio"
+                            name="check"
                             value="manual-tf"
                             :id="`manual-tf`">
                         <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`manual-tf`">
@@ -107,11 +106,11 @@
                         </label>
                     </div>
                     <div>
-                        <input 
+                        <input
                             v-model="selectedPayment"
-                            class="hidden" 
-                            type="radio" 
-                            name="check" 
+                            class="hidden"
+                            type="radio"
+                            name="check"
                             value="credit-card"
                             :id="`credit-card`">
                         <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`credit-card`">
@@ -123,12 +122,12 @@
                         </label>
                     </div>
                     <div>
-                        <input 
+                        <input
                             v-model="selectedPayment"
-                            class="hidden" 
-                            type="radio" 
+                            class="hidden"
+                            type="radio"
                             name="check"
-                            value="edc" 
+                            value="edc"
                             :id="`edc`">
                         <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`edc`">
                             <div>
@@ -153,7 +152,7 @@
                             <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center border-primary-50 border-y bg-secondary pt-2 pr-3 pl-2.5 border-r rounded-r-full w-10 text-primary-50 pointer-events-none">
                                 ▼
                             </span>
-                            <select 
+                            <select
                                 v-model="preferredBank"
                                 id="prefered-bank" class="block border-primary-50 bg-white before:bg-blue-400 py-2.5 pr-10 pl-2.5 border focus:border-blue-500 rounded-full focus:ring-blue-500 w-full *:text-[#606060] uppercase">
                                 <option value="BCA">BCA</option>
