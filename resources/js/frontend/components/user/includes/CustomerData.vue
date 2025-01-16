@@ -1,6 +1,6 @@
 <script setup>
     import axios from 'axios';
-    import { defineEmits, ref, defineAsyncComponent } from 'vue';
+    import { defineEmits, ref, defineAsyncComponent, onMounted, watch, computed, reactive } from 'vue';
     import { useCustomer } from '../../../store/customer';
 
     const addCustumer = defineAsyncComponent(() => import('../../utils/modalSelectCustomer.vue'));
@@ -9,17 +9,33 @@
 
     const $emit = defineEmits(['btn-next']);
 
+    const store = useCustomer();
+
+    const currenCustomer = computed(() => {
+        return store.getCustomer
+    });
+
     const form = ref({
-        first_name: '',
+        id: null,
+        first_name:'',
         phone: '',
         email: '',
         is_male: null,
     });
 
-    const store = useCustomer();
+    watch(currenCustomer, (items) => {
+        form.value.id = items.id;
+        form.value.first_name = items.full_name;
+        form.value.phone = items.phone;
+        form.value.email = items.email;
+        form.value.is_male = items.is_male;
+    });
+
+
+
 
     const submit = () => {
-        axios.post('/api/customer-store', form.value)
+        axios.post('/api/customer/store', form.value)
             .then(response => {
                 if (response.data.success) {
                     store.customer = response.data.data;
@@ -62,11 +78,11 @@
                     <label class="block col-span-2 mb-2 font-medium tracking-widest uppercase lg:col-span-1 text-primary-50">gender</label>
                     <div class="flex col-span-4 gap-4 lg:col-span-5">
                         <div class="flex items-center">
-                            <input v-model="form.is_male" :value="true" id="default-radio-1" type="radio" name="default-radio" class="w-4 h-4 border-gray-300 text-secondary-50 bg-secondary focus:ring-secondary">
+                            <input :checked="form.is_male && form.is_male !== null" v-model="form.is_male" :value="true" id="default-radio-1" type="radio" name="default-radio" class="w-4 h-4 border-gray-300 text-secondary-50 bg-secondary focus:ring-secondary">
                             <label for="default-radio-1" class="mt-1 uppercase text-primary-50 ms-1">Male</label>
                         </div>
                         <div class="flex items-center">
-                            <input id="default-radio-2" type="radio" v-model="form.is_male" :value="false" name="default-radio" class="w-4 h-4 border-gray-300 text-secondary-50 bg-secondary focus:ring-secondary">
+                            <input :checked="!form.is_male && form.is_male !== null" id="default-radio-2" type="radio" v-model="form.is_male" :value="false" name="default-radio" class="w-4 h-4 border-gray-300 text-secondary-50 bg-secondary focus:ring-secondary">
                             <label for="default-radio-2" class="mt-1 uppercase text-primary-50 ms-1">Female</label>
                         </div>
                     </div>
