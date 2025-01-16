@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-      
+        // set timezone
+        date_default_timezone_set('Asia/Jakarta');
     }
 }

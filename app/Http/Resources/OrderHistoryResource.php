@@ -17,7 +17,7 @@ class OrderHistoryResource extends JsonResource
         return [
             'amount' => $this->total_price,
             'amount_formatted' => price_format($this->total_price, 0),
-            'order_date' => $this->created_at->format('Y-m-d H:i:s'),
+            'order_date' => $this->created_at->setTimezone('Asia/Jakarta')->format('Y-m-d | H:i'),
             'status' => $this->status,
             'order_id' => $this->id,
             'customer_name' => $this->customer->full_name,
