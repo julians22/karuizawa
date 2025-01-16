@@ -1,9 +1,10 @@
 <script setup>
-    import { defineEmits, onMounted, ref, watch, nextTick } from 'vue';
+    import { defineEmits, onMounted, ref, watch, nextTick, reactive } from 'vue';
     import { TailwindPagination } from 'laravel-vue-pagination';
     import { useProducts } from '../../../../store/product';
     import { priceFormat } from '../../../../helpers/currency';
 
+    const isLoading = ref(true);
 
     const props = defineProps({
         api_product_url: String,
@@ -19,10 +20,32 @@
 
     const keywords = ref('');
 
+    const sizes = [
+        'XS', 'S', 'M', 'L', 'XL', 'XXL'
+    ];
+
+    const colours = [
+        'Red', 'Blue', 'Green', 'Yellow', 'Black', 'White', 'Gold', 'Silver'
+    ];
+
+    const sorts = [
+        'Newest', 'Oldest', 'Price: Low to High', 'Price: High to Low'
+    ];
+
+    const filters = reactive({
+        size: '0',
+        color: '0',
+        sort: '0',
+    });
+
     const selectedProducts = ref([]);
 
     watch(form.value, () => {
         storeProducts.setSlug = form.value.shirtsSelected;
+    });
+
+    watch(filters, () => {
+        fetchProducts(1);
     });
 
     const selectProducts = () => {
@@ -57,6 +80,9 @@
             })
             .catch(error => {
                 console.error('There was an error!', error);
+            })
+            .finally(() => {
+                isLoading.value = false;
             });
 
 
@@ -67,20 +93,27 @@
     }
 
     const searchProduct = () => {
-        fetch(`${props.api_product_url}?search=${keywords.value}`)
-            .then(response => response.json())
-            .then(data => {
-                products.value = data;
-            })
-            .catch(error => {
-                console.error('There was an error!', error);
-            });
+        fetchProducts(1);
     }
 
     const fetchProducts = async (page) => {
 
+        isLoading.value = true;
+
         let url = `${props.api_product_url}?page=${page}`;
         const keywordString = keywords.value ? `&search=${keywords.value}` : '';
+
+        if (filters.size !== '0') {
+            url = `${url}&size=${filters.size}`;
+        }
+
+        if (filters.color !== '0') {
+            url = `${url}&color=${filters.color}`;
+        }
+
+        if (filters.sort !== '0') {
+            url = `${url}&sort=${filters.sort}`;
+        }
 
         url = `${url}${keywordString}`;
 
@@ -91,6 +124,9 @@
             })
             .catch(error => {
                 console.error('There was an error!', error);
+            })
+            .finally(() => {
+                isLoading.value = false;
             });
     }
 
@@ -104,6 +140,7 @@
         }else{
             formError.value = ['Please select at least one item']
             console.log(formError.value);
+            alert('Please select at least one item');
         }
     };
 
@@ -124,6 +161,8 @@
                         type="text" 
                         id="default-search" 
                         v-model="keywords"
+                        placeholder="Search for products"
+                        @blur="searchProduct"
                         class="block bg-white px-4 py-2 rounded-full w-full text-gray-900 text-sm pe-10" />
                     <button @click="searchProduct" class="absolute inset-y-0 flex items-center end-0 pe-4">
                         <svg class="text-primary-50 size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -140,9 +179,12 @@
                     <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 rounded-r-full w-10 text-primary-50 pointer-events-none">
                         ▼
                     </span>
-                    <select id="countries" class="block bg-white before:bg-blue-400 p-2.5 focus:border-blue-500 rounded-full focus:ring-blue-500 w-full">
-                        <option selected></option>
-                        <option value="user">User</option>
+                    <select id="sort" class="block bg-white before:bg-blue-400 p-2.5 focus:border-blue-500 rounded-full focus:ring-blue-500 w-full"
+                        v-model="filters.sort"
+                        :disabled="isLoading"
+                        >
+                        <option selected value="0">All</option>
+                        <option v-for="(sort, index) in sorts" :key="index" :value="sort">{{ sort }}</option>
                     </select>
                 </div>
             </div>
@@ -152,9 +194,11 @@
                     <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 rounded-r-full w-10 text-primary-50 pointer-events-none">
                         ▼
                     </span>
-                    <select id="countries" class="block bg-white before:bg-blue-400 p-2.5 focus:border-blue-500 rounded-full focus:ring-blue-500 w-full">
-                        <option selected></option>
-                        <option value="user">User</option>
+                    <select id="color" class="block bg-white before:bg-blue-400 p-2.5 focus:border-blue-500 rounded-full focus:ring-blue-500 w-full" 
+                        :disabled="isLoading"
+                        v-model="filters.color">
+                        <option selected value="0">All</option>
+                        <option v-for="(color, index) in colours" :key="index" :value="color">{{ color }}</option>
                     </select>
                 </div>
             </div>
@@ -164,16 +208,18 @@
                     <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 rounded-r-full w-10 text-primary-50 pointer-events-none">
                         ▼
                     </span>
-                    <select id="countries" class="block bg-white before:bg-blue-400 p-2.5 focus:border-blue-500 rounded-full focus:ring-blue-500 w-full">
-                        <option selected></option>
-                        <option value="user">User</option>
+                    <select id="size" class="block bg-white before:bg-blue-400 p-2.5 focus:border-blue-500 rounded-full focus:ring-blue-500 w-full" 
+                        :disabled="isLoading"
+                        v-model="filters.size">
+                        <option selected value="0">All</option>
+                        <option v-for="(size, index) in sizes" :key="index" :value="size">{{ size }}</option>
                     </select>
                 </div>
             </div>
         </div>
         <div class="py-20 container">
             <div class="gap-20 grid grid-cols-3 lg:grid-cols-4">
-                <div v-if="products.data" v-for="(product) in products.data">
+                <div v-if="products.data && !isLoading" v-for="(product) in products.data">
                     <input v-model="form.shirtsSelected" class="hidden" type="checkbox" :value="product.sku" :id="`poduct-${product.id}`">
                     <label class="flex flex-col items-center px-2 rounded cursor-pointer" :for="`poduct-${product.id}`">
                         <div class="text-[#606060] text-center">{{ product.product_name }}</div>
@@ -182,12 +228,15 @@
                         <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
                     </label>
                 </div>
-                <div v-else v-for="i in 8">
+                <div v-else-if="isLoading" v-for="i in 8">
                     <div class="flex flex-col justify-center items-center gap-2">
                         <div class="rounded-full w-16 h-3 is-preloader"></div>
                         <div class="rounded-full w-10 h-3 is-preloader"></div>
                         <div class="rounded-full w-20 h-3 is-preloader"></div>
                     </div>
+                </div>
+                <div v-else-if="!isLoading && !products.data.length">
+                    <div class="flex justify-center items-center text-[#606060] text-center text-lg">No products found</div>
                 </div>
             </div>
         </div>

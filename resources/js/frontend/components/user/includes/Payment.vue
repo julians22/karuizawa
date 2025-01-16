@@ -160,27 +160,6 @@
                             <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
                         </label>
                     </div>
-                    <!-- <div>
-                        <input
-                            v-model="selectedPayment"
-                            class="hidden"
-                            type="radio"
-                            name="check"
-                            value="edc"
-                            :id="`edc`">
-                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`edc`">
-                            <div>
-                                <img src="img/icons/edc.png" alt="">
-                            </div>
-                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Electronic <br> Data Capture (EDC)</div>
-                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
-                        </label>
-                    </div> -->
-                    <!-- <div class="space-y-3 self-start">
-                        <div class="text-[#606060] text-[10px] text-nowrap lg:text-xs">accepted card type</div>
-                        <img src="img/icons/visa.png" alt="">
-                        <img src="img/icons/mastercard.png" alt="">
-                    </div> -->
                 </div>
 
                 <div v-show="showPreferredBank">
