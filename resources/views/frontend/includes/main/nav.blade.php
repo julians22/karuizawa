@@ -1,4 +1,4 @@
-<nav class="bg-secondary">
+<nav class="relative z-50 bg-secondary">
     <div class="container py-7">
         <div class="grid items-end grid-cols-7 gap-10">
             <div class="col-span-7 md:col-span-2 max-md:self-center">

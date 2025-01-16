@@ -38,4 +38,14 @@ class OrderItem extends Model
     {
         return $this->quantity * $this->price;
     }
+
+    public function isSemiCustom()
+    {
+        return $this->product_type == 'App\Models\SemiCustomProduct';
+    }
+
+    public function isReadyToWear()
+    {
+        return $this->product_type == 'App\Models\Product';
+    }
 }

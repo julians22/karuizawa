@@ -21,7 +21,6 @@ use phpDocumentor\Reflection\Types\Boolean;
 //});
 
 Route::get('products', [ProductController::class, 'index']);
-
 Route::get('find-product/{slug}', [ProductController::class, 'findBySlug']);
 
 // store customer
@@ -54,6 +53,7 @@ Route::post('customer-store', function (Request $request) {
     }
 });
 
-// store order
+Route::get('orders', [OrderController::class, 'index']);
+Route::get('order/{id}', [OrderController::class, 'show']);
 Route::post('store-order', [OrderController::class, 'store']);
 
