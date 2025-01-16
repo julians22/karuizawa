@@ -4,6 +4,29 @@
 @import "~@coreui/coreui/scss/coreui";
 @import '~@coreui/icons/css/free.min.css';
 
+.card-header-actions {
+    display: inline-block;
+  
+    @include ltr {
+      float: right;
+      margin-right: - ($spacer / 4);
+    }
+    @include rtl {
+      float: left;
+      margin-left: - ($spacer / 4);
+    }
+  }
+
+.card-header-action {
+    padding: 0 ($spacer / 4);
+    color: $gray-600;
+  
+    &:hover {
+      color: $body-color;
+      text-decoration: none;
+    }
+}
+
 .wrapper {
     width: 100%;
     @include ltr-rtl("padding-left", var(--cui-sidebar-occupy-start, 0));
