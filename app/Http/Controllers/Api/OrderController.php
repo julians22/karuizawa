@@ -20,6 +20,7 @@ class OrderController extends Controller
                 'orderItems',
                 'orderItems.product',
             ])
+            ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return response()->json(
