@@ -8,6 +8,7 @@
         route_edit_profile: String,
         route_logout: String,
         api_booking_url: String,
+        api_incoming_url: String,
     });
 
     const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
@@ -56,11 +57,13 @@
         </div>
 
         <template v-if="currentPage === 'incoming-order'">
-            <IncomingOrder />
+            <IncomingOrder
+                :api_incoming_url="api_incoming_url"
+                />
         </template>
 
         <template v-if="currentPage === 'order-history'">
-            <OrderHistory 
+            <OrderHistory
                 :api_booking_url="api_booking_url" />
         </template>
 

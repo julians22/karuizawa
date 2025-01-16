@@ -28,6 +28,20 @@ class OrderController extends Controller
         );
     }
 
+    function incoming_order(){
+        $orders = Order::with([
+                'orderItems',
+                'orderItems.product',
+            ])
+            ->where('status', 'pending')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return response()->json(
+            OrderHistoryResource::collection($orders)
+        );
+    }
+
     public function show($id)
     {
         $order = Order::with('orderItems.product')

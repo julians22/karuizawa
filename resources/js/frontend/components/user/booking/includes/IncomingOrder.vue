@@ -1,29 +1,61 @@
+<script setup>
+
+    import { ref, defineAsyncComponent, onMounted } from 'vue';
+
+    const props = defineProps({
+        api_incoming_url: String,
+    });
+
+    const isRetrieving = ref(false);
+
+    const bookings = ref(null);
+
+    onMounted(() => {
+        getBookings();
+    });
+
+    const getBookings = async () => {
+        isRetrieving.value = true;
+        const response = await fetch(props.api_incoming_url);
+        bookings.value = await response.json();
+        isRetrieving.value = false;
+    }
+
+</script>
+
 <template>
     <div>
-        <div class="container pt-10 pb-28">
-            <div v-for="i in 3">
+        <div class="pt-10 pb-28 container">
+            <div v-if="isRetrieving">Loading Orders ...</div>
+            <div v-for="booking in bookings" v-else-if="!isRetrieving && bookings">
                 <div class="flex justify-between">
                     <div class="space-y-2 font-roboto">
-                        <div class="text-xl font-bold">Booking Number: AST2220</div>
-                        <div>Arief Syakur Sutedjo</div>
-                        <div>Jl. Beton No 34, Kayu Putih, Pulo Gadung, Jakarta Timur, DKI Jakarta, 13210</div>
-                        <div>+6281119079886</div>
-                        <div>MALE</div>
+                        <div class="font-bold text-xl">Booking Number: {{ booking.booking_code }}</div>
+                        <div>
+                            {{ booking.customer_name }}
+                        </div>
+                        <div>{{booking.customer_address}}</div>
+                        <div>{{ booking.customer_phone }}</div>
+                        <div>{{ booking.customer_gender }}</div>
                     </div>
                     <div class="space-y-3 font-roboto">
-                        <div class="text-xl font-bold">Booking Time</div>
-                        <div>19 Dec 2023 | 14:00</div>
-                        <button class="flex items-center gap-3 px-4 py-2 tracking-widest text-white lg:py-2 lg:px-3 bg-primary-50 font-josefin">
+                        <div class="font-bold text-xl">Booking Time</div>
+                        <div>{{ booking.order_date }}</div>
+                        <button class="flex items-center gap-3 bg-primary-50 px-4 lg:px-3 py-2 lg:py-2 font-josefin text-white tracking-widest">
                             <span class="mt-1 text-xs">PAY NOW</span>
                             <img class="inline-block size-4" src="img/icons/arrw-ck-right.png" alt="">
                         </button>
-                        <button class="flex items-center gap-3 px-4 py-2 tracking-widest text-white lg:py-2 lg:px-3 bg-secondary-50 font-josefin">
+                        <button class="flex items-center gap-3 bg-secondary-50 px-4 lg:px-3 py-2 lg:py-2 font-josefin text-white tracking-widest">
                             <span class="mt-1 text-xs">CANCEL ORDER</span>
                             <img class="inline-block size-4" src="img/icons/arrw-ck-right.png" alt="">
                         </button>
                     </div>
                 </div>
-                <div class="w-full h-0.5 bg-black my-6"></div>
+                <div class="bg-black my-6 w-full h-0.5"></div>
+            </div>
+            <!-- empty result -->
+            <div v-if="!isRetrieving && bookings && bookings.length === 0">
+                <div class="font-bold text-2xl text-center">No Incoming Order yet</div>
             </div>
         </div>
     </div>
