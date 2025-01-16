@@ -109,10 +109,10 @@
                 </div>
             </div>
             <div class="right-0 bottom-0 absolute flex">
-                <!-- <button @click="btnSkip()" class="flex items-center gap-2 bg-primary-50 p-6 text-white uppercase tracking-widest">
+                <button @click="btnSkip()" class="flex items-center gap-2 bg-primary-50 p-6 text-white uppercase tracking-widest">
                     <span>skip</span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
-                </button> -->
+                </button>
                 <button @click="submit()" class="flex items-center gap-2 bg-secondary-50 p-6 text-white uppercase tracking-widest">
                     <span>submit</span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">

@@ -61,18 +61,18 @@ const handleKeyDown = function (event, index) {
       return;
     }
 
-    // if ((new RegExp('^([0-9])$')).test(event.key)) {
-    // }
-
-    digits[index] = event.key.toUpperCase();
-
-    if (index != props.digitCount - 1) {
-      (inputCont.value.children)[index+1].focus();
+    if ((new RegExp('^([0-9a-zA-Z])$')).test(event.key)) {
+        digits[index] = event.key.toUpperCase();
+    
+        if (index != props.digitCount - 1) {
+          (inputCont.value.children)[index+1].focus();
+        }
+    
+        // if (isDigitsFull()) {
+            emit('update:input', digits.join(''))
+        // }
     }
 
-    // if (isDigitsFull()) {
-        emit('update:input', digits.join(''))
-    // }
 }
 
 </script>

@@ -26,36 +26,12 @@ class ProductController extends Controller
         $auth->makeSignature();
 
         $productApi = new ProductApi();
-        $products = $productApi->getStocks();
+        $products = $productApi->stockJobs(100, 2, 'Ashta');
 
-        $stocks = collect($products['stocks'])->map(function($stock) {
-
-            $quantity = $stock['quantity'] < 0 ? 0 : $stock['quantity'];
-
-            return [
-                'sku' => $stock['no'],
-                'product_name' => $stock['name'],
-                'daily_stock' => $quantity,
-                'category_id' => 1,
-                'price' => 0,
-                'description' => null,
-            ];
-        });
-
-        // Chunk it to 200
-        $stocks = $stocks->chunk(200);
-
-        foreach ($stocks as $stock) {
-            $data = $productService->upsertStocks($stock->toArray());
+        if ($products) {
+            return redirect()->route('admin.product.index')->withFlashSuccess(__('The product was successfully fetched.'));
         }
-
-        // now we fetch the products price
-        $products = $productApi->getProducts();
-
-
-
-
-        return redirect()->route('admin.product.index')->withFlashSuccess(__('The product was successfully fetched.'));
+        return redirect()->route('admin.product.index')->withFlashDanger(__('An error occurred while fetching the product.'));
     }
 
     public function fetchPrice(ProductService $productService)
@@ -64,27 +40,12 @@ class ProductController extends Controller
         $auth->authInfo();
 
         $productApi = new ProductApi();
-        $products = $productApi->getProducts();
+        $products = $productApi->productJobs();
 
-        $prices = collect($products['products'])->map(function($product) {
-            if (
-                array_key_exists('unitPrice', $product) &&
-                array_key_exists('no', $product)) {
+        die();
 
-                return [
-                    'sku' => $product['no'],
-                    'price' => $product['unitPrice'],
-                ];
-            }
-            // skip mapping if the product doesn't have unitPrice and no
-            return null;
-        });
-
-        foreach ($prices as $price) {
-            // Job to update the product price
-            if ($price) {
-                dispatch(new SyncProductPrice(Product::sku($price['sku'])->first(), $price));
-            }
+        if ($products) {
+            return redirect()->route('admin.product.index')->withFlashSuccess(__('The price was successfully fetched.'));
         }
 
         return redirect()->route('admin.product.index')->withFlashSuccess(__('The sync price was successfully fetched.'));

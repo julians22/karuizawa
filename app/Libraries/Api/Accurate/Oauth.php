@@ -48,13 +48,8 @@ class Oauth
             ];
 
             cache()->put('accurate_auth', $stores, now()->addMinutes(10));
-            print_r($stores);
-
-            return;
+            return $stores;
         }
-
-        cache()->put('accurate_auth', $response, now()->addMinutes(10));
-        return;
     }
 
     public function authInfo()
@@ -73,13 +68,19 @@ class Oauth
 
             if ($response->status() == 200) {
                 $response = $response->json();
-                return;
+                return [
+                    'timestamp' => $timestamp,
+                    'signature' => $sign,
+                ];
             }
             $this->makeSignature();
             return;
         }
-        $this->makeSignature();
-        return;
+        $createdSign = $this->makeSignature();
+        return [
+            'timestamp' => $createdSign['timestamp'],
+            'signature' => $createdSign['sign'],
+        ];
     }
 
 

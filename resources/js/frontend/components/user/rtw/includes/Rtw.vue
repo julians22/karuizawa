@@ -213,7 +213,7 @@
 
     @keyframes shine {
         to {
-        background-position-x: -200%;
+            background-position-x: -200%;
         }
     }
 </style>
