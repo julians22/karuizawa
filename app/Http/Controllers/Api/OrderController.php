@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderDetailResource;
+use App\Http\Resources\OrderHistoryResource;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
@@ -12,6 +14,26 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    public function index()
+    {
+        $orders = Order::with([
+                'orderItems',
+                'orderItems.product',
+            ])
+            ->paginate(10);
+
+        return response()->json(
+            OrderHistoryResource::collection($orders)
+        );
+    }
+
+    public function show($id)
+    {
+        $order = Order::with('orderItems.product')
+            ->findOrFail($id);
+
+        return response()->json($order);
+    }
 
     function store(Request $request) {
 
@@ -23,7 +45,6 @@ class OrderController extends Controller
             'payment' => 'required',
             'bank' => 'required_if:payment,manual-tf',
         ]);
-
 
 
         DB::beginTransaction();
