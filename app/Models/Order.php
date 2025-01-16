@@ -15,9 +15,15 @@ class Order extends Model
         'store_id',
         'user_id',
         'total_price',
+        'discount',
+        'discount_details',
         'payment',
         'bank',
         'status',
+    ];
+
+    protected $casts = [
+        'discount_details' => 'array',
     ];
 
     protected $appends = ['down_payment_amount', 'completion_amount', 'remaining_amount'];

@@ -53,6 +53,7 @@
             payment: selectedPayment.value,
             bank: preferredBank.value,
             customer_id: customer.value ? customer.value.id : null,
+            coupon: couponUsed.value,
         })
         .then(response => {
             if (response.data.success) {

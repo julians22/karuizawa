@@ -31,6 +31,9 @@ class OrderHistoryResource extends JsonResource
             'customer_gender' => $this->customer->is_male ? 'Male' : 'Female',
             'booking_code' => $bookingCode,
             'items' => OrderItemResource::collection($this->orderItems),
+            'discount' => (int) $this->discount,
+            'discount_formatted' => price_format($this->discount, 0),
+            'discount_details' => $this->discount_details,
         ];
     }
 }

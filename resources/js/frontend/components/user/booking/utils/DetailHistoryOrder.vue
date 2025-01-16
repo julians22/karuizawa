@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, defineExpose, watch } from 'vue';
+    import { ref, defineExpose } from 'vue';
 
     const dialog = ref(false);
     const booking = ref(null);
@@ -57,6 +57,12 @@
                                         <td class="px-4 py-4 text-center">{{ item.qty }}</td>
                                         <td class="px-4 py-4">{{ item.price_formatted }}</td>
                                         <td class="px-4 py-4">{{ item.total_price_formatted }}</td>
+                                    </tr>
+                                    <tr class="bg-white" v-if="booking.discount > 0">
+                                        <td colspan="3" class="text-right bg-primary-50 px-4 py-4 font-bold text-white">Coupon</td>
+                                        <td class="px-4 py-4 font-bold text-primary-50">
+                                            -{{ booking.discount_formatted }} ({{ booking.discount_details.coupon }}%)
+                                        </td>
                                     </tr>
                                     <tr class="bg-white">
                                         <td colspan="3" class="text-right bg-primary-50 px-4 py-4 font-bold text-white">Subtotal</td>

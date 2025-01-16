@@ -70,6 +70,7 @@ class OrderController extends Controller
             'payment' => 'required',
             'bank' => 'required_if:payment,manual-tf',
             'customer_id' => 'sometimes',
+            'coupon' => 'sometimes',
         ]);
 
         // check customer_id
@@ -93,6 +94,10 @@ class OrderController extends Controller
                 'store_id' => config('dummy.store'),
                 'user_id' => 3,
                 'total_price' => 0,
+                'discount_details' => [
+                    'coupon' => (int) $request->coupon ?? null,
+                    'discount_amount' => 0,
+                ],
                 'payment' => $request->bank ?? null,
                 'bank' => $request->bank ?? null,
                 'status' => config('enums.order_status.pending'),
@@ -113,7 +118,23 @@ class OrderController extends Controller
                 return $item->quantity * $item->price;
             });
 
-            $order->update(['total_price' => $totalPrice]);
+            $orderCoupon = $order->discount_details['coupon'] ?? 0;
+
+            $discountAmount = 0;
+            if ($orderCoupon) {
+                $discountAmount = $totalPrice * $orderCoupon / 100;
+            }
+
+            $totalPrice -= $discountAmount;
+
+            $order->update([
+                'total_price' => $totalPrice,
+                'discount_details' => [
+                    'coupon' => $request->coupon ?? null,
+                    'discount_amount' => $discountAmount,
+                ],
+                'discount' => $discountAmount,
+            ]);
 
             // TODO store to accurate order number
 
