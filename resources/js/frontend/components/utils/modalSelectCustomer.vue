@@ -72,7 +72,7 @@
                 <div class="grid grid-cols-1 gap-2 mt-4 overflow-y-auto max-h-80 font-roboto" v-if="options.length && !isLoading">
                     <div @click="onSelected(option)" class="px-2 py-4 rounded cursor-pointer bg-secondary hover:bg-primary-50 hover:text-white" v-for="(option, index) in options" :key="index">
                         <div class="font-bold">{{ option.full_name }}</div>
-                        <div class="text-xs">{{ option.email }} - {{ option.phone }}</div>
+                        <div class="text-xs">{{ option.email }} - ({{ option.phone }})</div>
                     </div>
                 </div>
                 <div v-if="optionNull && !isLoading" class="mt-5 tracking-widest text-center uppercase">data not found</div>
