@@ -2,6 +2,7 @@
     import { defineAsyncComponent, onMounted, ref, watch, computed } from 'vue';
     import { useRtw } from '../../../store/rtw';
     import { useProducts } from '../../../store/product';
+    import { useCustomer } from '../../../store/customer';
 
     const props = defineProps({
         csrf: String,
@@ -19,6 +20,7 @@
 
     const storePage = useRtw();
     const storeProducts = useProducts();
+    const storeCustomer = useCustomer();
 
     const pageRtw = ref(null);
     const pagePayment = ref(null);
@@ -35,6 +37,8 @@
             storePage.currentPage = currentSection.value;
             storeProducts.setSlug = [];
             storeProducts.setProducts = [];
+            storeCustomer.customer = null;
+
         }
     });
 
