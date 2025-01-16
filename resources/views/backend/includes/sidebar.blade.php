@@ -49,7 +49,27 @@
                     :text="__('Store Management')" />
             </li>
 
+            {{-- Transaction / Order Menu --}}
+            <li class="nav-title">@lang('Transaction')</li>
+
+            <li class="nav-item">
+                <x-utils.link
+                    class="nav-link"
+                    :href="route('admin.order.index')"
+                    :active="activeClass(Route::is('admin.order.*'), 'active')"
+                    icon="nav-icon fas fa-shopping-cart"
+                    :text="__('Order Management')" />
+
             <li class="nav-title">@lang('System')</li>
+
+            <li class="nav-item">
+                <x-utils.link
+                    class="nav-link"
+                    :href="route('admin.system-information.index')"
+                    :active="activeClass(Route::is('admin.system-information.*'), 'active')"
+                    icon="nav-icon cil-info"
+                    :text="__('System Information')" />
+            </li>
 
             <li
                 aria-expanded="false"

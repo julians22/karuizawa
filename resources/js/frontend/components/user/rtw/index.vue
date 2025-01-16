@@ -9,6 +9,7 @@
         user: Object,
         route_edit_profile: String,
         route_logout: String,
+        api_store_order: String,
         api_product_url: String,
     });
 
@@ -61,7 +62,7 @@
             </template>
 
             <template v-if="storePage.get == 'payment'">
-                <Payment @btn-next="btnNext"/>
+                <Payment :api_store_order="api_store_order" @btn-next="btnNext"/>
             </template>
 
             <template v-if="storePage.get == 'products'">
