@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Boolean;
 
@@ -60,12 +61,11 @@ Route::group(['prefix' => 'customer'], function () {
         ]);
 
         try {
-            $customer = \App\Models\Customer::updateOrCreate([
-                'id' => $request->id
+            $customer = Customer::firstOrCreate([
+                'email' => $request->email
             ], [
                 'full_name' => $request->first_name,
                 'phone' => $request->phone,
-                'email' => $request->email,
                 'is_male' => (Boolean) $request->is_male
             ]);
 
@@ -73,6 +73,7 @@ Route::group(['prefix' => 'customer'], function () {
                 'success' => true,
                 'data' => $customer,
             ], 200);
+
         } catch (\Throwable $th) {
             //throw $th;
             return response()->json([
