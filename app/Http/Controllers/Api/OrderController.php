@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderDetailResource;
 use App\Http\Resources\OrderHistoryResource;
+use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
@@ -68,7 +69,20 @@ class OrderController extends Controller
             'products.*.qty' => 'required',
             'payment' => 'required',
             'bank' => 'required_if:payment,manual-tf',
+            'customer_id' => 'sometimes',
         ]);
+
+        // check customer_id
+        if ($request->customer_id) {
+            $customer = Customer::find($request->customer_id);
+            if (!$customer) {
+                // return error validation
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Customer not found',
+                ], 422);
+            }
+        }
 
 
         DB::beginTransaction();

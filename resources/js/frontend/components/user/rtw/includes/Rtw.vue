@@ -2,6 +2,7 @@
     import { defineEmits, onMounted, ref, watch, nextTick } from 'vue';
     import { TailwindPagination } from 'laravel-vue-pagination';
     import { useProducts } from '../../../../store/product';
+    import { priceFormat } from '../../../../helpers/currency';
 
 
     const props = defineProps({
@@ -15,6 +16,8 @@
     const form = ref({
         shirtsSelected: [],
     });
+
+    const keywords = ref('');
 
     const selectedProducts = ref([]);
 
@@ -60,7 +63,28 @@
     });
 
     const getResults = async (page = 1) => {
-        fetch(`${props.api_product_url}?page=${page}`)
+        fetchProducts(page);
+    }
+
+    const searchProduct = () => {
+        fetch(`${props.api_product_url}?search=${keywords.value}`)
+            .then(response => response.json())
+            .then(data => {
+                products.value = data;
+            })
+            .catch(error => {
+                console.error('There was an error!', error);
+            });
+    }
+
+    const fetchProducts = async (page) => {
+
+        let url = `${props.api_product_url}?page=${page}`;
+        const keywordString = keywords.value ? `&search=${keywords.value}` : '';
+
+        url = `${url}${keywordString}`;
+
+        fetch(`${url}`)
             .then(response => response.json())
             .then(data => {
                 products.value = data;
@@ -93,17 +117,21 @@
     <section class="pb-20">
         <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
             <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">Ready to wear</div>
-            <form class="w-2/5">
+            <div class="w-2/5">
                 <label for="default-search" class="mb-2 font-medium text-gray-900 text-sm dark:text-white sr-only">Search</label>
                 <div class="relative">
-                    <input type="search" id="default-search" class="block bg-white px-4 py-2 rounded-full w-full text-gray-900 text-sm pe-10" required />
-                    <button type="submit" class="absolute inset-y-0 flex items-center end-0 pe-4">
+                    <input 
+                        type="text" 
+                        id="default-search" 
+                        v-model="keywords"
+                        class="block bg-white px-4 py-2 rounded-full w-full text-gray-900 text-sm pe-10" />
+                    <button @click="searchProduct" class="absolute inset-y-0 flex items-center end-0 pe-4">
                         <svg class="text-primary-50 size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                         </svg>
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
         <div class="flex justify-between items-center gap-2 bg-secondary-50 lg:px-14 lg:py-7 p-6">
             <div class="flex max-lg:flex-col items-center gap-2 lg:gap-4 w-full">
@@ -150,7 +178,7 @@
                     <label class="flex flex-col items-center px-2 rounded cursor-pointer" :for="`poduct-${product.id}`">
                         <div class="text-[#606060] text-center">{{ product.product_name }}</div>
                         <div class="text-[#A3A3A3] text-center text-sm">{{ product.sku }}</div>
-                        <div class="text-center text-lg text-secondary-50">Rp {{ product.price }}</div>
+                        <div class="text-center text-lg text-secondary-50">{{ priceFormat(product.price) }}</div>
                         <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
                     </label>
                 </div>

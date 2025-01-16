@@ -6,6 +6,7 @@ export const useProducts = defineStore('products', {
         return {
           setProducts: [],
           setSlug: [],
+          coupon_rtw: 0
         }
     },
 
@@ -17,6 +18,10 @@ export const useProducts = defineStore('products', {
         getProducts: (state) => {
             return state.setProducts;
         },
+
+        getCouponRtw: (state) => {
+            return state.coupon_rtw;
+        }
     },
 
     persist: true,

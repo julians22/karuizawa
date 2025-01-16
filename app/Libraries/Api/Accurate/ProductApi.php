@@ -22,7 +22,7 @@ class ProductApi
         $this->appUrl = config('accurate.auth.app_url');
     }
 
-    function productJobs($pageSize = 100, $page = 1, $itemCategoiry = 1009, $fields = 'id,name,no,unitPrice') {
+    function productJobs($pageSize = 20, $page = 1, $itemCategoiry = 1009, $fields = 'id,name,no,unitPrice') {
         $endpoint = $this->appUrl . '/accurate/api/item/list.do';
         $headers = [
             'Authorization' => 'Bearer ' . $this->appToken,

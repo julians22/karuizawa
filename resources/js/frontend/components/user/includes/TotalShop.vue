@@ -1,7 +1,8 @@
 <script setup>
     import { forEach } from 'lodash';
-    import { computed, defineEmits, onMounted, ref, nextTick, reactive } from 'vue';
+    import { computed, defineEmits, onMounted, ref, nextTick, reactive, watch } from 'vue';
     import { useProducts } from '../../../store/product';
+    import { priceFormat } from '../../../helpers/currency';
 
     const storeProducts = useProducts();
 
@@ -14,12 +15,11 @@
         return productsState;
     });
 
-    const coupon = ref(null);
+    const coupon = ref(0);
 
     const plusQty = (index) => {
         products.value[index].qty += 1;
         products.value[index].total = products.value[index].price * products.value[index].qty
-
     }
 
     const minQty = (index) => {
@@ -33,9 +33,16 @@
 
     onMounted(() => {
         nextTick(() => {
-            storeProducts.setProducts = products.value
-        })
+            storeProducts.setProducts = products.value;
+        });
     })
+
+    watch(coupon, (value) => {
+        storeProducts.coupon_rtw = value;
+
+        console.log(storeProducts.coupon_rtw);
+        
+    });
 
     const $emit = defineEmits(['btn-next']);
 
@@ -81,7 +88,8 @@
                                 <div class="text-[#A3A3A3] text-sm">{{product.sku}}</div>
                             </td>
                             <td class="px-6 py-3 text-center text-primary-50">
-                                <div class="text-[#606060] text-center lg:text-lg">Rp {{ product.price }}</div>
+                                <div class="text-[#606060] text-center lg:text-lg"
+                                    v-html="priceFormat(product.price)"></div>
                             </td>
                             <td class="px-6 py-3 text-center text-primary-50">
                                 <div class="flex justify-center w-full text-left number-input" data-controller="quantity">
@@ -96,7 +104,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-3 text-center text-primary-50">
-                                <div class="text-center text-secondary-50 lg:text-lg">Rp {{ product.total ?? product.price }}</div>
+                                <div class="text-center text-secondary-50 lg:text-lg">{{ priceFormat(product.total ?? product.price) }}</div>
                             </td>
                         </tr>
                     </tbody>
@@ -117,8 +125,10 @@
                         </span>
                         <select v-model="coupon"
                             id="coupon" class="block border-primary-50 bg-white before:bg-blue-400 py-2.5 pr-10 pl-2.5 border focus:border-blue-500 rounded-full focus:ring-blue-500 w-full *:text-[#606060] uppercase">
-                            <option value="coupon_1">Coupon #1</option>
-                            <option value="coupon_2">Coupon #2</option>
+                            <option value="0">0%</option>
+                            <option value="10">10%</option>
+                            <option value="20">20%</option>
+                            <option value="30">30%</option>
                         </select>
                     </div>
                 </div>

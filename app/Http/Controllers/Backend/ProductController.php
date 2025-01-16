@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Jobs\SyncProductPrice;
 use App\Libraries\Api\Accurate\Oauth;
 use App\Libraries\Api\Accurate\ProductApi;
 use App\Models\Category;
@@ -40,9 +39,7 @@ class ProductController extends Controller
         $auth->authInfo();
 
         $productApi = new ProductApi();
-        $products = $productApi->productJobs();
-
-        die();
+        $products = $productApi->productJobs(40);
 
         if ($products) {
             return redirect()->route('admin.product.index')->withFlashSuccess(__('The price was successfully fetched.'));

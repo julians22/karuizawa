@@ -48,7 +48,6 @@ class ProductSyncJob implements ShouldQueue
         ];
 
         $response = Http::withHeaders($headers)
-            ->timeout(60)
             ->get($endpoint, $this->params);
 
         if ($response->status() == 200) {

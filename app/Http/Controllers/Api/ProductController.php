@@ -10,9 +10,13 @@ use function React\Promise\all;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::validProduct()->paginate(8);
+        $products = Product::validProduct()
+            ->when($request->has('search'), function ($query) use ($request) {
+                $query->where('product_name', 'like', '%' . $request->search . '%');
+            })
+            ->paginate(8);
         return response()->json($products);
     }
 
