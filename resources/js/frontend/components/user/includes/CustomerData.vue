@@ -3,15 +3,32 @@
     import { defineEmits, ref, defineAsyncComponent, onMounted, watch, computed, reactive, defineProps } from 'vue';
     import { useCustomer } from '../../../store/customer';
     import { useProducts } from '../../../store/product';
-
-
+    import VueDatePicker from '@vuepic/vue-datepicker';
+    import '@vuepic/vue-datepicker/dist/main.css'
 
     const props = defineProps({
         onPage: {
             type: String,
             default: 'rtw'
         }
-    })
+    });
+
+    const date = ref(new Date());
+
+    // In case of a range picker, you'll receive [Date, Date]
+    const format = (date) => {
+        const day = date.getDate();
+        const month = date.getMonth() + 1;
+        const year = date.getFullYear();
+
+        return `${day}/${month}/${year}`;
+    }
+
+    const time = ref({
+        hours: new Date().getHours(),
+        minutes: new Date().getMinutes()
+    });
+
 
     const addCustumer = defineAsyncComponent(() => import('../../utils/modalSelectCustomer.vue'));
 
@@ -116,15 +133,21 @@
             </div>
             <div class="container flex gap-10 py-10">
                 <div class="flex items-center gap-6">
-                    <label for="date" class="block mt-1 mb-2 uppercase text-primary-50">set date</label>
+                    <label for="date" class="block uppercase text-primary-50">set date</label>
                     <div class="flex">
-                        <input type="date" id="date" class="block before:block relative before:right-0 before:-z-10 before:absolute before:inset-y-0 flex-1 before:content-[''] border-primary-50 bg-transparent before:bg-primary-50 p-2.5 border rounded-full w-full before:w-10 text-primary-50 leading-none" required >
+                        <VueDatePicker v-model="date" :format="format" :enableTimePicker="false" />
+                        <!-- <input type="date" id="date" class="block before:block relative before:right-0 before:-z-10 before:absolute before:inset-y-0 flex-1 before:content-[''] border-primary-50 bg-transparent before:bg-primary-50 p-2.5 border rounded-full w-full before:w-10 text-primary-50 leading-none" required > -->
                     </div>
                 </div>
                 <div class="flex items-center gap-6">
-                    <label for="time" class="block mt-1 mb-2 uppercase text-primary-50">set time</label>
+                    <label for="time" class="block uppercase text-primary-50">set time</label>
                     <div class="flex">
-                        <input type="time" id="time" class="block before:block relative before:right-0 before:-z-10 before:absolute before:inset-y-0 flex-1 before:content-[''] border-primary-50 bg-transparent before:bg-primary-50 p-2.5 border rounded-full w-full before:w-10 text-primary-50 leading-none" min="00:00" max="23:00" value="00:00" required>
+                        <VueDatePicker v-model="time" time-picker>
+                            <template #input-icon>
+                                <img class="ml-2 size-5 input-slot-image" src="/img/icons/time.png"/>
+                            </template>
+                        </VueDatePicker>
+                        <!-- <input type="time" id="time" class="block before:block relative before:right-0 before:-z-10 before:absolute before:inset-y-0 flex-1 before:content-[''] border-primary-50 bg-transparent before:bg-primary-50 p-2.5 border rounded-full w-full before:w-10 text-primary-50 leading-none" min="00:00" max="23:00" value="00:00" required> -->
                     </div>
                 </div>
             </div>
