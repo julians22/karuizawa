@@ -58,7 +58,12 @@ class SystemInformationController extends Controller
             ->asForm()
             ->post($url, $data);
 
+        if ($response->status() != 200) {
+            return redirect()->route('admin.system-information.index')->withFlashDanger(__('Failed to authenticate with Accurate., ; ' . $response->json()));
+        }
+
         $response = $response->json();
+
         cache()->put('accurate_token', $response, 1295999);
 
         return redirect()->route('admin.system-information.index')->withFlashSuccess(__('The authentication cache was successfully reloaded.'));
