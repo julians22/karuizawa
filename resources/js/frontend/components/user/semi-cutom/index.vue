@@ -1,5 +1,12 @@
 <script setup>
     import { defineAsyncComponent, ref, watch, computed, onMounted } from 'vue';
+    import { usePage } from '../../../store/page';
+    import { useCustomer } from '../../../store/customer';
+    import { useProducts } from '../../../store/product';
+    import axios from 'axios';
+
+    const storePage = usePage();
+    const storeCustomer = useCustomer();
 
     const props = defineProps({
         csrf: String,
@@ -8,12 +15,27 @@
         route_logout: String,
         data_custom_shirt: Object,
         data_custom_request: Object,
-        data_semi_custom: Object
+        data_semi_custom: Object,
+        api_store_order: String,
+
     });
 
     const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
     const CustomShirt = defineAsyncComponent(() => import('./includes/CustomShirt.vue'));
     const CustomRequest = defineAsyncComponent(() => import('./includes/CustomRequest.vue'));
+
+    const Customer = defineAsyncComponent(() => import('../includes/CustomerData.vue'));
+    const TotalShop = defineAsyncComponent(() => import('../includes/TotalShop.vue'));
+    const Payment = defineAsyncComponent(() => import('../includes/Payment.vue'));
+
+    const currentSection = ref(null);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const url = new URL(window.location.href);
+
+    const extend = computed(() => {
+        return storePage.get == 'semi-custom' ? true : false
+    })
 
     const childBasic = ref(null);
     const childOption = ref(null);
@@ -44,7 +66,6 @@
         return childOption.value?.form;
     });
 
-
     const amount = ref({
         basic: {},
         option: {}
@@ -60,7 +81,14 @@
             basic: basic,
             option: option,
         }
-    })
+
+        if (urlParams.get('page') != null) {
+            storePage.currentPage = urlParams.get('page');
+        }else{
+            storePage.currentPage = currentSection.value;
+            storeCustomer.customer = null;
+        }
+    });
 
     watch(amount.value, (items) => {
         let basic = parseInt(items.basic?.total ?? 0);
@@ -95,16 +123,39 @@
         )
     };
 
+    const btnNext = (section, data) => {
+        url.searchParams.set('page', section);
+        window.history.pushState(null, '', url.toString());
+        storePage.currentPage = section;
+    }
+
+
     const btnSubmit = () => {
-        childBasic.value.basicAmount();
-        childOption.value.amountOption();
+        if (totalPrice.value <= 0 && bindForm.value !== null) {
+            alert('Please fill the form OR apply the price first');
+        }else {
+            onSumbit();
+            url.searchParams.set('page', 'total-shop');
+            window.history.pushState(null, '', url.toString());
+            storePage.currentPage = 'total-shop';
+        }
+    }
+
+    const onSumbit = async () => {
+        await axios.post('/api/semi-custom/submit', bindForm.value)
+            .then(response => {
+                console.log(response.data.data);
+            })
+            .catch(error => {
+                console.log('error');
+            })
     }
 </script>
 
 <template>
-    <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" :extends="true">
+    <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" :extends="extend">
         <template #sidebar>
-            <div class="sticky top-0 h-screen overflow-y-auto scroll-box bg-green">
+            <div :class="{'hidden': !extend}" class="sticky top-0 h-screen overflow-y-auto scroll-box bg-green">
                 <div class="py-20 bg-primary-50">
                     <div class="mx-[5%] xl:mx-[10%] 2xl:mx-[20%] font-roboto text-white">
                         <div>
@@ -113,7 +164,7 @@
                             <div>
                                 <table>
                                     <tbody class="*:space-y-4">
-                                        <tr class="lg:whitespace-pre-wrap *:align-top"
+                                        <tr class="lg:whitespace-pre-wrap *:align-top max-xl:text-sm"
                                             v-for="(summaryBasic, key) in formBasic" :key="key">
                                             <td class="capitalize">{{ stingConvert(key) }}</td>
                                             <td class="w-4 text-center">:</td>
@@ -160,7 +211,7 @@
                                         <tr>
                                             <td class="font-bold uppercase">Option:</td>
                                         </tr>
-                                        <tr class="lg:whitespace-pre-wrap *:align-top"
+                                        <tr class="lg:whitespace-pre-wrap *:align-top max-xl:text-sm"
                                             v-for="(summaryBasic, key) in formOptions" :key="key">
                                             <td class="capitalize">{{ stingConvert(key) }} </td>
                                             <td class="w-4 text-center">:</td>
@@ -314,23 +365,38 @@
             </div>
         </template>
 
-        <!-- <template v-if="currentSection == 'custom-shirt'"> -->
-            <CustomShirt @additionalBasic="additionalBasic" :dataSemiCustom="props.data_semi_custom" ref="childBasic" />
-        <!-- </template> -->
+            <template v-if="storePage.get == 'total-shop'">
+                <TotalShop onPage="semi-custom" @btn-next="btnNext"/>
+            </template>
 
-        <!-- <template v-if="currentSection == 'custom-request'"> -->
-            <CustomRequest @additionalOption="additionalOption" :dataOptions="props.data_semi_custom" ref="childOption"/>
-        <!-- </template> -->
+            <template v-if="storePage.get == 'customer-data' || storeCustomer.getCustomer == null">
+                <Customer onPage="semi-custom" @btn-next="btnNext"/>
+            </template>
 
-        <div class="absolute bottom-0 right-0 flex">
-            <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-primary-300">
-                <span>ADD CUSTOM REQUEST </span>
-                <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
-            </button>
-            <button @click="btnSubmit()" class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50">
-                <span>SUBMIT</span>
-                <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
-            </button>
-        </div>
+            <template v-if="storePage.get == 'payment'">
+                <Payment :api_store_order="api_store_order" @btn-next="btnNext"/>
+            </template>
+
+        <template v-if="storePage.get == 'semi-custom' && storeCustomer.getCustomer != null">
+            <!-- <template v-if="currentSection == 'custom-shirt'"> -->
+                <CustomShirt @additionalBasic="additionalBasic" :dataSemiCustom="props.data_semi_custom" ref="childBasic" />
+            <!-- </template> -->
+
+            <!-- <template v-if="currentSection == 'custom-request'"> -->
+                <CustomRequest @additionalOption="additionalOption" :dataOptions="props.data_semi_custom" ref="childOption"/>
+            <!-- </template> -->
+
+            <div class="absolute bottom-0 right-0 flex">
+                <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-primary-300">
+                    <span>ADD CUSTOM REQUEST </span>
+                    <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+                </button>
+                <button @click="btnSubmit()" class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50">
+                    <span>SUBMIT</span>
+                    <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+                </button>
+            </div>
+        </template>
+
     </Layout>
 </template>

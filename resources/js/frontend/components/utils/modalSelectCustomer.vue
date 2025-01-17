@@ -37,7 +37,7 @@
 
     const onSelected = (option) => {
         customer.value = option;
-        useCustomer().customer = option;
+        // useCustomer().customer = option;
         open.value = false;
     }
 

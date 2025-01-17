@@ -2,7 +2,10 @@
     import { defineEmits, onMounted, ref, watch, nextTick, reactive } from 'vue';
     import { TailwindPagination } from 'laravel-vue-pagination';
     import { useProducts } from '../../../../store/product';
+
     import { priceFormat } from '../../../../helpers/currency';
+
+    import { useCustomer } from '../../../../store/customer';
 
     const isLoading = ref(true);
 
@@ -144,6 +147,20 @@
         }
     };
 
+    const goToSemiCustom = () => {
+        if (form.value.shirtsSelected.length) {
+            selectProducts();
+            if (useCustomer().getCustomer != null) {
+                window.location.href = "/semi-custom?page=semi-custom";
+            }else {
+                window.location.href = "/semi-custom";
+            }
+        }else{
+            formError.value = ['Please select at least one item']
+            console.log(formError.value);
+        }
+    }
+
     defineExpose({
         form,
     })
@@ -172,9 +189,9 @@
                 </div>
             </div>
         </div>
-        <div class="flex justify-between items-center gap-2 bg-secondary-50 lg:px-14 lg:py-7 p-6">
-            <div class="flex max-lg:flex-col items-center gap-2 lg:gap-4 w-full">
-                <div class="text-white uppercase tracking-widest whitespace-pre">Sort by</div>
+        <div class="flex items-center justify-between gap-2 p-6 bg-secondary-50 lg:px-14 lg:py-7">
+            <div class="flex items-center w-full gap-2 max-lg:flex-col lg:gap-4">
+                <div class="tracking-widest text-white uppercase whitespace-pre">Sort by</div>
                 <div class="relative w-full">
                     <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 rounded-r-full w-10 text-primary-50 pointer-events-none">
                         ▼
@@ -188,8 +205,8 @@
                     </select>
                 </div>
             </div>
-            <div class="flex max-lg:flex-col items-center gap-2 lg:gap-4 w-full">
-                <div class="text-white uppercase tracking-widest whitespace-pre">Color</div>
+            <div class="flex items-center w-full gap-2 max-lg:flex-col lg:gap-4">
+                <div class="tracking-widest text-white uppercase whitespace-pre">Color</div>
                 <div class="relative w-full">
                     <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 rounded-r-full w-10 text-primary-50 pointer-events-none">
                         ▼
@@ -202,8 +219,8 @@
                     </select>
                 </div>
             </div>
-            <div class="flex max-lg:flex-col items-center gap-2 lg:gap-4 w-full">
-                <div class="text-white uppercase tracking-widest whitespace-pre">Size</div>
+            <div class="flex items-center w-full gap-2 max-lg:flex-col lg:gap-4">
+                <div class="tracking-widest text-white uppercase whitespace-pre">Size</div>
                 <div class="relative w-full">
                     <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 rounded-r-full w-10 text-primary-50 pointer-events-none">
                         ▼
@@ -217,6 +234,7 @@
                 </div>
             </div>
         </div>
+
         <div class="py-20 container">
             <div class="gap-20 grid grid-cols-3 lg:grid-cols-4">
                 <div v-if="products.data && !isLoading" v-for="(product) in products.data">
@@ -251,12 +269,12 @@
         </div>
 
 
-        <div class="right-0 bottom-0 absolute flex">
-            <button class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white tracking-widest">
+        <div class="absolute bottom-0 right-0 flex">
+            <button @click="goToSemiCustom()" class="flex items-center gap-2 p-4 tracking-widest text-white bg-primary-50 lg:p-6">
                 <span>ADD SEMI CUSTOM</span>
                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
             </button>
-            <button @click="btnProcess()" class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">
+            <button @click="btnProcess()" class="flex items-center gap-2 p-4 tracking-widest text-white bg-secondary-50 lg:p-6">
                 <span>PROCESS</span>
                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
             </button>

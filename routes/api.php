@@ -2,7 +2,11 @@
 
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
+
 use App\Models\Customer;
+
+use App\Http\Controllers\Frontend\User\SemiCustomConteroller;
+
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Boolean;
 
@@ -89,3 +93,4 @@ Route::get('incoming-orders', [OrderController::class, 'incoming_order']);
 Route::get('order/{id}', [OrderController::class, 'show']);
 Route::post('store-order', [OrderController::class, 'store']);
 
+Route::post('semi-custom/submit', [SemiCustomConteroller::class, 'submit']);
