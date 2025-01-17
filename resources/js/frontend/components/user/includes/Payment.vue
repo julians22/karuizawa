@@ -2,6 +2,7 @@
     import { computed, defineAsyncComponent, onMounted, ref, defineEmits } from 'vue';
     import { useProducts } from '../../../store/product';
     import { useCustomer } from '../../../store/customer';
+    import { priceFormat } from '../../../helpers/currency';
 
     const props = defineProps({
         csrf: String,
@@ -15,8 +16,18 @@
     const childDoPayment = ref(null);
 
     const products = computed(() => useProducts().getProducts);
+    const customer = computed(() => useCustomer().getCustomer);
+    const couponUsed = computed(() => useProducts().coupon_rtw);
 
     const totalPayment = ref(0);
+
+    const afterDiscount = computed(() => {
+        return totalPayment.value - (totalPayment.value * (couponUsed.value / 100));
+    });
+
+    const discount = computed(() => {
+        return totalPayment.value * (couponUsed.value / 100);
+    });
 
     const selectedPayment = ref('manual-tf');
     const preferredBank = ref('BCA');
@@ -44,6 +55,8 @@
             products: products.value,
             payment: selectedPayment.value,
             bank: preferredBank.value,
+            customer_id: customer.value ? customer.value.id : null,
+            coupon: couponUsed.value,
         })
         .then(response => {
             if (response.data.success) {
@@ -134,20 +147,28 @@
                             class="hidden"
                             type="radio"
                             name="check"
-                            value="edc"
-                            :id="`edc`">
-                        <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`edc`">
+                            value="debit-card"
+                            :id="`debit-card`">
+                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`debit-card`">
                             <div>
-                                <img src="img/icons/edc.png" alt="">
+                                <img src="img/icons/credit-card.png" alt="">
                             </div>
-                            <div class="text-sm font-bold text-center font-roboto text-nowrap text-secondary-50 lg:text-base xl:text-lg">Electronic <br> Data Capture (EDC)</div>
-                            <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 checkbox-inner size-10"></span>
+                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Debit Card</div>
+                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
                         </label>
                     </div>
-                    <div class="self-start space-y-3">
-                        <div class="text-[#606060] text-[10px] text-nowrap lg:text-xs">accepted card type</div>
-                        <img src="img/icons/visa.png" alt="">
-                        <img src="img/icons/mastercard.png" alt="">
+                    <div>
+                        <input
+                            v-model="selectedPayment"
+                            class="hidden"
+                            type="radio"
+                            name="check"
+                            value="qris"
+                            :id="`qris`">
+                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`qris`">
+                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">QRIS</div>
+                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
+                        </label>
                     </div>
                 </div>
 
@@ -163,7 +184,6 @@
                                 v-model="preferredBank"
                                 id="prefered-bank" class="block border-primary-50 bg-white before:bg-blue-400 py-2.5 pr-10 pl-2.5 border focus:border-blue-500 rounded-full focus:ring-blue-500 w-full *:text-[#606060] uppercase">
                                 <option value="BCA">BCA</option>
-                                <option value="BNI">BNI</option>
                             </select>
                         </div>
                         <div class="font-roboto text-[#606060] text-sm">Terms & Conditions</div>
@@ -195,21 +215,25 @@
                             <div class="text-[#A3A3A3]">{{ product.sku }}</div>
                         </div>
                         <div class="font-bold text-[#606060]">{{ product.qty }}</div>
-                        <div class="font-bold text-[#606060]">Rp {{ product.total }}</div>
+                        <div class="font-bold text-[#606060]"
+                            v-html="priceFormat(product.price)"></div>
                     </div>
                 </div>
                 <div class="bg-[#606060] opacity-40 w-full h-0.5"></div>
                 <div class="grid grid-cols-3 font-bold font-roboto text-secondary-50">
                     <div class="col-span-2">Subtotal</div>
-                    <div>Rp {{ totalPayment }}</div>
-                    <div class="col-span-2">Discount (0)</div>
-                    <div>Rp 0,-</div>
+                    <div
+                        v-html="priceFormat(totalPayment)"></div>
+                    <div class="col-span-2">Discount ({{ couponUsed }}%)</div>
+                    <div v-html="priceFormat(discount)"></div>
                     <div class="col-span-2">Total</div>
-                    <div>Rp {{ totalPayment }}</div>
+                    <div
+                        v-html="priceFormat(afterDiscount)"
+                        ></div>
                 </div>
                 <div class="grid grid-cols-3 px-4 pt-4 pb-3 text-lg font-bold bg-secondary text-primary-50 lg:text-2xl">
                     <div class="col-span-2">TOTAL AMOUNT TO BE PAID</div>
-                    <div class="">Rp {{ totalPayment }}</div>
+                    <div class="">{{ priceFormat(afterDiscount) }}</div>
                 </div>
                 <div class="grid grid-cols-3 mt-1 font-roboto text-[#606060] text-xs">
                     <div class="col-span-2"></div>

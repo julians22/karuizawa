@@ -68,13 +68,8 @@ class ProductTable extends DataTableComponent
             Column::make("Product name", "product_name")
                 ->searchable()
                 ->sortable(),
-            Column::make("Daily Stock", "daily_stock")
+            Column::make("Accurate Stock", "daily_stock")
                 ->sortable(),
-            // Column::make("Stock")
-            //     ->sortable()
-            //     ->label(function ($row, Column $column) {
-            //         return $row->current_stock;
-            //     }),
             Column::make("Description", "description")
                 ->sortable(),
             Column::make("Price", "price")

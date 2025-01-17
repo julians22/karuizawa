@@ -29,20 +29,20 @@ defineExpose({
 
                 <div class="flex justify-center items-center w-full h-full">
                     <div v-if="sendingPayment" class="text-lg">Processing Payment...</div>
-                    <div v-else-if="status === 'success'" class="text-green-500 text-lg">
+                    <div v-else-if="status === 'success'" class="text-primary-50 text-xl">
                         {{ message }}
 
                         <div class="flex justify-center mt-5">
-                            <a href="/ready-to-wear" class="bg-primary-50 px-6 py-3 rounded-full text-white">Go Back</a>
+                            <a href="/ready-to-wear" class="bg-primary-50 px-6 py-3 rounded-full text-white">Back to Rtw</a>
                         </div>
-                        
+
                     </div>
                     <div v-else class="text-lg text-red-500">
                         {{ message }}
                         <div class="flex justify-center mt-5">
-                            <a href="/ready-to-wear" class="bg-primary-50 px-6 py-3 rounded-full text-white">Go Back</a>
+                            <a href="/ready-to-wear" class="bg-primary-50 px-6 py-3 rounded-full text-white">Back to Rtw</a>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>

@@ -1,11 +1,7 @@
 <div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
     <div class="sidebar-brand">
-        <svg class="sidebar-brand-full d-none d-md-block" width="118" height="46" alt="CoreUI Logo">
-            <use xlink:href="{{ asset('img/brand/coreui.svg#full') }}"></use>
-        </svg>
-        <svg class="sidebar-brand-minimized d-block d-md-none" width="46" height="46" alt="CoreUI Logo">
-            <use xlink:href="{{ asset('img/brand/coreui.svg#signet') }}"></use>
-        </svg>
+        <img class="sidebar-brand-full d-none d-md-block" width="160" height="46" alt="Brand Logo" src="{{ asset('img/brand/logo-01.png') }}" style="filter: invert(1);">
+        <i,g class="sidebar-brand-minimized d-block d-md-none" width="30" height="46" alt="Brand Logo" src="{{ asset('img/brand/logo-02.png') }}"/>
     </div><!--sidebar-brand-->
 
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>

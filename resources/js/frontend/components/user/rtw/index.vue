@@ -39,6 +39,7 @@
             storeProducts.setSlug = [];
             storeProducts.setProducts = [];
             storeCustomer.customer = null;
+            storeProducts.coupon_rtw = 0;
 
         }
     });
