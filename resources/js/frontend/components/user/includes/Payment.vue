@@ -18,6 +18,7 @@
     const products = computed(() => useProducts().getProducts);
     const customer = computed(() => useCustomer().getCustomer);
     const couponUsed = computed(() => useProducts().coupon_rtw);
+    const semiCustom = computed(() => useProducts().getSemiCustom);
 
     const totalPayment = ref(0);
 
@@ -42,7 +43,6 @@
         const doSend = await sendOrder();
 
         console.log(doSend);
-
 
         if (doSend) {
             window.location.href = '/customer-booking';
@@ -149,12 +149,12 @@
                             name="check"
                             value="debit-card"
                             :id="`debit-card`">
-                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`debit-card`">
+                        <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`debit-card`">
                             <div>
                                 <img src="img/icons/credit-card.png" alt="">
                             </div>
-                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Debit Card</div>
-                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
+                            <div class="text-sm font-bold text-center font-roboto text-nowrap text-secondary-50 lg:text-base xl:text-lg">Debit Card</div>
+                            <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 checkbox-inner size-10"></span>
                         </label>
                     </div>
                     <div>
@@ -165,9 +165,9 @@
                             name="check"
                             value="qris"
                             :id="`qris`">
-                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`qris`">
-                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">QRIS</div>
-                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
+                        <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`qris`">
+                            <div class="text-sm font-bold text-center font-roboto text-nowrap text-secondary-50 lg:text-base xl:text-lg">QRIS</div>
+                            <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 checkbox-inner size-10"></span>
                         </label>
                     </div>
                 </div>
@@ -217,6 +217,22 @@
                         <div class="font-bold text-[#606060]">{{ product.qty }}</div>
                         <div class="font-bold text-[#606060]"
                             v-html="priceFormat(product.price)"></div>
+                    </div>
+                </div>
+                <div>
+                    <div class="grid grid-cols-3 font-bold font-roboto text-secondary-50">
+                        <div>Semi Custom</div>
+                        <div>Qty</div>
+                        <div>Price</div>
+                    </div>
+                    <div class="grid grid-cols-3 mt-2">
+                        <div class="font-roboto">
+                            <div class="font-bold text-[#606060]">name</div>
+                            <div class="text-[#A3A3A3]">fabric-code</div>
+                        </div>
+                        <div class="font-bold text-[#606060]">1</div>
+                        <div class="font-bold text-[#606060]"
+                            v-html="priceFormat(semiCustom.totalPrice)"></div>
                     </div>
                 </div>
                 <div class="bg-[#606060] opacity-40 w-full h-0.5"></div>
