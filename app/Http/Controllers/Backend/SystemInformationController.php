@@ -33,7 +33,7 @@ class SystemInformationController extends Controller
         $scopes = config('accurate.auth.scopes');
         $scopes = implode('%20', $scopes);
 
-        return redirect()->to($url . "?client_id={$client}&response_type=code&scope={$scopes}&redirect_uri={$redirect}");
+        return redirect()->to($url . "?client_id={$client}&redirect_uri={$redirect}&response_type=code&scope={$scopes}");
     }
 
     public function accurateCallback(){
