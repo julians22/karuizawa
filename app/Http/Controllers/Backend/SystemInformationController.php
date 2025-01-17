@@ -27,12 +27,13 @@ class SystemInformationController extends Controller
 
     public function accurate(){
         $url = env('ACCURATE_AUTHORIZATION_URL');
-        $clinet_id = env('ACCURATE_CLIENT_KEY');
+        $client = env('ACCURATE_CLIENT_KEY');
 
+        $redirect = route('admin.system-information.accurate.callback');
         $scopes = config('accurate.auth.scopes');
         $scopes = implode('%20', $scopes);
 
-        return redirect()->to($url . "?client_id={$clinet_id}&response_type=code&scope={$scopes}");
+        return redirect()->to($url . "?client_id={$client}&response_type=code&scope={$scopes}&redirect_uri={$redirect}");
     }
 
     public function accurateCallback(){
@@ -69,8 +70,13 @@ class SystemInformationController extends Controller
         $dbList = cache()->get('accurate_db_list');
 
         if (!$dbList) {
-            $url = "https://account.accurate.id/api/db-list.do";
+
             $token = $this->retrieveCachedToken();
+            if (!$token) {
+                return [];
+            }
+
+            $url = "https://account.accurate.id/api/db-list.do";
 
             $headers = [
                 'Authorization' => 'Bearer ' . $token['access_token']
