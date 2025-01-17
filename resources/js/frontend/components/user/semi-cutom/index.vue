@@ -7,6 +7,7 @@
 
     const storePage = usePage();
     const storeCustomer = useCustomer();
+    const storeProducts = useProducts();
 
     const props = defineProps({
         csrf: String,
@@ -92,6 +93,7 @@
         }else{
             storePage.currentPage = currentSection.value;
             storeCustomer.customer = null;
+            storeProducts.semi_custom = [];
         }
     });
 
