@@ -46,7 +46,8 @@ class SystemInformationController extends Controller
 
         $data = [
             'code' => $code,
-            'grant_type' => 'authorization_code'
+            'grant_type' => 'authorization_code',
+            'redirect_uri' => env('ACCURATE_REDIRECT_URI')
         ];
 
         // Post data with bearer token & json content type
