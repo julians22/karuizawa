@@ -1,7 +1,5 @@
 <script setup>
-
-import { type } from 'jquery';
-import { ref, reactive } from 'vue';
+import { ref, reactive, defineExpose } from 'vue';
 
 const props = defineProps({
     default: String,
@@ -29,7 +27,7 @@ if (props.default && props.default.length === props.digitCount) {
     }
 }
 
-const inputCont = ref(null)
+const inputCont = ref(null);
 
 const emit = defineEmits(['update:input']);
 
@@ -63,17 +61,21 @@ const handleKeyDown = function (event, index) {
 
     if ((new RegExp('^([0-9a-zA-Z])$')).test(event.key)) {
         digits[index] = event.key.toUpperCase();
-    
+
         if (index != props.digitCount - 1) {
           (inputCont.value.children)[index+1].focus();
         }
-    
-        // if (isDigitsFull()) {
+
+        if (isDigitsFull()) {
             emit('update:input', digits.join(''))
-        // }
+        }
     }
 
 }
+
+defineExpose({
+    digits
+})
 
 </script>
 

@@ -2,6 +2,8 @@
     import { isNull } from 'lodash';
     import { ref, defineProps, watch, defineExpose, computed } from 'vue'
     import boxInput from '../../../utils/fields/boxInput.vue';
+    import { useProducts } from '../../../../store/product';
+
 
     const props = defineProps({
         dataOptions: Object

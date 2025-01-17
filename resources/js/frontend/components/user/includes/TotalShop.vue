@@ -22,7 +22,11 @@
         return productsState;
     });
 
-    const coupon = ref(0);
+    const semiCustom = computed(function () {
+        return storeProducts.getSemiCustom;
+    })
+
+    const coupon = ref(storeProducts.getCouponRtw);
 
     const plusQty = (index) => {
         products.value[index].qty += 1;
@@ -85,7 +89,8 @@
                 </form> -->
             </div>
             <div class="p-6 lg:px-14 lg:py-10">
-                <table class="w-full">
+                <div v-if="products.length == 0 && semiCustom.length == 0" class="text-xl text-center">Loading...</div>
+                <table class="w-full" v-if="products.length !== 0">
                     <thead>
                         <tr>
                             <th class="py-3 pr-6 text-left uppercase text-primary-50">Product</th>
@@ -125,6 +130,61 @@
                         </tr>
                     </tbody>
                 </table>
+
+                <div class="mt-20" v-if="semiCustom.length !== 0">
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th class="py-3 pr-6 text-left uppercase text-primary-50">Semi Custom </th>
+                                <th class="px-6 py-3 text-center uppercase text-primary-50">Price</th>
+                                <th class="px-6 py-3 text-center uppercase text-primary-50">qty</th>
+                                <th class="px-6 py-3 text-center uppercase text-primary-50">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-if="products.length == 0">
+                                <td colspan="4" class="py-3 text-center text-primary-50">Loading...</td>
+                            </tr>
+                            <tr class="border-b" >
+                                <td class="py-3 pr-6 text-left text-primary-50">
+                                    <div class="text-[#606060]">name</div>
+                                    <div class="text-[#A3A3A3] text-sm">fabric-code</div>
+                                </td>
+                                <td class="px-6 py-3 text-center text-primary-50">
+                                    <div class="text-[#606060] text-center lg:text-lg"
+                                        v-html="priceFormat(semiCustom.totalPrice)"></div>
+                                </td>
+                                <td class="px-6 py-3 text-center text-primary-50">
+                                    1
+                                    <!-- <div class="flex justify-center w-full text-left number-input" data-controller="quantity">
+                                        <button @click="minQty(index)" class="flex items-center p-2 font-bold no-underline border border-r-0 border-primary-50 bg-off-white hover:bg-grey-lightest text-grey-darker">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M424 318.2c13.3 0 24-10.7 24-24v-76.4c0-13.3-10.7-24-24-24H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h400z"/></svg>
+                                        </button>
+                                        <input type="number" class="w-10 p-2 text-center border border-primary-50" :value="product.qty" data-target="quantity.value">
+
+                                        <button @click="plusQty(index)" class="flex items-center p-2 font-bold no-underline border border-l-0 border-primary-50 bg-off-white hover:bg-grey-lightest text-grey-darker">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"/></svg>
+                                        </button>
+                                    </div> -->
+                                </td>
+                                <td class="px-6 py-3 text-center text-primary-50">
+                                    <div class="text-center text-secondary-50 lg:text-lg">{{ priceFormat(semiCustom.totalPrice) }}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- <div class="flex items-end justify-between">
+                        <div class="uppercase text-primary-50">
+                            <div>Semi Custom</div>
+                            <div>(fabric Code)</div>
+                        </div>
+                        <div class="uppercase text-primary-50">Total</div>
+                    </div>
+                    <div class="flex justify-between">
+                        <div>{{ semiCustom.length }}</div>
+                        <div>{{ priceFormat(semiCustom.totalPrice) }}</div>
+                    </div> -->
+                </div>
             </div>
         </section>
 
@@ -141,10 +201,10 @@
                         </span>
                         <select v-model="coupon"
                             id="coupon" class="block border-primary-50 bg-white before:bg-blue-400 py-2.5 pr-10 pl-2.5 border focus:border-blue-500 rounded-full focus:ring-blue-500 w-full *:text-[#606060] uppercase">
-                            <option value="0">0%</option>
-                            <option value="10">10%</option>
-                            <option value="20">20%</option>
-                            <option value="30">30%</option>
+                            <option :selected="useProducts.getCouponRtw == 0 || coupon == 0" value="0">0%</option>
+                            <option :selected="useProducts.getCouponRtw == 10 || coupon == 10" value="10">10%</option>
+                            <option :selected="useProducts.getCouponRtw == 20 || coupon == 20" value="20">20%</option>
+                            <option :selected="useProducts.getCouponRtw == 30 || coupon == 30" value="30">30%</option>
                         </select>
                     </div>
                 </div>

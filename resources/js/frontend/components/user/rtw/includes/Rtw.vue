@@ -50,8 +50,8 @@
         fetchProducts(1);
     });
 
-    const selectProducts = () => {
-        axios.get(`/api/find-product/${form.value.shirtsSelected}`)
+    const selectProducts = async () => {
+        await axios.get(`/api/find-product/${form.value.shirtsSelected}`)
             .then(response => {
                 selectedProducts.value = response.data;
                 selectedProducts.value.forEach(shirt => {
@@ -63,6 +63,8 @@
             .catch(error => {
                 // console.error('There was an error!', error.response.data.message);
             });
+
+            return;
 
     }
 
@@ -156,6 +158,7 @@
             }
         }else{
             formError.value = ['Please select at least one item']
+            alert('Please select at least one item');
             console.log(formError.value);
         }
     }

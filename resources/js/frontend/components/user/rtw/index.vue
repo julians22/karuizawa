@@ -38,6 +38,7 @@
             storePage.currentPage = currentSection.value;
             storeProducts.setSlug = [];
             storeProducts.setProducts = [];
+            storeProducts.semi_custom = [];
             storeCustomer.customer = null;
             storeProducts.coupon_rtw = 0;
 

@@ -5,7 +5,8 @@ export const useProducts = defineStore('products', {
         return {
           setProducts: [],
           setSlug: [],
-          coupon_rtw: 0
+          coupon_rtw: 0,
+          semi_custom: []
         }
     },
 
@@ -20,7 +21,17 @@ export const useProducts = defineStore('products', {
 
         getCouponRtw: (state) => {
             return state.coupon_rtw;
+        },
+
+        getSemiCustom: (state) => {
+            return state.semi_custom;
         }
+    },
+
+    actions: {
+        setCustom(custom) {
+            this.semi_custom = custom
+        },
     },
 
     persist: true,

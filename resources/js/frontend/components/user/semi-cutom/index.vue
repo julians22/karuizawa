@@ -44,11 +44,16 @@
         return childBasic.value?.form;
     });
 
+    const formActual =  computed(() => {
+        return childBasic.value?.formSize;
+    });
+
     const basic = computed(() => {
         let data = {
             form: childBasic.value?.form,
             amount: childBasic.value?.amount,
-            additionalNote: childBasic.value?.additionalNote
+            additionalNote: childBasic.value?.additionalNote,
+            formSize: childBasic.value?.formSize
         };
         return data;
     });
@@ -135,9 +140,6 @@
             alert('Please fill the form OR apply the price first');
         }else {
             onSumbit();
-            url.searchParams.set('page', 'total-shop');
-            window.history.pushState(null, '', url.toString());
-            storePage.currentPage = 'total-shop';
         }
     }
 
@@ -145,6 +147,10 @@
         await axios.post('/api/semi-custom/submit', bindForm.value)
             .then(response => {
                 console.log(response.data.data);
+                useProducts().setCustom(response.data.data);
+                url.searchParams.set('page', 'total-shop');
+                window.history.pushState(null, '', url.toString());
+                storePage.currentPage = 'total-shop';
             })
             .catch(error => {
                 console.log('error');
@@ -168,41 +174,8 @@
                                             v-for="(summaryBasic, key) in formBasic" :key="key">
                                             <td class="capitalize">{{ stingConvert(key) }}</td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">{{ (summaryBasic?.name ?? summaryBasic?.fabricCode) ?? 'none' }}</td>
+                                            <td class="">{{ (summaryBasic?.name ?? summaryBasic?.fabricCode ??  (summaryBasic?.optionNumber) ) ?? 'none' }}</td>
                                         </tr>
-                                        <!-- <tr class="lg:whitespace-pre-wrap">
-                                            <td>Collar</td>
-                                            <td class="w-4 text-center">:</td>
-                                            <td class="">{{ formCustom?.collar.name }}</td>
-                                        </tr>
-                                        <tr class="lg:whitespace-pre-wrap">
-                                            <td>Sleeve</td>
-                                            <td class="w-4 text-center">:</td>
-                                            <td class="">Short Sleeve</td>
-                                        </tr>
-                                        <tr class="lg:whitespace-pre-wrap">
-                                            <td>Body Type</td>
-                                            <td class="w-4 text-center">:</td>
-                                            <td class="">
-                                                <div>Front - 2. French Palette</div>
-                                                <div>Back - 4. No Pleats</div>
-                                                <div>Hem - Standard Hem</div>
-                                            </td>
-                                        </tr>
-                                        <tr class="lg:whitespace-pre-wrap">
-                                            <td>Pocket </td>
-                                            <td class="w-4 text-center">:</td>
-                                            <td class="">Round</td>
-                                        </tr>
-                                        <tr class="lg:whitespace-pre-wrap">
-                                            <td>Button</td>
-                                            <td class="w-4 text-center">:</td>
-                                            <td class="">
-                                                <div>Button - Purple </div>
-                                                <div>Type - None</div>
-                                                <div>Fabric - None </div>
-                                            </td>
-                                        </tr> -->
                                     </tbody>
                                 </table>
 
@@ -241,87 +214,92 @@
                                         <tr class="lg:whitespace-pre-wrap">
                                             <td>Order </td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">New Order</td>
+                                            <td class="">{{ formActual?.order }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
                                             <td>Body Type </td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">2. Slim</td>
+                                            <td class="">{{ formActual?.bodyType }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
                                             <td>Sleeve </td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">Regular Sleeve</td>
+                                            <td class="">{{ formActual?.sleeve }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
-                                            <td>Neck </td>
+                                            <td>Shirt’s Neck</td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">43</td>
+                                            <td class="">{{ formActual?.shirt.neck }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
-                                            <td>Shirt’s Right Sleeve  </td>
+                                            <td>Shirt’s Right Sleeve</td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">92</td>
+                                            <td class="">{{ formActual?.shirt.rightSleeve }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
-                                            <td>Shirt’s Left Sleeve </td>
+                                            <td>Shirt’s Left Sleeve</td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">89</td>
+                                            <td class="">{{ formActual?.shirt.leftSleeve }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
                                             <td>Shirt’s Chest </td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">43</td>
+                                            <td class="">{{ formActual?.shirt.chest }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
                                             <td>Shirt’s Waist </td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">92</td>
+                                            <td class="">{{ formActual?.shirt.waist }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
                                             <td>Shirt’s Shoulder </td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">89</td>
+                                            <td class="">{{ formActual?.shirt.shoulder }}</td>
+                                        </tr>
+                                        <tr class="lg:whitespace-pre-wrap">
+                                            <td>Actual’s Neck</td>
+                                            <td class="w-4 text-center">:</td>
+                                            <td class="">{{ formActual?.actual.neck }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
                                             <td>Actual’s Right Sleeve  </td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">43</td>
+                                            <td class="">{{ formActual?.actual.rightSleeve }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
                                             <td>Actual’s Left Sleeve </td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">43</td>
+                                            <td class="">{{ formActual?.actual.leftSleeve }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
                                             <td>Actual’s Chest </td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">43</td>
+                                            <td class="">{{ formActual?.actual.chest }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
                                             <td>Actual’s Waist </td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">43</td>
+                                            <td class="">{{ formActual?.actual.waist }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
                                             <td>Actual’s Shoulder </td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">93</td>
+                                            <td class="">{{ formActual?.actual.shoulder }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
                                             <td>SA Neck Size  </td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">-</td>
+                                            <td class="">{{ formActual?.sa.neckSize }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
                                             <td>SA Shoulder  </td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">-</td>
+                                            <td class="">{{ formActual?.sa.shoulder }}</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap">
                                             <td>SA Back Length  </td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">-</td>
+                                            <td class="">{{ formActual?.sa.backLength }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
