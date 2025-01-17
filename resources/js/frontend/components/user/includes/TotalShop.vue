@@ -142,9 +142,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-if="products.length == 0">
-                                <td colspan="4" class="py-3 text-center text-primary-50">Loading...</td>
-                            </tr>
                             <tr class="border-b" >
                                 <td class="py-3 pr-6 text-left text-primary-50">
                                     <div class="text-[#606060]">name</div>

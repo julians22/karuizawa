@@ -4,6 +4,7 @@
     import { useCustomer } from '../../../store/customer';
     import { useProducts } from '../../../store/product';
     import axios from 'axios';
+    import { sum, isEmpty } from 'lodash';
 
     const storePage = usePage();
     const storeCustomer = useCustomer();
@@ -187,18 +188,36 @@
                                             <td class="font-bold uppercase">Option:</td>
                                         </tr>
                                         <tr class="lg:whitespace-pre-wrap *:align-top max-xl:text-sm"
-                                            v-for="(summaryBasic, key) in formOptions" :key="key">
+                                            v-for="(summaryOption, key) in formOptions" :key="key">
                                             <td class="capitalize">{{ stingConvert(key) }} </td>
                                             <td class="w-4 text-center">:</td>
                                             <td class="">
                                                 <div v-if="key == 'tape'">
-                                                    <div>{{ summaryBasic?.collar ?? 'none' }}</div>
-                                                    <div>{{ summaryBasic?.lower }}</div>
+                                                    <div>{{ summaryOption?.collar ?? 'none' }}</div>
+                                                    <div>{{ summaryOption?.lower }}</div>
+                                                </div>
+                                                <div v-else-if="key == 'embroidery'">
+                                                    <div v-if="isEmpty(summaryOption)">none</div>
+                                                    <div v-if="summaryOption.position">
+                                                        {{ summaryOption.position.name }}
+                                                    </div>
+                                                    <div v-if="summaryOption.color">
+                                                        {{ summaryOption.color.name }}
+                                                    </div>
+                                                    <div v-if="summaryOption.fontType">
+                                                        {{ summaryOption.fontType.name }}
+                                                    </div>
+                                                    <div v-if="summaryOption.initialName">
+                                                        {{ summaryOption.initialName }}
+                                                    </div>
+                                                    <div v-if="summaryOption.longName">
+                                                        {{ summaryOption.longName }}
+                                                    </div>
                                                 </div>
                                                 <div v-else>
-                                                    {{ (summaryBasic?.name ?? summaryBasic?.fabricCode) ?? 'none' }}
+                                                    {{ (summaryOption?.name ?? summaryOption?.fabricCode) ?? 'none' }}
                                                 </div>
-                                                <div v-for="option in summaryBasic?.data">
+                                                <div v-for="option in summaryOption?.data">
                                                     - {{ option.name }}
                                                 </div>
                                             </td>

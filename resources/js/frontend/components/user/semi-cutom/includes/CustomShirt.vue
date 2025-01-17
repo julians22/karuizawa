@@ -169,7 +169,7 @@
                 <div class="flex items-center gap-12 mx-20 my-10">
                     <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg xl:text-base">OPTION NUMBER</div>
                     <div class="flex font-roboto">
-                        <boxInput :digitCount="2" @update:input="onInputBox($event, 'collar', 'optionNumber')"/>
+                        <boxInput :digitCount="2" inputType="number" @update:input="onInputBox($event, 'collar', 'optionNumber')"/>
                     </div>
                 </div>
             </div>

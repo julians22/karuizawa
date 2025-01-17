@@ -93,33 +93,33 @@
         fontType: null,
         initialName: null,
         longName: null,
-        price: props.dataOptions.embroidery.data.options.price
+        // price: props.dataOptions.embroidery.data.options.price
     });
 
     watch(embroidery.value, (items) => {
-        if (isNull(items.longName) || items.longName == '' || isNull(items.initialName) || items.initialName == '') {
-            form.value.embroidery = null;
-            return;
-        }
+        // if (isNull(items.longName) || items.longName == '' || isNull(items.initialName) || items.initialName == '') {
+        //     form.value.embroidery = null;
+        //     return;
+        // }
 
-        const data = {
-            slug: items.slug,
-            name: items.name,
-            data: {
-                position: items.position,
-                color: items.color,
-                fontType: items.fontType,
-                initialName: {
-                    name: items.initialName
-                },
-                longName: {
-                    name: items.longName
-                },
-            },
-            price: items.price
-        }
+        // const data = {
+        //     slug: items?.slug,
+        //     name: items?.name,
+        //     data: {
+        //         position: items?.position,
+        //         color: items?.color,
+        //         fontType: items?.fontType,
+        //         initialName: {
+        //             name: items?.initialName
+        //         },
+        //         longName: {
+        //             name: items?.longName
+        //         },
+        //     },
+        //     price: items?.price
+        // }
 
-        form.value.embroidery = data;
+        form.value.embroidery = items;
     });
 
     const tape = ref({
@@ -156,10 +156,14 @@
 
                 let camelCased = myVariable.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
 
-                // find form value key
-                const key = Object.keys(form.value).find(key => key === camelCased);
+                if (camelCased !== 'embroideryPosition' || camelCased !== 'embroideryColor' || camelCased !== 'embroideryFontType' || camelCased !== 'embroideryInitialName' || camelCased !== 'embroideryLongName') {
+                    // find form value key
+                    const key = Object.keys(form.value).find(key => key === camelCased);
 
-                form.value[key] = null;
+                    form.value[key] = null;
+                }
+
+
             }
         }
 
@@ -588,7 +592,7 @@
                     <div class="p-4 space-y-4 border-b border-r border-b-dashed border-pink-ka max-xl:col-span-3">
                         <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">position</div>
                         <div class="flex" v-for="(embroideryPosition, index) in dataOptions.embroidery.data.options.position" :key="index">
-                            <input class="hidden" type="radio" name="embroidery-position" :value="embroideryPosition" v-model="embroidery.position" :id="`embroidery-position-${embroideryPosition.slug}`">
+                            <input class="hidden" @click.native="embroidery.position = null" type="radio" name="embroidery-position" :value="embroideryPosition" v-model="embroidery.position" :id="`embroidery-position-${embroideryPosition.slug}`">
                             <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-position-${embroideryPosition.slug}`">
                                 <span class="checkbox-inner"></span>
                                 <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ embroideryPosition.name }}</div>
@@ -601,7 +605,7 @@
                         <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">color</div>
                         <div class="grid grid-cols-2 gap-2">
                             <div class="flex" v-for="(embroideryColor, index) in dataOptions.embroidery.data.options.color" :key="index">
-                                <input class="hidden" type="radio" name="embroidery-color" :value="embroideryColor" v-model="embroidery.color" :id="`embroidery-color-${embroideryColor.slug}`">
+                                <input @click.native="embroidery.color = null"  class="hidden" type="radio" name="embroidery-color" :value="embroideryColor" v-model="embroidery.color" :id="`embroidery-color-${embroideryColor.slug}`">
                                 <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-color-${embroideryColor.slug}`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ (index + 1)+'. '+ embroideryColor.name }}</div>
@@ -614,7 +618,7 @@
                     <div class="p-4 space-y-4 border-b border-b-dashed border-pink-ka max-xl:col-span-3">
                         <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">font type</div>
                         <div class="flex" v-for="(embroideryFontType, index) in dataOptions.embroidery.data.options.font_type" :key="index">
-                            <input class="hidden" type="radio" name="embroidery-font-type" :value="embroideryFontType" v-model="embroidery.fontType" :id="`embroidery-font-type-${embroideryFontType.slug}`">
+                            <input @click.native="embroidery.fontType = null" class="hidden" type="radio" name="embroidery-font-type" :value="embroideryFontType" v-model="embroidery.fontType" :id="`embroidery-font-type-${embroideryFontType.slug}`">
                             <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-font-type-${embroideryFontType.slug}`">
                                 <span class="checkbox-inner"></span>
                                 <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ +(index + 1)+'. '+embroideryFontType.name }}</div>
