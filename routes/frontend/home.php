@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\SystemInformationController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\TermsController;
 use Tabuna\Breadcrumbs\Trail;
@@ -26,3 +27,6 @@ Route::get('terms', [TermsController::class, 'index'])
         $trail->parent('frontend.index')
             ->push(__('Terms & Conditions'), route('frontend.pages.terms'));
     });
+
+Route::get('accurate/callback', [SystemInformationController::class, 'accurateCallback'])
+    ->name('accurate.callback');

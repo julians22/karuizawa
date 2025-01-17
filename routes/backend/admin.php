@@ -123,7 +123,4 @@ Route::group(['prefix' => 'system-information', 'as' => 'system-information.'], 
 
     Route::get('accurate', [SystemInformationController::class, 'accurate'])
         ->name('accurate');
-
-    Route::get('accurate/callback', [SystemInformationController::class, 'accurateCallback'])
-        ->name('accurate.callback');
 });
