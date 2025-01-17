@@ -1,7 +1,8 @@
 <script setup>
     import { ref, watch, defineEmits, computed } from 'vue';
-
     import boxInput from '../../../utils/fields/boxInput.vue';
+    import { useProducts } from '../../../../store/product';
+
 
     const props = defineProps({
         dataSemiCustom: Object
@@ -29,9 +30,52 @@
         button: null,
     });
 
+    const formSize = ref({
+        order: null,
+        bodyType: null,
+        sleeve: null,
+        shirt: {
+            neck: null,
+            rightSleeve: null,
+            leftSleeve: null,
+            chest: null,
+            waist: null,
+            shoulder: null,
+        },
+        actual: {
+            neck: null,
+            rightSleeve: null,
+            leftSleeve: null,
+            chest: null,
+            waist: null,
+            shoulder: null,
+        },
+        sa: {
+            neckSize: null,
+            backLength: null,
+            shoulder: null,
+        }
+    })
+
+    watch(form.value, (items) => {
+        let radio = document.querySelectorAll("input[type=radio]:checked");
+
+        // unchecked radio
+        for(let i = 0; i < radio.length; i++) {
+            radio[i].onclick = function(e) {
+                let myVariable = e.target.name;
+
+                let camelCased = myVariable.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+
+                // find form value key
+                const key = Object.keys(form.value).find(key => key === camelCased);
+                form.value[key] = null;
+            }
+        }
+
+    });
+
     const additionalNote = ref(null);
-
-
 
     const price = ref(null);
     const discount = ref(null);
@@ -55,6 +99,7 @@
 
     defineExpose({
         form,
+        formSize,
         additionalNote,
         amount,
         basicAmount
@@ -67,7 +112,14 @@
 
     function onInputBox(val, key = 'fabric', key2 = 'fabricCode')
     {
-        form.value[key][key2] = val;
+        if (key2 == 'fabricCode') {
+            form.value[key][key2] = val;
+        }
+        if (key2 == 'optionNumber') {
+            form.value[key] = {};
+            form.value[key][key2] = val;
+
+        }
     }
 
     const currencyFormat = (value) => {
@@ -117,7 +169,7 @@
                 <div class="flex items-center gap-12 mx-20 my-10">
                     <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg xl:text-base">OPTION NUMBER</div>
                     <div class="flex font-roboto">
-                        <boxInput :digitCount="2" inputType="number" @update:input="onInputBox($event, 'collar', 'optionNumber')"/>
+                        <boxInput :digitCount="2" @update:input="onInputBox($event, 'collar', 'optionNumber')"/>
                     </div>
                 </div>
             </div>
@@ -247,21 +299,21 @@
                 </div>
                 <div class="grid grid-cols-3 gap-2 px-6 my-10 xl:grid-cols-4 lg:px-10 xl:px-14">
                     <div>
-                        <input class="hidden" type="radio" name="size" :id="`new-order`">
+                        <input v-model="formSize.order" class="hidden" value="1. NEW ORDER" type="radio" name="size" :id="`new-order`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`new-order`">
                             <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">1. NEW ORDER</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="justify-self-center xl:col-span-2">
-                        <input class="hidden" type="radio" name="size" :id="`repeat-order`">
+                        <input v-model="formSize.order" class="hidden" type="radio" value="2. REPEAT ORDER" name="size" :id="`repeat-order`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`repeat-order`">
                             <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">2. REPEAT ORDER</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div>
-                        <input class="hidden" type="radio" name="size" :id="`garment-sample`">
+                        <input v-model="formSize.order" class="hidden" type="radio" name="size" value="3. GARMENT SAMPLE" :id="`garment-sample`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`garment-sample`">
                             <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">3. GARMENT SAMPLE</div>
                             <span class="checkbox-inner"></span>
@@ -274,42 +326,42 @@
                         <div class="inline-block border-2 border-primary-50 px-2 pt-1.5 font-bold text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">BODY TYPE</div>
                     </div>
                     <div class="max-xl:col-span-2">
-                        <input class="hidden" type="radio" name="body-type" :id="`slim`">
+                        <input v-model="formSize.bodyType" value="2. SLIM" class="hidden" type="radio" name="body-type" :id="`slim`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`slim`">
                             <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">2. SLIM</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
-                        <input class="hidden" type="radio" name="body-type" :id="`standard-1`">
+                        <input v-model="formSize.bodyType" value="3. STANDARD I" class="hidden" type="radio" name="body-type" :id="`standard-1`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-1`">
                             <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">3. STANDARD I</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
-                        <input class="hidden" type="radio" name="body-type" :id="`standard-2`">
+                        <input v-model="formSize.bodyType" value="4. STANDARD II" class="hidden" type="radio" name="body-type" :id="`standard-2`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-2`">
                             <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">4. STANDARD II</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
-                        <input class="hidden" type="radio" name="body-type" :id="`big-1`">
+                        <input v-model="formSize.bodyType" value="5. BIG I" class="hidden" type="radio" name="body-type" :id="`big-1`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`big-1`">
                             <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">5. BIG I</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
-                        <input class="hidden" type="radio" name="body-type" :id="`big-2`">
+                        <input v-model="formSize.bodyType" value="7. BIG II" class="hidden" type="radio" name="body-type" :id="`big-2`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`big-2`">
                             <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">7. BIG II</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
-                        <input class="hidden" type="radio" name="body-type" :id="`standard-3`">
+                        <input v-model="formSize.bodyType" value="3. STANDARD II" class="hidden" type="radio" name="body-type" :id="`standard-3`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-3`">
                             <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">3. STANDARD II</div>
                             <span class="checkbox-inner"></span>
@@ -323,14 +375,14 @@
                         <div class="inline-block border-2 border-primary-50 px-2 pt-1.5 font-bold text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">SLEEVE</div>
                     </div>
                     <div class="max-xl:col-span-2">
-                        <input class="hidden" type="radio" name="sleeve" :id="`slim-sleeve`">
+                        <input v-model="formSize.sleeve" value="1. SLIM SLEEVE" class="hidden" type="radio" name="sleeve" :id="`slim-sleeve`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`slim-sleeve`">
                             <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">1. SLIM SLEEVE</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
-                        <input class="hidden" type="radio" name="sleeve" :id="`regular-sleeve`">
+                        <input v-model="formSize.sleeve" value="2. REGULAR SLEEVE" class="hidden" type="radio" name="sleeve" :id="`regular-sleeve`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`regular-sleeve`">
                             <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">2. REGULAR SLEEVE</div>
                             <span class="checkbox-inner"></span>
@@ -356,43 +408,43 @@
                                 <tr class="*:border-2 *:border-primary-50 *:text-center">
                                     <td>SHIRT</td>
                                     <td>
-                                        <input type="text" class="w-full text-center font-roboto">
+                                        <input v-model="formSize.shirt.neck" type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full text-center font-roboto">
+                                        <input v-model="formSize.shirt.rightSleeve" type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full text-center font-roboto">
+                                        <input v-model="formSize.shirt.leftSleeve" type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full text-center font-roboto">
+                                        <input v-model="formSize.shirt.chest" type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full text-center font-roboto">
+                                        <input v-model="formSize.shirt.waist" type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full text-center font-roboto">
+                                        <input v-model="formSize.shirt.shoulder" type="text" class="w-full text-center font-roboto">
                                     </td>
                                 </tr>
                                 <tr class="*:border-2 *:border-primary-50 *:text-center">
                                     <td>ACTUAL</td>
                                     <td>
-                                        <input type="text" class="w-full text-center font-roboto">
+                                        <input v-model="formSize.actual.neck" type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full text-center font-roboto">
+                                        <input v-model="formSize.actual.rightSleeve" type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full text-center font-roboto">
+                                        <input v-model="formSize.actual.leftSleeve" type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full text-center font-roboto">
+                                        <input v-model="formSize.actual.chest" type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full text-center font-roboto">
+                                        <input v-model="formSize.actual.waist" type="text" class="w-full text-center font-roboto">
                                     </td>
                                     <td>
-                                        <input type="text" class="w-full text-center font-roboto">
+                                        <input v-model="formSize.actual.shoulder" type="text" class="w-full text-center font-roboto">
                                     </td>
                                 </tr>
                             </tbody>
@@ -404,19 +456,19 @@
                         <div class="flex border-r-2 border-primary-50 border-y-2">
                             <div>NECK SIZE :</div>
                             <div>
-                                <input type="text" class="w-full text-center font-roboto">
+                                <input v-model="formSize.sa.neckSize" type="text" class="w-full text-center font-roboto">
                             </div>
                         </div>
                         <div class="flex border-r-2 border-primary-50 border-y-2 max-xl:border-l-2">
                             <div>SHOULDER :</div>
                             <div>
-                                <input type="text" class="w-full text-center font-roboto">
+                                <input v-model="formSize.sa.shoulder" type="text" class="w-full text-center font-roboto">
                             </div>
                         </div>
                         <div class="flex border-r-2 border-primary-50 border-y-2">
                             <div>BACK LENGTH :</div>
                             <div>
-                                <input type="text" class="w-full text-center font-roboto">
+                                <input v-model="formSize.sa.backLength" type="text" class="w-full text-center font-roboto">
                             </div>
                         </div>
                     </div>

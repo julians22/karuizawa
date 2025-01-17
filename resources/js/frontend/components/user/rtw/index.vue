@@ -1,6 +1,6 @@
 <script setup>
     import { defineAsyncComponent, onMounted, ref, watch, computed } from 'vue';
-    import { useRtw } from '../../../store/rtw';
+    import { usePage } from '../../../store/page';
     import { useProducts } from '../../../store/product';
     import { useCustomer } from '../../../store/customer';
 
@@ -19,7 +19,7 @@
     const Payment = defineAsyncComponent(() => import('../includes/Payment.vue'));
     const Rtw = defineAsyncComponent(() => import('./includes/Rtw.vue'));
 
-    const storePage = useRtw();
+    const storePage = usePage();
     const storeProducts = useProducts();
     const storeCustomer = useCustomer();
 
@@ -38,6 +38,7 @@
             storePage.currentPage = currentSection.value;
             storeProducts.setSlug = [];
             storeProducts.setProducts = [];
+            storeProducts.semi_custom = [];
             storeCustomer.customer = null;
             storeProducts.coupon_rtw = 0;
 

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useRtw = defineStore('currentPage', {
+export const usePage = defineStore('currentPage', {
     state: () => {
         return {
           currentPage: null,

@@ -1,7 +1,9 @@
 <script setup>
     import { isNull } from 'lodash';
-    import { ref, defineProps, watch, defineExpose } from 'vue'
+    import { ref, defineProps, watch, defineExpose, computed } from 'vue'
     import boxInput from '../../../utils/fields/boxInput.vue';
+    import { useProducts } from '../../../../store/product';
+
 
     const props = defineProps({
         dataOptions: Object
@@ -72,33 +74,26 @@
         emitFrom('additional-option', amount);
     };
 
-    defineExpose({
-        form,
-        additionalNote,
-        amount,
-        amountOption
-    });
-
-
     const initialName = ref({
-        x: null,
-        y: null,
-        dot: null,
-        z: null
+        x: '',
+        y: '',
+        dot: '',
+        z: ''
     });
 
     watch(initialName.value, (items) => {
-        embroidery.value.initialName = `${items.x}${items.dot}${items.y}${items.z}`;
-    });
+        embroidery.value.initialName = `${items.x}${items.dot}${items.y}${items.z}`
+    })
 
     const embroidery = ref({
         slug: 'embroidery',
+        name: '',
         position: null,
         color: null,
         fontType: null,
         initialName: null,
         longName: null,
-        price: props.dataOptions.embroidery.price
+        price: props.dataOptions.embroidery.data.options.price
     });
 
     watch(embroidery.value, (items) => {
@@ -108,12 +103,20 @@
         }
 
         const data = {
-            position: items.position,
-            color: items.color,
-            fontType: items.fontType,
-            initialName: items.initialName,
-            longName: items.longName,
-            price: items.price ?? 50000
+            slug: items.slug,
+            name: items.name,
+            data: {
+                position: items.position,
+                color: items.color,
+                fontType: items.fontType,
+                initialName: {
+                    name: items.initialName
+                },
+                longName: {
+                    name: items.longName
+                },
+            },
+            price: items.price
         }
 
         form.value.embroidery = data;
@@ -142,17 +145,21 @@
 
         // unchecked radio
         for(let i = 0; i < radio.length; i++) {
-
             radio[i].onclick = function(e) {
                 let myVariable = e.target.name;
+
+                if (myVariable == 'cleric') {
+                    mainCleric.value = null;
+                    selectCleric.value = null;
+                }
+
+
                 let camelCased = myVariable.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
 
                 // find form value key
                 const key = Object.keys(form.value).find(key => key === camelCased);
 
                 form.value[key] = null;
-
-
             }
         }
 
@@ -205,11 +212,19 @@
     }
 
     const onInputIntialName = (val, key = 'z') => {
-        initialName.value[key] = val
+        initialName.value[key] = val;
+
     }
     const onInputTape = (val, key = 'collar') => {
-        tape.value[key] = val
+        tape.value[key] = val;
     }
+
+    defineExpose({
+        form,
+        additionalNote,
+        amount,
+        amountOption
+    });
 </script>
 
 <template>
@@ -620,7 +635,7 @@
                                 <div class="whitespace-nowrap">
                                     <input class="hidden" type="radio" name="embroidery-50rb" :id="`embroidery-50rb`">
                                     <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`embroidery-50rb`">
-                                        <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka">{{ currencyFormat(dataOptions.embroidery.price) }}</div>
+                                        <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-pink-ka">{{ currencyFormat(dataOptions.embroidery.data.options.price) }}</div>
                                         <!-- <span class="checkbox-inner pink"></span> -->
                                     </label>
                                 </div>
