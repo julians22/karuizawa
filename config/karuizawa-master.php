@@ -222,7 +222,7 @@ return [
                     [
                         'slug' => 'hidden-placket',
                         'name' => '3. hidden placket',
-                        'price' => 100000
+                        'price' => 70000
                     ]
                 ]
             ]
@@ -663,6 +663,7 @@ return [
     "embroidery" => [
         "data" => [
             "options" => [
+                "price" => 50000,
                 "position" => [
                     [
                         'slug' => 'left-sleeve',

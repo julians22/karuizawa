@@ -1,7 +1,14 @@
 <script setup>
     import axios from 'axios';
-    import { defineEmits, ref, defineAsyncComponent, onMounted, watch, computed, reactive } from 'vue';
+    import { defineEmits, ref, defineAsyncComponent, onMounted, watch, computed, reactive, defineProps } from 'vue';
     import { useCustomer } from '../../../store/customer';
+
+    const props = defineProps({
+        onPage: {
+            type: String,
+            default: 'rtw'
+        }
+    })
 
     const addCustumer = defineAsyncComponent(() => import('../../utils/modalSelectCustomer.vue'));
 
@@ -11,9 +18,13 @@
 
     const store = useCustomer();
 
-    const currenCustomer = computed(() => {
-        return store.getCustomer
+    const customer = computed(() => {
+        if (childAddCustomer.value?.customer) {
+            return childAddCustomer.value?.customer
+        }
     });
+
+    const selectedCustomer = ref(null);
 
     const form = ref({
         id: null,
@@ -23,7 +34,7 @@
         is_male: null,
     });
 
-    watch(currenCustomer, (items) => {
+    watch(customer, (items) => {
         form.value.id = items.id;
         form.value.first_name = items.full_name;
         form.value.phone = items.phone;
@@ -31,20 +42,26 @@
         form.value.is_male = items.is_male;
     });
 
-
-
-
     const submit = () => {
         axios.post('/api/customer/store', form.value)
             .then(response => {
                 if (response.data.success) {
+                    selectedCustomer.value = response.data.data
                     store.customer = response.data.data;
-                    $emit('btn-next', 'products');
+                    onSubmit()
                 }
             })
             .catch(error => {
                 console.error('There was an error!', error.response.data.message);
             });
+    }
+
+    const onSubmit = () => {
+        if (props.onPage == 'rtw') {
+            $emit('btn-next', 'products');
+        }else if (props.onPage == 'semi-custom') {
+            $emit('btn-next', 'semi-custom');
+        }
     }
 
     const btnSkip = () => {
@@ -108,7 +125,7 @@
                 </div>
             </div>
             <div class="absolute bottom-0 right-0 flex">
-                <button @click="btnSkip()" class="flex items-center gap-2 p-6 tracking-widest text-white uppercase bg-primary-50">
+                <button v-if="props.onPage == 'rtw'" @click="btnSkip()" class="flex items-center gap-2 p-6 tracking-widest text-white uppercase bg-primary-50">
                     <span>skip</span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                 </button>

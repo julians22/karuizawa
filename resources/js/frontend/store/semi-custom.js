@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-export const useCustomer = defineStore('customer', {
+export const useSemiCustom = defineStore('customer', {
     state: () => {
         return {
           customer: [],

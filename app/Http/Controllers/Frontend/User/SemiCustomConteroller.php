@@ -18,6 +18,15 @@ class SemiCustomConteroller extends Controller
         ]);
     }
 
+    public function submit(Request $request)
+    {
+        $data = $request->all();
+        return response()->json([
+            'success' => true,
+            'data' => $data,
+        ]);
+    }
+
     private function getCustomRequest()
     {
         $data =  config('semi-custom');

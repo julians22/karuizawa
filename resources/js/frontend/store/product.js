@@ -1,4 +1,3 @@
-import { get } from 'lodash';
 import { defineStore } from 'pinia'
 
 export const useProducts = defineStore('products', {

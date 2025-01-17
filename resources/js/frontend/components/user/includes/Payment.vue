@@ -1,5 +1,5 @@
 <script setup>
-    import { computed, defineAsyncComponent, onMounted, ref } from 'vue';
+    import { computed, defineAsyncComponent, onMounted, ref, defineEmits } from 'vue';
     import { useProducts } from '../../../store/product';
     import { useCustomer } from '../../../store/customer';
 
@@ -10,7 +10,7 @@
     });
 
     const sendingPayment = ref(false);
-    const doPayment = defineAsyncComponent(() => import('../../utils/paymentModal.vue')); 
+    const doPayment = defineAsyncComponent(() => import('../../utils/paymentModal.vue'));
 
     const childDoPayment = ref(null);
 
@@ -31,7 +31,7 @@
         const doSend = await sendOrder();
 
         console.log(doSend);
-        
+
 
         if (doSend) {
             window.location.href = '/customer-booking';
@@ -77,68 +77,74 @@
         totalPayment.value = total;
     });
 
+    const $emit = defineEmits(['btn-next']);
+
+    const btnBack = () => {
+        $emit('btn-next', 'total-shop')
+    }
+
 </script>
 
 <template>
     <div>
-        <doPayment 
+        <doPayment
             :sending-payment="sendingPayment"
             ref="childDoPayment"/>
         <section>
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">TOTAL AMOUNT TO BE PAID</div>
+            <div class="flex items-center justify-between p-6 bg-primary-50 lg:px-14 lg:py-7">
+                <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">TOTAL AMOUNT TO BE PAID</div>
             </div>
-            <div class="space-y-20 lg:px-14 lg:py-20 p-6">
-                <div class="items-end gap-20 grid grid-cols-4 w-full">
+            <div class="p-6 space-y-20 lg:px-14 lg:py-20">
+                <div class="grid items-end w-full grid-cols-4 gap-20">
                     <div>
-                        <input 
+                        <input
                             v-model="selectedPayment"
-                            class="hidden" 
-                            type="radio" 
-                            name="check" 
+                            class="hidden"
+                            type="radio"
+                            name="check"
                             value="manual-tf"
                             :id="`manual-tf`">
-                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`manual-tf`">
+                        <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`manual-tf`">
                             <div>
                                 <img src="img/icons/manual-tf.png" alt="">
                             </div>
-                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Manual Transfer</div>
-                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
+                            <div class="text-sm font-bold text-center font-roboto text-nowrap text-secondary-50 lg:text-base xl:text-lg">Manual Transfer</div>
+                            <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 checkbox-inner size-10"></span>
                         </label>
                     </div>
                     <div>
-                        <input 
+                        <input
                             v-model="selectedPayment"
-                            class="hidden" 
-                            type="radio" 
-                            name="check" 
+                            class="hidden"
+                            type="radio"
+                            name="check"
                             value="credit-card"
                             :id="`credit-card`">
-                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`credit-card`">
+                        <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`credit-card`">
                             <div>
                                 <img src="img/icons/credit-card.png" alt="">
                             </div>
-                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Credit Card</div>
-                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
+                            <div class="text-sm font-bold text-center font-roboto text-nowrap text-secondary-50 lg:text-base xl:text-lg">Credit Card</div>
+                            <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 checkbox-inner size-10"></span>
                         </label>
                     </div>
                     <div>
-                        <input 
+                        <input
                             v-model="selectedPayment"
-                            class="hidden" 
-                            type="radio" 
+                            class="hidden"
+                            type="radio"
                             name="check"
-                            value="edc" 
+                            value="edc"
                             :id="`edc`">
-                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`edc`">
+                        <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`edc`">
                             <div>
                                 <img src="img/icons/edc.png" alt="">
                             </div>
-                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Electronic <br> Data Capture (EDC)</div>
-                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
+                            <div class="text-sm font-bold text-center font-roboto text-nowrap text-secondary-50 lg:text-base xl:text-lg">Electronic <br> Data Capture (EDC)</div>
+                            <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 checkbox-inner size-10"></span>
                         </label>
                     </div>
-                    <div class="space-y-3 self-start">
+                    <div class="self-start space-y-3">
                         <div class="text-[#606060] text-[10px] text-nowrap lg:text-xs">accepted card type</div>
                         <img src="img/icons/visa.png" alt="">
                         <img src="img/icons/mastercard.png" alt="">
@@ -146,14 +152,14 @@
                 </div>
 
                 <div v-show="showPreferredBank">
-                    <div class="font-bold text-lg text-primary-50 lg:text-2xl uppercase tracking-widest">Manual Transfer</div>
+                    <div class="text-lg font-bold tracking-widest uppercase text-primary-50 lg:text-2xl">Manual Transfer</div>
                     <div class="flex items-center gap-4 mt-6">
                         <div class="font-roboto text-[#606060] tracking-widest whitespace-pre">Pilih Bank Tujuan</div>
                         <div class="relative">
                             <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center border-primary-50 border-y bg-secondary pt-2 pr-3 pl-2.5 border-r rounded-r-full w-10 text-primary-50 pointer-events-none">
                                 ▼
                             </span>
-                            <select 
+                            <select
                                 v-model="preferredBank"
                                 id="prefered-bank" class="block border-primary-50 bg-white before:bg-blue-400 py-2.5 pr-10 pl-2.5 border focus:border-blue-500 rounded-full focus:ring-blue-500 w-full *:text-[#606060] uppercase">
                                 <option value="BCA">BCA</option>
@@ -167,11 +173,11 @@
         </section>
 
         <section>
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">DETAIL ORDER</div>
+            <div class="flex items-center justify-between p-6 bg-primary-50 lg:px-14 lg:py-7">
+                <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">DETAIL ORDER</div>
             </div>
 
-            <div class="space-y-5 px-14 pt-12 pb-32">
+            <div class="pt-12 pb-32 space-y-5 px-14">
                 <div class="font-roboto text-[#606060]">
                     <div>Ordered number your shirt </div>
                     <div>BSC0425</div>
@@ -201,7 +207,7 @@
                     <div class="col-span-2">Total</div>
                     <div>Rp {{ totalPayment }}</div>
                 </div>
-                <div class="grid grid-cols-3 bg-secondary px-4 pt-4 pb-3 font-bold text-lg text-primary-50 lg:text-2xl">
+                <div class="grid grid-cols-3 px-4 pt-4 pb-3 text-lg font-bold bg-secondary text-primary-50 lg:text-2xl">
                     <div class="col-span-2">TOTAL AMOUNT TO BE PAID</div>
                     <div class="">Rp {{ totalPayment }}</div>
                 </div>
@@ -214,9 +220,13 @@
             </div>
         </section>
 
-        <div class="right-0 bottom-0 absolute flex">
+        <div class="flex justify-between">
+            <button @click="btnBack()" class="flex items-center gap-2 p-4 tracking-widest text-white bg-primary-50 lg:p-6">
+                    <img class="inline-block rotate-180 mb-1.5" src="img/icons/arrw-ck-right.png" alt="">
+                    <span>BACK</span>
+            </button>
             <button @click="confirmPayment()"
-                class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">
+                class="flex items-center gap-2 p-4 tracking-widest text-white bg-secondary-50 lg:p-6">
                 <span>PROCEED TO PAYMENT</span>
                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
             </button>

@@ -29,9 +29,26 @@
         button: null,
     });
 
+    watch(form.value, (items) => {
+        let radio = document.querySelectorAll("input[type=radio]:checked");
+
+        // unchecked radio
+        for(let i = 0; i < radio.length; i++) {
+            radio[i].onclick = function(e) {
+                let myVariable = e.target.name;
+
+                let camelCased = myVariable.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+
+                // find form value key
+                const key = Object.keys(form.value).find(key => key === camelCased);
+
+                form.value[key] = null;
+            }
+        }
+
+    });
+
     const additionalNote = ref(null);
-
-
 
     const price = ref(null);
     const discount = ref(null);

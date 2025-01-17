@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Frontend\User\SemiCustomConteroller;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Boolean;
 
@@ -87,3 +88,4 @@ Route::group(['prefix' => 'customer'], function () {
 // store order
 Route::post('store-order', [OrderController::class, 'store']);
 
+Route::post('semi-custom/submit', [SemiCustomConteroller::class, 'submit']);
