@@ -2,12 +2,11 @@
 
 namespace App\Jobs;
 
-use App\Models\Product;
+use App\Models\ProductActualStock;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
 class SyncProductStock implements ShouldQueue
@@ -29,12 +28,13 @@ class SyncProductStock implements ShouldQueue
      */
     public function handle(): void
     {
-        Product::where('sku', $this->data['sku'])
-            ->update(['daily_stock' => $this->data['daily_stock']]);
-    }
+        // Update or create product stock
+        $actualStock = ProductActualStock::firstOrNew([
+            'product_id' => $this->data['product_id'],
+            'store_id' => $this->data['store_id']
+        ]);
 
-    public function middleware()
-    {
-        return [new WithoutOverlapping($this->data['sku'])];
+        $actualStock->stock_quantity = $this->data['stock_quantity'];
+        $actualStock->save();
     }
 }

@@ -9,5 +9,5 @@ class Store extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'code', 'address'];
+    protected $fillable = ['name', 'code', 'address', 'accurate_alias'];
 }

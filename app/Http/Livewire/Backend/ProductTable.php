@@ -48,7 +48,8 @@ class ProductTable extends DataTableComponent
 
     function builder(): Builder
     {
-        $query = Product::with('stockMovements');
+        $query = Product::with('productActualStocks', 'productActualStocks.store')
+            ->withSum('productActualStocks as total_stock', 'stock_quantity');
 
         return $query;
     }
@@ -68,8 +69,17 @@ class ProductTable extends DataTableComponent
             Column::make("Product name", "product_name")
                 ->searchable()
                 ->sortable(),
-            Column::make("Accurate Stock", "daily_stock")
-                ->sortable(),
+            Column::make("Current Stock")
+                ->label(function($row, Column $column) {
+                    return $row->total_stock ?? 0;
+                })
+                ->sortable(
+                    function (Builder $query, $direction) {
+                        return $query->orderBy('total_stock', $direction);
+                    }
+                ),
+            Column::make("Stock List")
+                ->label(fn($row, Column $column) => view('backend.product.includes.stock-list', ['product' => $row])),
             Column::make("Description", "description")
                 ->sortable(),
             Column::make("Price", "price")

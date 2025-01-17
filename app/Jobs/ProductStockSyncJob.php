@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Libraries\Api\Accurate\Oauth;
 use App\Models\Product;
+use App\Models\Store;
 use Http;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,7 +11,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
 class ProductStockSyncJob implements ShouldQueue
 {
@@ -19,14 +18,16 @@ class ProductStockSyncJob implements ShouldQueue
 
     protected $endpoint;
     protected $params;
+    protected $store;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($endpoint, $params)
+    public function __construct($endpoint, $params, Store $store)
     {
         $this->endpoint = $endpoint;
         $this->params = $params;
+        $this->store = $store;
     }
 
     function middleware()
@@ -41,12 +42,12 @@ class ProductStockSyncJob implements ShouldQueue
     {
         $endpoint = $this->endpoint;
 
-        $appToken = config('accurate.auth.app_token');
+        $accessToken = cache()->get('accurate_token')['access_token'];
+        $sessionId = cache()->get('accurate_db')['session'];
 
         $headers = [
-            'Authorization' => 'Bearer ' . $appToken,
-            'X-Api-Timestamp' => $this->getSign()['timestamp'],
-            'X-Api-Signature' => $this->getSign()['signature']
+            'Authorization' => 'Bearer ' . $accessToken,
+            'X-Session-ID' => $sessionId,
         ];
 
         $response = Http::withHeaders($headers)
@@ -56,38 +57,27 @@ class ProductStockSyncJob implements ShouldQueue
 
             $response = $response->json();
             $data = $response['d'];
+            $store = $this->store;
 
-            $stocks = collect($data)->map(function ($stock) {
-                $quantity = $stock['quantity'] < 0 ? 0 : $stock['quantity'];
-                $productData = [
-                    'sku' => $stock['no'],
-                    'daily_stock' => $quantity
-                ];
-                return $productData;
+            $stocks = collect($data)->map(function ($stock) use ($store) {
+                $findProduct = Product::where('sku', $stock['no'])->first();
+                if ($findProduct) {
+                    $quantity = $stock['quantity'] < 0 ? 0 : $stock['quantity'];
+
+                    $stockData = [
+                        'product_id' => $findProduct->id,
+                        'store_id' => $store->id,
+                        'stock_quantity' => $quantity
+                    ];
+                    return $stockData;
+                }
             });
 
-
             foreach ($stocks as $stock) {
-                dispatch(new SyncProductStock($stock));
+                if ($stock && $stock['stock_quantity'] > 0) {
+                    dispatch(new SyncProductStock($stock));
+                }
             }
         }
-    }
-
-    private function getSign(){
-
-        $timestamp = "";
-        $signature = "";
-
-        $oauth = new Oauth();
-        $oauth->authInfo();
-
-        $cachedAuth = cache()->get('accurate_auth');
-        $timestamp = $cachedAuth['timestamp'];
-        $signature = $cachedAuth['sign'];
-
-        return [
-            'timestamp' => $timestamp,
-            'signature' => $signature
-        ];
     }
 }

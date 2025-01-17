@@ -30,11 +30,20 @@ class StoreTable extends DataTableComponent
     public function columns(): array
     {
         return [
+            Column::make("ID", "id")
+                ->deselected()
+                ->sortable(),
             Column::make("Name", "name")
                 ->sortable(),
             Column::make("Code", "code")
                 ->sortable(),
-            Column::make("Address", "address")
+            Column::make('Accurate Alias', 'accurate_alias')
+                ->sortable(),
+            Column::make("Address", "address"),
+            Column::make("Action")
+                ->label(function ($row, Column $column) {
+                    return view('backend.store.includes.actions', ['store' => $row]);
+                }),
         ];
     }
 }

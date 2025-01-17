@@ -62,6 +62,11 @@ class Product extends Model
         return $this->belongsToMany(Size::class);
     }
 
+    public function productActualStocks()
+    {
+        return $this->hasMany(ProductActualStock::class);
+    }
+
     public function orderItems()
     {
         return $this->morphMany(OrderItem::class, 'product');
@@ -74,6 +79,10 @@ class Product extends Model
 
     public function scopeValidProduct($query)
     {
-        return $query->where('price', '>', 0);
+        return $query
+            ->whereHas('productActualStocks', function ($query) {
+                $query->where('stock_quantity', '>', 0);
+            })
+            ->where('price', '>', 0);
     }
 }

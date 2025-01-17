@@ -7,6 +7,7 @@ use App\Http\Controllers\Backend\StoreController;
 use App\Http\Controllers\Backend\SystemInformationController;
 use App\Models\Customer;
 use App\Models\Product;
+use App\Models\Store;
 use Tabuna\Breadcrumbs\Trail;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,18 @@ Route::group(['prefix' => 'store', 'as' => 'store.'], function() {
             $trail->parent('admin.store.index');
             $trail->push(__('Create'), route('admin.store.create'));
         });
+
+    Route::group(['prefix' => '{store}'], function() {
+        Route::get('edit', [StoreController::class, 'edit'])
+            ->name('edit')
+            ->breadcrumbs(function (Trail $trail, Store $store) {
+                $trail->parent('admin.store.index');
+                $trail->push(__('Edit'), route('admin.store.edit', $store));
+            });
+        Route::patch('/', [StoreController::class, 'update'])->name('update');
+
+        Route::delete('/', [StoreController::class, 'destroy'])->name('destroy');
+    });
 
     Route::post('/', [StoreController::class, 'store'])->name('store');
 });

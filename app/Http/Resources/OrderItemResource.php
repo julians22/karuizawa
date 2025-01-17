@@ -19,7 +19,7 @@ class OrderItemResource extends JsonResource
         if ($this->isSemiCustom()) {
             $product_name = $this->product->name . ' - ' . $this->product->code;
         }else if ($this->isReadyToWear()) {
-            $product_name = $this->product->product_name;
+            $product_name = $this->product ? $this->product->product_name : '';
         }
 
         $total_price = $this->price * $this->quantity;

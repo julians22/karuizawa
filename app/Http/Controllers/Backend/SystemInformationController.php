@@ -28,7 +28,11 @@ class SystemInformationController extends Controller
     public function accurate(){
         $url = env('ACCURATE_AUTHORIZATION_URL');
         $clinet_id = env('ACCURATE_CLIENT_KEY');
-        return redirect()->to($url . "?client_id={$clinet_id}&response_type=code&scope=customer_save%20customer_view%20customer_delete%20item_save%20item_view%20item_adjustment_save%20sales_order_save%20glaccount_view%20glaccount_save%20sales_invoice_save%20sales_invoice_view%20sales_receipt_save%20sales_receipt_view%20purchase_invoice_view%20receive_item_view%20stock_mutation_history_view%20department_view%20department_save");
+
+        $scopes = config('accurate.auth.scopes');
+        $scopes = implode('%20', $scopes);
+
+        return redirect()->to($url . "?client_id={$clinet_id}&response_type=code&scope={$scopes}");
     }
 
     public function accurateCallback(){

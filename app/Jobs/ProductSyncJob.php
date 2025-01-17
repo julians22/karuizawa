@@ -2,13 +2,11 @@
 
 namespace App\Jobs;
 
-use App\Libraries\Api\Accurate\Oauth;
 use Http;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
 class ProductSyncJob implements ShouldQueue
@@ -61,28 +59,13 @@ class ProductSyncJob implements ShouldQueue
             });
 
             foreach ($products as $product) {
-                dispatch(new SyncProduct($product));
+                // Dispatch the job to sync the product when the product price is not 0
+                if ($product['price'] > 0) {
+                    dispatch(new SyncProduct($product));
+                }
             }
         }else{
             $this->release(10);
         }
-    }
-
-    private function getSign(){
-
-        $timestamp = "";
-        $signature = "";
-
-        $oauth = new Oauth();
-        $oauth->authInfo();
-
-        $cachedAuth = cache()->get('accurate_auth');
-        $timestamp = $cachedAuth['timestamp'];
-        $signature = $cachedAuth['sign'];
-
-        return [
-            'timestamp' => $timestamp,
-            'signature' => $signature
-        ];
     }
 }
