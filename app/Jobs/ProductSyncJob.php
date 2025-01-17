@@ -27,11 +27,6 @@ class ProductSyncJob implements ShouldQueue
         $this->params = $params;
     }
 
-    function middleware()
-    {
-        return [new WithoutOverlapping($this->endpoint)];
-    }
-
     /**
      * Execute the job.
      */
@@ -39,12 +34,12 @@ class ProductSyncJob implements ShouldQueue
     {
         $endpoint = $this->endpoint;
 
-        $appToken = config('accurate.auth.app_token');
+        $accessToken = cache()->get('accurate_token')['access_token'];
+        $sessionId = cache()->get('accurate_db')['session'];
 
         $headers = [
-            'Authorization' => 'Bearer ' . $appToken,
-            'X-Api-Timestamp' => $this->getSign()['timestamp'],
-            'X-Api-Signature' => $this->getSign()['signature']
+            'Authorization' => 'Bearer ' . $accessToken,
+            'X-Session-ID' => $sessionId,
         ];
 
         $response = Http::withHeaders($headers)

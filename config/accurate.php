@@ -7,6 +7,8 @@ return [
         'app_secret' => env('ACCURATE_APP_SECRET', null),
         'app_url' => env('ACCURATE_APP_URL', null),
         'signature' => env('ACCURATE_SIGNATURE', null),
+        // 'db' => 290005 //
+        'db' => 1638959
     ]
 ]
 

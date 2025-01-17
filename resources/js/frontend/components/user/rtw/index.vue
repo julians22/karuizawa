@@ -3,6 +3,7 @@
     import { usePage } from '../../../store/page';
     import { useProducts } from '../../../store/product';
     import { useCustomer } from '../../../store/customer';
+    import { useUser } from '../../../store/user';
 
     const props = defineProps({
         csrf: String,
@@ -22,6 +23,7 @@
     const storePage = usePage();
     const storeProducts = useProducts();
     const storeCustomer = useCustomer();
+    const storeUser = useUser();
 
     const pageRtw = ref(null);
     const pagePayment = ref(null);
@@ -43,6 +45,8 @@
             storeProducts.coupon_rtw = 0;
 
         }
+
+        storeUser.login_user = props.user;
     });
 
     const btnNext = (section, data) => {

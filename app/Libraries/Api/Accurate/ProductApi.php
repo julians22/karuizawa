@@ -15,30 +15,29 @@ class ProductApi
     protected string|null $appToken;
     protected string|null $appUrl;
 
+    protected array $cachedAuth;
+    protected array $cachedDb;
+
     public function __construct()
     {
-        $this->getSign();
-        $this->appToken = config('accurate.auth.app_token');
         $this->appUrl = config('accurate.auth.app_url');
+        $this->cachedAuth = cache()->get('accurate_token');
+        $this->cachedDb = cache()->get('accurate_db');
     }
 
-    function productJobs($pageSize = 20, $page = 1, $itemCategoiry = 1009, $fields = 'id,name,no,unitPrice') {
+    public function productJobs($pageSize = 20, $page = 1, $itemCategory = 1009, $fields = 'id,name,no,unitPrice') {
         $endpoint = $this->appUrl . '/accurate/api/item/list.do';
-        $headers = [
-            'Authorization' => 'Bearer ' . $this->appToken,
-            'X-Api-Timestamp' => $this->timestamp,
-            'X-Api-Signature' => $this->signature
-        ];
 
+        $headers = [
+            'Authorization' => 'Bearer ' . $this->cachedAuth['access_token'],
+            'X-Session-ID' => $this->cachedDb['session'],
+        ];
         $params = [
             'pageSize' => $pageSize,
             'page' => $page,
             'fields' => $fields,
-            'filter.itemCategoryId.val' => $itemCategoiry,
+            'filter.itemCategoryId.val' => $itemCategory,
         ];
-
-        $oauth = new Oauth();
-        $oauth->makeSignature();
 
         $response = Http::withHeaders($headers)
             ->get($endpoint, $params);
@@ -58,15 +57,18 @@ class ProductApi
             });
 
             foreach ($products as $product) {
+                // Dispatch job to sync product
                 dispatch(new SyncProduct($product));
             }
 
             $pageCount = $response['sp']['pageCount'];
-            $nextPage = $page + 1;
 
-            for($nextPage; $nextPage <= $pageCount; $nextPage++) {
-                $params['page'] = $nextPage;
-                dispatch(new ProductSyncJob($endpoint, $params));
+            if ($pageCount > 0) {
+                $nextPage = $page + 1;
+                for($nextPage; $nextPage <= $pageCount; $nextPage++) {
+                    $params['page'] = $nextPage;
+                    dispatch(new ProductSyncJob($endpoint, $params));
+                }
             }
 
             return true;
@@ -127,25 +129,5 @@ class ProductApi
         }
 
         return false;
-    }
-
-    private function getSign(){
-        $cachedAuth = cache()->get('accurate_auth');
-
-        if ($cachedAuth) {
-            $this->signature = $cachedAuth['sign'];
-            $this->timestamp = $cachedAuth['timestamp'];
-        } else {
-            $oauth = new Oauth();
-            $oauth->makeSignature();
-            $cachedAuth = cache()->get('accurate_auth');
-            $this->signature = $cachedAuth['sign'];
-            $this->timestamp = $cachedAuth['timestamp'];
-        }
-
-        return [
-            'signature' => $this->signature,
-            'timestamp' => $this->timestamp
-        ];
     }
 }
