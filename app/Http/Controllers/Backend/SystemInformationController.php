@@ -59,7 +59,17 @@ class SystemInformationController extends Controller
             ->post($url, $data);
 
         if ($response->status() != 200) {
-            return redirect()->route('admin.system-information.index')->withFlashDanger(__('Failed to authenticate with Accurate., ; ' . json_encode($response->json())));
+
+            $usedData = [
+                'code' => $code,
+                'grant_type' => 'authorization_code',
+                'url' => $url,
+                'headers' => $headers,
+            ];
+
+            $merge = array_merge($usedData, $response->json());
+
+            return redirect()->route('admin.system-information.index')->withFlashDanger(__('Failed to authenticate with Accurate., ; ' . json_encode($merge)));
         }
 
         $response = $response->json();
