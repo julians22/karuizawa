@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\User\AccountController;
 use App\Http\Controllers\Frontend\User\DashboardController;
 use App\Http\Controllers\Frontend\User\ProfileController;
@@ -39,6 +40,13 @@ Route::group(['as' => 'user.', 'middleware' => ['auth', 'password.expires', conf
     })->name('rtw');
 
     Route::get('semi-custom', [SemiCustomConteroller::class, 'index'])->name('semi-custom');
+
+    Route::get('cart', function () {
+        return view('frontend.user.cart');
+    })->name('cart');
+
+    Route::get('order-payment/{order}', [DashboardController::class, 'payment'])->name('order-payment');
+
 
     Route::get('customer-booking', function () {
         return view('frontend.user.booking');

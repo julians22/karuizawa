@@ -15,6 +15,7 @@ window.Splide = Splide;
 import { createApp } from "vue";
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import VueNumberFormat from '@coders-tm/vue-number-format';
 
 const pinia = createPinia()
 const Vue = createApp()
@@ -38,7 +39,14 @@ Vue.component('rtw-component', require('./components/user/rtw/index.vue').defaul
 
 Vue.component('semi-custom', require('./components/user/semi-cutom/index.vue').default);
 
+Vue.component('cart-component', require('./components/user/cart/index.vue').default);
+
+Vue.component('payment-component', require('./components/user/payment/index.vue').default);
+
 Vue.component('booking-component', require('./components/user/booking/index.vue').default);
+
+Vue.component('print-semi-custom', require('./components/print/SemiCustom.vue').default);
+
 
 
 /**

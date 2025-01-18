@@ -8,19 +8,22 @@
         route_logout: String,
         api_booking_url: String,
         api_incoming_url: String,
+        api_fitting_url: String
     });
 
     const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
     const OrderHistory = defineAsyncComponent(() => import('./includes/OrderHistory.vue'));
     const IncomingOrder = defineAsyncComponent(() => import('./includes/IncomingOrder.vue'));
+    const FittingHistory = defineAsyncComponent(() => import('./includes/FittingHistory.vue'))
 
     const FilterDialog = defineAsyncComponent(() => import('./utils/FilterDialog.vue'));
 
     const incomingOrderRef = ref();
     const orderHistoryRef = ref();
+    const fittingHistoryRef = ref();
 
-    const currentPage = ref('incoming-order')
-    
+    const currentPage = ref('incoming-order');
+
     const childFilter = ref({
         dialog: false,
         date: '',
@@ -44,7 +47,7 @@
         status: '',
         keyword: ''
     });
-    
+
     const onClikFilter = () => {
         childFilter.value.dialog = true;
     }
@@ -58,6 +61,8 @@
             incomingOrderRef.value.getBookings();
         }else if (currentPage.value === 'order-history') {
             orderHistoryRef.value.getBookings();
+        }else if (currentPage.value === 'fitting-history') {
+            fittingHistoryRef.value.getBookings()
         }
     }
 
@@ -68,6 +73,8 @@
             incomingOrderRef.value.getBookings();
         }else if (currentPage.value === 'order-history' && filterData.keyword){
             orderHistoryRef.value.getBookings();
+        }else if (currentPage.value === 'fitting-history') {
+            fittingHistoryRef.value.getBookings()
         }
     }
 
@@ -82,13 +89,15 @@
             incomingOrderRef.value.getBookings();
         }else if (currentPage.value === 'order-history') {
             orderHistoryRef.value.getBookings();
+        }else if (currentPage.value === 'fitting-history') {
+            fittingHistoryRef.value.getBookings()
         }
     }
 
 </script>
 
 <template>
-    <FilterDialog 
+    <FilterDialog
         @update:dialog="updateFilter"
         @reset:dialog="resetFilter"
         ref="childFilter" />
@@ -116,7 +125,7 @@
                 <div class="flex gap-5 text-white max-lg:text-sm tracking-wider">
                     <button :class="{ active: currentPage === 'incoming-order' }" @click="currentPage = 'incoming-order'">INCOMING ORDER</button>
                     <button :class="{ active: currentPage === 'order-history' }" @click="currentPage = 'order-history'">ORDER HISTORY</button>
-                    <button >FITTING HISTORY</button>
+                    <button :class="{ active: currentPage === 'fitting-history'}" @click="currentPage = 'fitting-history'">FITTING HISTORY</button>
                 </div>
                 <div class="flex items-center gap-5">
 
@@ -143,15 +152,26 @@
                 ref="incomingOrderRef"
                 :api_incoming_url="api_incoming_url"
                 :filterData="filterData"
+                :user="user"
                 />
         </template>
 
         <template v-if="currentPage === 'order-history'">
             <OrderHistory
                 ref="orderHistoryRef"
-                :api_booking_url="api_booking_url" 
+                :api_booking_url="api_booking_url"
                 :filterData="filterData"
+                :user="user"
                 />
+        </template>
+
+        <template v-if="currentPage === 'fitting-history'">
+            <FittingHistory
+                ref="fittingHistoryRef"
+                :api_fitting_url="api_fitting_url"
+                :filterData="filterData"
+                :user="user"
+            />
         </template>
 
         <div class="right-0 bottom-0 absolute flex">

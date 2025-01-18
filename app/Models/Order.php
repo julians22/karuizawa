@@ -3,14 +3,16 @@
 namespace App\Models;
 
 use App\Domains\Auth\Models\User;
+use App\Models\Traits\Uniqueid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, Uniqueid;
 
     protected $fillable = [
+        'uuid',
         'customer_id',
         'store_id',
         'user_id',
@@ -20,11 +22,16 @@ class Order extends Model
         'payment',
         'bank',
         'status',
+        'order_number',
+        'order_date',
     ];
 
     protected $casts = [
         'discount_details' => 'array',
     ];
+
+    // order date yyyy-mm-dd
+    protected $dates = ['order_date'];
 
     protected $appends = ['down_payment_amount', 'completion_amount', 'remaining_amount'];
 

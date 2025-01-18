@@ -11,6 +11,10 @@ export const useUser = defineStore('storeUser', {
         get: (state) => {
             return state.login_user;
         },
+
+        getStoreId: (state) => {
+            return state.login_user.store_id;
+        },
     },
 
     persist: true,

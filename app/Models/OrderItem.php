@@ -22,7 +22,7 @@ class OrderItem extends Model
      *
      * @var array
      */
-    protected $appends = ['total_price'];
+    protected $appends = ['total_price', 'type'];
 
     public function order()
     {
@@ -37,6 +37,11 @@ class OrderItem extends Model
     public function getTotalPriceAttribute()
     {
         return $this->quantity * $this->price;
+    }
+
+    public function getTypeAttribute()
+    {
+        return $this->isSemiCustom() ? 'SC' : 'RTW';
     }
 
     public function isSemiCustom()

@@ -23,6 +23,7 @@
         "css-loader": "^7.1.2",
         "jquery": "^3.5.1",
         "laravel-mix": "^6.0.6",
+        "laravel-mix-fileloader": "^0.0.2",
         "lodash": "^4.17.19",
         "perfect-scrollbar": "^1.5.0",
         "postcss": "^8.4.49",
@@ -38,6 +39,7 @@
         "vue3-select-component": "^0.7.0"
     },
     "dependencies": {
+        "@coders-tm/vue-number-format": "^3.35.2",
         "@splidejs/splide": "^4.1.4",
         "@vue/compat": "^3.1.0",
         "@vuepic/vue-datepicker": "^11.0.1",

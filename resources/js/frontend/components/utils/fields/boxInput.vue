@@ -60,17 +60,21 @@ const handleKeyDown = function (event, index) {
     }
 
     if ((new RegExp('^([0-9a-zA-Z])$')).test(event.key)) {
+
         digits[index] = event.key.toUpperCase();
 
         if (index != props.digitCount - 1) {
-          (inputCont.value.children)[index+1].focus();
+            setTimeout(() => {
+                (inputCont.value.children)[index+1].focus();
+            }, 0);
         }
 
-        if (isDigitsFull()) {
+        // if (isDigitsFull()) {
             emit('update:input', digits.join(''))
-        }
+        // }
     }
 
+    event.preventDefault();
 }
 
 defineExpose({
