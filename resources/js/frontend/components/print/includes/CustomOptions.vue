@@ -330,13 +330,13 @@
                     </div>
                     <div class="flex gap-2 checkbox-cleric" :class="{ 'pointer-events-none': formOption.cleric?.slug != subCeleric.slug}">
                         <div v-for="(clericItems, index) in subCeleric.data">
-                            <div v-for="(itemsCeleric, index) in formOption.cleric?.data">
-                                <input :checked="itemsCeleric.slug == clericItems.slug" class="hidden" type="checkbox" :id="`cleric-${subCeleric.no}-${clericItems.slug}`">
+                            <!-- <div v-for="(itemsCeleric, index) in formOption.cleric?.data"> -->
+                                <input :checked="formOption.cleric?.slug == clericItems.slug" class="hidden" type="checkbox" :id="`cleric-${subCeleric.no}-${clericItems.slug}`">
                                 <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`cleric-${subCeleric.no}-${clericItems.slug}`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase xl:text-sm text-primary-50">{{ clericItems.name }}</div>
                                 </label>
-                            </div>
+                            <!-- </div> -->
                         </div>
                     </div>
                 </div>
