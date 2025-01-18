@@ -3,24 +3,40 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\OrderDetailResource;
 use App\Http\Resources\OrderHistoryResource;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $orders = Order::with([
                 'orderItems',
                 'orderItems.product',
             ])
+            ->when($request->status, function ($query) use ($request) {
+                return $query->where('status', $request->status);
+            })
+            ->when($request->date, function ($query) use ($request) {
+                $date = Carbon::parse($request->date);
+                return $query->whereDate('created_at', $date);
+            })
+            ->when($request->keyword, function ($query) use ($request) {
+                // we can search through customer name, email, phone
+                return $query->where('id', 'like', "%$request->keyword%")
+                    ->orWhereHas('customer', function ($query) use ($request) {
+                        $query->where('full_name', 'like', "%$request->keyword%")
+                            ->orWhere('email', 'like', "%$request->keyword%")
+                            ->orWhere('phone', 'like', "%$request->keyword%");
+                    });
+            })
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -29,7 +45,7 @@ class OrderController extends Controller
         );
     }
 
-    function incoming_order(){
+    function incoming_order(Request $request) {
         $orders = Order::with([
                 'orderItems',
                 'orderItems.product',

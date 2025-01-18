@@ -33,13 +33,10 @@ class ProductController extends Controller
         return redirect()->route('admin.product.index')->withFlashDanger(__('An error occurred while fetching the product.'));
     }
 
-    public function fetchPrice(ProductService $productService)
+    public function fetchPrice()
     {
-        $auth = new Oauth();
-        $auth->authInfo();
-
         $productApi = new ProductApi();
-        $products = $productApi->productJobs(40);
+        $products = $productApi->productJobs(100, 1, 350, 'id,name,no,unitPrice');
 
         if ($products) {
             return redirect()->route('admin.product.index')->withFlashSuccess(__('The price was successfully fetched.'));

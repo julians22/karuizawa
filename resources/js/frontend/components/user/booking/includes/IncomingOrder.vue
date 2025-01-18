@@ -1,9 +1,17 @@
 <script setup>
 
-    import { ref, defineAsyncComponent, onMounted } from 'vue';
+    import { ref, onMounted } from 'vue';
 
     const props = defineProps({
         api_incoming_url: String,
+        filterData: {
+            type: Object,
+            default: () => ({
+                date: '',
+                status: '',
+                applyKeyword: ''
+            })
+        }
     });
 
     const isRetrieving = ref(false);
@@ -16,10 +24,27 @@
 
     const getBookings = async () => {
         isRetrieving.value = true;
-        const response = await fetch(props.api_incoming_url);
+
+        let url = props.api_incoming_url + '?page=1';
+        if (props.filterData.date && props.filterData.date !== '') {
+            url += `&date=${props.filterData.date}`;
+        }
+        if (props.filterData.status && props.filterData.status !== '') {
+            url += `&status=${props.filterData.status}`;
+        }
+
+        if (props.filterData.keyword && props.filterData.keyword !== '') {
+            url += `&keyword=${props.filterData.keyword}`;
+        }
+
+        const response = await fetch(url);
         bookings.value = await response.json();
         isRetrieving.value = false;
     }
+
+    defineExpose({
+        getBookings
+    })
 
 </script>
 

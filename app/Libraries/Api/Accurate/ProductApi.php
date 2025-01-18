@@ -4,9 +4,11 @@ namespace App\Libraries\Api\Accurate;
 
 use App\Jobs\ProductStockSyncJob;
 use App\Jobs\ProductSyncJob;
-use App\Jobs\SyncProduct;
 use App\Jobs\SyncProductStock;
 use Illuminate\Support\Facades\Http;
+use App\Jobs\SyncProduct;
+use App\Models\Product;
+use App\Models\Store;
 
 class ProductApi
 {
@@ -15,30 +17,29 @@ class ProductApi
     protected string|null $appToken;
     protected string|null $appUrl;
 
+    protected array $cachedAuth;
+    protected array $cachedDb;
+
     public function __construct()
     {
-        $this->getSign();
-        $this->appToken = config('accurate.auth.app_token');
         $this->appUrl = config('accurate.auth.app_url');
+        $this->cachedAuth = cache()->get('accurate_token');
+        $this->cachedDb = cache()->get('accurate_db');
     }
 
-    function productJobs($pageSize = 20, $page = 1, $itemCategoiry = 1009, $fields = 'id,name,no,unitPrice') {
+    public function productJobs($pageSize = 20, $page = 1, $itemCategory = 1009, $fields = 'id,name,no,unitPrice') {
         $endpoint = $this->appUrl . '/accurate/api/item/list.do';
+
         $headers = [
-            'Authorization' => 'Bearer ' . $this->appToken,
-            'X-Api-Timestamp' => $this->timestamp,
-            'X-Api-Signature' => $this->signature
+            'Authorization' => 'Bearer ' . $this->cachedAuth['access_token'],
+            'X-Session-ID' => $this->cachedDb['session'],
         ];
-
         $params = [
-            'pageSize' => $pageSize,
-            'page' => $page,
+            'sp.pageSize' => $pageSize,
+            'sp.page' => $page,
             'fields' => $fields,
-            'filter.itemCategoryId.val' => $itemCategoiry,
+            'filter.itemCategoryId.val' => $itemCategory,
         ];
-
-        $oauth = new Oauth();
-        $oauth->makeSignature();
 
         $response = Http::withHeaders($headers)
             ->get($endpoint, $params);
@@ -48,6 +49,7 @@ class ProductApi
             $data = $response['d'];
 
             $products = collect($data)->map(function ($product) {
+
                 $productData = [
                     'sku' => $product['no'],
                     'product_name' => $product['name'],
@@ -58,15 +60,20 @@ class ProductApi
             });
 
             foreach ($products as $product) {
-                dispatch(new SyncProduct($product));
+                // Dispatch the job to sync the product when the product price is not 0
+                if ($product['price'] > 0) {
+                    dispatch(new SyncProduct($product));
+                }
             }
 
             $pageCount = $response['sp']['pageCount'];
-            $nextPage = $page + 1;
 
-            for($nextPage; $nextPage <= $pageCount; $nextPage++) {
-                $params['page'] = $nextPage;
-                dispatch(new ProductSyncJob($endpoint, $params));
+            if ($pageCount > 0) {
+                $nextPage = $page + 1;
+                for($nextPage; $nextPage <= $pageCount; $nextPage++) {
+                    $params['page'] = $nextPage;
+                    dispatch(new ProductSyncJob($endpoint, $params));
+                }
             }
 
             return true;
@@ -75,77 +82,69 @@ class ProductApi
         return false;
     }
 
-    function stockJobs($pageSize = 100, $page = 1, $wareHouseName = 'Ashta') {
-        $endpoint = $this->appUrl . '/accurate/api/item/list-stock.do';
-        $headers = [
-            'Authorization' => 'Bearer ' . $this->appToken,
-            'X-Api-Timestamp' => $this->timestamp,
-            'X-Api-Signature' => $this->signature
-        ];
+    function stockJobs($pageSize = 100, $page = 1) {
 
-        $params = [
-            'sp.pageSize' => $pageSize,
-            'sp.page' => $page,
-            'sp.sort' => 'no|asc',
-            'wareHouseName' => 'Ashta',
-            'asOfDate' => date('d/m/Y'),
-        ];
+        $stores = Store::whereNotNull('accurate_alias')->get();
 
-        $oauth = new Oauth();
-        $oauth->makeSignature();
+        foreach ($stores as $store) {
+            $endpoint = $this->appUrl . '/accurate/api/item/list-stock.do';
+            $headers = [
+                'Authorization' => 'Bearer ' . $this->cachedAuth['access_token'],
+                'X-Session-ID' => $this->cachedDb['session'],
+            ];
 
-        $response = Http::withHeaders($headers)
-            ->get($endpoint, $params);
+            $params = [
+                'sp.pageSize' => $pageSize,
+                'sp.page' => $page,
+                'sp.sort' => 'no|asc',
+                'wareHouseId' => $store->accurate_alias,
+                'asOfDate' => date('d/m/Y'),
+            ];
 
-        if ($response->status() == 200) {
-            $response = $response->json();
-            $data = $response['d'];
+            $response = Http::withHeaders($headers)
+                ->get($endpoint, $params);
 
-            $stocks = collect($data)->map(function ($stock) {
-                $quantity = $stock['quantity'] < 0 ? 0 : $stock['quantity'];
-                $productData = [
-                    'sku' => $stock['no'],
-                    'daily_stock' => $quantity
-                ];
+            if ($response->status() == 200) {
+                $response = $response->json();
+                $data = $response['d'];
 
-                return $productData;
-            });
+                $stocks = collect($data)->map(function ($stock) use ($store) {
 
-            foreach ($stocks as $stock) {
-                dispatch(new SyncProductStock($stock));
+                    $findProduct = Product::where('sku', $stock['no'])->first();
+                    if ($findProduct) {
+
+                        $stockData = [
+                            'product_id' => $findProduct->id,
+                            'store_id' => $store->id,
+                            'stock_quantity' => $stock['quantity'] < 0 ? 0 : $stock['quantity']
+                        ];
+                        return $stockData;
+                    }
+                });
+
+                foreach ($stocks as $stock) {
+
+                    if ($stock && $stock['stock_quantity'] > 0) {
+                        dispatch(new SyncProductStock($stock));
+                    }
+                }
+
+                $pageCount = $response['sp']['pageCount'];
+
+                if ($pageCount > 0) {
+
+                    $nextPage = $page + 1;
+
+                    for($nextPage; $nextPage <= $pageCount; $nextPage++) {
+                        $params['sp.page'] = $nextPage;
+                        dispatch(new ProductStockSyncJob($endpoint, $params, $store));
+                    }
+                }
+
+                return true;
             }
 
-            $pageCount = $response['sp']['pageCount'];
-            $nextPage = $page + 1;
-
-            for($nextPage; $nextPage <= $pageCount; $nextPage++) {
-                $params['sp.page'] = $nextPage;
-                dispatch(new ProductStockSyncJob($endpoint, $params));
-            }
-
-            return true;
+            return false;
         }
-
-        return false;
-    }
-
-    private function getSign(){
-        $cachedAuth = cache()->get('accurate_auth');
-
-        if ($cachedAuth) {
-            $this->signature = $cachedAuth['sign'];
-            $this->timestamp = $cachedAuth['timestamp'];
-        } else {
-            $oauth = new Oauth();
-            $oauth->makeSignature();
-            $cachedAuth = cache()->get('accurate_auth');
-            $this->signature = $cachedAuth['sign'];
-            $this->timestamp = $cachedAuth['timestamp'];
-        }
-
-        return [
-            'signature' => $this->signature,
-            'timestamp' => $this->timestamp
-        ];
     }
 }

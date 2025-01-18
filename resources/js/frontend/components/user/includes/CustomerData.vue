@@ -2,9 +2,10 @@
     import axios from 'axios';
     import { defineEmits, ref, defineAsyncComponent, onMounted, watch, computed, reactive, defineProps } from 'vue';
     import { useCustomer } from '../../../store/customer';
+    import { useOrder } from '../../../store/order';
     import { useProducts } from '../../../store/product';
     import VueDatePicker from '@vuepic/vue-datepicker';
-    import '@vuepic/vue-datepicker/dist/main.css'
+    import '@vuepic/vue-datepicker/dist/main.css';
 
     const props = defineProps({
         onPage: {
@@ -29,6 +30,11 @@
         minutes: new Date().getMinutes()
     });
 
+
+    onMounted(() => {
+        useOrder().orderDate = format(date.value);
+        useOrder().orderTime = `${time.value.hours}:${time.value.minutes}`;
+    });
 
     const addCustumer = defineAsyncComponent(() => import('../../utils/modalSelectCustomer.vue'));
 
@@ -60,6 +66,14 @@
         form.value.phone = items.phone;
         form.value.email = items.email;
         form.value.is_male = items.is_male;
+    });
+
+    watch(date, (items) => {
+        useOrder().orderDate = format(items);
+    });
+
+    watch(time, (items) => {
+        useOrder().orderTime = `${items.hours}:${items.minutes}`;
     });
 
     const submit = () => {
@@ -144,10 +158,9 @@
                     <div class="flex">
                         <VueDatePicker v-model="time" :min-time="{ hours: 10 }" :max-time="{ hours: 20, minutes: 20 }" time-picker>
                             <template #input-icon>
-                                <img class="ml-2 size-5 input-slot-image" src="/img/icons/time.png"/>
+                                <img class="ml-2 input-slot-image size-5" src="/img/icons/time.png"/>
                             </template>
                         </VueDatePicker>
-                        <!-- <input type="time" id="time" class="block before:block relative before:right-0 before:-z-10 before:absolute before:inset-y-0 flex-1 before:content-[''] border-primary-50 bg-transparent before:bg-primary-50 p-2.5 border rounded-full w-full before:w-10 text-primary-50 leading-none" min="00:00" max="23:00" value="00:00" required> -->
                     </div>
                 </div>
             </div>

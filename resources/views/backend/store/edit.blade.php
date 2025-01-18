@@ -1,18 +1,14 @@
 @extends('backend.layouts.app')
 
-@section('title', __('Create New Store'))
-
-@section('breadcrumb-links')
-    {{-- @include('backend.auth.user.includes.breadcrumb-links') --}}
-@endsection
+@section('title', __('Edit Store'))
 
 @section('content')
 
-<x-forms.post :action="route('admin.store.store')">
+<x-forms.patch :action="route('admin.store.update', ['store' => $store])">
 
     <x-backend.card>
         <x-slot name="header">
-            @lang('Create New Store')
+            @lang('Edit Store')
         </x-slot>
 
         <x-slot name="headerActions">
@@ -24,7 +20,7 @@
                 <label for="name" class="col-md-2 form-label">@lang('Name')</label>
 
                 <div class="col-md-10">
-                    <input type="text" name="name" id="name" class="form-control" placeholder="{{ __('Name') }}" value="{{ old('name') }}" maxlength="100" required />
+                    <input type="text" name="name" id="name" class="form-control" placeholder="{{ __('Name') }}" value="{{ old('name') ?? $store->name }}" maxlength="100" required />
                 </div>
             </div>
 
@@ -32,7 +28,7 @@
                 <label for="phone" class="col-md-2 form-label">@lang('Store Code')</label>
 
                 <div class="col-md-10">
-                    <input type="text" name="code" id="code" class="form-control" placeholder="{{ __('Store Code') }}" value="{{ old('code') }}" maxlength="100" required />
+                    <input type="text" name="code" id="code" class="form-control" placeholder="{{ __('Store Code') }}" value="{{ old('code') ?? $store->code }}" maxlength="100" required />
                 </div>
             </div>
 
@@ -40,7 +36,7 @@
                 <label for="phone" class="col-md-2 form-label">@lang('Accurate Alias')</label>
 
                 <div class="col-md-10">
-                    <input type="text" name="accurate_alias" id="accurate_alias" class="form-control" placeholder="{{ __('Accurate Alias') }}" value="{{ old('accurate_alias') }}" maxlength="100" />
+                    <input type="text" name="accurate_alias" id="accurate_alias" class="form-control" placeholder="{{ __('Accurate Alias') }}" value="{{ old('accurate_alias') ?? $store->accurate_alias }}" maxlength="100" />
                 </div>
             </div>
 
@@ -48,7 +44,7 @@
                 <label for="address" class="col-md-2 form-label">@lang('Address')</label>
 
                 <div class="col-md-10">
-                    <textarea name="address" id="address" class="form-control" placeholder="{{ __('Address') }}" required>{{ old('address') }}</textarea>
+                    <textarea name="address" id="address" class="form-control" placeholder="{{ __('Address') }}" required>{{ old('address') ?? $store->address }}</textarea>
                 </div>
             </div>
 
@@ -59,6 +55,6 @@
         </x-slot>
 
     </x-backend.card>
-</x-forms.post>
+</x-forms.patch>
 
 @endsection

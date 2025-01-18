@@ -1,6 +1,5 @@
 <script setup>
-    import { defineAsyncComponent, ref } from 'vue';
-    import IncomingOrder from './includes/IncomingOrder.vue';
+    import { defineAsyncComponent, reactive, ref, watch } from 'vue';
 
     const props = defineProps({
         csrf: String,
@@ -13,35 +12,104 @@
 
     const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
     const OrderHistory = defineAsyncComponent(() => import('./includes/OrderHistory.vue'));
-    const incomingOrder = defineAsyncComponent(() => import('./includes/IncomingOrder.vue'));
+    const IncomingOrder = defineAsyncComponent(() => import('./includes/IncomingOrder.vue'));
 
-    const FilterDialog = defineAsyncComponent(() => import('./utils/FilterDialog.vue'))
+    const FilterDialog = defineAsyncComponent(() => import('./utils/FilterDialog.vue'));
+
+    const incomingOrderRef = ref();
+    const orderHistoryRef = ref();
 
     const currentPage = ref('incoming-order')
+    
+    const childFilter = ref({
+        dialog: false,
+        date: '',
+        status: ''
+    });
 
-    const childFilter = ref(null);
+    const keyword = ref('');
+
+    watch(currentPage, (value) => {
+        filterData.date = '';
+        filterData.status = '';
+        filterData.keyword = '';
+
+        childFilter.value.date = '';
+        childFilter.value.status = '';
+        childFilter.value.keyword = '';
+    });
+
+    const filterData = reactive({
+        date: '',
+        status: '',
+        keyword: ''
+    });
+    
     const onClikFilter = () => {
         childFilter.value.dialog = true;
     }
+
+    const updateFilter = () => {
+        filterData.date = childFilter.value.date;
+        filterData.status = childFilter.value.status;
+        childFilter.value.dialog = false;
+
+        if (currentPage.value === 'incoming-order') {
+            incomingOrderRef.value.getBookings();
+        }else if (currentPage.value === 'order-history') {
+            orderHistoryRef.value.getBookings();
+        }
+    }
+
+    const applyKeyword = () => {
+        filterData.keyword = keyword.value;
+
+        if (currentPage.value === 'incoming-order' && filterData.keyword) {
+            incomingOrderRef.value.getBookings();
+        }else if (currentPage.value === 'order-history' && filterData.keyword){
+            orderHistoryRef.value.getBookings();
+        }
+    }
+
+    const resetFilter = () => {
+        filterData.date = '';
+        filterData.status = '';
+        filterData.keyword = '';
+
+        keyword.value = '';
+
+        if (currentPage.value === 'incoming-order') {
+            incomingOrderRef.value.getBookings();
+        }else if (currentPage.value === 'order-history') {
+            orderHistoryRef.value.getBookings();
+        }
+    }
+
 </script>
 
 <template>
-    <FilterDialog ref="childFilter" />
+    <FilterDialog 
+        @update:dialog="updateFilter"
+        @reset:dialog="resetFilter"
+        ref="childFilter" />
 
     <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" >
         <div class="flex justify-between items-center bg-primary-50 xl:px-14 lg:py-7 p-6">
             <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">CUSTOMER BOOKING</div>
-            <form class="w-2/5">
+            <div class="w-2/5">
                 <label for="default-search" class="mb-2 font-medium text-gray-900 text-sm dark:text-white sr-only">Search</label>
                 <div class="relative">
-                    <input type="search" id="default-search" class="block bg-white px-4 py-2 rounded-full w-full text-gray-900 text-sm pe-10" required />
-                    <button type="submit" class="absolute inset-y-0 flex items-center end-0 pe-4">
+                    <input
+                        v-model="keyword"
+                        type="search" id="default-search" class="block bg-white px-4 py-2 rounded-full w-full text-gray-900 text-sm pe-10"/>
+                    <button @click="applyKeyword"
+                        type="submit" class="absolute inset-y-0 flex items-center end-0 pe-4">
                         <svg class="text-primary-50 size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                         </svg>
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
         <div class="flex justify-between items-center bg-primary-100 xl:px-14 py-4 p-6">
             <div class="flex justify-between w-full">
@@ -50,21 +118,40 @@
                     <button :class="{ active: currentPage === 'order-history' }" @click="currentPage = 'order-history'">ORDER HISTORY</button>
                     <button >FITTING HISTORY</button>
                 </div>
-                <div @click="onClikFilter()">
-                    <i class="text-white fa fa-filter fill-white" aria-hidden="true"></i>
+                <div class="flex items-center gap-5">
+
+                    <div v-if="filterData.date || filterData.status || filterData.keyword">
+                        <ul class="flex items-center gap-2">
+                            <strong class="text-white">Filter Applied:</strong>
+                            <li v-if="filterData.date"><small class="font-serif text-primary-50 text-sm"><span class="bg-secondary px-2 py-2">Date: {{ filterData.date }}</span></small></li>
+                            <li v-if="filterData.status"><small class="font-serif text-primary-50 text-sm"><span class="bg-secondary px-2 py-2">Status: {{ filterData.status }}</span></small></li>
+                            <li v-if="filterData.keyword"><small class="font-serif text-primary-50 text-sm"><span class="bg-secondary px-2 py-2">Keyword: {{ filterData.keyword }}</span></small></li>
+
+                            <li @click="resetFilter" class="cursor-pointer"><small class="font-serif text-red-950 text-sm"><span class="bg-secondary px-2 py-2">Reset Filter</span></small></li>
+                        </ul>
+                    </div>
+
+                    <div @click="onClikFilter()">
+                        <i class="text-white fa fa-filter fill-white" aria-hidden="true"></i>
+                    </div>
                 </div>
             </div>
         </div>
 
         <template v-if="currentPage === 'incoming-order'">
             <IncomingOrder
+                ref="incomingOrderRef"
                 :api_incoming_url="api_incoming_url"
+                :filterData="filterData"
                 />
         </template>
 
         <template v-if="currentPage === 'order-history'">
             <OrderHistory
-                :api_booking_url="api_booking_url" />
+                ref="orderHistoryRef"
+                :api_booking_url="api_booking_url" 
+                :filterData="filterData"
+                />
         </template>
 
         <div class="right-0 bottom-0 absolute flex">

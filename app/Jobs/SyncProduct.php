@@ -4,23 +4,21 @@ namespace App\Jobs;
 
 use App\Models\Product;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class SyncProduct implements ShouldQueue, ShouldBeUnique
+class SyncProduct implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $data;
+    protected $data = [];
 
     /**
      * Create a new job instance.
      */
-    public function __construct($data)
+    public function __construct(array $data)
     {
         $this->data = $data;
     }
@@ -30,14 +28,13 @@ class SyncProduct implements ShouldQueue, ShouldBeUnique
      */
     public function handle(): void
     {
-        Product::updateOrCreate(
-            ['sku' => $this->data['sku']],
-            ['price' => $this->data['price'], 'product_name' => $this->data['product_name']]
-        );
-    }
-
-    public function middleware()
-    {
-        return [new WithoutOverlapping($this->data['sku'])];
+        $product = Product::firstOrNew([
+            'sku' => $this->data['sku'],
+            'product_name' => $this->data['product_name']
+        ], [
+            'category_id' => 1
+        ]);
+        $product->price = $this->data['price'];
+        $product->save();
     }
 }

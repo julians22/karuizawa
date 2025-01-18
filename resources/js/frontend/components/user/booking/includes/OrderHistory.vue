@@ -3,6 +3,14 @@
 
     const props = defineProps({
         api_booking_url: String,
+        filterData: {
+            type: Object,
+            default: () => ({
+                date: '',
+                status: '',
+                applyKeyword: ''
+            })
+        }
     });
 
     const isRetrieving = ref(false);
@@ -19,16 +27,33 @@
 
     const getBookings = async () => {
         isRetrieving.value = true;
-        const response = await fetch(props.api_booking_url);
+
+        let url = props.api_booking_url + '?page=1';
+        if (props.filterData.date && props.filterData.date !== '') {
+            url += `&date=${props.filterData.date}`;
+        }
+
+        if (props.filterData.status && props.filterData.status !== '') {
+            url += `&status=${props.filterData.status}`;
+        }
+
+        if (props.filterData.keyword && props.filterData.keyword !== '') {
+            url += `&keyword=${props.filterData.keyword}`;
+        }
+
+        const response = await fetch(url);
         bookings.value = await response.json();
         isRetrieving.value = false;
     }
 
     const onClickDetail = async (booking) => {
-        console.log(booking);
         orderDetail.value.dialog = true
         orderDetail.value.booking = await booking
     }
+
+    defineExpose({
+        getBookings
+    })
 </script>
 
 <template>

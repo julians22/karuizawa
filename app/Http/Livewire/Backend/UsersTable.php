@@ -130,7 +130,7 @@ class UsersTable extends DataTableComponent
                 )
                 ->searchable()
                 ->sortable(),
-            Column::make(__('Name'))
+            Column::make(__('Name'), 'name')
                 ->searchable()
                 ->sortable(),
             Column::make(__('E-mail'), 'email')
