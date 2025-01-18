@@ -53,4 +53,8 @@ Route::group(['as' => 'user.', 'middleware' => ['auth', 'password.expires', conf
         return view('frontend.user.booking');
     })->name('booking');
 
+    Route::get('print-semi-custom', function () {
+       return view('frontend.print.semi-custom');
+    });
+
 });
