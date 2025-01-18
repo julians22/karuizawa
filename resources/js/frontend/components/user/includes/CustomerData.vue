@@ -135,14 +135,14 @@
                 <div class="flex items-center gap-6">
                     <label for="date" class="block uppercase text-primary-50">set date</label>
                     <div class="flex">
-                        <VueDatePicker v-model="date" :format="format" :enableTimePicker="false" />
+                        <VueDatePicker v-model="date" :format="format"  :min-date="new Date()" ignore-time-validation :enableTimePicker="false" />
                         <!-- <input type="date" id="date" class="block before:block relative before:right-0 before:-z-10 before:absolute before:inset-y-0 flex-1 before:content-[''] border-primary-50 bg-transparent before:bg-primary-50 p-2.5 border rounded-full w-full before:w-10 text-primary-50 leading-none" required > -->
                     </div>
                 </div>
                 <div class="flex items-center gap-6">
                     <label for="time" class="block uppercase text-primary-50">set time</label>
                     <div class="flex">
-                        <VueDatePicker v-model="time" time-picker>
+                        <VueDatePicker v-model="time" :min-time="{ hours: 10 }" :max-time="{ hours: 20, minutes: 20 }" time-picker>
                             <template #input-icon>
                                 <img class="ml-2 size-5 input-slot-image" src="/img/icons/time.png"/>
                             </template>
