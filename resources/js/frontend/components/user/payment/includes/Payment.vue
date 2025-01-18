@@ -1,15 +1,24 @@
 <script setup>
-    import { computed, defineAsyncComponent, onMounted, ref, defineEmits } from 'vue';
-    import { useProducts } from '@frontend/store/product';
+    import { computed, defineAsyncComponent, onMounted, ref, defineEmits, watch } from 'vue';
     import { useCustomer } from '@frontend/store/customer';
     import { priceFormat } from '@frontend/helpers/currency';
+
+    import { component as VueNumber } from '@coders-tm/vue-number-format'
 
     const props = defineProps({
         csrf: String,
         user: Object,
-        api_store_order: String,
+        route_payment: String,
+        booking_route: String,
         order: Object,
     });
+
+    const number_input = {
+        separator: '.',
+        prefix: 'Rp ',
+        precision: 0,
+        masked: false,
+    }
 
     const orderItems = props.order.order_items;
 
@@ -54,6 +63,11 @@
             total += parseFloat(product.total);
         });
 
+        semiCustom.value.forEach(product => {
+            // parse float to remove comma
+            total += parseFloat(product.total);
+        });
+
         return total;
     });
 
@@ -67,12 +81,36 @@
 
     const selectedPayment = ref('manual-tf');
     const preferredBank = ref('BCA');
+    const downPayment = ref(0);
+    const payAmount = ref(0);
+    const transactionNumber = ref('');
+
+    watch(downPayment, (val) => {
+        if (val == 1) {
+            payAmount.value = 0;
+        }else if (val == 0) {
+            payAmount.value = parseFloat(afterDiscount.value);
+        }
+    });
+
+    payAmount.value = parseFloat(afterDiscount.value);
 
     const showPreferredBank = computed(() => {
         return selectedPayment.value === 'manual-tf';
     });
 
     const confirmPayment = async () => {
+
+        if (downPayment.value == 1 && payAmount.value == 0) {
+            alert('Please input amount');
+            return;
+        }
+
+        if (transactionNumber.value == '') {
+            alert('Please input transaction number');
+            return;
+        }
+
         childDoPayment.value.open = true;
         sendingPayment.value = true;
         const doSend = await sendOrder();
@@ -82,23 +120,31 @@
         if (doSend) {
             window.location.href = '/customer-booking';
         }
-
     }
 
     const sendOrder = async () => {
-        axios.post(props.api_store_order, {
-            products: products.value,
+
+        axios.post(props.route_payment, {
+            is_downpayment: downPayment.value,
+            order_id: props.order.id,
+            user_id: props.user.id,
+            amount: payAmount.value,
             payment: selectedPayment.value,
             bank: preferredBank.value,
-            customer_id: customer.value ? customer.value.id : null,
-            coupon: couponUsed.value,
+            transaction_number: transactionNumber.value,
         })
         .then(response => {
             if (response.data.success) {
+                console.log(response.data);
+
                 sendingPayment.value = false;
                 childDoPayment.value.open = true;
                 childDoPayment.value.status = 'success';
                 childDoPayment.value.message = 'Payment Success';
+
+                setTimeout(() => {
+                    window.location.href = props.booking_route;
+                }, 2000);
             }
 
             return true;
@@ -232,7 +278,7 @@
                 <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">DETAIL ORDER</div>
             </div>
 
-            <div class="space-y-5 px-14 pt-12 pb-32">
+            <div class="space-y-5 px-14 pt-12 pb-20">
                 <div class="font-roboto text-[#606060]">
                     <div>Ordered number your shirt </div>
                     <div>{{ order.order_number }}</div>
@@ -288,6 +334,59 @@
                     <div class="col-span-2"></div>
                     <div>
                         (Termasuk biaya pajak)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Create Input Transnumber & downpayment check -->
+        <section>
+            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
+                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">PAYMENT DETAILS</div>
+            </div>
+            <div class="space-y-5 px-14 pt-12 pb-32">
+                <div class="font-roboto text-[#606060]">
+                    <div class="flex items-center gap-4">
+                        <input
+                            v-model="downPayment"
+                            class="hidden"
+                            type="radio"
+                            name="downpayment"
+                            value="0"
+                            :id="`downpayment-0`">
+                        <label class="flex space-x-2 cursor-pointer -center items" :for="`downpayment-0`">
+                            <span class="checkbox-inner"></span>
+                            <span class="font-bold text-[#606060]">Full Payment</span>
+                        </label>
+                        <input
+                            v-model="downPayment"
+                            class="hidden"
+                            type="radio"
+                            name="downpayment"
+                            value="1"
+                            :id="`downpayment-1`">
+                        <label class="flex space-x-2 cursor-pointer -center items" :for="`downpayment-1`">
+                            <span class="checkbox-inner"></span>
+                            <span class="font-bold text-[#606060]">Down Payment</span>
+                        </label>
+                    </div>
+
+                    <!-- If it downpayment show input amount -->
+                    <div class="mt-4">
+                        <div class="font-bold text-[#606060]">Amount</div>
+                        <div class="flex items-center gap-4 mt-2">
+                            <VueNumber v-model.lazy="payAmount" v-bind="number_input" class="border-primary-50 px-4 py-2 border rounded-full w-full max-w-[400px] text-[#606060]"></VueNumber>
+                            </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="font-bold text-[#606060]">Transaction Code</div>
+                        <div class="flex items-center gap-4 mt-2">
+                            <input
+                                v-model="transactionNumber"
+                                type="text"
+                                class="border-primary-50 px-4 py-2 border rounded-full w-full max-w-[400px] text-[#606060]">
+                        </div>
                     </div>
                 </div>
             </div>

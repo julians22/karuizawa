@@ -98,7 +98,7 @@
                         if (semi_custom.amount.discount) {
                             semi_custom_data.option_discount = semi_custom.amount.discount;
                         }
-                        if (semi_custom.optionTotal) {
+                        if (semi_custom.amount.optionTotal) {
                             semi_custom_data.option_total = semi_custom.amount.optionTotal;
                         }
                     }

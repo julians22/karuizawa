@@ -39,6 +39,7 @@
         "vue3-select-component": "^0.7.0"
     },
     "dependencies": {
+        "@coders-tm/vue-number-format": "^3.35.2",
         "@splidejs/splide": "^4.1.4",
         "@vue/compat": "^3.1.0",
         "@vuepic/vue-datepicker": "^11.0.1",

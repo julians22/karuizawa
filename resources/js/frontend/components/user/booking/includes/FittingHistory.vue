@@ -10,7 +10,8 @@
                 status: '',
                 applyKeyword: ''
             })
-        }
+        },
+        user: Object
     });
 
     const isRetrieving = ref(false);
@@ -41,6 +42,10 @@
             url += `&keyword=${props.filterData.keyword}`;
         }
 
+        if (props.user && props.user.store_id) {
+            url += `&store_id=${props.user.store_id}`;
+        }
+
         const response = await fetch(url);
         bookings.value = await response.json();
         isRetrieving.value = false;
@@ -60,12 +65,12 @@
     <div>
         <DetailOrder ref="orderDetail"/>
 
-        <div class="container pt-10 pb-28">
+        <div class="pt-10 pb-28 container">
             <div v-if="isRetrieving">Loading Orders ...</div>
             <div v-else-if="!isRetrieving && bookings" v-for="booking in bookings">
                 <div class="flex justify-between">
                     <div class="space-y-2 font-roboto">
-                        <div class="text-xl font-bold">Booking Number: {{ booking.booking_code }}</div>
+                        <div class="font-bold text-xl">Booking Number: {{ booking.booking_code }}</div>
                         <div>
                             {{ booking.customer_name }}
                         </div>
@@ -74,9 +79,9 @@
                         <div>{{ booking.customer_gender }}</div>
                     </div>
                     <div class="space-y-3 font-roboto">
-                        <div class="text-xl font-bold">Booking Time</div>
+                        <div class="font-bold text-xl">Booking Time</div>
                         <div>{{ booking.order_date }}</div>
-                        <button @click="onClickDetail(booking)" class="flex items-center gap-3 px-4 py-2 tracking-widest text-white bg-primary-50 lg:px-3 lg:py-2 font-josefin">
+                        <button @click="onClickDetail(booking)" class="flex items-center gap-3 bg-primary-50 px-4 lg:px-3 py-2 lg:py-2 font-josefin text-white tracking-widest">
                             <span class="mt-1 text-xs">SEE DETAIL</span>
                             <img class="inline-block size-4" src="img/icons/arrw-ck-right.png" alt="">
                         </button>

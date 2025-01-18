@@ -36,7 +36,7 @@
                 icon="c-icon cil-sync"
                 class="card-header-action"
                 :href="route('admin.product.fetch-price')"
-                :text="__('Fetch Price')"
+                :text="__('Fetch Product')"
             />
 
         </x-slot>

@@ -13,11 +13,16 @@ class FittingController extends Controller
 {
     public function index(Request $request)
     {
+        $store_id = $request->store_id;
+
         $orders = Order::with([
             'orderItems',
         ])
         ->whereHas('orderItems', function ($query) {
             $query->where('product_type', 'App\Models\SemiCustomProduct');
+        })
+        ->when($store_id, function ($query) use ($store_id) {
+            return $query->where('store_id', $store_id);
         })
         ->when($request->status, function ($query) use ($request) {
             return $query->where('status', $request->status);

@@ -15,6 +15,7 @@ window.Splide = Splide;
 import { createApp } from "vue";
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import VueNumberFormat from '@coders-tm/vue-number-format';
 
 const pinia = createPinia()
 const Vue = createApp()

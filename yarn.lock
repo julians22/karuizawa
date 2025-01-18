@@ -830,6 +830,11 @@
     "@babel/helper-string-parser" "^7.25.9"
     "@babel/helper-validator-identifier" "^7.25.9"
 
+"@coders-tm/vue-number-format@^3.35.2":
+  version "3.35.2"
+  resolved "https://registry.npmjs.org/@coders-tm/vue-number-format/-/vue-number-format-3.35.2.tgz"
+  integrity sha512-YTQhQIw/37Zs8nk0Gb2tQU3oEp/zgUIgDIue4VnCNpU4ELlG5B0rrSxPR3fKdfHJ4qrugImx33FwUsNF1McAbQ==
+
 "@colors/colors@1.5.0":
   version "1.5.0"
   resolved "https://registry.npmjs.org/@colors/colors/-/colors-1.5.0.tgz"

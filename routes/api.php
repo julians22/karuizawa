@@ -94,4 +94,6 @@ Route::get('fitting-orders', [FittingController::class, 'index']);
 
 Route::post('store-order', [OrderController::class, 'store']);
 
+Route::post('send-payment', [OrderController::class, 'store_payment']);
+
 Route::post('semi-custom/submit', [SemiCustomConteroller::class, 'submit']);

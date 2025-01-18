@@ -20,12 +20,31 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
+        $store_id = $request->store_id;
         $orders = Order::with([
                 'orderItems',
                 'orderItems.product',
             ])
+            ->when($store_id, function ($query) use ($store_id) {
+                return $query->where('store_id', $store_id);
+            })
             ->when($request->status, function ($query) use ($request) {
-                return $query->where('status', $request->status);
+                switch ($request->status) {
+                    case 'waiting':
+                        return $query->whereIn('status', [
+                            config('enums.order_status.pending'),
+                        ]);
+                    case 'confirm order':
+                        return $query->whereIn('status', [
+                            config('enums.order_status.processing'),
+                        ]);
+                    case 'rejected':
+                        return $query->whereIn('status', [
+                            config('enums.order_status.rejected'),
+                        ]);
+                    default:
+                        return $query->where('status', $request->status);
+                }
             })
             ->when($request->date, function ($query) use ($request) {
                 $date = Carbon::parse($request->date);
@@ -48,23 +67,75 @@ class OrderController extends Controller
         );
     }
 
-    // this function not used yet
     public function store_payment(Request $request) {
+
         $request->validate([
-            'products.*.sku' => 'required',
-            'products.*.qty' => 'required',
             'payment' => 'required',
             'bank' => 'required_if:payment,manual-tf',
-            'customer_id' => 'sometimes',
-            'coupon' => 'sometimes',
+            'is_downpayment' => 'sometimes',
+            'order_id' => 'required',
+            'user_id' => 'required',
+            'amount' => 'required',
+            'transaction_number' => 'required',
         ]);
+
+
+        $order = Order::findOrFail($request->order_id);
+
+        if ($order->isPaymentComplete()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Payment already completed',
+            ], 422);
+        }
+
+        $amount = $request->amount;
+
+        DB::beginTransaction();
+        try {
+            $payment = Payment::create([
+                'order_id' => $order->id,
+                'user_id' => $request->user_id,
+                'payment' => $request->payment,
+                'bank' => $request->bank,
+                'amount' => $amount,
+                'is_downpayment' => $request->is_downpayment ?? false,
+                'trans_number' => $request->transaction_number,
+            ]);
+
+            if ($order->isPaymentComplete()) {
+                $order->update([
+                    'status' => config('enums.order_status.completed'),
+                ]);
+            }
+
+            DB::commit();
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            DB::rollBack();
+            return response()->json([
+                'success' => false,
+                'message' => $th->getMessage(),
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Payment success',
+        ], 200);
     }
 
     function incoming_order(Request $request) {
+        $store_id = $request->store_id;
+
         $orders = Order::with([
                 'orderItems',
                 'orderItems.product',
             ])
+            ->when($store_id, function ($query) use ($store_id) {
+                return $query->where('store_id', $store_id);
+            })
             ->where('status', 'pending')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
@@ -96,16 +167,16 @@ class OrderController extends Controller
         $request->validate([
             'products.*.sku' => 'required',
             'products.*.qty' => 'required',
-            'customer_id' => 'sometimes|required_if:semi_custom,!=,null',
+            'customer' => 'sometimes|required_if:semi_custom,!=,null',
             'coupon' => 'sometimes',
             'semi_custom' => 'sometimes',
             'user' => 'sometimes',
         ]);
 
-        // check customer_id
+        // check customer
         $storeId = $request->store_id;
-        if ($request->customer_id) {
-            $customer = Customer::find($request->customer_id);
+        if ($request->customer) {
+            $customer = Customer::find($request->customer);
             if (!$customer) {
                 // return error validation
                 return response()->json([
@@ -125,7 +196,7 @@ class OrderController extends Controller
 
         try {
             $order = Order::create([
-                'customer_id' => $request->customer_id ?? config('dummy.customer'),
+                'customer_id' => $request->customer ?? config('dummy.customer'),
                 'store_id' => $storeId,
                 'user_id' => $request->user ?? 3,
                 'total_price' => 0,
@@ -184,9 +255,11 @@ class OrderController extends Controller
                     'option_note' => $semiCustom['option_note'],
                 ]);
 
+                $itemPrice = (int)$semiCustomProuduct->base_price + (int)$semiCustomProuduct->option_total + (int)$semiCustomProuduct->option_additional_price;
+
                 $orderItem = new OrderItem([
                     'quantity' => 1,
-                    'price' => $semiCustomProuduct->base_price + $semiCustomProuduct->option_total + $semiCustomProuduct->option_additional_price,
+                    'price' => $itemPrice,
                 ]);
 
                 $orderItem->product()->associate($semiCustomProuduct);
