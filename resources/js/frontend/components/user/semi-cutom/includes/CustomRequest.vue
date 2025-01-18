@@ -74,33 +74,63 @@
         emitFrom('additional-option', amount);
     };
 
-    const initialName = ref({
-        x: '',
-        y: '',
-        dot: '',
-        z: ''
-    });
+    // const initialName = ref({
+    //     x: '',
+    //     y: '',
+    //     dot: '',
+    //     z: ''
+    // });
 
-    watch(initialName.value, (items) => {
-        embroidery.value.initialName = `${items.x}${items.dot}${items.y}${items.z}`
-    })
+    // watch(initialName.value, (items) => {
+    //     embroidery.value.initialName = initialName.value
+    // })
 
     const embroidery = ref({
         slug: 'embroidery',
-        name: '',
         position: null,
         color: null,
         fontType: null,
-        initialName: null,
+        initialName: {
+            x: '',
+            y: '',
+            dot: '',
+            z: ''
+        },
         longName: null,
-        // price: props.dataOptions.embroidery.data.options.price
+        price: 0
     });
 
     watch(embroidery.value, (items) => {
-        // if (isNull(items.longName) || items.longName == '' || isNull(items.initialName) || items.initialName == '') {
-        //     form.value.embroidery = null;
-        //     return;
-        // }
+        if (
+            (
+                isNull(items.longName) ||
+                items.longName == ''
+            ) &&
+            (
+                items.initialName.x == '' &&
+                items.initialName.y == '' &&
+                items.initialName.dot == '' &&
+                items.initialName.z == ''
+            ) &&
+            (
+                isNull(items.position) ||
+                items.position == ''
+            ) &&
+            (
+                isNull(items.color) ||
+                items.color == ''
+            ) &&
+            (
+                isNull(items.fontType) ||
+                items.fontType == ''
+            )
+        ) {
+            items.price = 0;
+        }else {
+            items.price = 50000;
+        }
+
+        form.value.embroidery = items;
 
         // const data = {
         //     slug: items?.slug,
@@ -118,8 +148,6 @@
         //     },
         //     price: items?.price
         // }
-
-        form.value.embroidery = items;
     });
 
     const tape = ref({
@@ -216,7 +244,7 @@
     }
 
     const onInputIntialName = (val, key = 'z') => {
-        initialName.value[key] = val;
+        embroidery.value.initialName[key] = val;
 
     }
     const onInputTape = (val, key = 'collar') => {
@@ -629,9 +657,9 @@
                     <div class="col-span-3 p-4">
                         <div class="flex items-end gap-4 max-xl:flex-wrap">
                             <div class="flex items-end font-roboto">
-                                <input v-model="initialName.x" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border size-10 border-primary-50">
-                                <input v-model="initialName.dot" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 size-5 border-y border-primary-50">
-                                <input v-model="initialName.y" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-l border-r size-10 border-y border-primary-50">
+                                <input v-model="embroidery.initialName.x" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border size-10 border-primary-50">
+                                <input v-model="embroidery.initialName.dot" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 size-5 border-y border-primary-50">
+                                <input v-model="embroidery.initialName.y" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-l border-r size-10 border-y border-primary-50">
                                 <boxInput :digitCount="10" @update:input="onInputIntialName($event)"/>
                             </div>
                             <div class="flex w-full gap-4">

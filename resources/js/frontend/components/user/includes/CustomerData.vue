@@ -156,7 +156,7 @@
                 <div class="flex items-center gap-6">
                     <label for="time" class="block uppercase text-primary-50">set time</label>
                     <div class="flex">
-                        <VueDatePicker v-model="time" :min-time="{ hours: 10 }" :max-time="{ hours: 20, minutes: 20 }" time-picker>
+                        <VueDatePicker v-model="time" :min-time="{ hours: 10 }" :max-time="{ hours: 21, minutes: 10 }" time-picker>
                             <template #input-icon>
                                 <img class="ml-2 input-slot-image size-5" src="/img/icons/time.png"/>
                             </template>

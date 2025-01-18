@@ -19,7 +19,8 @@
 
     const form = ref({
         fabric: {
-            text: '',
+            text: null,
+            fabricCode: null
         },
         collar: null,
         cuff: null,

@@ -138,19 +138,30 @@
     }
 
 
-    const btnSubmit = () => {
-        if (totalPrice.value <= 0 && bindForm.value !== null) {
-            alert('Please fill the form OR apply the price first');
+    const btnSubmit =  async () => {
+        childBasic.value.basicAmount()
+        childOption.value.amountOption()
+
+        if (basic.value.form.fabric.fabricCode == null || basic.value.form.fabric.text == null ||
+            basic.value.form.fabric.fabricCode == '' || basic.value.form.fabric.text == ''
+        ) {
+            alert('Please fill the form Fabric Code');
         }else {
-            onSumbit();
+            if (totalPrice.value <= 0 && bindForm.value !== null) {
+                alert('Please fill the form OR apply the price first');
+            }else {
+                useProducts().setCustom(bindForm.value);
+                onSumbit();
+            }
         }
     }
 
-    const onSumbit = async () => {
-        await axios.post('/api/semi-custom/submit', bindForm.value)
+  const onSumbit = async () => {
+        const dataForm = bindForm.value;
+        await axios.post('/api/semi-custom/submit', dataForm)
             .then(response => {
                 console.log(response.data.data);
-                useProducts().setCustom(response.data.data);
+
                 url.searchParams.set('page', 'total-shop');
                 window.history.pushState(null, '', url.toString());
                 storePage.currentPage = 'total-shop';
@@ -208,7 +219,10 @@
                                                         {{ summaryOption.fontType.name }}
                                                     </div>
                                                     <div v-if="summaryOption.initialName">
-                                                        {{ summaryOption.initialName }}
+                                                        {{ summaryOption.initialName?.x }}
+                                                        {{ summaryOption.initialName?.y }}
+                                                        {{ summaryOption.initialName?.dot }}
+                                                        {{ summaryOption.initialName?.z }}
                                                     </div>
                                                     <div v-if="summaryOption.longName">
                                                         {{ summaryOption.longName }}

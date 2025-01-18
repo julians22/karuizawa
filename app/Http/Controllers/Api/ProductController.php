@@ -15,7 +15,8 @@ class ProductController extends Controller
         // size:
         // color:
         // sort: 'Newest', 'Oldest', 'Price: Low to High', 'Price: High to Low'
-        $products = Product::validProduct()
+        // $products = Product::validProduct()
+        $products = Product::query()
             ->when($request->has('search'), function ($query) use ($request) {
                 $query->where('product_name', 'like', '%' . $request->search . '%');
             })
