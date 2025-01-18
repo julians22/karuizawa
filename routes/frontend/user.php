@@ -40,6 +40,15 @@ Route::group(['as' => 'user.', 'middleware' => ['auth', 'password.expires', conf
 
     Route::get('semi-custom', [SemiCustomConteroller::class, 'index'])->name('semi-custom');
 
+    Route::get('cart', function () {
+        return view('frontend.user.cart');
+    })->name('cart');
+
+    Route::get('order-patment/{id}', function ($id) {
+        return view('frontend.user.order-payment', compact('id'));
+    })->name('order-payment');
+
+
     Route::get('customer-booking', function () {
         return view('frontend.user.booking');
     })->name('booking');
