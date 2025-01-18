@@ -3,8 +3,11 @@
 
     const props = defineProps({
         data_semi_custom: Object,
-
+        data_config: Object
     });
+
+    const CustomBasic = defineAsyncComponent(() => import('./includes/CustomBasic.vue'));
+    const CustomOptions = defineAsyncComponent(() => import('./includes/CustomOptions.vue'));
 
     const childBasic = ref();
     const childOption = ref();
@@ -26,9 +29,7 @@
 
 <template>
     <div>
-
-        tset
-        <!-- <CustomShirt @additionalBasic="additionalBasic" :dataSemiCustom="props.data_semi_custom" ref="childBasic" />
-        <CustomRequest @additionalOption="additionalOption" :dataOptions="props.data_semi_custom" ref="childOption"/> -->
+        <CustomBasic @additionalBasic="additionalBasic" :dataConfig="props.data_config" :dataSemiCustom="props.data_semi_custom" ref="childBasic" />
+        <CustomOptions @additionalOption="additionalOption" :dataConfig="props.data_config" :dataSemiCustom="props.data_semi_custom" ref="childOption"/>
     </div>
 </template>

@@ -15,7 +15,7 @@
 
     const isRetrieving = ref(false);
 
-    const DetailOrder = defineAsyncComponent(() => import('../utils/DetailHistoryOrder.vue'));
+    const DetailOrder = defineAsyncComponent(() => import('../utils/DetailFitting.vue'));
 
     const orderDetail = ref(false);
 

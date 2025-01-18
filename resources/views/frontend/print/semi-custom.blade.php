@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ appName() }} | @yield('title')</title>
+    <title>{{ appName() }} @yield('title')</title>
     <meta name="description" content="@yield('meta_description', appName())">
     <meta name="author" content="@yield('meta_author', 'F_Skn')">
     @yield('meta')
@@ -17,7 +17,10 @@
 </head>
 <body>
     <div id="app">
-        <print-semi-custom></print-semi-custom>
+        <print-semi-custom
+        :data_config="{{ $dataConfig }}"
+        :data_semi_custom="{{ $dataSemiCustom }}"
+        ></print-semi-custom>
     </div><!--app-->
 
     @stack('before-scripts')

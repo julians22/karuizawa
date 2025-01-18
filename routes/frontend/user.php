@@ -5,6 +5,8 @@ use App\Http\Controllers\Frontend\User\AccountController;
 use App\Http\Controllers\Frontend\User\DashboardController;
 use App\Http\Controllers\Frontend\User\ProfileController;
 use App\Http\Controllers\Frontend\User\SemiCustomConteroller;
+use App\Models\Order;
+use App\Models\SemiCustomProduct;
 use Tabuna\Breadcrumbs\Trail;
 use Illuminate\Support\Facades\Route;
 
@@ -52,8 +54,15 @@ Route::group(['as' => 'user.', 'middleware' => ['auth', 'password.expires', conf
         return view('frontend.user.booking');
     })->name('booking');
 
-    Route::get('print-semi-custom', function () {
-       return view('frontend.print.semi-custom');
+    Route::get('print-semi-custom/{id}', function ($id) {
+
+        $order = Order::findOrFail($id);
+        $orderItem = $order->orderItems()->where('product_type', 'App\Models\SemiCustomProduct')->first();
+        $semiCustom = SemiCustomProduct::findOrFail($orderItem->product_id);
+        $dataConfig = collect(config('karuizawa-master'));
+
+       return view('frontend.print.semi-custom', ['dataSemiCustom' => $semiCustom, 'dataConfig' => $dataConfig]);
+
     });
 
 });

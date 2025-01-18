@@ -11,7 +11,13 @@
     }
 
     const onPrint = () => {
-        console.log(booking);
+        console.log(booking.value.order_id);
+        window.open(
+        `/print-semi-custom/${booking.value.order_id}`,
+        '_blank' // <- This is what makes it open in a new window.
+        );
+        // window.location.href = '/';
+
     }
 
     defineExpose({
