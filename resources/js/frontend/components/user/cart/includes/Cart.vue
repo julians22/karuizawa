@@ -4,6 +4,7 @@
     import { useProducts } from "@frontend/store/product";
     import { priceFormat } from "@frontend/helpers/currency";
     import { useCustomer } from "@frontend/store/customer";
+    import { useOrder } from "@frontend/store/order";
 
     const props = defineProps({
         onPage: {
@@ -15,6 +16,7 @@
     })
 
     const customer = computed(() => useCustomer().getCustomer);
+    const orderDate = ref(useOrder().getDateAndTime);
 
     const ordersData = computed(() => {
         return {
@@ -112,11 +114,9 @@
             semi_custom: semi_custom_data,
             coupon: ordersData.value.coupon,
             user: props.user.id,
-            store_id: props.user.store_id ?? 0
+            store_id: props.user.store_id ?? 0,
+            order_date: orderDate.value
         }
-
-        console.log(orders);
-        
         
 
         axios.post(props.api_store_order, orders)
@@ -162,7 +162,7 @@
         return storeProducts.getSemiCustom;
     })
 
-    const fabricText = semiCustom.value.basic.form.fabric.fabricCode + ' - ' + semiCustom.value.basic.form.fabric.text;
+    const fabricText = computed(() => semiCustom.value ? semiCustom.value.basic.form.fabric.fabricCode + ' - ' + semiCustom.value.basic.form.fabric.text : '');
 
     const coupon = ref(storeProducts.getCouponRtw);
 

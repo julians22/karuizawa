@@ -1,26 +1,61 @@
 <script setup>
     import { computed, defineAsyncComponent, onMounted, ref, defineEmits } from 'vue';
-    import { useProducts } from '../../../store/product';
-    import { useCustomer } from '../../../store/customer';
-    import { priceFormat } from '../../../helpers/currency';
+    import { useProducts } from '@frontend/store/product';
+    import { useCustomer } from '@frontend/store/customer';
+    import { priceFormat } from '@frontend/helpers/currency';
 
     const props = defineProps({
         csrf: String,
         user: Object,
         api_store_order: String,
+        order: Object,
+    });
+
+    const orderItems = props.order.order_items;
+
+    const products = computed(() => {
+        return orderItems.filter(item => item.type == "RTW").map(item => {
+            return {
+                name: item.product.product_name,
+                sku: item.product.sku,
+                qty: item.quantity,
+                price: item.price,
+                total: item.total_price
+            }
+        });
+    });
+
+    const semiCustom = computed(() => {
+        return orderItems.filter(item => item.type == "SC").map(item => {
+            return {
+                name: item.product.name,
+                fabric_code: item.product.basic_form.fabric.fabricCode + ' - ' + item.product.basic_form.fabric.text,
+                qty: item.quantity,
+                price: item.price,
+                total: item.total_price
+            }
+        });
     });
 
     const sendingPayment = ref(false);
-    const doPayment = defineAsyncComponent(() => import('../../utils/paymentModal.vue'));
+    const doPayment = defineAsyncComponent(() => import('../../../utils/paymentModal.vue'));
 
     const childDoPayment = ref(null);
 
-    const products = computed(() => useProducts().getProducts);
+    // const products = computed(() => useProducts().getProducts);
     const customer = computed(() => useCustomer().getCustomer);
-    const couponUsed = computed(() => useProducts().coupon_rtw);
-    const semiCustom = computed(() => useProducts().getSemiCustom);
+    const couponUsed = computed(() => props.order.discount_details.coupon);
+    // const semiCustom = computed(() => useProducts().getSemiCustom);
 
-    const totalPayment = ref(0);
+    const totalPayment = computed(() => {
+        let total = 0;
+        products.value.forEach(product => {
+            // parse float to remove comma
+            total += parseFloat(product.total);
+        });
+
+        return total;
+    });
 
     const afterDiscount = computed(() => {
         return totalPayment.value - (totalPayment.value * (couponUsed.value / 100));
@@ -119,7 +154,7 @@
                             :id="`manual-tf`">
                         <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`manual-tf`">
                             <div>
-                                <img src="img/icons/manual-tf.png" alt="">
+                                <img src="/img/icons/manual-tf.png" alt="">
                             </div>
                             <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Manual Transfer</div>
                             <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
@@ -135,7 +170,7 @@
                             :id="`credit-card`">
                         <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`credit-card`">
                             <div>
-                                <img src="img/icons/credit-card.png" alt="">
+                                <img src="/img/icons/credit-card.png" alt="">
                             </div>
                             <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Credit Card</div>
                             <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
@@ -151,7 +186,7 @@
                             :id="`debit-card`">
                         <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`debit-card`">
                             <div>
-                                <img src="img/icons/credit-card.png" alt="">
+                                <img src="/img/icons/credit-card.png" alt="">
                             </div>
                             <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Debit Card</div>
                             <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
@@ -200,40 +235,38 @@
             <div class="space-y-5 px-14 pt-12 pb-32">
                 <div class="font-roboto text-[#606060]">
                     <div>Ordered number your shirt </div>
-                    <div>BSC0425</div>
+                    <div>{{ order.order_number }}</div>
                 </div>
                 <div class="bg-[#606060] opacity-40 w-full h-0.5"></div>
                 <div>
-                    <div class="grid grid-cols-3 font-bold font-roboto text-secondary-50">
-                        <div>Product</div>
-                        <div>Qty</div>
-                        <div>Price</div>
-                    </div>
-                    <div class="grid grid-cols-3 mt-2" v-for="product in products">
-                        <div class="font-roboto">
-                            <div class="font-bold text-[#606060]">{{ product.product_name }}</div>
-                            <div class="text-[#A3A3A3]">{{ product.sku }}</div>
-                        </div>
-                        <div class="font-bold text-[#606060]">{{ product.qty }}</div>
-                        <div class="font-bold text-[#606060]"
-                            v-html="priceFormat(product.price)"></div>
-                    </div>
-                </div>
-                <div>
-                    <div class="grid grid-cols-3 font-bold font-roboto text-secondary-50">
-                        <div>Semi Custom</div>
-                        <div>Qty</div>
-                        <div>Price</div>
-                    </div>
-                    <div class="grid grid-cols-3 mt-2">
-                        <div class="font-roboto">
-                            <div class="font-bold text-[#606060]">name</div>
-                            <div class="text-[#A3A3A3]">fabric-code</div>
-                        </div>
-                        <div class="font-bold text-[#606060]">1</div>
-                        <div class="font-bold text-[#606060]"
-                            v-html="priceFormat(semiCustom.totalPrice)"></div>
-                    </div>
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="font-bold font-roboto text-secondary-50">
+                                <th style="width: 40%;">Product</th>
+                                <th style="width: 20%;">Qty</th>
+                                <th style="width: 20%;">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-if="semiCustom.length > 0"
+                                v-for="product in semiCustom" :key="product.sku">
+                                <td class="font-roboto">
+                                    <div class="font-bold text-[#606060]">{{ product.name }}</div>
+                                    <div class="text-[#A3A3A3]">{{ product.fabric_code }}</div>
+                                </td>
+                                <td class="font-bold text-[#606060]">{{ product.qty }}</td>
+                                <td class="font-bold text-[#606060]" v-html="priceFormat(product.price)"></td>
+                            </tr>
+                            <tr v-for="product in products" :key="product.sku" class="mt-2">
+                                <td class="font-roboto">
+                                    <div class="font-bold text-[#606060]">{{ product.name }}</div>
+                                    <div class="text-[#A3A3A3]">{{ product.sku }}</div>
+                                </td>
+                                <td class="font-bold text-[#606060]">{{ product.qty }}</td>
+                                <td class="font-bold text-[#606060]" v-html="priceFormat(product.price)"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="bg-[#606060] opacity-40 w-full h-0.5"></div>
                 <div class="grid grid-cols-3 font-bold font-roboto text-secondary-50">
@@ -261,14 +294,10 @@
         </section>
 
         <div class="flex justify-between">
-            <button @click="btnBack()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white tracking-widest">
-                    <img class="inline-block mb-1.5 rotate-180" src="img/icons/arrw-ck-right.png" alt="">
-                    <span>BACK</span>
-            </button>
             <button @click="confirmPayment()"
                 class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">
                 <span>PROCEED TO PAYMENT</span>
-                <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+                <img class="inline-block" src="/img/icons/arrw-ck-right.png" alt="">
             </button>
         </div>
     </div>

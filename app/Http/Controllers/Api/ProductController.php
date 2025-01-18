@@ -16,6 +16,18 @@ class ProductController extends Controller
         // color:
         // sort: 'Newest', 'Oldest', 'Price: Low to High', 'Price: High to Low'
         $products = Product::validProduct()
+            ->when($request->has('store_id'), function ($query) use ($request) {
+                // find available product in store
+                // find where has many productActualStocks with stock > 0
+                $query->whereHas('productActualStocks', function ($query) use ($request) {
+                    if ($request->stpre_id === 0) {
+                        return $query->where('stock_quantity', '>', 0);
+                    }else{
+                        return $query->where('store_id', $request->store_id)
+                            ->where('stock_quantity', '>', 0);
+                    }
+                });
+            })
             ->when($request->has('search'), function ($query) use ($request) {
                 $query->where('product_name', 'like', '%' . $request->search . '%');
             })

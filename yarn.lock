@@ -3952,6 +3952,11 @@ knitwork@^1.2.0:
   resolved "https://registry.npmjs.org/knitwork/-/knitwork-1.2.0.tgz"
   integrity sha512-xYSH7AvuQ6nXkq42x0v5S8/Iry+cfulBz/DJQzhIyESdLD7425jXsPy4vn5cCXU+HhRN2kVw51Vd1K6/By4BQg==
 
+laravel-mix-fileloader@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.npmjs.org/laravel-mix-fileloader/-/laravel-mix-fileloader-0.0.2.tgz"
+  integrity sha512-GVH2mDaMVJlHRTOQybsCs35ymOiSZMkhqorLlAV+EWISdyigy1GNx87fUQHndgOl1rQLd4C3g3AzIUtvd1CXzA==
+
 laravel-mix@^6.0.6:
   version "6.0.49"
   resolved "https://registry.npmjs.org/laravel-mix/-/laravel-mix-6.0.49.tgz"

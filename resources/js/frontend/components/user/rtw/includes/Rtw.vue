@@ -4,6 +4,7 @@
     import { useProducts } from '../../../../store/product';
     import { priceFormat } from '../../../../helpers/currency';
     import { useCustomer } from '../../../../store/customer';
+    import { useUser } from '../../../../store/user';
 
 
     const isLoading = ref(true);
@@ -65,7 +66,6 @@
             });
 
             return;
-
     }
 
     onMounted(() => {
@@ -76,20 +76,7 @@
                 storeProducts.setSlug = form.value.shirtsSelected;
             }
         });
-
-        fetch(props.api_product_url)
-            .then(response => response.json())
-            .then(data => {
-                products.value = data;
-            })
-            .catch(error => {
-                console.error('There was an error!', error);
-            })
-            .finally(() => {
-                isLoading.value = false;
-            });
-
-
+        fetchProducts(1);
     });
 
     const getResults = async (page = 1) => {
@@ -105,8 +92,10 @@
         isLoading.value = true;
 
         let url = `${props.api_product_url}?page=${page}`;
-        const keywordString = keywords.value ? `&search=${keywords.value}` : '';
 
+        let store_id = await useUser().getStoreId;
+
+        const keywordString = keywords.value ? `&search=${keywords.value}` : '&search=';
         if (filters.size !== '0') {
             url = `${url}&size=${filters.size}`;
         }
@@ -117,6 +106,10 @@
 
         if (filters.sort !== '0') {
             url = `${url}&sort=${filters.sort}`;
+        }
+
+        if (store_id) {
+            url = `${url}&store_id=${store_id}`;
         }
 
         url = `${url}${keywordString}`;
@@ -255,6 +248,9 @@
                     </div>
                 </div>
                 <div v-else-if="!isLoading && !products.data.length">
+                    <div class="flex justify-center items-center text-[#606060] text-center text-lg">No products found</div>
+                </div>
+                <div v-else>
                     <div class="flex justify-center items-center text-[#606060] text-center text-lg">No products found</div>
                 </div>
             </div>
