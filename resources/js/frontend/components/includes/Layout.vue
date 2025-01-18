@@ -18,9 +18,9 @@
         <div class="flex flex-col col-span-2 w-full">
             <div :class="{ 'h-full': !props.extends }" class="flex flex-col items-center bg-cover bg-no-repeat bg-right-bottom px-7 py-20" style="background-image: url('/img/bg-02.jpg');">
                 <div class="border-4 border-white bg-primary-50 border-solid rounded-full size-36"></div>
-                <div class="mt-4 text-center text-white text-xl uppercase tracking-widest">
+                <div class="mt-4 text-center text-md text-white xl:text-xl uppercase tracking-widest">
                     Hi, <br>
-                    {{ user?.name }}
+                    {{ user?.name }} ({{ user?.store?.name }})
                 </div>
                 <div class="mt-0.5 text-center text-sm text-white">Karuizawa’s Store Crew </div>
                 <div class="mt-10">

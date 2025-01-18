@@ -18,7 +18,7 @@
 <template>
     <dialog :open="dialog" style="z-index: 999;">
         <div class="flex justify-center items-center w-full h-full overflow-auto">
-            <div class="relative flex-1 md:m-auto max-md:mx-10 rounded-2xl md:max-w-lg lg:max-w-xl xl:max-w-3xl 2xl:max-w-4xl">
+            <div class="relative flex-1 md:m-auto max-md:mx-10 rounded-2xl md:max-w-lg lg:max-w-3xl xl:max-w-4xl">
                 <div class="flex max-md:flex-col bg-white shadow-2xl p-10 rounded-2xl w-full h-full overflow-hidden">
                     <div class="top-3 right-5 absolute">
                         <button @click="closeDialog"><img src="/img/icons/close.png" alt=""></button>
