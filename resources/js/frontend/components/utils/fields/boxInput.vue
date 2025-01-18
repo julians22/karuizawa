@@ -69,9 +69,9 @@ const handleKeyDown = function (event, index) {
             }, 0);
         }
 
-        if (isDigitsFull()) {
+        // if (isDigitsFull()) {
             emit('update:input', digits.join(''))
-        }
+        // }
     }
 
     event.preventDefault();

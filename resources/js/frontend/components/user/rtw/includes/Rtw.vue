@@ -60,6 +60,7 @@
                 });
 
                 storeProducts.setProducts = selectedProducts.value;
+                window.location.href = "/cart";
             })
             .catch(error => {
                 console.error('There was an error!', error.response.data.message);
@@ -133,7 +134,6 @@
     const btnProcess = () => {
         if (form.value.shirtsSelected.length) {
             selectProducts();
-            $emit('btn-next', 'total-shop');
         }else{
             formError.value = ['Please select at least one item']
             console.log(formError.value);
@@ -164,10 +164,10 @@
 
 <template>
     <section class="pb-20">
-        <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-            <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">Ready to wear</div>
+        <div class="flex items-center justify-between p-6 bg-primary-50 lg:px-14 lg:py-7">
+            <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">Ready to wear</div>
             <div class="w-2/5">
-                <label for="default-search" class="mb-2 font-medium text-gray-900 text-sm dark:text-white sr-only">Search</label>
+                <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                 <div class="relative">
                     <input
                         type="text"
@@ -175,7 +175,7 @@
                         v-model="keywords"
                         placeholder="Search for products"
                         @blur="searchProduct"
-                        class="block bg-white px-4 py-2 rounded-full w-full text-gray-900 text-sm pe-10" />
+                        class="block w-full px-4 py-2 text-sm text-gray-900 bg-white rounded-full pe-10" />
                     <button @click="searchProduct" class="absolute inset-y-0 flex items-center end-0 pe-4">
                         <svg class="text-primary-50 size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
@@ -184,9 +184,9 @@
                 </div>
             </div>
         </div>
-        <div class="flex justify-between items-center gap-2 bg-secondary-50 lg:px-14 lg:py-7 p-6">
-            <div class="flex max-lg:flex-col items-center gap-2 lg:gap-4 w-full">
-                <div class="text-white uppercase tracking-widest whitespace-pre">Sort by</div>
+        <div class="flex items-center justify-between gap-2 p-6 bg-secondary-50 lg:px-14 lg:py-7">
+            <div class="flex items-center w-full gap-2 max-lg:flex-col lg:gap-4">
+                <div class="tracking-widest text-white uppercase whitespace-pre">Sort by</div>
                 <div class="relative w-full">
                     <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 rounded-r-full w-10 text-primary-50 pointer-events-none">
                         ▼
@@ -200,8 +200,8 @@
                     </select>
                 </div>
             </div>
-            <div class="flex max-lg:flex-col items-center gap-2 lg:gap-4 w-full">
-                <div class="text-white uppercase tracking-widest whitespace-pre">Color</div>
+            <div class="flex items-center w-full gap-2 max-lg:flex-col lg:gap-4">
+                <div class="tracking-widest text-white uppercase whitespace-pre">Color</div>
                 <div class="relative w-full">
                     <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 rounded-r-full w-10 text-primary-50 pointer-events-none">
                         ▼
@@ -214,8 +214,8 @@
                     </select>
                 </div>
             </div>
-            <div class="flex max-lg:flex-col items-center gap-2 lg:gap-4 w-full">
-                <div class="text-white uppercase tracking-widest whitespace-pre">Size</div>
+            <div class="flex items-center w-full gap-2 max-lg:flex-col lg:gap-4">
+                <div class="tracking-widest text-white uppercase whitespace-pre">Size</div>
                 <div class="relative w-full">
                     <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 rounded-r-full w-10 text-primary-50 pointer-events-none">
                         ▼
@@ -229,22 +229,22 @@
                 </div>
             </div>
         </div>
-        <div class="py-20 container">
-            <div class="gap-20 grid grid-cols-3 lg:grid-cols-4">
+        <div class="container py-20">
+            <div class="grid grid-cols-3 gap-20 lg:grid-cols-4">
                 <div v-if="products.data && !isLoading" v-for="(product) in products.data">
                     <input v-model="form.shirtsSelected" class="hidden" type="checkbox" :value="product.sku" :id="`poduct-${product.id}`">
                     <label class="flex flex-col items-center px-2 rounded cursor-pointer" :for="`poduct-${product.id}`">
                         <div class="text-[#606060] text-center">{{ product.product_name }}</div>
                         <div class="text-[#A3A3A3] text-center text-sm">{{ product.sku }}</div>
-                        <div class="text-center text-lg text-secondary-50">{{ priceFormat(product.price) }}</div>
-                        <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
+                        <div class="text-lg text-center text-secondary-50">{{ priceFormat(product.price) }}</div>
+                        <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 checkbox-inner size-10"></span>
                     </label>
                 </div>
                 <div v-else-if="isLoading" v-for="i in 8">
-                    <div class="flex flex-col justify-center items-center gap-2">
-                        <div class="rounded-full w-16 h-3 is-preloader"></div>
-                        <div class="rounded-full w-10 h-3 is-preloader"></div>
-                        <div class="rounded-full w-20 h-3 is-preloader"></div>
+                    <div class="flex flex-col items-center justify-center gap-2">
+                        <div class="w-16 h-3 rounded-full is-preloader"></div>
+                        <div class="w-10 h-3 rounded-full is-preloader"></div>
+                        <div class="w-20 h-3 rounded-full is-preloader"></div>
                     </div>
                 </div>
                 <div v-else-if="!isLoading && !products.data.length">
@@ -266,12 +266,12 @@
         </div>
 
 
-        <div class="right-0 bottom-0 absolute flex">
-            <button @click="goToSemiCustom()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white tracking-widest">
+        <div class="absolute bottom-0 right-0 flex">
+            <button @click="goToSemiCustom()" class="flex items-center gap-2 p-4 tracking-widest text-white bg-primary-50 lg:p-6">
                 <span>ADD SEMI CUSTOM</span>
                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
             </button>
-            <button @click="btnProcess()" class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">
+            <button @click="btnProcess()" class="flex items-center gap-2 p-4 tracking-widest text-white bg-secondary-50 lg:p-6">
                 <span>PROCESS</span>
                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
             </button>

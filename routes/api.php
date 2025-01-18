@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\Api\OrderController;
-use App\Http\Controllers\Api\ProductController;
 use App\Models\Customer;
-use App\Http\Controllers\Frontend\User\SemiCustomConteroller;
 use Illuminate\Http\Request;
 use phpDocumentor\Reflection\Types\Boolean;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\FittingController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Frontend\User\SemiCustomConteroller;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +89,8 @@ Route::group(['prefix' => 'customer'], function () {
 Route::get('orders', [OrderController::class, 'index']);
 Route::get('incoming-orders', [OrderController::class, 'incoming_order']);
 Route::get('order/{id}', [OrderController::class, 'show']);
+
+Route::get('fitting-orders', [FittingController::class, 'index']);
 
 Route::post('store-order', [OrderController::class, 'store']);
 

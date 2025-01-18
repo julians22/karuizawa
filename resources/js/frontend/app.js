@@ -44,6 +44,9 @@ Vue.component('payment-component', require('./components/user/payment/index.vue'
 
 Vue.component('booking-component', require('./components/user/booking/index.vue').default);
 
+Vue.component('print-semi-custom', require('./components/print/SemiCustom.vue').default);
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

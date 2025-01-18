@@ -5,15 +5,18 @@
     import { priceFormat } from "@frontend/helpers/currency";
     import { useCustomer } from "@frontend/store/customer";
     import { useOrder } from "@frontend/store/order";
+    import { usePage } from "@frontend/store/page";
 
     const props = defineProps({
         onPage: {
             type: String,
-            default: 'rtw'
+            default: 'products'
         },
         user: Object,
         api_store_order: String,
-    })
+    });
+
+    const storePage = usePage();
 
     const customer = computed(() => useCustomer().getCustomer);
     const orderDate = ref(useOrder().getDateAndTime);
@@ -42,7 +45,7 @@
             size: {},
             total: 0
         };
-        
+
         let product_data = [];
 
         if (ordersData.value.products.length !== 0) {
@@ -87,7 +90,7 @@
 
                 if (index == 'option') {
                     semi_custom_data.option_form = semi_custom.form;
-                    
+
                     if (semi_custom.amount) {
                         if (semi_custom.amount.price) {
                             semi_custom_data.option_additional_price = semi_custom.amount.price;
@@ -104,7 +107,7 @@
                         semi_custom_data.option_note = semi_custom.additionalNote;
                     }
                 }
-                
+
             });
         }
 
@@ -117,7 +120,7 @@
             store_id: props.user.store_id ?? 0,
             order_date: orderDate.value
         }
-        
+
 
         axios.post(props.api_store_order, orders)
         .then(response => {
@@ -131,7 +134,7 @@
                 storeProducts.semi_custom = [];
                 storeProducts.coupon_rtw = 0;
                 storeProducts.semi_custom = [];
-                
+
                 useCustomer().resetCustomer();
 
                 window.location.href = response.data.redirect;
@@ -162,7 +165,8 @@
         return storeProducts.getSemiCustom;
     })
 
-    const fabricText = computed(() => semiCustom.value ? semiCustom.value.basic.form.fabric.fabricCode + ' - ' + semiCustom.value.basic.form.fabric.text : '');
+    const fabricText = semiCustom.value?.basic?.form?.fabric?.fabricCode + ' - ' + semiCustom.value?.basic?.form?.fabric?.text;
+
 
     const coupon = ref(storeProducts.getCouponRtw);
 
@@ -184,7 +188,30 @@
         nextTick(() => {
             storeProducts.setProducts = products.value;
         });
-    })
+    });
+
+    const totalAllPrice = computed(() => {
+        let totalProducts = 0;
+        let totalSemiCustom = 0;
+        let discount = coupon.value;
+        let sumTotal = 0;
+
+        if (products.value.length !== 0) {
+            products.value.map(product => {
+                totalProducts += product.total;
+            });
+        }
+
+        if (semiCustom.value.length !== 0) {
+            totalSemiCustom = semiCustom.value.totalPrice;
+        }
+
+        sumTotal = totalProducts + totalSemiCustom;
+
+        return sumTotal - (sumTotal * discount / 100);
+    });
+
+
 
     watch(coupon, (value) => {
         storeProducts.coupon_rtw = value;
@@ -200,12 +227,12 @@
     }
 
     const btnBack = () => {
-        if (props.onPage == 'rtw') {
-            $emit('btn-next', 'products');
+        if (props.onPage == 'products') {
+            // $emit('btn-next', 'products');
+            window.location.href = '/ready-to-wear?page=products';
         }else if (props.onPage == 'semi-custom') {
             $emit('btn-next', 'semi-custom');
         }
-        // $emit('btn-next', 'products')
     }
 </script>
 
@@ -254,7 +281,7 @@
                     </tbody>
                 </table>
 
-                <div class="mt-20" v-if="semiCustom.length !== 0">
+                <div :class="{ 'mt-20': products.length !== 0 }" v-if="semiCustom.length !== 0">
                     <table class="w-full">
                         <thead>
                             <tr>
@@ -284,6 +311,11 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div class="flex justify-between bg-secondary px-4 pt-4 pb-3 font-bold text-lg text-primary-50 lg:text-2xl">
+                    <div class="col-span-2">TOTAL AMOUNT</div>
+                    <div class="mr-10 text-center">{{ priceFormat(totalAllPrice) }}</div>
+                </div>
             </div>
         </section>
 
@@ -312,10 +344,11 @@
 
         <section>
             <div class="flex justify-between">
-                <button @click="btnBack()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white tracking-widest">
+                <button v-if="storePage.get == 'products'" @click="btnBack()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white tracking-widest">
                     <img class="inline-block mb-1.5 rotate-180" src="img/icons/arrw-ck-right.png" alt="">
                     <span>BACK</span>
                 </button>
+                <div v-if="storePage.get !== 'products'"></div>
                 <button @click="btnProcess()" class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">
                     <span>PROCEED TO PAYMENT</span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">

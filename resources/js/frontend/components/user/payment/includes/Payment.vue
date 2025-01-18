@@ -293,7 +293,7 @@
             </div>
         </section>
 
-        <div class="flex justify-between">
+        <div class="flex justify-end">
             <button @click="confirmPayment()"
                 class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">
                 <span>PROCEED TO PAYMENT</span>

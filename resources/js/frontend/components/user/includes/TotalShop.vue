@@ -42,6 +42,21 @@
         products.value[index].total = products.value[index].price * products.value[index].qty
     }
 
+    // total price products and semi custom
+    const totalAllPrice = computed(function () {
+        let totalProduct = 0;
+        products.value.forEach(product => {
+            // parse float to remove comma
+            totalProduct += parseFloat(product.total);
+        });
+
+        let sumTotal =  (totalProduct + semiCustom.value.totalPrice);
+
+        let afterDiscount = sumTotal - (sumTotal * coupon.value / 100);
+
+        return afterDiscount;
+    });
+
     onMounted(() => {
         nextTick(() => {
             storeProducts.setProducts = products.value;
@@ -142,9 +157,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-if="products.length == 0">
-                                <td colspan="4" class="py-3 text-center text-primary-50">Loading...</td>
-                            </tr>
                             <tr class="border-b" >
                                 <td class="py-3 pr-6 text-left text-primary-50">
                                     <div class="text-[#606060]">name</div>
@@ -156,16 +168,6 @@
                                 </td>
                                 <td class="px-6 py-3 text-center text-primary-50">
                                     1
-                                    <!-- <div class="flex justify-center w-full text-left number-input" data-controller="quantity">
-                                        <button @click="minQty(index)" class="flex items-center p-2 font-bold no-underline border border-r-0 border-primary-50 bg-off-white hover:bg-grey-lightest text-grey-darker">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M424 318.2c13.3 0 24-10.7 24-24v-76.4c0-13.3-10.7-24-24-24H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h400z"/></svg>
-                                        </button>
-                                        <input type="number" class="w-10 p-2 text-center border border-primary-50" :value="product.qty" data-target="quantity.value">
-
-                                        <button @click="plusQty(index)" class="flex items-center p-2 font-bold no-underline border border-l-0 border-primary-50 bg-off-white hover:bg-grey-lightest text-grey-darker">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"/></svg>
-                                        </button>
-                                    </div> -->
                                 </td>
                                 <td class="px-6 py-3 text-center text-primary-50">
                                     <div class="text-center text-secondary-50 lg:text-lg">{{ priceFormat(semiCustom.totalPrice) }}</div>
@@ -173,17 +175,11 @@
                             </tr>
                         </tbody>
                     </table>
-                    <!-- <div class="flex items-end justify-between">
-                        <div class="uppercase text-primary-50">
-                            <div>Semi Custom</div>
-                            <div>(fabric Code)</div>
-                        </div>
-                        <div class="uppercase text-primary-50">Total</div>
-                    </div>
-                    <div class="flex justify-between">
-                        <div>{{ semiCustom.length }}</div>
-                        <div>{{ priceFormat(semiCustom.totalPrice) }}</div>
-                    </div> -->
+                </div>
+
+                <div class="flex justify-between px-4 pt-4 pb-3 text-lg font-bold bg-secondary text-primary-50 lg:text-2xl">
+                    <div class="col-span-2">TOTAL AMOUNT</div>
+                    <div class="mr-10 text-center">{{ priceFormat(totalAllPrice) }}</div>
                 </div>
             </div>
         </section>
