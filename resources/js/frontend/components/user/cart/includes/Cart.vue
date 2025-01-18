@@ -4,15 +4,18 @@
     import { useProducts } from "@frontend/store/product";
     import { priceFormat } from "@frontend/helpers/currency";
     import { useCustomer } from "@frontend/store/customer";
+    import { usePage } from "@frontend/store/page";
 
     const props = defineProps({
         onPage: {
             type: String,
-            default: 'rtw'
+            default: 'products'
         },
         user: Object,
         api_store_order: String,
-    })
+    });
+
+    const storePage = usePage();
 
     const customer = computed(() => useCustomer().getCustomer);
 
@@ -40,7 +43,7 @@
             size: {},
             total: 0
         };
-        
+
         let product_data = [];
 
         if (ordersData.value.products.length !== 0) {
@@ -85,7 +88,7 @@
 
                 if (index == 'option') {
                     semi_custom_data.option_form = semi_custom.form;
-                    
+
                     if (semi_custom.amount) {
                         if (semi_custom.amount.price) {
                             semi_custom_data.option_additional_price = semi_custom.amount.price;
@@ -102,7 +105,7 @@
                         semi_custom_data.option_note = semi_custom.additionalNote;
                     }
                 }
-                
+
             });
         }
 
@@ -116,8 +119,6 @@
         }
 
         console.log(orders);
-        
-        
 
         axios.post(props.api_store_order, orders)
         .then(response => {
@@ -131,7 +132,7 @@
                 storeProducts.semi_custom = [];
                 storeProducts.coupon_rtw = 0;
                 storeProducts.semi_custom = [];
-                
+
                 useCustomer().resetCustomer();
 
                 window.location.href = response.data.redirect;
@@ -162,7 +163,8 @@
         return storeProducts.getSemiCustom;
     })
 
-    const fabricText = semiCustom.value.basic.form.fabric.fabricCode + ' - ' + semiCustom.value.basic.form.fabric.text;
+    const fabricText = semiCustom.value?.basic?.form?.fabric?.fabricCode + ' - ' + semiCustom.value?.basic?.form?.fabric?.text;
+
 
     const coupon = ref(storeProducts.getCouponRtw);
 
@@ -184,7 +186,30 @@
         nextTick(() => {
             storeProducts.setProducts = products.value;
         });
-    })
+    });
+
+    const totalAllPrice = computed(() => {
+        let totalProducts = 0;
+        let totalSemiCustom = 0;
+        let discount = coupon.value;
+        let sumTotal = 0;
+
+        if (products.value.length !== 0) {
+            products.value.map(product => {
+                totalProducts += product.total;
+            });
+        }
+
+        if (semiCustom.value.length !== 0) {
+            totalSemiCustom = semiCustom.value.totalPrice;
+        }
+
+        sumTotal = totalProducts + totalSemiCustom;
+
+        return sumTotal - (sumTotal * discount / 100);
+    });
+
+
 
     watch(coupon, (value) => {
         storeProducts.coupon_rtw = value;
@@ -200,29 +225,29 @@
     }
 
     const btnBack = () => {
-        if (props.onPage == 'rtw') {
-            $emit('btn-next', 'products');
+        if (props.onPage == 'products') {
+            // $emit('btn-next', 'products');
+            window.location.href = '/ready-to-wear?page=products';
         }else if (props.onPage == 'semi-custom') {
             $emit('btn-next', 'semi-custom');
         }
-        // $emit('btn-next', 'products')
     }
 </script>
 
 <template>
     <div class="space-y-10">
         <section>
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">Total shop</div>
+            <div class="flex items-center justify-between p-6 bg-primary-50 lg:px-14 lg:py-7">
+                <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">Total shop</div>
             </div>
-            <div class="lg:px-14 lg:py-10 p-6">
+            <div class="p-6 lg:px-14 lg:py-10">
                 <table class="w-full" v-if="products.length !== 0">
                     <thead>
                         <tr>
-                            <th class="py-3 pr-6 text-left text-primary-50 uppercase name-col">Product</th>
-                            <th class="px-6 py-3 text-center text-primary-50 uppercase price-col">Price</th>
-                            <th class="px-6 py-3 text-center text-primary-50 uppercase">qty</th>
-                            <th class="px-6 py-3 text-center text-primary-50 uppercase total-col">Total</th>
+                            <th class="py-3 pr-6 text-left uppercase text-primary-50 name-col">Product</th>
+                            <th class="px-6 py-3 text-center uppercase text-primary-50 price-col">Price</th>
+                            <th class="px-6 py-3 text-center uppercase text-primary-50">qty</th>
+                            <th class="px-6 py-3 text-center uppercase text-primary-50 total-col">Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -237,12 +262,12 @@
                             </td>
                             <td class="px-6 py-3 text-center text-primary-50">
                                 <div class="flex justify-center w-full text-left number-input" data-controller="quantity">
-                                    <button @click="minQty(index)" class="flex items-center border-primary-50 bg-off-white hover:bg-grey-lightest p-2 border border-r-0 font-bold text-grey-darker no-underline">
+                                    <button @click="minQty(index)" class="flex items-center p-2 font-bold no-underline border border-r-0 border-primary-50 bg-off-white hover:bg-grey-lightest text-grey-darker">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M424 318.2c13.3 0 24-10.7 24-24v-76.4c0-13.3-10.7-24-24-24H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h400z"/></svg>
                                     </button>
-                                    <input type="number" class="border-primary-50 p-2 border w-10 text-center" :value="product.qty" data-target="quantity.value">
+                                    <input type="number" class="w-10 p-2 text-center border border-primary-50" :value="product.qty" data-target="quantity.value">
 
-                                    <button @click="plusQty(index)" class="flex items-center border-primary-50 bg-off-white hover:bg-grey-lightest p-2 border border-l-0 font-bold text-grey-darker no-underline">
+                                    <button @click="plusQty(index)" class="flex items-center p-2 font-bold no-underline border border-l-0 border-primary-50 bg-off-white hover:bg-grey-lightest text-grey-darker">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"/></svg>
                                     </button>
                                 </div>
@@ -254,14 +279,14 @@
                     </tbody>
                 </table>
 
-                <div class="mt-20" v-if="semiCustom.length !== 0">
+                <div :class="{ 'mt-20': products.length !== 0 }" v-if="semiCustom.length !== 0">
                     <table class="w-full">
                         <thead>
                             <tr>
-                                <th class="py-3 pr-6 text-left text-primary-50 uppercase name-col">Semi Custom </th>
-                                <th class="px-6 py-3 text-center text-primary-50 uppercase price-col">Price</th>
-                                <th class="px-6 py-3 text-center text-primary-50 uppercase">qty</th>
-                                <th class="px-6 py-3 text-center text-primary-50 uppercase total-col">Total</th>
+                                <th class="py-3 pr-6 text-left uppercase text-primary-50 name-col">Semi Custom </th>
+                                <th class="px-6 py-3 text-center uppercase text-primary-50 price-col">Price</th>
+                                <th class="px-6 py-3 text-center uppercase text-primary-50">qty</th>
+                                <th class="px-6 py-3 text-center uppercase text-primary-50 total-col">Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -284,14 +309,19 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div class="flex justify-between px-4 pt-4 pb-3 text-lg font-bold bg-secondary text-primary-50 lg:text-2xl">
+                    <div class="col-span-2">TOTAL AMOUNT</div>
+                    <div class="mr-10 text-center">{{ priceFormat(totalAllPrice) }}</div>
+                </div>
             </div>
         </section>
 
         <section>
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">COUPON CODE & POINTS</div>
+            <div class="flex items-center justify-between p-6 bg-primary-50 lg:px-14 lg:py-7">
+                <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">COUPON CODE & POINTS</div>
             </div>
-            <div class="lg:px-14 lg:py-10 p-6">
+            <div class="p-6 lg:px-14 lg:py-10">
                 <div class="flex items-center gap-4">
                     <div class="text-[#606060] uppercase tracking-widest whitespace-pre">Coupon Code</div>
                     <div class="relative">
@@ -312,11 +342,12 @@
 
         <section>
             <div class="flex justify-between">
-                <button @click="btnBack()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white tracking-widest">
+                <button v-if="storePage.get == 'products'" @click="btnBack()" class="flex items-center gap-2 p-4 tracking-widest text-white bg-primary-50 lg:p-6">
                     <img class="inline-block mb-1.5 rotate-180" src="img/icons/arrw-ck-right.png" alt="">
                     <span>BACK</span>
                 </button>
-                <button @click="btnProcess()" class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">
+                <div v-if="storePage.get !== 'products'"></div>
+                <button @click="btnProcess()" class="flex items-center gap-2 p-4 tracking-widest text-white bg-secondary-50 lg:p-6">
                     <span>PROCEED TO PAYMENT</span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                 </button>

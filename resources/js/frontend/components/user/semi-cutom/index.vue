@@ -151,7 +151,8 @@
                 alert('Please fill the form OR apply the price first');
             }else {
                 useProducts().setCustom(bindForm.value);
-                onSumbit();
+                window.location.href = "/cart";
+                // onSumbit();
             }
         }
     }
