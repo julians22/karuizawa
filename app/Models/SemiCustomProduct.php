@@ -16,6 +16,17 @@ class SemiCustomProduct extends Model
      */
     protected $guarded = ['id'];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'basic_form' => 'array',
+        'option_form' => 'array',
+        'size' => 'array',
+    ];
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);

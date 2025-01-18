@@ -1,4 +1,5 @@
 const mix = require('laravel-mix');
+const path = require('path'); // Add this line
 
 /*
  |--------------------------------------------------------------------------
@@ -37,7 +38,10 @@ mix.setPublicPath('public')
         'sweetalert2',
         'lodash'
     ])
-    .sourceMaps();
+    .sourceMaps()
+    .alias({
+        '@frontend': path.resolve('resources/js/frontend')
+    });
 
 if (mix.inProduction()) {
     mix.version();

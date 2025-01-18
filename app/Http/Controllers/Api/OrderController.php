@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\SemiCustomProduct;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -45,6 +46,18 @@ class OrderController extends Controller
         );
     }
 
+    // this function not used yet
+    public function store_payment(Request $request) {
+        $request->validate([
+            'products.*.sku' => 'required',
+            'products.*.qty' => 'required',
+            'payment' => 'required',
+            'bank' => 'required_if:payment,manual-tf',
+            'customer_id' => 'sometimes',
+            'coupon' => 'sometimes',
+        ]);
+    }
+
     function incoming_order(Request $request) {
         $orders = Order::with([
                 'orderItems',
@@ -78,18 +91,17 @@ class OrderController extends Controller
 
     function store(Request $request) {
 
-        // use error
-
         $request->validate([
             'products.*.sku' => 'required',
             'products.*.qty' => 'required',
-            'payment' => 'required',
-            'bank' => 'required_if:payment,manual-tf',
-            'customer_id' => 'sometimes',
+            'customer_id' => 'sometimes|required_if:semi_custom,!=,null',
             'coupon' => 'sometimes',
+            'semi_custom' => 'sometimes',
+            'user' => 'sometimes',
         ]);
 
         // check customer_id
+        $storeId = $request->store_id;
         if ($request->customer_id) {
             $customer = Customer::find($request->customer_id);
             if (!$customer) {
@@ -99,26 +111,32 @@ class OrderController extends Controller
                     'message' => 'Customer not found',
                 ], 422);
             }
+
+            if ($customer->store_id) {
+                $storeId = $customer->store_id;
+            }
         }
 
+        $storeId = $storeId == 0 ? 1 : $storeId;
 
         DB::beginTransaction();
 
         try {
             $order = Order::create([
                 'customer_id' => $request->customer_id ?? config('dummy.customer'),
-                'store_id' => config('dummy.store'),
-                'user_id' => 3,
+                'store_id' => $storeId,
+                'user_id' => $request->user ?? 3,
                 'total_price' => 0,
                 'discount_details' => [
                     'coupon' => (int) $request->coupon ?? null,
                     'discount_amount' => 0,
                 ],
-                'payment' => $request->bank ?? null,
-                'bank' => $request->bank ?? null,
+                'payment' => null,
+                'bank' => null,
                 'status' => config('enums.order_status.pending'),
             ]);
 
+            // insert order items type product
             foreach ($request->products as $product) {
                 $productdb = Product::sku($product['sku'])->first();
                 $orderItem = new OrderItem([
@@ -126,13 +144,56 @@ class OrderController extends Controller
                     'price' => $productdb->price,
                 ]);
 
+                $productdb->productActualStocks()->where('store_id', $storeId)->decrement('stock_quantity', $product['qty']);
+
                 $orderItem->product()->associate($productdb);
                 $order->orderItems()->save($orderItem);
             }
 
-            $totalPrice = $order->orderItems->sum(function ($item) {
-                return $item->quantity * $item->price;
-            });
+            // insert order items type semi custom
+            if ($request->semi_custom) {
+                $semiCustom = $request->semi_custom;
+
+                $customer = Customer::findOrFail($request->customer);
+
+                $semiCustomProuduct = SemiCustomProduct::create([
+                    'name' => 'Semi Custom MTM' . "(" . $customer->full_name . ")",
+                    'code' => config('enums.semi_custom_name'),
+                    'customer_id' => $customer->id,
+                    'basic_form' => $semiCustom['basic_form'],
+                    'base_price' => $semiCustom['base_price'],
+                    'base_discount' => $semiCustom['base_discount'],
+                    'option_form' => $semiCustom['option_form'],
+                    'option_total' => $semiCustom['option_total'],
+                    'option_additional_price' => $semiCustom['option_additional_price'],
+                    'option_discount' => $semiCustom['option_discount'],
+                    'size' => $semiCustom['size'],
+                    'base_note' => $semiCustom['base_note'],
+                    'option_note' => $semiCustom['option_note'],
+                ]);
+
+                $orderItem = new OrderItem([
+                    'quantity' => 1,
+                    'price' => $semiCustomProuduct->base_price + $semiCustomProuduct->option_total + $semiCustomProuduct->option_additional_price,
+                ]);
+
+                $orderItem->product()->associate($semiCustomProuduct);
+                $order->orderItems()->save($orderItem);
+            }
+
+            $totalPrice = 0;
+
+            foreach ($order->orderItems as $item) {
+
+                if ($item->isReadyToWear()) {
+                    $totalPrice += $item->price * $item->quantity;
+                }
+
+                if ($item->isSemiCustom()) {
+                    $calucate = $item->product->base_price + $item->product->option_total + $item->product->option_additional_price;
+                    $totalPrice += $calucate;
+                }
+            }
 
             $orderCoupon = $order->discount_details['coupon'] ?? 0;
 
@@ -152,17 +213,6 @@ class OrderController extends Controller
                 'discount' => $discountAmount,
             ]);
 
-            // TODO store to accurate order number
-
-            $completionPayment = Payment::create([
-                'order_id' => $order->id,
-                'user_id' => 3,
-                'amount' => $totalPrice,
-                'is_downpayment' => false,
-            ]);
-
-            $order->update(['status' => 'completed']);
-
         } catch (\Throwable $th) {
 
             DB::rollBack();
@@ -178,6 +228,7 @@ class OrderController extends Controller
         return response()->json([
             'success' => true,
             'data' => $order,
+            'redirect' => route('frontend.user.order-payment', $order->uuid),
         ], 200);
 
     }
