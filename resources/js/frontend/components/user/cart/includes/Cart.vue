@@ -130,15 +130,15 @@
                 // $emit('btn-next', 'payment');
                 // redirect to payment page
 
-                // storeProducts.setSlug = [];
-                // storeProducts.setProducts = [];
-                // storeProducts.semi_custom = [];
-                // storeProducts.coupon_rtw = 0;
-                // storeProducts.semi_custom = [];
+                storeProducts.setSlug = [];
+                storeProducts.setProducts = [];
+                storeProducts.semi_custom = [];
+                storeProducts.coupon_rtw = 0;
+                storeProducts.semi_custom = [];
 
-                // useCustomer().resetCustomer();
+                useCustomer().resetCustomer();
 
-                // window.location.href = response.data.redirect;
+                window.location.href = response.data.redirect;
             }
 
             console.log(response.data);
@@ -240,17 +240,17 @@
 <template>
     <div class="space-y-10">
         <section>
-            <div class="flex items-center justify-between p-6 bg-primary-50 lg:px-14 lg:py-7">
-                <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">Total shop</div>
+            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
+                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">Total shop</div>
             </div>
-            <div class="p-6 lg:px-14 lg:py-10">
+            <div class="lg:px-14 lg:py-10 p-6">
                 <table class="w-full" v-if="products.length !== 0">
                     <thead>
                         <tr>
-                            <th class="py-3 pr-6 text-left uppercase text-primary-50 name-col">Product</th>
-                            <th class="px-6 py-3 text-center uppercase text-primary-50 price-col">Price</th>
-                            <th class="px-6 py-3 text-center uppercase text-primary-50">qty</th>
-                            <th class="px-6 py-3 text-center uppercase text-primary-50 total-col">Total</th>
+                            <th class="py-3 pr-6 text-left text-primary-50 uppercase name-col">Product</th>
+                            <th class="px-6 py-3 text-center text-primary-50 uppercase price-col">Price</th>
+                            <th class="px-6 py-3 text-center text-primary-50 uppercase">qty</th>
+                            <th class="px-6 py-3 text-center text-primary-50 uppercase total-col">Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -265,12 +265,12 @@
                             </td>
                             <td class="px-6 py-3 text-center text-primary-50">
                                 <div class="flex justify-center w-full text-left number-input" data-controller="quantity">
-                                    <button @click="minQty(index)" class="flex items-center p-2 font-bold no-underline border border-r-0 border-primary-50 bg-off-white hover:bg-grey-lightest text-grey-darker">
+                                    <button @click="minQty(index)" class="flex items-center border-primary-50 bg-off-white hover:bg-grey-lightest p-2 border border-r-0 font-bold text-grey-darker no-underline">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M424 318.2c13.3 0 24-10.7 24-24v-76.4c0-13.3-10.7-24-24-24H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h400z"/></svg>
                                     </button>
-                                    <input type="number" class="w-10 p-2 text-center border border-primary-50" :value="product.qty" data-target="quantity.value">
+                                    <input type="number" class="border-primary-50 p-2 border w-10 text-center" :value="product.qty" data-target="quantity.value">
 
-                                    <button @click="plusQty(index)" class="flex items-center p-2 font-bold no-underline border border-l-0 border-primary-50 bg-off-white hover:bg-grey-lightest text-grey-darker">
+                                    <button @click="plusQty(index)" class="flex items-center border-primary-50 bg-off-white hover:bg-grey-lightest p-2 border border-l-0 font-bold text-grey-darker no-underline">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"/></svg>
                                     </button>
                                 </div>
@@ -286,10 +286,10 @@
                     <table class="w-full">
                         <thead>
                             <tr>
-                                <th class="py-3 pr-6 text-left uppercase text-primary-50 name-col">Semi Custom </th>
-                                <th class="px-6 py-3 text-center uppercase text-primary-50 price-col">Price</th>
-                                <th class="px-6 py-3 text-center uppercase text-primary-50">qty</th>
-                                <th class="px-6 py-3 text-center uppercase text-primary-50 total-col">Total</th>
+                                <th class="py-3 pr-6 text-left text-primary-50 uppercase name-col">Semi Custom </th>
+                                <th class="px-6 py-3 text-center text-primary-50 uppercase price-col">Price</th>
+                                <th class="px-6 py-3 text-center text-primary-50 uppercase">qty</th>
+                                <th class="px-6 py-3 text-center text-primary-50 uppercase total-col">Total</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -313,7 +313,7 @@
                     </table>
                 </div>
 
-                <div class="flex justify-between px-4 pt-4 pb-3 text-lg font-bold bg-secondary text-primary-50 lg:text-2xl">
+                <div class="flex justify-between bg-secondary px-4 pt-4 pb-3 font-bold text-lg text-primary-50 lg:text-2xl">
                     <div class="col-span-2">TOTAL AMOUNT</div>
                     <div class="mr-10 text-center">{{ priceFormat(totalAllPrice) }}</div>
                 </div>
@@ -321,10 +321,10 @@
         </section>
 
         <section>
-            <div class="flex items-center justify-between p-6 bg-primary-50 lg:px-14 lg:py-7">
-                <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">COUPON CODE & POINTS</div>
+            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
+                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">COUPON CODE & POINTS</div>
             </div>
-            <div class="p-6 lg:px-14 lg:py-10">
+            <div class="lg:px-14 lg:py-10 p-6">
                 <div class="flex items-center gap-4">
                     <div class="text-[#606060] uppercase tracking-widest whitespace-pre">Coupon Code</div>
                     <div class="relative">
@@ -334,7 +334,7 @@
                         <select v-model="coupon"
                             id="coupon" class="block border-primary-50 bg-white before:bg-blue-400 py-2.5 pr-10 pl-2.5 border focus:border-blue-500 rounded-full focus:ring-blue-500 w-full *:text-[#606060] uppercase">
                             <option :selected="useProducts.getCouponRtw == 0 || coupon == 0" value="0">0%</option>
-                            <option 
+                            <option
                                 v-for="(cp, index) in coupons"
                                 :key="index"
                                 :selected="useProducts.getCouponRtw == cp.value || coupon == cp.value" :value="cp.value">{{ cp.name }}</option>
@@ -346,12 +346,12 @@
 
         <section>
             <div class="flex justify-between">
-                <button v-if="storePage.get == 'products'" @click="btnBack()" class="flex items-center gap-2 p-4 tracking-widest text-white bg-primary-50 lg:p-6">
+                <button v-if="storePage.get == 'products'" @click="btnBack()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white tracking-widest">
                     <img class="inline-block mb-1.5 rotate-180" src="img/icons/arrw-ck-right.png" alt="">
                     <span>BACK</span>
                 </button>
                 <div v-if="storePage.get !== 'products'"></div>
-                <button @click="btnProcess()" class="flex items-center gap-2 p-4 tracking-widest text-white bg-secondary-50 lg:p-6">
+                <button @click="btnProcess()" class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">
                     <span>PROCEED TO PAYMENT</span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                 </button>

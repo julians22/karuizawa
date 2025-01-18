@@ -53,6 +53,7 @@ class OrderController extends Controller
             ->when($request->keyword, function ($query) use ($request) {
                 // we can search through customer name, email, phone
                 return $query->where('id', 'like', "%$request->keyword%")
+                    ->orWhere('order_number', 'like', "%$request->keyword%")
                     ->orWhereHas('customer', function ($query) use ($request) {
                         $query->where('full_name', 'like', "%$request->keyword%")
                             ->orWhere('email', 'like', "%$request->keyword%")
@@ -135,6 +136,20 @@ class OrderController extends Controller
             ])
             ->when($store_id, function ($query) use ($store_id) {
                 return $query->where('store_id', $store_id);
+            })
+            ->when($request->date, function ($query) use ($request) {
+                $date = Carbon::parse($request->date);
+                return $query->whereDate('created_at', $date);
+            })
+            ->when($request->keyword, function ($query) use ($request) {
+                // we can search through customer name, email, phone
+                return $query->where('id', 'like', "%$request->keyword%")
+                    ->orWhere('order_number', 'like', "%$request->keyword%")
+                    ->orWhereHas('customer', function ($query) use ($request) {
+                        $query->where('full_name', 'like', "%$request->keyword%")
+                            ->orWhere('email', 'like', "%$request->keyword%")
+                            ->orWhere('phone', 'like', "%$request->keyword%");
+                    });
             })
             ->where('status', 'pending')
             ->orderBy('created_at', 'desc')

@@ -54,15 +54,6 @@ Route::group(['as' => 'user.', 'middleware' => ['auth', 'password.expires', conf
         return view('frontend.user.booking');
     })->name('booking');
 
-    Route::get('print-semi-custom/{id}', function ($id) {
-
-        $order = Order::findOrFail($id);
-        $orderItem = $order->orderItems()->where('product_type', 'App\Models\SemiCustomProduct')->first();
-        $semiCustom = SemiCustomProduct::findOrFail($orderItem->product_id);
-        $dataConfig = collect(config('karuizawa-master'));
-
-       return view('frontend.print.semi-custom', ['dataSemiCustom' => $semiCustom, 'dataConfig' => $dataConfig]);
-
-    });
+    Route::get('print-semi-custom/{id}', [DashboardController::class, 'print_sc'])->name('print-semi-custom');
 
 });
