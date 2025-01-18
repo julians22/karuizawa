@@ -9,10 +9,12 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Payment;
 use App\Models\Product;
+use App\Models\ProductActualStock;
 use App\Models\SemiCustomProduct;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -144,14 +146,24 @@ class OrderController extends Controller
                     'price' => $productdb->price,
                 ]);
 
-                $productdb->productActualStocks()->where('store_id', $storeId)->decrement('stock_quantity', $product['qty']);
+                $stock = ProductActualStock::where('product_id', $productdb->id)
+                    ->where('store_id', $storeId)
+                    ->lockForUpdate()
+                    ->first();
+
+                if ($stock->stock_quantity < $product['qty']) {
+                    Log::info('Stock not enough on store ' . $storeId . ' for product ' . $product['sku'] . ' with qty ' . $product['qty'] . ' current stock ' . $stock->stock_quantity);
+                }
+
+                $stock->stock_quantity -= $product['qty'];
+                $stock->save();
 
                 $orderItem->product()->associate($productdb);
                 $order->orderItems()->save($orderItem);
             }
 
             // insert order items type semi custom
-            if ($request->semi_custom) {
+            if ($request->semi_custom && $request->semi_custom['basic_form']) {
                 $semiCustom = $request->semi_custom;
 
                 $customer = Customer::findOrFail($request->customer);
@@ -222,9 +234,16 @@ class OrderController extends Controller
                 'message' => $th->getMessage(),
             ], 500);
         }
+        $lastOrderByStore = Order::where('store_id', $order->store_id)->latest()->first();
+
+        $store = $order->store->code;
+        $order_number = $store . '-' . str_pad($lastOrderByStore->id + 1, 5, '0', STR_PAD_LEFT);
+
+        $order->update([
+            'order_number' => $order_number,
+        ]);
 
         DB::commit();
-
         return response()->json([
             'success' => true,
             'data' => $order,

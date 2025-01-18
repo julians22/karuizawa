@@ -22,13 +22,16 @@ class Order extends Model
         'payment',
         'bank',
         'status',
+        'order_number',
+        'order_date',
     ];
-
-
 
     protected $casts = [
         'discount_details' => 'array',
     ];
+
+    // order date yyyy-mm-dd
+    protected $dates = ['order_date'];
 
     protected $appends = ['down_payment_amount', 'completion_amount', 'remaining_amount'];
 

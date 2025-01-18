@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\User\AccountController;
 use App\Http\Controllers\Frontend\User\DashboardController;
 use App\Http\Controllers\Frontend\User\ProfileController;
@@ -44,9 +45,7 @@ Route::group(['as' => 'user.', 'middleware' => ['auth', 'password.expires', conf
         return view('frontend.user.cart');
     })->name('cart');
 
-    Route::get('order-patment/{id}', function ($id) {
-        return view('frontend.user.order-payment', compact('id'));
-    })->name('order-payment');
+    Route::get('order-payment/{order}', [DashboardController::class, 'payment'])->name('order-payment');
 
 
     Route::get('customer-booking', function () {

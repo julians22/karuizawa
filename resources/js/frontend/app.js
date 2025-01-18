@@ -40,6 +40,8 @@ Vue.component('semi-custom', require('./components/user/semi-cutom/index.vue').d
 
 Vue.component('cart-component', require('./components/user/cart/index.vue').default);
 
+Vue.component('payment-component', require('./components/user/payment/index.vue').default);
+
 Vue.component('booking-component', require('./components/user/booking/index.vue').default);
 
 Vue.component('print-semi-custom', require('./components/print/SemiCustom.vue').default);

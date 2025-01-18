@@ -17,5 +17,9 @@ export const useOrder = defineStore('order', {
         getOrderTime: (state) => {
             return state.orderTime;
         },
+
+        getDateAndTime: (state) => {
+            return state.orderDate + ' ' + state.orderTime;
+        },
     },
 });
