@@ -16,14 +16,12 @@
             </x-slot>
 
             <x-slot name="body">
-                <div x-data="{userType : '{{ $model::TYPE_USER }}'}">
+                <div x-data="{userType : '{{ $model::TYPE_CREW }}'}">
                     <div class="form-group row">
                         <label for="name" class="col-md-2 col-form-label">@lang('Type')</label>
 
                         <div class="col-md-10">
                             <select name="type" class="form-control" required x-on:change="userType = $event.target.value">
-                                <option value="{{ $model::TYPE_ADMIN }}">@lang('Administrator')</option>
-                                <option value="{{ $model::TYPE_CASHIER }}">@lang('Cashier')</option>
                                 <option value="{{ $model::TYPE_CREW }}">@lang('Crew')</option>
                             </select>
                         </div>
@@ -61,7 +59,7 @@
                         </div>
                     </div><!--form-group-->
 
-                    <div class="form-group row">
+                    {{-- <div class="form-group row">
                         <label for="active" class="col-md-2 col-form-label">@lang('Active')</label>
 
                         <div class="col-md-10">
@@ -69,9 +67,9 @@
                                 <input name="active" id="active" class="form-check-input" type="checkbox" value="1" {{ old('active', true) ? 'checked' : '' }} />
                             </div><!--form-check-->
                         </div>
-                    </div><!--form-group-->
+                    </div><!--form-group--> --}}
 
-                    <div x-data="{ emailVerified : false }">
+                    {{-- <div x-data="{ emailVerified : false }">
                         <div class="form-group row">
                             <label for="email_verified" class="col-md-2 col-form-label">@lang('E-mail Verified')</label>
 
@@ -106,14 +104,14 @@
                                 </div>
                             </div><!--form-group-->
                         </div>
-                    </div>
+                    </div> --}}
 
                     <div class="form-group row">
                         <label for="stores" class="col-md-2 col-form-label">@lang('Stores')</label>
 
                         <div class="col-md-10">
                             <div x-show="userType === '{{ $model::TYPE_CREW }}' || userType === '{{ $model::TYPE_CASHIER }}'">
-                                <select name="store" class="form-control" required>
+                                <select name="store_id" class="form-control" required>
                                     @foreach ($stores as $store)
                                         <option value="{{ $store->id }}" {{ old('store') == $store->id ? 'selected' : '' }}>{{ $store->name }}</option>
                                     @endforeach
@@ -122,11 +120,11 @@
                         </div>
                     </div><!--form-group-->
 
-                    @include('backend.auth.includes.roles')
+                    {{-- @include('backend.auth.includes.roles')
 
                     @if (!config('boilerplate.access.user.only_roles'))
                         @include('backend.auth.includes.permissions')
-                    @endif
+                    @endif --}}
                 </div>
             </x-slot>
 
