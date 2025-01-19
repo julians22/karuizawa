@@ -334,7 +334,7 @@
                         <select v-model="coupon"
                             id="coupon" class="block border-primary-50 bg-white before:bg-blue-400 py-2.5 pr-10 pl-2.5 border focus:border-blue-500 rounded-full focus:ring-blue-500 w-full *:text-[#606060] uppercase">
                             <option :selected="useProducts.getCouponRtw == 0 || coupon == 0" value="0">0%</option>
-                            <option 
+                            <option
                                 v-for="(cp, index) in coupons"
                                 :key="index"
                                 :selected="useProducts.getCouponRtw == cp.value || coupon == cp.value" :value="cp.value">{{ cp.name }}</option>

@@ -743,6 +743,13 @@ return [
                     ],
                 ]
             ],
+            "initialName" => [
+                [
+                    "x" => '',
+                    "dot" => '',
+                    "y" => '',
+                ]
+            ]
         ],
     ],
     "interlining" => [
