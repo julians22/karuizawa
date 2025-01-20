@@ -31,14 +31,16 @@ class DashboardController
         return view('frontend.user.order-payment', compact('order'));
     }
 
-    function print_sc($id)
+    public function print_sc($id)
     {
-        // $order = Order::findOrFail($id);
-        // $orderItem = $order->orderItems()->where('product_type', 'App\Models\SemiCustomProduct')->first();
         $semiCustom = SemiCustomProduct::findOrFail($id);
-        $dataConfig = collect(config('karuizawa-master'));
+        $dataConfig = config('karuizawa-master');
 
         $semiCustom = $semiCustom->toArray();
+
+        $semiCustom = $semiCustom;
+
+        $newConfigCleric = [];
 
         foreach ($dataConfig as $key => $value) {
 
@@ -54,32 +56,39 @@ class DashboardController
                 }
             }
 
-            // if ($key == 'cleric'){
+            if ($key == 'cleric'){
 
-            //     $option_form = $semiCustom['option_form']["cleric"];
+                $option_form = $semiCustom['option_form']["cleric"];
 
-            //     $newConfigCleric = [];
 
-            //     if (array_key_exists('slug', $option_form)) {
-            //         foreach ($dataConfig['cleric']['data']['options'] as $config){
+                if (array_key_exists('slug', $option_form)) {
+                    $slugSelected = $option_form['slug'];
+                    $optionClericSubData = $option_form['data'];
+                    foreach ($dataConfig['cleric']['data']['options'] as $keyK => $configs){
+                        foreach ($configs as $keyL => $config){
+                            if ($config['slug'] == $slugSelected){
+                                $dataConfig['cleric']['data']['options'][$keyK][$keyL]['selected'] = true;
 
-            //             foreach ($config as $key2 => $value2) {
+                                $clericSubData = $dataConfig['cleric']['data']['options'][$keyK][$keyL]['data'];
 
-            //                 if ($value2['slug'] == $option_form['slug']) {
-
-            //                 }
-            //             }
-
-            //         }
-
-            //     }
-            // }
+                                foreach ($optionClericSubData as $keyM => $value){
+                                    foreach ($clericSubData as $keyN => $config){
+                                        if ($config['slug'] == $optionClericSubData[$keyM]['slug']){
+                                            $dataConfig['cleric']['data']['options'][$keyK][$keyL]['data'][$keyN]['selected'] = true;
+                                            // dd($dataConfig['cleric']['data']['options'][$keyK][$keyL]['data'][$keyN]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
         }
-
         $semiCustom = collect($semiCustom);
 
-       return view('frontend.print.semi-custom', ['dataSemiCustom' => $semiCustom, 'dataConfig' => $dataConfig]);
+       return view('frontend.print.semi-custom', ['dataSemiCustom' => $semiCustom, 'dataConfig' => collect($dataConfig)]);
 
 
     }

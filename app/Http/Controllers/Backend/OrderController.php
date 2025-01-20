@@ -40,7 +40,8 @@ class OrderController extends Controller
                     'unitPrice' => $orderItem->price,
                     'detailName' => $orderItem->product->name,
                     'quantity' => $orderItem->quantity,
-                    'warehouseName' => $order->store->accurate_alias
+                    'warehouseName' => $order->store->accurate_alias,
+                    'departmentName' => 'Apparel',
                 ];
             }
             else if($orderItem->isSemiCustom())
@@ -50,7 +51,8 @@ class OrderController extends Controller
                     'unitPrice' => $orderItem->price,
                     'detailName' => $orderItem->product->name,
                     'quantity' => $orderItem->quantity,
-                    'warehouseName' => $order->store->accurate_alias
+                    'warehouseName' => $order->store->accurate_alias,
+                    'departmentName' => 'Apparel',
                 ];
             }
         }
@@ -64,15 +66,15 @@ class OrderController extends Controller
             'documentCode' => 'DIGUNGGUNG',
             'taxable' => true,
             'inclusiveTax' => true,
-            'typeAutoNumber' => 56
+            'typeAutoNumber' => 55
         ];
 
         // pre $data
-        // echo "<pre>";
-        // print_r(json_encode($data));
-        // echo "</pre>";
+        echo "<pre>";
+        print_r(json_encode($data, JSON_PRETTY_PRINT));
+        echo "</pre>";
 
-        // die();
+        die();
 
         try {
 
@@ -86,10 +88,13 @@ class OrderController extends Controller
             ];
 
             $response = Http::withHeaders($headers)
-                ->post($appUrl . '/api/sales-invoice/save.do', $data);
+                ->post($appUrl . '/accurate/api/sales-order/save.do', $data);
+
+            dd($response);
 
             if ($response->status() == 200) {
                 $response = $response->json();
+                dd($response->json());
                 $order->accurate_order_id = $response['r']['id'];
                 $order->accurate_order_number = $response['r']['number'];
 

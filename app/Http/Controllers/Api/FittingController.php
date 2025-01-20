@@ -32,11 +32,7 @@ class FittingController extends Controller
         ->orderBy('created_at', 'desc')
         ->paginate(5);
 
-        return response()->json($orders
-        );
-        // return response()->json(
-        //     OrderItemResource::collection($orders)
-        // );
+        return response()->json($orders);
     }
 
     public function index_bk(Request $request)

@@ -37,12 +37,10 @@ Route::group(['prefix' => 'customer'], function () {
             $query->where('full_name', 'like', '%' . $keyword . '%')
                 ->orWhere('phone', 'like', '%' . $keyword . '%')
                 ->orWhere('email', 'like', '%' . $keyword . '%');
+        })
+        ->paginate(20);
 
-        })->get()->toArray();
-        return response()->json([
-            'success' => true,
-            'data' => $data,
-        ]);
+        return $data;
     });
 
     Route::get('find', function (Request $request) {
@@ -57,9 +55,9 @@ Route::group(['prefix' => 'customer'], function () {
     Route::post('store', function (Request $request) {
         $request->validate([
             'first_name' => 'required',
-            'phone' => 'required',
-            'email' => 'required',
-            'is_male' => 'required',
+            'phone' => 'required|min:10',
+            'email' => 'required|email',
+            'is_male' => 'required|boolean',
         ]);
 
         try {
