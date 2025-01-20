@@ -67,16 +67,16 @@
 
         <div class="pt-10 pb-28 container">
             <div v-if="isRetrieving">Loading Orders ...</div>
-            <div v-else-if="!isRetrieving && bookings" v-for="booking in bookings">
+            <div v-else-if="!isRetrieving && bookings" v-for="booking in bookings.data">
                 <div class="flex justify-between">
                     <div class="space-y-2 font-roboto">
-                        <div class="font-bold text-xl">Booking Number: {{ booking.booking_code }}</div>
+                        <div class="font-bold text-xl">Booking Number: {{ booking.order.order_number}}</div>
                         <div>
-                            {{ booking.customer_name }}
+                            {{ booking.product.customer.full_name }}
                         </div>
-                        <div>{{booking.customer_address}}</div>
-                        <div>{{ booking.customer_phone }}</div>
-                        <div>{{ booking.customer_gender }}</div>
+                        <div>{{booking.product.customer.address ?? 'N/A'}}</div>
+                        <div>{{ booking.product.customer.phone }}</div>
+                        <div>{{ booking.product.customer.is_male ? 'Male' : 'Female' }}</div>
                     </div>
                     <div class="space-y-3 font-roboto">
                         <div class="font-bold text-xl">Booking Time</div>
@@ -89,6 +89,17 @@
                 </div>
                 <div class="bg-black my-6 w-full h-0.5"></div>
             </div>
+        </div>
+
+        <div class="right-0 bottom-0 absolute flex">
+            <button class="flex items-center gap-2 bg-primary-50 p-6 text-white tracking-widest">
+                <span>NEXT PAGE</span>
+                <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+            </button>
+            <button class="flex items-center gap-2 bg-secondary-50 p-6 text-white tracking-widest">
+                <span>PAGE 1 of 100</span>
+                <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+            </button>
         </div>
     </div>
 </template>

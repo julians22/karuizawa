@@ -33,19 +33,21 @@
 
     const sendOrder = async () => {
 
-        let semi_custom_data = {
-            basic_form: {},
-            base_price: 0,
-            base_discount: 0,
-            base_note: '',
-            option_form: {},
-            option_total: 0,
-            option_additional_price: 0,
-            option_discount: 0,
-            option_note: '',
-            size: {},
-            total: 0
-        };
+        // let semi_custom_data = {
+        //     basic_form: {},
+        //     base_price: 0,
+        //     base_discount: 0,
+        //     base_note: '',
+        //     option_form: {},
+        //     option_total: 0,
+        //     option_additional_price: 0,
+        //     option_discount: 0,
+        //     option_note: '',
+        //     size: {},
+        //     total: 0
+        // };
+
+        let semi_custom_data = [];
 
         let product_data = [];
 
@@ -64,50 +66,64 @@
         if (ordersData.value.semi_custom.length !== 0) {
             forEach(ordersData.value.semi_custom, (semi_custom, index) => {
 
-                if (index == 'totalPrice') {
-                    semi_custom_data.total = semi_custom;
-                }
+                semi_custom_data.push({
+                    basic_form: semi_custom.basic.form,
+                    base_price: semi_custom.basic.amount.price ?? 0,
+                    base_discount: semi_custom.basic.amount.discount ?? 0,
+                    base_note: semi_custom.basic.additionalNote,
+                    option_form: semi_custom.option.form,
+                    option_total: semi_custom.option.amount.optionPrice ?? 0,
+                    option_additional_price: semi_custom.option.amount.price ?? 0,
+                    option_discount: semi_custom.option.amount.discount ?? 0,
+                    option_note: semi_custom.option.additionalNote,
+                    size: semi_custom.basic.formSize,
+                    total: semi_custom.totalPrice
+                })
 
-                if (index == 'basic'){
-                    semi_custom_data.basic_form = semi_custom.form;
+                // if (index == 'totalPrice') {
+                //     semi_custom_data.total = semi_custom;
+                // }
 
-                    if (semi_custom.amount) {
-                        if (semi_custom.amount.price) {
-                            semi_custom_data.base_price = semi_custom.amount.price;
-                        }
-                        if (semi_custom.amount.discount) {
-                            semi_custom_data.base_discount = semi_custom.amount.discount;
-                        }
-                    }
+                // if (index == 'basic'){
+                //     semi_custom_data.basic_form = semi_custom.form;
 
-                    if (semi_custom.formSize) {
-                        semi_custom_data.size = semi_custom.formSize;
-                    }
+                //     if (semi_custom.amount) {
+                //         if (semi_custom.amount.price) {
+                //             semi_custom_data.base_price = semi_custom.amount.price;
+                //         }
+                //         if (semi_custom.amount.discount) {
+                //             semi_custom_data.base_discount = semi_custom.amount.discount;
+                //         }
+                //     }
 
-                    if (semi_custom.additionalNote) {
-                        semi_custom_data.base_note = semi_custom.additionalNote;
-                    }
-                }
+                //     if (semi_custom.formSize) {
+                //         semi_custom_data.size = semi_custom.formSize;
+                //     }
 
-                if (index == 'option') {
-                    semi_custom_data.option_form = semi_custom.form;
+                //     if (semi_custom.additionalNote) {
+                //         semi_custom_data.base_note = semi_custom.additionalNote;
+                //     }
+                // }
 
-                    if (semi_custom.amount) {
-                        if (semi_custom.amount.price) {
-                            semi_custom_data.option_additional_price = semi_custom.amount.price;
-                        }
-                        if (semi_custom.amount.discount) {
-                            semi_custom_data.option_discount = semi_custom.amount.discount;
-                        }
-                        if (semi_custom.amount.optionTotal) {
-                            semi_custom_data.option_total = semi_custom.amount.optionTotal;
-                        }
-                    }
+                // if (index == 'option') {
+                //     semi_custom_data.option_form = semi_custom.form;
 
-                    if (semi_custom.additionalNote) {
-                        semi_custom_data.option_note = semi_custom.additionalNote;
-                    }
-                }
+                //     if (semi_custom.amount) {
+                //         if (semi_custom.amount.price) {
+                //             semi_custom_data.option_additional_price = semi_custom.amount.price;
+                //         }
+                //         if (semi_custom.amount.discount) {
+                //             semi_custom_data.option_discount = semi_custom.amount.discount;
+                //         }
+                //         if (semi_custom.optionTotal) {
+                //             semi_custom_data.option_total = semi_custom.amount.optionTotal;
+                //         }
+                //     }
+
+                //     if (semi_custom.additionalNote) {
+                //         semi_custom_data.option_note = semi_custom.additionalNote;
+                //     }
+                // }
 
             });
         }
@@ -122,12 +138,15 @@
             order_date: orderDate.value
         }
 
+        console.log(orders);
+
+
 
         axios.post(props.api_store_order, orders)
         .then(response => {
             if (response.data.success) {
                 console.log(response.data);
-                // $emit('btn-next', 'payment');
+                $emit('btn-next', 'payment');
                 // redirect to payment page
 
                 storeProducts.setSlug = [];
@@ -166,7 +185,7 @@
         return storeProducts.getSemiCustom;
     })
 
-    const fabricText = semiCustom.value?.basic?.form?.fabric?.fabricCode + ' - ' + semiCustom.value?.basic?.form?.fabric?.text;
+    // const fabricText = semiCustom.value?.basic?.form?.fabric?.fabricCode + ' - ' + semiCustom.value?.basic?.form?.fabric?.text;
 
 
     const coupon = ref(storeProducts.getCouponRtw);
@@ -204,7 +223,9 @@
         }
 
         if (semiCustom.value.length !== 0) {
-            totalSemiCustom = semiCustom.value.totalPrice;
+            semiCustom.value.map(semiCustom => {
+                totalSemiCustom += semiCustom.totalPrice;
+            });
         }
 
         sumTotal = totalProducts + totalSemiCustom;
@@ -293,10 +314,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-b" >
+                            <tr class="border-b" v-for="(semiCustom, index) in semiCustom" >
                                 <td class="py-3 pr-6 text-left text-primary-50">
                                     <div class="text-[#606060]">SEMI-CUSTOM MTM</div>
-                                    <div class="text-[#A3A3A3] text-sm">{{ fabricText }}</div>
+                                    <div class="text-[#A3A3A3] text-sm">{{ semiCustom.basic.form.fabric.fabricCode }}</div>
                                 </td>
                                 <td class="px-6 py-3 text-center text-primary-50">
                                     <div class="text-[#606060] text-center lg:text-lg"

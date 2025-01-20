@@ -28,7 +28,23 @@
                     </ul>
                 @else
                     <ul class="flex gap-3 md:gap-4 lg:gap-[5%] text-primary-50 font-medium uppercase w-full justify-center tracking-normal md:tracking-wider text-xs md:text-sm lg:text-base">
-                        <li><a href="{{ route('frontend.user.rtw') }}">Ready To Wear</a></li>
+                        <li>
+                            <li>
+                                <div class="relative inline-block dropdown group">
+                                    <button class="font-medium uppercase text-primary-50 group-hover:before:bg-transparent {{ Route::is('frontend.user.rtw') || Route::is('frontend.user.semi-custom')  ? 'active' : '' }}">
+                                        Shop
+                                    </button>
+                                    <div class="absolute z-10 hidden group-hover:block top-[1.3rem] inset-x-0">
+                                        <div class="w-0 h-0 border-l-[1rem] border-y-8 border-y-transparent border-l-primary-50"></div>
+                                    </div>
+                                    <ul class="absolute z-10 hidden shadow-xl dropdown-menu group-hover:block bg-primary-50 top-7">
+                                      <li class=""><a class="block px-4 py-2 text-white whitespace-no-wrap hover:text-primary-200" href="{{ route('frontend.user.rtw') }}">RTW</a></li>
+                                      <li><div class="h-[1px] w-[88%] bg-white opacity-75 mx-auto"></div></li>
+                                      <li class=""><a class="block px-4 py-2 text-white whitespace-pre hover:text-primary-200" href="{{ route('frontend.user.semi-custom') }}">semi custom</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </li>
                         <li><a href="{{ route('frontend.about-us') }}">About Us</a></li>
                         <li class="self-center"><div class="h-[1px] w-10 md:w-20 lg:w-40 bg-primary-50"></div></li>
                         @if ($logged_in_user)

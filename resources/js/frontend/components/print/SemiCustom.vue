@@ -28,7 +28,7 @@
 </script>
 
 <template>
-    <div>
+    <div class="printable">
         <CustomBasic @additionalBasic="additionalBasic" :dataConfig="props.data_config" :dataSemiCustom="props.data_semi_custom" ref="childBasic" />
         <CustomOptions @additionalOption="additionalOption" :dataConfig="props.data_config" :dataSemiCustom="props.data_semi_custom" ref="childOption"/>
     </div>

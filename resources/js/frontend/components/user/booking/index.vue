@@ -174,17 +174,6 @@
             />
         </template>
 
-        <div class="right-0 bottom-0 absolute flex">
-            <button class="flex items-center gap-2 bg-primary-50 p-6 text-white tracking-widest">
-                <span>NEXT PAGE</span>
-                <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
-            </button>
-            <button class="flex items-center gap-2 bg-secondary-50 p-6 text-white tracking-widest">
-                <span>PAGE 1 of 100</span>
-                <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
-            </button>
-        </div>
-
     </Layout>
 </template>
 

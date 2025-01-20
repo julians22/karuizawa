@@ -33,9 +33,9 @@ class DashboardController
 
     function print_sc($id)
     {
-        $order = Order::findOrFail($id);
-        $orderItem = $order->orderItems()->where('product_type', 'App\Models\SemiCustomProduct')->first();
-        $semiCustom = SemiCustomProduct::findOrFail($orderItem->product_id);
+        // $order = Order::findOrFail($id);
+        // $orderItem = $order->orderItems()->where('product_type', 'App\Models\SemiCustomProduct')->first();
+        $semiCustom = SemiCustomProduct::findOrFail($id);
         $dataConfig = collect(config('karuizawa-master'));
 
         $semiCustom = $semiCustom->toArray();
@@ -52,11 +52,28 @@ class DashboardController
                         $semiCustom['option_form']['embroidery']['initialName'][$key] = '';
                     }
                 }
-
-
-
-
             }
+
+            // if ($key == 'cleric'){
+
+            //     $option_form = $semiCustom['option_form']["cleric"];
+
+            //     $newConfigCleric = [];
+
+            //     if (array_key_exists('slug', $option_form)) {
+            //         foreach ($dataConfig['cleric']['data']['options'] as $config){
+
+            //             foreach ($config as $key2 => $value2) {
+
+            //                 if ($value2['slug'] == $option_form['slug']) {
+
+            //                 }
+            //             }
+
+            //         }
+
+            //     }
+            // }
 
         }
 

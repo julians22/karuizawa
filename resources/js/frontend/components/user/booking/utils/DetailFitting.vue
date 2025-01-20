@@ -1,5 +1,7 @@
 <script setup>
     import { ref, defineExpose } from 'vue';
+    import { priceFormat } from "@frontend/helpers/currency";
+
 
     const dialog = ref(false);
     const booking = ref(null);;
@@ -11,9 +13,9 @@
     }
 
     const onPrint = () => {
-        console.log(booking.value.order_id);
+        console.log(booking.value.product_id);
         window.open(
-        `/print-semi-custom/${booking.value.order_id}`,
+        `/print-semi-custom/${booking.value.product_id}`,
         '_blank' // <- This is what makes it open in a new window.
         );
         // window.location.href = '/';
@@ -39,13 +41,13 @@
 
                         <div class="bg-primary-50 my-5 w-full h-[1px]"></div>
 
-                        <div class="text-lg font-bold text-center capitalize">Order number: {{ booking.booking_code }}</div>
+                        <div class="text-lg font-bold text-center capitalize">Order number: {{ booking.order.order_number }}</div>
 
                         <div class="bg-primary-50 my-5 w-full h-[1px]"></div>
 
                         <div>
                             <div class="text-sm text-center capitalize">total payment</div>
-                            <div class="text-xl font-light tracking-widest text-center uppercase font-josefin">{{ booking.amount_formatted }}</div>
+                            <div class="text-xl font-light tracking-widest text-center uppercase font-josefin">{{ priceFormat(booking.price) }}</div>
                         </div>
 
                         <div class="bg-primary-50 my-5 w-full h-[1px]"></div>
@@ -62,11 +64,11 @@
                                 </thead>
 
                                 <tbody class="w-full divide-y divide-primary-100">
-                                    <tr class="divide-x divide-primary-100" v-for="item in booking.items">
-                                        <td class="px-4 py-4">{{ item.product_name }}</td>
-                                        <td class="px-4 py-4 text-center">{{ item.qty }}</td>
-                                        <td class="px-4 py-4">{{ item.price_formatted }}</td>
-                                        <td class="px-4 py-4">{{ item.total_price_formatted }}</td>
+                                    <tr class="divide-x divide-primary-100" >
+                                        <td class="px-4 py-4">{{ booking.product.name }}</td>
+                                        <td class="px-4 py-4 text-center">{{ booking.quantity }}</td>
+                                        <td class="px-4 py-4">{{ priceFormat(booking.total_price) }}</td>
+                                        <td class="px-4 py-4">{{ priceFormat(booking.total_price) }}</td>
                                     </tr>
                                     <tr class="bg-white" v-if="booking.discount > 0">
                                         <td colspan="3" class="px-4 py-4 font-bold text-right text-white bg-primary-50">Coupon</td>
@@ -76,7 +78,7 @@
                                     </tr>
                                     <tr class="bg-white">
                                         <td colspan="3" class="px-4 py-4 font-bold text-right text-white bg-primary-50">Subtotal</td>
-                                        <td class="px-4 py-4 font-bold text-primary-50">{{ booking.amount_formatted }}</td>
+                                        <td class="px-4 py-4 font-bold text-primary-50">{{ priceFormat(booking.total_price) }}</td>
                                     </tr>
                                 </tbody>
                             </table>

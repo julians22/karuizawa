@@ -63,10 +63,10 @@
             total += parseFloat(product.total);
         });
 
-        semiCustom.value.forEach(product => {
+        semiCustom.value.forEach(sc => {
             // parse float to remove comma
-            total += parseFloat(product.total);
-        });
+            total += parseFloat(sc.total);
+        })
 
         return total;
     });
@@ -278,7 +278,7 @@
                 <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">DETAIL ORDER</div>
             </div>
 
-            <div class="space-y-5 px-14 pt-12 pb-20">
+            <div class="space-y-5 px-14 pt-12 pb-32">
                 <div class="font-roboto text-[#606060]">
                     <div>Ordered number your shirt </div>
                     <div>{{ order.order_number }}</div>
