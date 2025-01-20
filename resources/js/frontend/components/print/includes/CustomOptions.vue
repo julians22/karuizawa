@@ -318,7 +318,7 @@
                         class="space-y-4 border-pink-ka mx-6 xl:mx-14 mt-4 p-4 border">
                         <div v-for="(subCeleric, index) in dataCleric" :key="index" class="flex gap-2">
                             <div>
-                                <input :checked="formOption.cleric?.slug == subCeleric?.slug" v-model="formOption.cleric"class="hidden" type="radio"  :value="subCeleric" :id="`${subCeleric.slug}`">
+                                <input :checked="isChecked(subCeleric)" v-model="formOption.cleric"class="hidden" type="radio"  :value="subCeleric" :id="`${subCeleric.slug}`">
                                 <label class="items-center gap-1 grid grid-cols-2 rounded h-full cursor-pointer" :for="`${subCeleric.slug}`">
                                     <div class="font-bold text-center text-primary-50 text-sm xl:text-sm uppercase tracking-wider">{{ subCeleric.no }}</div>
                                     <span class="checkbox-inner"></span>
