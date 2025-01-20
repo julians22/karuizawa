@@ -62,16 +62,16 @@
 
         <div class="container pt-10 pb-28">
             <div v-if="isRetrieving">Loading Orders ...</div>
-            <div v-else-if="!isRetrieving && bookings" v-for="booking in bookings">
+            <div v-else-if="!isRetrieving && bookings" v-for="booking in bookings.data">
                 <div class="flex justify-between">
                     <div class="space-y-2 font-roboto">
-                        <div class="text-xl font-bold">Booking Number: {{ booking.booking_code }}</div>
+                        <div class="text-xl font-bold">Booking Number: {{ booking.order.order_number}}</div>
                         <div>
-                            {{ booking.customer_name }}
+                            {{ booking.product.customer.full_name }}
                         </div>
-                        <div>{{booking.customer_address}}</div>
-                        <div>{{ booking.customer_phone }}</div>
-                        <div>{{ booking.customer_gender }}</div>
+                        <div>{{booking.product.customer.address ?? 'N/A'}}</div>
+                        <div>{{ booking.product.customer.phone }}</div>
+                        <div>{{ booking.product.customer.is_male ? 'Male' : 'Female' }}</div>
                     </div>
                     <div class="space-y-3 font-roboto">
                         <div class="text-xl font-bold">Booking Time</div>

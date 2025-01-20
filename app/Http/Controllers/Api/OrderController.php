@@ -162,35 +162,40 @@ class OrderController extends Controller
                 $order->orderItems()->save($orderItem);
             }
 
+
             // insert order items type semi custom
-            if ($request->semi_custom && $request->semi_custom['basic_form']) {
+            if ($request->semi_custom) {
                 $semiCustom = $request->semi_custom;
 
                 $customer = Customer::findOrFail($request->customer);
 
-                $semiCustomProuduct = SemiCustomProduct::create([
-                    'name' => 'Semi Custom MTM' . "(" . $customer->full_name . ")",
-                    'code' => config('enums.semi_custom_name'),
-                    'customer_id' => $customer->id,
-                    'basic_form' => $semiCustom['basic_form'],
-                    'base_price' => $semiCustom['base_price'],
-                    'base_discount' => $semiCustom['base_discount'],
-                    'option_form' => $semiCustom['option_form'],
-                    'option_total' => $semiCustom['option_total'],
-                    'option_additional_price' => $semiCustom['option_additional_price'],
-                    'option_discount' => $semiCustom['option_discount'],
-                    'size' => $semiCustom['size'],
-                    'base_note' => $semiCustom['base_note'],
-                    'option_note' => $semiCustom['option_note'],
-                ]);
+                foreach ($semiCustom as $sc) {
+                    $semiCustomProuduct = SemiCustomProduct::create([
+                        'name' => 'Semi Custom MTM' . "(" . $customer->full_name . ")",
+                        'code' => config('enums.semi_custom_name'),
+                        'customer_id' => $customer->id,
+                        'basic_form' => $sc['basic_form'],
+                        'base_price' => $sc['base_price'],
+                        'base_discount' => $sc['base_discount'],
+                        'option_form' => $sc['option_form'],
+                        'option_total' => $sc['option_total'],
+                        'option_additional_price' => $sc['option_additional_price'],
+                        'option_discount' => $sc['option_discount'],
+                        'size' => $sc['size'],
+                        'base_note' => $sc['base_note'],
+                        'option_note' => $sc['option_note'],
+                    ]);
 
-                $orderItem = new OrderItem([
-                    'quantity' => 1,
-                    'price' => $semiCustomProuduct->base_price + $semiCustomProuduct->option_total + $semiCustomProuduct->option_additional_price,
-                ]);
+                    $orderItem = new OrderItem([
+                        'quantity' => 1,
+                        'price' => $semiCustomProuduct->base_price + $semiCustomProuduct->option_total + $semiCustomProuduct->option_additional_price,
+                    ]);
 
-                $orderItem->product()->associate($semiCustomProuduct);
-                $order->orderItems()->save($orderItem);
+                    $orderItem->product()->associate($semiCustomProuduct);
+                    $order->orderItems()->save($orderItem);
+                }
+
+
             }
 
             $totalPrice = 0;

@@ -49,8 +49,8 @@
     const additionalNote = ref(null);
 
     const amount = ref({
-        optionTotal: 0,
-        price: 0,
+        optionPrice: 0,
+        basicPrice: 0,
         discount: 0,
         total: 0
     });
@@ -66,9 +66,9 @@
         let z = x + y;
         let total = z - (z * disc / 100);
 
-        amount.value.optionTotal = x;
+        amount.value.optionPrice = x;
         amount.value.discount = disc;
-        amount.value.price = y;
+        amount.value.basicPrice = y;
         amount.value.total = total;
 
         emitFrom('additional-option', amount);
@@ -131,23 +131,6 @@
         }
 
         form.value.embroidery = items;
-
-        // const data = {
-        //     slug: items?.slug,
-        //     name: items?.name,
-        //     data: {
-        //         position: items?.position,
-        //         color: items?.color,
-        //         fontType: items?.fontType,
-        //         initialName: {
-        //             name: items?.initialName
-        //         },
-        //         longName: {
-        //             name: items?.longName
-        //         },
-        //     },
-        //     price: items?.price
-        // }
     });
 
     const tape = ref({

@@ -361,13 +361,6 @@
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
-                    <div class="max-xl:col-span-2">
-                        <input v-model="formSize.bodyType" value="3. STANDARD II" class="hidden" type="radio" name="body-type" :id="`standard-3`">
-                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-3`">
-                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">3. STANDARD II</div>
-                            <span class="checkbox-inner"></span>
-                        </label>
-                    </div>
                 </div>
 
                 <!-- sleeve -->

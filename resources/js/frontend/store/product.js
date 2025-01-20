@@ -30,7 +30,7 @@ export const useProducts = defineStore('products', {
 
     actions: {
         setCustom(custom) {
-            this.semi_custom = custom
+            this.semi_custom.push(custom)
         },
     },
 

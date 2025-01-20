@@ -4,14 +4,34 @@ namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
 use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Laravel\Ui\Presets\React;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\OrderItemResource;
 use App\Http\Resources\OrderHistoryResource;
 
 class FittingController extends Controller
 {
     public function index(Request $request)
+    {
+        $orders = OrderItem::with([
+            'order',
+            'order.store',
+            'product.customer'
+        ])->where('product_type', 'App\Models\SemiCustomProduct')
+
+        ->orderBy('created_at', 'desc')
+        ->paginate(5);
+
+        return response()->json($orders
+        );
+        // return response()->json(
+        //     OrderItemResource::collection($orders)
+        // );
+    }
+
+    public function index_bk(Request $request)
     {
         $orders = Order::with([
             'orderItems',
