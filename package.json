@@ -39,6 +39,7 @@
         "vue3-select-component": "^0.7.0"
     },
     "dependencies": {
+        "@coders-tm/vue-number-format": "^3.35.2",
         "@radix-icons/vue": "^1.0.0",
         "@splidejs/splide": "^4.1.4",
         "@vue/compat": "^3.1.0",
@@ -53,8 +54,6 @@
         "radix-vue": "^1.9.12",
         "resize-observer-polyfill": "^1.5.1",
         "simplebar": "^6.2.7",
-        "tailwind-merge": "^2.6.0",
-        "tailwindcss-animate": "^1.0.7",
         "vue": "^3.1.0"
     }
 }

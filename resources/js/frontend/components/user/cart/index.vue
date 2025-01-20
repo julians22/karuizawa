@@ -14,6 +14,7 @@
         data_custom_request: Object,
         data_semi_custom: Object,
         api_store_order: String,
+        coupons: Object
     });
 
     const btnNext = (section, data) => {
@@ -24,6 +25,7 @@
 
 <template>
     <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf">
-        <Cart @btn-next="btnNext" :user="user" :api_store_order="api_store_order"/>
+        <Cart @btn-next="btnNext" :coupons="coupons"
+            :user="user" :api_store_order="api_store_order"/>
     </Layout>
 </template>

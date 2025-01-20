@@ -830,6 +830,11 @@
     "@babel/helper-string-parser" "^7.25.9"
     "@babel/helper-validator-identifier" "^7.25.9"
 
+"@coders-tm/vue-number-format@^3.35.2":
+  version "3.35.2"
+  resolved "https://registry.npmjs.org/@coders-tm/vue-number-format/-/vue-number-format-3.35.2.tgz"
+  integrity sha512-YTQhQIw/37Zs8nk0Gb2tQU3oEp/zgUIgDIue4VnCNpU4ELlG5B0rrSxPR3fKdfHJ4qrugImx33FwUsNF1McAbQ==
+
 "@colors/colors@1.5.0":
   version "1.5.0"
   resolved "https://registry.npmjs.org/@colors/colors/-/colors-1.5.0.tgz"
@@ -6518,6 +6523,11 @@ vue-demi@^0.14.10, vue-demi@>=0.13.0, vue-demi@>=0.14.8:
   version "0.14.10"
   resolved "https://registry.npmjs.org/vue-demi/-/vue-demi-0.14.10.tgz"
   integrity sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==
+
+vue-html-to-paper@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.npmjs.org/vue-html-to-paper/-/vue-html-to-paper-2.0.3.tgz"
+  integrity sha512-2Kbud/3yZNw1oho05vJgkYfqoXkHlpB7C06BdF89OkQgzKRLYeatVhJgPwXHnH+HskmhNWjSKzJyay9HnN4QvQ==
 
 vue-loader@^16.0.0:
   version "16.8.3"

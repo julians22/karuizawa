@@ -36,6 +36,8 @@ Route::group(['prefix' => 'order', 'as' => 'order.'], function() {
                 $trail->push(__('Edit'), route('admin.order.edit', $order));
             });
 
+        Route::get('upload-accurate', [OrderController::class, 'uploadAccurate'])->name('upload-accurate');
+
         Route::patch('/', [OrderController::class, 'update'])->name('update');
         Route::delete('/', [OrderController::class, 'destroy'])->name('destroy');
     });

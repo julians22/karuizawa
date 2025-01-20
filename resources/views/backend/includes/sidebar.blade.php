@@ -45,6 +45,15 @@
                     :text="__('Store Management')" />
             </li>
 
+            <li class="nav-item">
+                <x-utils.link
+                    class="nav-link"
+                    :href="route('admin.promo.index')"
+                    :active="activeClass(Route::is('admin.promo.*'), 'active')"
+                    icon="nav-icon cil-list"
+                    :text="__('Promo Management')" />
+            </li>
+
             {{-- Transaction / Order Menu --}}
             <li class="nav-title">@lang('Transaction')</li>
 
@@ -98,7 +107,7 @@
                         </li>
                     @endif
 
-                    @if ($logged_in_user->hasAllAccess())
+                    {{-- @if ($logged_in_user->hasAllAccess())
                         <li class="nav-item">
                             <x-utils.link
                                 :href="route('admin.auth.role.index')"
@@ -106,7 +115,7 @@
                                 :text="__('Role Management')"
                                 :active="activeClass(Route::is('admin.auth.role.*'), 'active')" />
                         </li>
-                    @endif
+                    @endif --}}
                 </ul>
             </li>
         @endif

@@ -185,7 +185,7 @@
                         <div v-for="cuff in dataCustomShirt.cuffs.data.basic">
                             <input class="hidden" type="radio" v-model="form.cuff" name="cuff" :value="cuff" :id="'cuff-' + cuff.slug">
                             <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'cuff-' + cuff.slug">
-                                <img class="h-28" :src="cuff.image" alt="">
+                                <img class="h-24 xl:h-28" :src="cuff.image" alt="">
                                 <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ cuff.name }}</div>
                                 <span class="checkbox-inner"></span>
                             </label>
@@ -477,8 +477,8 @@
                         <textarea v-model="additionalNote" class="w-full h-full p-2 border-2 border-primary-50 font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" name="" id="" placeholder="NOTE"></textarea>
                     </div>
                     <div class="col-span-2 space-y-2">
-                        <input v-model="discount" type="number"  class="w-full px-4 pt-2 pb-1 border-2 number-input border-primary-50 text-primary-50" placeholder="DISCOUNT"/>
-                        <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border-2 number-input border-primary-50 text-primary-50" placeholder="RP" />
+                        <input v-model="discount" type="number"  class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50 number-input" placeholder="DISCOUNT"/>
+                        <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50 number-input" placeholder="RP" />
                         <div>
                             <button @click="basicAmount()" class="w-full px-5 pt-3 pb-2 text-center bg-secondary text-primary-50">APPLY PRICE</button>
                         </div>
@@ -500,7 +500,7 @@
         background-size: 14px 10px;
     }
     .checkbox-inner {
-        @apply flex justify-center items-center border border-primary-50 text-transparent size-7;
+        @apply flex justify-center items-center border-primary-50 border text-transparent size-7;
         background: transparent no-repeat center;
     }
 </style>

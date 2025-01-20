@@ -9,9 +9,9 @@ const props = defineProps({
     user: Object,
     route_edit_profile: String,
     route_logout: String,
-    api_store_order: String,
-    api_product_url: String,
     order: Object,
+    route_payment: String,
+    booking_route: String,
 });
 
 
@@ -19,6 +19,11 @@ const props = defineProps({
 
 <template>
     <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" >
-        <Payment :api_store_order="api_store_order" :order="order"/>
+        <Payment
+            :route_payment="route_payment"
+            :order="order"
+            :user="user"
+            :booking_route="booking_route"
+            />
     </Layout>
 </template>

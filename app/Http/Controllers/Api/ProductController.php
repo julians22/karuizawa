@@ -29,7 +29,8 @@ class ProductController extends Controller
                 });
             })
             ->when($request->has('search'), function ($query) use ($request) {
-                $query->where('product_name', 'like', '%' . $request->search . '%');
+                $query->where('product_name', 'like', '%' . $request->search . '%')
+                    ->orWhere('sku', 'like', '%' . $request->search . '%');
             })
             ->when($request->has('size'), function ($query) use ($request) {
                 $query->where('product_name', 'like', 'ukuran' . $request->size . '%')

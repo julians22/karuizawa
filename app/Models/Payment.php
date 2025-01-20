@@ -15,6 +15,9 @@ class Payment extends Model
         'amount',
         'is_downpayment',
         'status',
+        'payment',
+        'bank',
+        'trans_number'
     ];
 
     public function order()

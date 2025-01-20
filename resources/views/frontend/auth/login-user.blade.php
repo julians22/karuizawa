@@ -10,6 +10,13 @@
             <div class="">
                 <img class="mx-auto" src="{{ asset('img/brand/logo-03.png') }}" alt="">
                 <div class="mb-5 text-3xl font-bold tracking-widest text-white uppercase mt-7">sign me in as</div>
+                @if(isset($errors) && $errors->any())
+                    <x-utils.alert type="danger" class="header-message">
+                        @foreach($errors->all() as $error)
+                            {{ $error }}<br/>
+                        @endforeach
+                    </x-utils.alert>
+                @endif
                 <form method="POST" action="{{ route('frontend.auth.login') }}" class="font-roboto text-[#606060] space-y-3">
                     @csrf
                     <div class="relative">

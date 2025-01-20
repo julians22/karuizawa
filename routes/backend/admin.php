@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Backend\PromoControler;
 use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\ProductController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\Backend\StoreController;
 use App\Http\Controllers\Backend\SystemInformationController;
 use App\Models\Customer;
 use App\Models\Product;
+use App\Models\Promo;
 use App\Models\Store;
 use Tabuna\Breadcrumbs\Trail;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +48,34 @@ Route::group(['prefix' => 'store', 'as' => 'store.'], function() {
     });
 
     Route::post('/', [StoreController::class, 'store'])->name('store');
+});
+
+Route::prefix('promos')->group(function () {
+    Route::get('/', [PromoControler::class, 'index'])
+        ->name('promo.index')
+        ->breadcrumbs(function (Trail $trail) {
+            $trail->push(__('promos'), route('admin.promo.index'));
+        });
+    Route::get('create', [PromoControler::class, 'create'])
+        ->name('promo.create')
+        ->breadcrumbs(function (Trail $trail) {
+            $trail->parent('admin.promo.index');
+            $trail->push(__('Create'), route('admin.promo.create'));
+        });
+
+    Route::post('/', [PromoControler::class, 'store'])->name('promo.store');
+
+    Route::group(['prefix' => '{promo}'], function() {
+        Route::get('edit', [PromoControler::class, 'edit'])
+            ->name('promo.edit')
+            ->breadcrumbs(function (Trail $trail, Promo $promo) {
+                $trail->parent('admin.promo.index');
+                $trail->push(__('Edit'), route('admin.promo.edit', $promo));
+            });
+
+        Route::patch('/', [PromoControler::class, 'update'])->name('promo.update');
+        Route::delete('/', [PromoControler::class, 'destroy'])->name('promo.destroy');
+    });
 });
 
 // Product Routes

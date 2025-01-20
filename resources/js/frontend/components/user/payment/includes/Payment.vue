@@ -1,15 +1,24 @@
 <script setup>
-    import { computed, defineAsyncComponent, onMounted, ref, defineEmits } from 'vue';
-    import { useProducts } from '@frontend/store/product';
+    import { computed, defineAsyncComponent, onMounted, ref, defineEmits, watch } from 'vue';
     import { useCustomer } from '@frontend/store/customer';
     import { priceFormat } from '@frontend/helpers/currency';
+
+    import { component as VueNumber } from '@coders-tm/vue-number-format'
 
     const props = defineProps({
         csrf: String,
         user: Object,
-        api_store_order: String,
+        route_payment: String,
+        booking_route: String,
         order: Object,
     });
+
+    const number_input = {
+        separator: '.',
+        prefix: 'Rp ',
+        precision: 0,
+        masked: false,
+    }
 
     const orderItems = props.order.order_items;
 
@@ -72,12 +81,36 @@
 
     const selectedPayment = ref('manual-tf');
     const preferredBank = ref('BCA');
+    const downPayment = ref(0);
+    const payAmount = ref(0);
+    const transactionNumber = ref('');
+
+    watch(downPayment, (val) => {
+        if (val == 1) {
+            payAmount.value = 0;
+        }else if (val == 0) {
+            payAmount.value = parseFloat(afterDiscount.value);
+        }
+    });
+
+    payAmount.value = parseFloat(afterDiscount.value);
 
     const showPreferredBank = computed(() => {
         return selectedPayment.value === 'manual-tf';
     });
 
     const confirmPayment = async () => {
+
+        if (downPayment.value == 1 && payAmount.value == 0) {
+            alert('Please input amount');
+            return;
+        }
+
+        if (transactionNumber.value == '') {
+            alert('Please input transaction number');
+            return;
+        }
+
         childDoPayment.value.open = true;
         sendingPayment.value = true;
         const doSend = await sendOrder();
@@ -87,23 +120,31 @@
         if (doSend) {
             window.location.href = '/customer-booking';
         }
-
     }
 
     const sendOrder = async () => {
-        axios.post(props.api_store_order, {
-            products: products.value,
+
+        axios.post(props.route_payment, {
+            is_downpayment: downPayment.value,
+            order_id: props.order.id,
+            user_id: props.user.id,
+            amount: payAmount.value,
             payment: selectedPayment.value,
             bank: preferredBank.value,
-            customer_id: customer.value ? customer.value.id : null,
-            coupon: couponUsed.value,
+            transaction_number: transactionNumber.value,
         })
         .then(response => {
             if (response.data.success) {
+                console.log(response.data);
+
                 sendingPayment.value = false;
                 childDoPayment.value.open = true;
                 childDoPayment.value.status = 'success';
                 childDoPayment.value.message = 'Payment Success';
+
+                setTimeout(() => {
+                    window.location.href = props.booking_route;
+                }, 2000);
             }
 
             return true;
@@ -144,11 +185,11 @@
             :sending-payment="sendingPayment"
             ref="childDoPayment"/>
         <section>
-            <div class="flex items-center justify-between p-6 bg-primary-50 lg:px-14 lg:py-7">
-                <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">TOTAL AMOUNT TO BE PAID</div>
+            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
+                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">TOTAL AMOUNT TO BE PAID</div>
             </div>
-            <div class="p-6 space-y-20 lg:px-14 lg:py-20">
-                <div class="grid items-end w-full grid-cols-4 gap-20">
+            <div class="space-y-20 lg:px-14 lg:py-20 p-6">
+                <div class="items-end gap-20 grid grid-cols-4 w-full">
                     <div>
                         <input
                             v-model="selectedPayment"
@@ -157,12 +198,12 @@
                             name="check"
                             value="manual-tf"
                             :id="`manual-tf`">
-                        <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`manual-tf`">
+                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`manual-tf`">
                             <div>
                                 <img src="/img/icons/manual-tf.png" alt="">
                             </div>
-                            <div class="text-sm font-bold text-center font-roboto text-nowrap text-secondary-50 lg:text-base xl:text-lg">Manual Transfer</div>
-                            <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 checkbox-inner size-10"></span>
+                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Manual Transfer</div>
+                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
                         </label>
                     </div>
                     <div>
@@ -173,12 +214,12 @@
                             name="check"
                             value="credit-card"
                             :id="`credit-card`">
-                        <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`credit-card`">
+                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`credit-card`">
                             <div>
                                 <img src="/img/icons/credit-card.png" alt="">
                             </div>
-                            <div class="text-sm font-bold text-center font-roboto text-nowrap text-secondary-50 lg:text-base xl:text-lg">Credit Card</div>
-                            <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 checkbox-inner size-10"></span>
+                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Credit Card</div>
+                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
                         </label>
                     </div>
                     <div>
@@ -189,12 +230,12 @@
                             name="check"
                             value="debit-card"
                             :id="`debit-card`">
-                        <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`debit-card`">
+                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`debit-card`">
                             <div>
                                 <img src="/img/icons/credit-card.png" alt="">
                             </div>
-                            <div class="text-sm font-bold text-center font-roboto text-nowrap text-secondary-50 lg:text-base xl:text-lg">Debit Card</div>
-                            <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 checkbox-inner size-10"></span>
+                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Debit Card</div>
+                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
                         </label>
                     </div>
                     <div>
@@ -205,15 +246,15 @@
                             name="check"
                             value="qris"
                             :id="`qris`">
-                        <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`qris`">
-                            <div class="text-sm font-bold text-center font-roboto text-nowrap text-secondary-50 lg:text-base xl:text-lg">QRIS</div>
-                            <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 checkbox-inner size-10"></span>
+                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`qris`">
+                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">QRIS</div>
+                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
                         </label>
                     </div>
                 </div>
 
                 <div v-show="showPreferredBank">
-                    <div class="text-lg font-bold tracking-widest uppercase text-primary-50 lg:text-2xl">Manual Transfer</div>
+                    <div class="font-bold text-lg text-primary-50 lg:text-2xl uppercase tracking-widest">Manual Transfer</div>
                     <div class="flex items-center gap-4 mt-6">
                         <div class="font-roboto text-[#606060] tracking-widest whitespace-pre">Pilih Bank Tujuan</div>
                         <div class="relative">
@@ -233,11 +274,11 @@
         </section>
 
         <section>
-            <div class="flex items-center justify-between p-6 bg-primary-50 lg:px-14 lg:py-7">
-                <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">DETAIL ORDER</div>
+            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
+                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">DETAIL ORDER</div>
             </div>
 
-            <div class="pt-12 pb-32 space-y-5 px-14">
+            <div class="space-y-5 px-14 pt-12 pb-32">
                 <div class="font-roboto text-[#606060]">
                     <div>Ordered number your shirt </div>
                     <div>{{ order.order_number }}</div>
@@ -285,7 +326,7 @@
                         v-html="priceFormat(afterDiscount)"
                         ></div>
                 </div>
-                <div class="grid grid-cols-3 px-4 pt-4 pb-3 text-lg font-bold bg-secondary text-primary-50 lg:text-2xl">
+                <div class="grid grid-cols-3 bg-secondary px-4 pt-4 pb-3 font-bold text-lg text-primary-50 lg:text-2xl">
                     <div class="col-span-2">TOTAL AMOUNT TO BE PAID</div>
                     <div class="">{{ priceFormat(afterDiscount) }}</div>
                 </div>
@@ -298,9 +339,62 @@
             </div>
         </section>
 
+        <!-- Create Input Transnumber & downpayment check -->
+        <section>
+            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
+                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">PAYMENT DETAILS</div>
+            </div>
+            <div class="space-y-5 px-14 pt-12 pb-32">
+                <div class="font-roboto text-[#606060]">
+                    <div class="flex items-center gap-4">
+                        <input
+                            v-model="downPayment"
+                            class="hidden"
+                            type="radio"
+                            name="downpayment"
+                            value="0"
+                            :id="`downpayment-0`">
+                        <label class="flex space-x-2 cursor-pointer -center items" :for="`downpayment-0`">
+                            <span class="checkbox-inner"></span>
+                            <span class="font-bold text-[#606060]">Full Payment</span>
+                        </label>
+                        <input
+                            v-model="downPayment"
+                            class="hidden"
+                            type="radio"
+                            name="downpayment"
+                            value="1"
+                            :id="`downpayment-1`">
+                        <label class="flex space-x-2 cursor-pointer -center items" :for="`downpayment-1`">
+                            <span class="checkbox-inner"></span>
+                            <span class="font-bold text-[#606060]">Down Payment</span>
+                        </label>
+                    </div>
+
+                    <!-- If it downpayment show input amount -->
+                    <div class="mt-4">
+                        <div class="font-bold text-[#606060]">Amount</div>
+                        <div class="flex items-center gap-4 mt-2">
+                            <VueNumber v-model.lazy="payAmount" v-bind="number_input" class="border-primary-50 px-4 py-2 border rounded-full w-full max-w-[400px] text-[#606060]"></VueNumber>
+                            </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="font-bold text-[#606060]">Transaction Code</div>
+                        <div class="flex items-center gap-4 mt-2">
+                            <input
+                                v-model="transactionNumber"
+                                type="text"
+                                class="border-primary-50 px-4 py-2 border rounded-full w-full max-w-[400px] text-[#606060]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <div class="flex justify-end">
             <button @click="confirmPayment()"
-                class="flex items-center gap-2 p-4 tracking-widest text-white bg-secondary-50 lg:p-6">
+                class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">
                 <span>PROCEED TO PAYMENT</span>
                 <img class="inline-block" src="/img/icons/arrw-ck-right.png" alt="">
             </button>

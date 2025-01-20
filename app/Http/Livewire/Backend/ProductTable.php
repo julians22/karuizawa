@@ -111,6 +111,17 @@ class ProductTable extends DataTableComponent
                 ->filter(function(Builder $builder, $value) {
                     $builder->where('category_id', $value);
                 }),
+
+            SelectFilter::make('Stock Warehouse')
+                ->options([
+                    '1' => 'Ashta Mall',
+                    '3' => 'PIK'
+                ])
+                ->filter(function(Builder $builder, $value) {
+                    $builder->whereHas('productActualStocks', function($query) use ($value) {
+                        $query->where('store_id', $value);
+                    });
+                }),
         ];
     }
 }

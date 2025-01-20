@@ -10,7 +10,8 @@
                 status: '',
                 applyKeyword: ''
             })
-        }
+        },
+        user: Object
     });
 
     const isRetrieving = ref(false);
@@ -41,6 +42,10 @@
             url += `&keyword=${props.filterData.keyword}`;
         }
 
+        if (props.user && props.user.store_id) {
+            url += `&store_id=${props.user.store_id}`;
+        }
+
         const response = await fetch(url);
         bookings.value = await response.json();
         isRetrieving.value = false;
@@ -60,12 +65,12 @@
     <div>
         <DetailOrder ref="orderDetail"/>
 
-        <div class="container pt-10 pb-28">
+        <div class="pt-10 pb-28 container">
             <div v-if="isRetrieving">Loading Orders ...</div>
             <div v-else-if="!isRetrieving && bookings" v-for="booking in bookings.data">
                 <div class="flex justify-between">
                     <div class="space-y-2 font-roboto">
-                        <div class="text-xl font-bold">Booking Number: {{ booking.order.order_number}}</div>
+                        <div class="font-bold text-xl">Booking Number: {{ booking.order.order_number}}</div>
                         <div>
                             {{ booking.product.customer.full_name }}
                         </div>
@@ -74,9 +79,9 @@
                         <div>{{ booking.product.customer.is_male ? 'Male' : 'Female' }}</div>
                     </div>
                     <div class="space-y-3 font-roboto">
-                        <div class="text-xl font-bold">Booking Time</div>
+                        <div class="font-bold text-xl">Booking Time</div>
                         <div>{{ booking.order_date }}</div>
-                        <button @click="onClickDetail(booking)" class="flex items-center gap-3 px-4 py-2 tracking-widest text-white bg-primary-50 lg:px-3 lg:py-2 font-josefin">
+                        <button @click="onClickDetail(booking)" class="flex items-center gap-3 bg-primary-50 px-4 lg:px-3 py-2 lg:py-2 font-josefin text-white tracking-widest">
                             <span class="mt-1 text-xs">SEE DETAIL</span>
                             <img class="inline-block size-4" src="img/icons/arrw-ck-right.png" alt="">
                         </button>
@@ -86,12 +91,12 @@
             </div>
         </div>
 
-        <div class="absolute bottom-0 right-0 flex">
-            <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-primary-50">
+        <div class="right-0 bottom-0 absolute flex">
+            <button class="flex items-center gap-2 bg-primary-50 p-6 text-white tracking-widest">
                 <span>NEXT PAGE</span>
                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
             </button>
-            <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50">
+            <button class="flex items-center gap-2 bg-secondary-50 p-6 text-white tracking-widest">
                 <span>PAGE 1 of 100</span>
                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
             </button>

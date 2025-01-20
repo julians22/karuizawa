@@ -10,7 +10,8 @@
                 status: '',
                 applyKeyword: ''
             })
-        }
+        },
+        user: Object
     });
 
     const isRetrieving = ref(false);
@@ -18,8 +19,8 @@
     const DetailOrder = defineAsyncComponent(() => import('../utils/DetailHistoryOrder.vue'));
 
     const orderDetail = ref(false);
-
     const bookings = ref(null);
+
 
     onMounted(() => {
         getBookings();
@@ -39,6 +40,10 @@
 
         if (props.filterData.keyword && props.filterData.keyword !== '') {
             url += `&keyword=${props.filterData.keyword}`;
+        }
+
+        if (props.user && props.user.store_id) {
+            url += `&store_id=${props.user.store_id}`;
         }
 
         const response = await fetch(url);
