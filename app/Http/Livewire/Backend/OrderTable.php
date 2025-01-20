@@ -50,6 +50,8 @@ class OrderTable extends DataTableComponent
                 ->format(fn($value) => price_format($value)),
             Column::make("Status", "status")
                 ->sortable(),
+            Column::make("Semi Custom?")
+                ->label(fn($row, Column $column) => $row->orderItems->where('product_type', 'App\Models\SemiCustomProduct')->count() > 0 ? 'Yes' : 'No'),
             Column::make("Created at", "created_at")
                 ->sortable(),
             Column::make("Updated at", "updated_at")

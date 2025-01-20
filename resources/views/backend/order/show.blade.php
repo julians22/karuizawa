@@ -161,6 +161,10 @@
                                     @endif
                                 </table>
                             </div>
+
+                            {{-- Upload to accurate --}}
+                            <x-utils.link :href="route('admin.order.upload-accurate', $order)"
+                                class="btn btn-warning btn-sm" :text="'Upload to Accurate'" />
                         @endif
 
                     </x-slot>

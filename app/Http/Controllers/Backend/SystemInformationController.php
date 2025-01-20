@@ -29,7 +29,7 @@ class SystemInformationController extends Controller
         $url = env('ACCURATE_AUTHORIZATION_URL');
         $client = env('ACCURATE_CLIENT_KEY');
 
-        $redirect = env('ACCURATE_REDIRECT_URI');
+        $redirect = config('accurate.auth.redirect_uri');
         $scopes = config('accurate.auth.scopes');
         $scopes = implode('%20', $scopes);
 
