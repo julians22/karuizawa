@@ -1,0 +1,18 @@
+{
+  "$schema": "https://shadcn-vue.com/schema.json",
+  "style": "new-york",
+  "typescript": false,
+  "tsConfigPath": "./jsconfig.json",
+  "tailwind": {
+    "config": "tailwind.config.js",
+    "css": "resources/sass/frontend/main/main.scss",
+    "baseColor": "neutral",
+    "cssVariables": false,
+    "prefix": ""
+  },
+  "framework": "laravel",
+  "aliases": {
+    "components": "@/components",
+    "utils": "@/lib/utils"
+  }
+}

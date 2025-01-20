@@ -1,8 +1,7 @@
 <script setup>
-    import { ref, watch, defineEmits, computed } from 'vue';
-    import boxInput from '../../../utils/fields/boxInput.vue';
+    import { ref, watch, defineEmits, computed, reactive } from 'vue';
+    import  InputBox  from '@frontend/components/utils/fields/InputBox.vue';
     import { useProducts } from '../../../../store/product';
-
 
     const props = defineProps({
         dataSemiCustom: Object
@@ -147,7 +146,7 @@
                 </div>
                 <div class="flex items-center gap-8 px-6 my-5 lg:px-10 xl:px-14 fabric-code">
                     <label for="fabric-code" class="tracking-widest uppercase text-primary-50 lg:whitespace-pre-wrap">fabric code</label>
-                    <boxInput :digitCount="4" @update:input="onInputBox($event, 'fabric', 'fabricCode')"/>
+                    <InputBox @update:input="onInputBox($event, 'fabric', 'fabricCode')" />
                     <input v-model="form.fabric.text" type="text" class="block w-full h-8 p-2 text-sm text-gray-900 border border-r border-primary-50 font-roboto">
                 </div>
             </div>
@@ -170,7 +169,7 @@
                 <div class="flex items-center gap-12 mx-20 my-10">
                     <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg xl:text-base">OPTION NUMBER</div>
                     <div class="flex font-roboto">
-                        <boxInput :digitCount="2" inputType="number" @update:input="onInputBox($event, 'collar', 'optionNumber')"/>
+                        <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'collar', 'optionNumber')"/>
                     </div>
                 </div>
             </div>
@@ -195,7 +194,7 @@
                     <div class="flex items-center gap-12 px-6 my-10 xl:mx-20">
                         <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg xl:text-base">OPTION NUMBER</div>
                         <div class="flex font-roboto">
-                            <boxInput :digitCount="2" inputType="number" @update:input="onInputBox($event, 'cuff', 'optionNumber')"/>
+                            <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'cuff', 'optionNumber')"/>
                         </div>
                     </div>
                 </div>
@@ -217,7 +216,7 @@
                     <div class="flex items-center gap-12 px-6 my-10 xl:mx-20 lg:px-10">
                         <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg xl:text-base">OPTION NUMBER</div>
                         <div class="flex font-roboto">
-                            <boxInput :digitCount="2" inputType="number" @update:input="onInputBox($event, 'frontBody', 'optionNumber')"/>
+                            <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'frontBody', 'optionNumber')"/>
                         </div>
                     </div>
                 </div>

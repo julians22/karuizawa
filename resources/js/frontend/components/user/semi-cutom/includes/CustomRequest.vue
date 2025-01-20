@@ -1,7 +1,8 @@
 <script setup>
     import { isNull } from 'lodash';
     import { ref, defineProps, watch, defineExpose, computed } from 'vue'
-    import boxInput from '../../../utils/fields/boxInput.vue';
+    // import boxInput from '../../../utils/fields/InputBox.vue';
+    import  InputBox  from '@frontend/components/utils/fields/InputBox.vue';
     import { useProducts } from '../../../../store/product';
 
 
@@ -294,7 +295,7 @@
                         <div class="flex items-center col-span-2 mt-4 lg:gap-4 fabric-code max-xl:flex-wrap">
                             <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
                             <div class="flex font-roboto">
-                                <boxInput :digitCount="4" @update:input="onInputBox($event, 'collar', 'fabricCode')"/>
+                                <InputBox :digitCount="4" @update:input="onInputBox($event, 'collar', 'fabricCode')"/>
                             </div>
                         </div>
                         <div class="self-end col-3 justify-items-end">
@@ -365,7 +366,7 @@
                             <div class="flex items-center col-span-2 mt-4 lg:gap-8 fabric-code max-lg:flex-wrap">
                                 <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
                                 <div class="flex font-roboto">
-                                    <boxInput :digitCount="4" @update:input="onInputBox($event, 'cuffs', 'fabricCode')"/>
+                                    <InputBox :digitCount="4" @update:input="onInputBox($event, 'cuffs', 'fabricCode')"/>
                                 </div>
                             </div>
                             <div class="self-end cols-3 justify-items-end">
@@ -425,7 +426,7 @@
                         </label>
                     </div>
                     <div class="flex font-roboto">
-                        <boxInput :digitCount="4" @update:input="onInputBox($event, 'button', 'buttonCode')"/>
+                        <InputBox :digitCount="4" @update:input="onInputBox($event, 'button', 'buttonCode')"/>
                     </div>
                     <div class="">
                         <input class="hidden" type="radio" name="button-100" :id="`button-100`">
@@ -494,7 +495,7 @@
                     <div class="flex flex-col col-span-2 gap-1 mt-4 fabric-code">
                             <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
                             <div class="flex font-roboto">
-                                <boxInput :digitCount="4" @update:input="onInputBox($event, 'cleric', 'fabricCode')"/>
+                                <InputBox :digitCount="4" @update:input="onInputBox($event, 'cleric', 'fabricCode')"/>
                             </div>
                         </div>
                     <div class="self-end">
@@ -643,7 +644,7 @@
                                 <input v-model="embroidery.initialName.x" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border size-10 border-primary-50">
                                 <input v-model="embroidery.initialName.dot" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 size-5 border-y border-primary-50">
                                 <input v-model="embroidery.initialName.y" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-l border-r size-10 border-y border-primary-50">
-                                <boxInput :digitCount="10" @update:input="onInputIntialName($event)"/>
+                                <InputBox :digitCount="10" @update:input="onInputIntialName($event)"/>
                             </div>
                             <div class="flex w-full gap-4">
                                 <input type="text" v-model="embroidery.longName" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50 font-roboto">
@@ -728,7 +729,7 @@
 
             <div class="flex items-center justify-between gap-4 p-4 mx-6 mt-4 border xl:mx-14 border-pink-ka">
                 <div class="flex font-roboto">
-                    <boxInput :digitCount="5" @update:input="onInputTape($event)"/>
+                    <InputBox :digitCount="5" @update:input="onInputTape($event)"/>
                 </div>
                 <div class="w-9/12">
                     <input type="text" v-model="tape.lower" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50 font-roboto">

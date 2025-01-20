@@ -19,6 +19,6 @@ const props = defineProps({
 
 <template>
     <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" >
-        <Payment :api_store_order="api_store_order" :order="order" @btn-next="btnNext"/>
+        <Payment :api_store_order="api_store_order" :order="order"/>
     </Layout>
 </template>
