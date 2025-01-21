@@ -29,17 +29,22 @@
 
     const fetchCustomer = async (keyword, page) => {
         try {
-            const response = await axios.get(`/api/customer/search?keyword=${keyword}&page=${page}`);
+
+            let params = {
+                keyword: keyword,
+                page: page
+            }
+
+            const response = await axios.get(`/api/customer/search`, { params: params });
             if (response.data.data.length > 0) {
                 if (page === 1) {
                     customers.value = response.data.data;
                 } else {
                     customers.value = [...customers.value, ...response.data.data];
                 }
-
-
                 optionNull.value = false;
             } else {
+                customers.value = [];
                 optionNull.value = true;
             }
             hasMorePage.value = response.data.data.length < 10 ? false : true;
@@ -79,8 +84,8 @@
         <dialog v-if="open"
             class="z-[100] fixed inset-0 flex justify-center items-start bg-black bg-opacity-25 backdrop-blur-sm w-full h-full"
         >
-            <div class="relative w-full max-w-2xl p-6 mt-20 bg-white rounded-2xl">
-                <button class="absolute -top-5 -right-5" @click="open = false">
+            <div class="relative bg-white mt-20 p-6 rounded-2xl w-full max-w-2xl">
+                <button class="-top-5 -right-5 absolute" @click="open = false">
                     <img src="/img/icons/close.png" alt="">
                 </button>
                 <div class="relative">
@@ -91,24 +96,24 @@
                     </div>
                     <input
                         type="search"
-                        class="block w-full p-4 text-sm text-gray-900 border rounded-lg border-primary-50 bg-gray-50 focus:ring-1 focus:ring-primary-50 font-roboto focus:outline-none ps-10"
+                        class="block border-primary-50 bg-gray-50 p-4 border rounded-lg focus:ring-1 focus:ring-primary-50 w-full font-roboto text-gray-900 text-sm focus:outline-none ps-10"
                         placeholder="search by Email or Name"
                         required
                         v-model="searchModel"
                         @keyup="doSearch"
                     />
                 </div>
-                <div v-if="isLoading" class="mt-5 tracking-widest text-center uppercase">loading...</div>
+                <div v-if="isLoading" class="mt-5 text-center uppercase tracking-widest">loading...</div>
                 <div
-                    class="grid grid-cols-1 gap-2 mt-4 overflow-y-auto max-h-80 font-roboto" v-if="!isLoading && !customerIsNull">
-                    <div @click="onSelected(item)" class="px-2 py-4 rounded cursor-pointer bg-secondary hover:bg-primary-50 hover:text-white" v-for="item in customers">
+                    class="gap-2 grid grid-cols-1 mt-4 max-h-80 font-roboto overflow-y-auto" v-if="!isLoading && !customerIsNull">
+                    <div @click="onSelected(item)" class="bg-secondary hover:bg-primary-50 px-2 py-4 rounded hover:text-white cursor-pointer" v-for="item in customers">
                         <div class="font-bold">{{ item.full_name }}</div>
                         <div class="text-xs">{{ item.email }} - ({{ item.phone }})</div>
                     </div>
 
-                    <div v-if="hasMorePage" @click="loadMore" class="px-2 py-4 font-bold rounded cursor-pointer bg-primary-50 hover:bg-primary-100 hover:text-white">Load More</div>
+                    <div v-if="hasMorePage" @click="loadMore" class="bg-primary-50 hover:bg-primary-100 px-2 py-4 rounded font-bold hover:text-white cursor-pointer">Load More</div>
                 </div>
-                <div v-if="customerIsNull && !isLoading" class="mt-5 tracking-widest text-center uppercase">data not found</div>
+                <div v-if="customerIsNull && !isLoading" class="mt-5 text-center uppercase tracking-widest">data not found</div>
             </div>
         </dialog>
     </Transition>
