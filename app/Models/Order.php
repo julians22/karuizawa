@@ -95,7 +95,7 @@ class Order extends Model
         return $totalPayments == $this->total_price;
     }
 
-    public function isSyncedAccurate()
+    public function isSyncedToAccurate()
     {
         return ($this->accurate_order_id != null && $this->accurate_order_number != null) && $this->accurate_sync_date != null;
     }

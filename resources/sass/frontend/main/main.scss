@@ -43,12 +43,12 @@
         .printable {
             -webkit-print-color-adjust: exact;
             // zoom: 80%;
+            @page {
+                size: 20in 14.5in;
+                margin: 5mm;
+            }
         }
 
-        @page {
-            size: 20in 14.5in;
-            margin: 5mm;
-        }
     }
 }
 
@@ -59,7 +59,7 @@
     }
 
     .box-input-wrapper .box-input {
-        @apply block border border-primary-50 p-2 text-center text-gray-900 text-sm size-8;
+        @apply block border-primary-50 p-2 border text-center text-gray-900 text-sm size-8;
     }
 
     .box-input-wrapper .box-input:not(:first-child) {

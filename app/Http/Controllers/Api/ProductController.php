@@ -17,8 +17,6 @@ class ProductController extends Controller
         // sort: 'Newest', 'Oldest', 'Price: Low to High', 'Price: High to Low'
         $products = Product::validProduct()
             ->when($request->has('store_id'), function ($query) use ($request) {
-                // find available product in store
-                // find where has many productActualStocks with stock > 0
                 $query->whereHas('productActualStocks', function ($query) use ($request) {
                     if ($request->stpre_id === 0) {
                         return $query->where('stock_quantity', '>', 0);
@@ -33,14 +31,11 @@ class ProductController extends Controller
                     ->orWhere('sku', 'like', '%' . $request->search . '%');
             })
             ->when($request->has('size'), function ($query) use ($request) {
-                $query->where('product_name', 'like', 'ukuran' . $request->size . '%')
-                    ->orWhere('product_name', 'like', 'size ' . $request->size . '%')
-                    ->orWhere('product_name', 'like', 'Size' . $request->size . ' %')
-                    ->orWhere('product_name', 'like', 'Ukuran' . $request->size . ' %');
+                $query->whereRaw("UPPER(product_name) like '%" . strtoupper($request->size) . "%'");
 
             })
             ->when($request->has('color'), function ($query) use ($request) {
-                $query->where('product_name', 'like', '% ' . $request->color . '%');
+                $query->where('product_name', 'like', '% UKURAN' . $request->color . '%');
             })
             ->when($request->has('sort'), function ($query) use ($request) {
                 if ($request->sort == 'Newest') {

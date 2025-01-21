@@ -276,9 +276,14 @@ class OrderController extends Controller
                         'option_note' => $sc['option_note'],
                     ]);
 
+                    $basePrice = $semiCustomProuduct->base_price - ($semiCustomProuduct->base_price * $semiCustomProuduct->base_discount / 100);
+                    $optionPrice = ($semiCustomProuduct->option_total + $semiCustomProuduct->option_additional_price) - $semiCustomProuduct->option_discount;
+
+                    $totalPrice = $basePrice + $optionPrice;
+
                     $orderItem = new OrderItem([
                         'quantity' => 1,
-                        'price' => $semiCustomProuduct->base_price + $semiCustomProuduct->option_total,
+                        'price' => $totalPrice,
                     ]);
 
                     $orderItem->product()->associate($semiCustomProuduct);
