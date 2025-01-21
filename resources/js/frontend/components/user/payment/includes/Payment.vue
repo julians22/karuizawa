@@ -2,7 +2,7 @@
     import { computed, defineAsyncComponent, onMounted, ref, defineEmits, watch } from 'vue';
     import { priceFormat } from '@frontend/helpers/currency';
 
-    import { component as VueNumber } from '@coders-tm/vue-number-format'
+    import { component as VueNumber } from '@coders-tm/vue-number-format';
 
     const props = defineProps({
         csrf: String,
@@ -157,7 +157,6 @@
 
 
     onMounted(() => {
-
         let total = 0;
         products.value.forEach(product => {
             // parse float to remove comma

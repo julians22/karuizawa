@@ -42,6 +42,7 @@
     @media print {
         .printable {
             -webkit-print-color-adjust: exact;
+            // zoom: 80%;
         }
 
         @page {

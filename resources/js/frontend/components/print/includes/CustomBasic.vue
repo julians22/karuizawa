@@ -4,6 +4,14 @@
     import { useProducts } from '@frontend//store/product';
     import { priceFormat } from "@frontend/helpers/currency";
 
+    import { component as VueNumber } from '@coders-tm/vue-number-format';
+
+    const number_input = {
+        separator: '.',
+        prefix: 'Rp ',
+        precision: 0,
+        masked: false,
+    }
 
 
     const props = defineProps({
@@ -442,7 +450,8 @@
                         </div>
                         <div class="col-span-2 space-y-2">
                             <input v-model="discount" type="number"  class="w-full px-4 pt-2 pb-1 border-2 number-input border-primary-50 text-primary-50" placeholder="DISCOUNT"/>
-                            <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border-2 number-input border-primary-50 text-primary-50" placeholder="RP" />
+                            <!-- <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border-2 number-input border-primary-50 text-primary-50" placeholder="RP" /> -->
+                            <VueNumber v-model.lazy="price" v-bind="number_input" class="w-full px-4 pt-2 pb-1 border-2 number-input border-primary-50 text-primary-50"></VueNumber>
                             <div class="print:hidden">
                                 <button @click="basicAmount()" class="w-full px-5 pt-3 pb-2 text-center bg-secondary text-primary-50">APPLY PRICE</button>
                             </div>

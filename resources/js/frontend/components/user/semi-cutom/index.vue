@@ -218,7 +218,11 @@
                                             v-for="(summaryBasic, key) in formBasic" :key="key">
                                             <td class="capitalize">{{ stingConvert(key) }}</td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">{{ (summaryBasic?.name ?? summaryBasic?.fabricCode ??  (summaryBasic?.optionNumber) ) ?? 'none' }}</td>
+                                            <td v-if="key == 'fabric'">
+                                                <div>{{ summaryBasic?.fabricCode ?? 'none' }}</div>
+                                                <div>{{ summaryBasic?.text ?? '' }}</div>
+                                            </td>
+                                            <td v-else>{{ (summaryBasic?.name ?? (summaryBasic?.optionNumber) ) ?? 'none' }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

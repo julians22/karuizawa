@@ -28,8 +28,9 @@
 </script>
 
 <template>
-    <div class="printable">
+    <div class="printable min-w-[1900px]">
         <CustomBasic @additionalBasic="additionalBasic" :dataConfig="props.data_config" :dataSemiCustom="props.data_semi_custom" ref="childBasic" />
+        <div style="page-break-before: always;"></div>
         <CustomOptions @additionalOption="additionalOption" :dataConfig="props.data_config" :dataSemiCustom="props.data_semi_custom" ref="childOption"/>
     </div>
 </template>

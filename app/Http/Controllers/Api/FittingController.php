@@ -30,13 +30,15 @@ class FittingController extends Controller
         })
 
         ->orderBy('created_at', 'desc')
-        ->paginate(5);
+        ->paginate(10);
 
         return response()->json($orders);
     }
 
     public function index_bk(Request $request)
     {
+        $store_id = $request->store_id;
+
         $orders = Order::with([
             'orderItems',
         ])
