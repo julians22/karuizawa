@@ -75,23 +75,23 @@ const { handlePrint } = useVueToPrint({
 
               <div class="bg-black w-full h-px"></div>
 
-              Terms & Conditions:
-
-                <div class="mb-2 text-xs">
-                    <strong class="mb-1">Semi-Respoke</strong>
-                    <ol>
-                        <li>The production process will require 14 working days, excluding holidays and weekends.</li>
-                        <li>Karuizawa will charge a revision fee for any changes or modifications depending on the nature and complexity.</li>
-                        <li>No refund policy.</li>
-                    </ol>
-                </div>
-
-                <div class="text-xs">
-                    <strong class="mb-1">Ready to Wear</strong>
-                    <ol>
-                        <li>Karuizawa allows any product exchange only for the cause of production's mishaps.</li>
-                        <li>Karuizawa needs to receive the receipt, product with tag and label intact during the exchange process within 3 days after purchase.</li>
-                    </ol>
+                <div class="px-2 py-2">
+                    Terms & Conditions:
+                    <div class="mb-2 text-xs">
+                        <strong class="mb-1 text-base">Semi-Respoke</strong>
+                        <ol class="list-decimal list-inside">
+                            <li>The production process will require 14 working days, excluding holidays and weekends.</li>
+                            <li>Karuizawa will charge a revision fee for any changes or modifications depending on the nature and complexity.</li>
+                            <li>No refund policy.</li>
+                        </ol>
+                    </div>
+                    <div class="text-xs">
+                        <strong class="mb-1 text-base">Ready to Wear</strong>
+                        <ol class="list-decimal list-inside">
+                            <li>Karuizawa allows any product exchange only for the cause of production's mishaps.</li>
+                            <li>Karuizawa needs to receive the receipt, product with tag and label intact during the exchange process within 3 days after purchase.</li>
+                        </ol>
+                    </div>
                 </div>
 
                 <!-- border dot -->
