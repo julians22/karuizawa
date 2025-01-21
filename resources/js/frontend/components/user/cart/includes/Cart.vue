@@ -68,12 +68,12 @@
 
                 semi_custom_data.push({
                     basic_form: semi_custom.basic.form,
-                    base_price: semi_custom.basic.amount.price ?? 0,
+                    base_price: semi_custom.basic.amount.total ?? 0,
                     base_discount: semi_custom.basic.amount.discount ?? 0,
                     base_note: semi_custom.basic.additionalNote,
                     option_form: semi_custom.option.form,
-                    option_total: semi_custom.option.amount.optionPrice ?? 0,
-                    option_additional_price: semi_custom.option.amount.price ?? 0,
+                    option_total: semi_custom.option.amount.total ?? 0,
+                    option_additional_price: semi_custom.option.amount.optionPrice ?? 0,
                     option_discount: semi_custom.option.amount.discount ?? 0,
                     option_note: semi_custom.option.additionalNote,
                     size: semi_custom.basic.formSize,
@@ -140,6 +140,7 @@
 
         console.log(orders);
 
+        return false;
 
         axios.post(props.api_store_order, orders)
         .then(response => {

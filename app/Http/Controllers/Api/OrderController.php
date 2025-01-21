@@ -278,7 +278,7 @@ class OrderController extends Controller
 
                     $orderItem = new OrderItem([
                         'quantity' => 1,
-                        'price' => $semiCustomProuduct->base_price + $semiCustomProuduct->option_total + $semiCustomProuduct->option_additional_price,
+                        'price' => $semiCustomProuduct->base_price + $semiCustomProuduct->option_total,
                     ]);
 
                     $orderItem->product()->associate($semiCustomProuduct);
@@ -295,7 +295,7 @@ class OrderController extends Controller
                 }
 
                 if ($item->isSemiCustom()) {
-                    $calucate = $item->product->base_price + $item->product->option_total + $item->product->option_additional_price;
+                    $calucate = $item->product->base_price + $item->product->option_total;
                     $totalPrice += $calucate;
                 }
             }
