@@ -55,5 +55,6 @@ Route::group(['as' => 'user.', 'middleware' => ['auth', 'password.expires', conf
     })->name('booking');
 
     Route::get('print-semi-custom/{id}', [DashboardController::class, 'print_sc'])->name('print-semi-custom');
+    Route::get('print-bill/{id}', [DashboardController::class, 'print_bill'])->name('print-bill');
 
 });

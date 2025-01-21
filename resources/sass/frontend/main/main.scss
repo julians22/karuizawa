@@ -1,4 +1,4 @@
-@import "../../_global";
+// @import "../../_global";
 
 // tailwind
 @import "tailwindcss/base";
@@ -34,6 +34,20 @@
             width: .4em;
             -webkit-transition: all .5s;
             opacity: 1;
+        }
+    }
+}
+
+@layer base {
+    @media print {
+        .printable {
+            -webkit-print-color-adjust: exact;
+            // zoom: 80%;
+        }
+
+        @page {
+            size: 20in 14.5in;
+            margin: 5mm;
         }
     }
 }

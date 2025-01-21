@@ -139,8 +139,8 @@
 
 
     const btnSubmit =  async () => {
-        childBasic.value.basicAmount()
-        childOption.value.amountOption()
+        childBasic.value.basicAmount();
+        childOption.value.amountOption();
 
         if (basic.value.form.fabric.fabricCode == null || basic.value.form.fabric.text == null ||
             basic.value.form.fabric.fabricCode == '' || basic.value.form.fabric.text == ''
@@ -157,20 +157,49 @@
         }
     }
 
-  const onSumbit = async () => {
-        const dataForm = bindForm.value;
-        await axios.post('/api/semi-custom/submit', dataForm)
-            .then(response => {
-                console.log(response.data.data);
+    const addCustomRequest = () => {
+        childBasic.value.basicAmount();
+        childOption.value.amountOption();
 
-                url.searchParams.set('page', 'total-shop');
-                window.history.pushState(null, '', url.toString());
-                storePage.currentPage = 'total-shop';
-            })
-            .catch(error => {
-                console.log('error');
-            })
+        if (basic.value.form.fabric.fabricCode == null || basic.value.form.fabric.text == null ||
+            basic.value.form.fabric.fabricCode == '' || basic.value.form.fabric.text == ''
+        ) {
+            alert('Please fill the form Fabric Code');
+        }else {
+            if (totalPrice.value <= 0 && bindForm.value !== null) {
+                alert('Please fill the form OR apply the price first');
+            }else {
+                // set time out
+                useProducts().setCustom(bindForm.value);
+                setTimeout(() => {
+                    // reload page
+                    // storePage.currentPage = 'custom-request';
+                    // url.searchParams.set('page', 'custom-request');
+                    // window.history.pushState(null, '', url.toString());
+                    // window.location.reload();
+                    window.location.href = "/semi-custom?page=semi-custom";
+                });
+                alert('Success');
+                // window.location.href = "/cart";
+                // onSumbit();
+            }
+        }
     }
+
+//   const onSumbit = async () => {
+//         const dataForm = bindForm.value;
+//         await axios.post('/api/semi-custom/submit', dataForm)
+//             .then(response => {
+//                 console.log(response.data.data);
+
+//                 url.searchParams.set('page', 'total-shop');
+//                 window.history.pushState(null, '', url.toString());
+//                 storePage.currentPage = 'total-shop';
+//             })
+//             .catch(error => {
+//                 console.log('error');
+//             })
+//     }
 </script>
 
 <template>
@@ -189,7 +218,11 @@
                                             v-for="(summaryBasic, key) in formBasic" :key="key">
                                             <td class="capitalize">{{ stingConvert(key) }}</td>
                                             <td class="w-4 text-center">:</td>
-                                            <td class="">{{ (summaryBasic?.name ?? summaryBasic?.fabricCode ??  (summaryBasic?.optionNumber) ) ?? 'none' }}</td>
+                                            <td v-if="key == 'fabric'">
+                                                <div>{{ summaryBasic?.fabricCode ?? 'none' }}</div>
+                                                <div>{{ summaryBasic?.text ?? '' }}</div>
+                                            </td>
+                                            <td v-else>{{ (summaryBasic?.name ?? (summaryBasic?.optionNumber) ) ?? 'none' }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -401,7 +434,7 @@
             <!-- </template> -->
 
             <div class="absolute bottom-0 right-0 flex">
-                <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-primary-300">
+                <button @click="addCustomRequest()" class="flex items-center gap-2 p-6 tracking-widest text-white bg-primary-300">
                     <span>ADD CUSTOM REQUEST </span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                 </button>

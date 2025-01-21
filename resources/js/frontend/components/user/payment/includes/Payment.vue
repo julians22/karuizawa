@@ -1,9 +1,8 @@
 <script setup>
     import { computed, defineAsyncComponent, onMounted, ref, defineEmits, watch } from 'vue';
-    import { useCustomer } from '@frontend/store/customer';
     import { priceFormat } from '@frontend/helpers/currency';
 
-    import { component as VueNumber } from '@coders-tm/vue-number-format'
+    import { component as VueNumber } from '@coders-tm/vue-number-format';
 
     const props = defineProps({
         csrf: String,
@@ -51,10 +50,7 @@
 
     const childDoPayment = ref(null);
 
-    // const products = computed(() => useProducts().getProducts);
-    const customer = computed(() => useCustomer().getCustomer);
     const couponUsed = computed(() => props.order.discount_details.coupon);
-    // const semiCustom = computed(() => useProducts().getSemiCustom);
 
     const totalPayment = computed(() => {
         let total = 0;
@@ -63,10 +59,10 @@
             total += parseFloat(product.total);
         });
 
-        semiCustom.value.forEach(product => {
+        semiCustom.value.forEach(sc => {
             // parse float to remove comma
-            total += parseFloat(product.total);
-        });
+            total += parseFloat(sc.total);
+        })
 
         return total;
     });
@@ -83,7 +79,7 @@
     const preferredBank = ref('BCA');
     const downPayment = ref(0);
     const payAmount = ref(0);
-    const transactionNumber = ref('');
+    const transactionNumber = ref('-');
 
     watch(downPayment, (val) => {
         if (val == 1) {
@@ -161,7 +157,6 @@
 
 
     onMounted(() => {
-
         let total = 0;
         products.value.forEach(product => {
             // parse float to remove comma
@@ -278,7 +273,7 @@
                 <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">DETAIL ORDER</div>
             </div>
 
-            <div class="space-y-5 px-14 pt-12 pb-20">
+            <div class="space-y-5 px-14 pt-12 pb-32">
                 <div class="font-roboto text-[#606060]">
                     <div>Ordered number your shirt </div>
                     <div>{{ order.order_number }}</div>
@@ -340,7 +335,8 @@
         </section>
 
         <!-- Create Input Transnumber & downpayment check -->
-        <section>
+         <!-- Downpayment not needed -->
+        <section class="hidden">
             <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
                 <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">PAYMENT DETAILS</div>
             </div>

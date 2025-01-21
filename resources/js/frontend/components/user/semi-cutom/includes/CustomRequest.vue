@@ -1,8 +1,18 @@
 <script setup>
     import { isNull } from 'lodash';
     import { ref, defineProps, watch, defineExpose, computed } from 'vue'
-    import boxInput from '../../../utils/fields/boxInput.vue';
+    // import boxInput from '../../../utils/fields/InputBox.vue';
+    import  InputBox  from '@frontend/components/utils/fields/InputBox.vue';
     import { useProducts } from '../../../../store/product';
+
+    import { component as VueNumber } from '@coders-tm/vue-number-format';
+
+    const number_input = {
+        separator: '.',
+        prefix: 'Rp ',
+        precision: 0,
+        masked: false,
+    }
 
 
     const props = defineProps({
@@ -49,13 +59,13 @@
     const additionalNote = ref(null);
 
     const amount = ref({
-        optionTotal: 0,
-        price: 0,
+        optionPrice: 0,
+        basicPrice: 0,
         discount: 0,
         total: 0
     });
 
-    const price = ref(null);
+    const price = ref(0);
     const discount = ref(null);
     const dataPrice = ref(null);
 
@@ -66,7 +76,7 @@
         let z = x + y;
         let total = z - (z * disc / 100);
 
-        amount.value.optionTotal = x;
+        amount.value.optionPrice = x;
         amount.value.discount = disc;
         amount.value.price = y;
         amount.value.total = total;
@@ -131,23 +141,6 @@
         }
 
         form.value.embroidery = items;
-
-        // const data = {
-        //     slug: items?.slug,
-        //     name: items?.name,
-        //     data: {
-        //         position: items?.position,
-        //         color: items?.color,
-        //         fontType: items?.fontType,
-        //         initialName: {
-        //             name: items?.initialName
-        //         },
-        //         longName: {
-        //             name: items?.longName
-        //         },
-        //     },
-        //     price: items?.price
-        // }
     });
 
     const tape = ref({
@@ -311,7 +304,7 @@
                         <div class="flex items-center col-span-2 mt-4 lg:gap-4 fabric-code max-xl:flex-wrap">
                             <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
                             <div class="flex font-roboto">
-                                <boxInput :digitCount="4" @update:input="onInputBox($event, 'collar', 'fabricCode')"/>
+                                <InputBox :digitCount="4" @update:input="onInputBox($event, 'collar', 'fabricCode')"/>
                             </div>
                         </div>
                         <div class="self-end col-3 justify-items-end">
@@ -382,7 +375,7 @@
                             <div class="flex items-center col-span-2 mt-4 lg:gap-8 fabric-code max-lg:flex-wrap">
                                 <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
                                 <div class="flex font-roboto">
-                                    <boxInput :digitCount="4" @update:input="onInputBox($event, 'cuffs', 'fabricCode')"/>
+                                    <InputBox :digitCount="4" @update:input="onInputBox($event, 'cuffs', 'fabricCode')"/>
                                 </div>
                             </div>
                             <div class="self-end cols-3 justify-items-end">
@@ -442,7 +435,7 @@
                         </label>
                     </div>
                     <div class="flex font-roboto">
-                        <boxInput :digitCount="4" @update:input="onInputBox($event, 'button', 'buttonCode')"/>
+                        <InputBox :digitCount="4" @update:input="onInputBox($event, 'button', 'buttonCode')"/>
                     </div>
                     <div class="">
                         <input class="hidden" type="radio" name="button-100" :id="`button-100`">
@@ -511,7 +504,7 @@
                     <div class="flex flex-col col-span-2 gap-1 mt-4 fabric-code">
                             <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
                             <div class="flex font-roboto">
-                                <boxInput :digitCount="4" @update:input="onInputBox($event, 'cleric', 'fabricCode')"/>
+                                <InputBox :digitCount="4" @update:input="onInputBox($event, 'cleric', 'fabricCode')"/>
                             </div>
                         </div>
                     <div class="self-end">
@@ -660,7 +653,7 @@
                                 <input v-model="embroidery.initialName.x" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border size-10 border-primary-50">
                                 <input v-model="embroidery.initialName.dot" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 size-5 border-y border-primary-50">
                                 <input v-model="embroidery.initialName.y" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-l border-r size-10 border-y border-primary-50">
-                                <boxInput :digitCount="10" @update:input="onInputIntialName($event)"/>
+                                <InputBox :digitCount="10" @update:input="onInputIntialName($event)"/>
                             </div>
                             <div class="flex w-full gap-4">
                                 <input type="text" v-model="embroidery.longName" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50 font-roboto">
@@ -745,7 +738,7 @@
 
             <div class="flex items-center justify-between gap-4 p-4 mx-6 mt-4 border xl:mx-14 border-pink-ka">
                 <div class="flex font-roboto">
-                    <boxInput :digitCount="5" @update:input="onInputTape($event)"/>
+                    <InputBox :digitCount="5" @update:input="onInputTape($event)"/>
                 </div>
                 <div class="w-9/12">
                     <input type="text" v-model="tape.lower" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50 font-roboto">
@@ -771,7 +764,9 @@
                 <div class="col-span-2 space-y-2">
                     <input v-model="discount" type="number"
                          class="w-full px-4 pt-2 pb-1 border number-input border-pink-ka text-primary-50" placeholder="DISCOUNT"/>
-                    <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border number-input border-pink-ka text-primary-50" placeholder="RP" />
+                    <!-- <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border number-input border-pink-ka text-primary-50" placeholder="RP" /> -->
+                    <VueNumber v-model.lazy="price" v-bind="number_input" class="w-full px-4 pt-2 pb-1 border number-input border-pink-ka text-primary-50" placeholder="RP"></VueNumber>
+
                     <div>
                         <button @click="amountOption()" class="w-full px-5 pt-3 pb-2 text-center text-pink-ka bg-secondary">APPLY PRICE</button>
                     </div>
