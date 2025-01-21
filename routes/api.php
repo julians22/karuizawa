@@ -31,7 +31,7 @@ Route::get('find-product/{slug}', [ProductController::class, 'findBySlug']);
 
 Route::group(['prefix' => 'customer'], function () {
     Route::get('search', function (Request $request) {
-        $keyword = $request->search;
+        $keyword = $request->keyword;
 
         $data = \App\Models\Customer::where(function ($query) use ($keyword) {
             $query->where('full_name', 'like', '%' . $keyword . '%')

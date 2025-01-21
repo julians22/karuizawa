@@ -133,7 +133,7 @@
     const btnProcess = () => {
         if (form.value.shirtsSelected.length) {
             selectProducts();
-            setTimeout(() =>{
+            setTimeout(() => {
                 window.location.href = "/cart";
             }, 300)
         }else{
@@ -152,7 +152,7 @@
                 }else {
                     window.location.href = "/semi-custom";
                 }
-            }, 300);
+            }, 300)
 
         }else{
             formError.value = ['Please select at least one item']
