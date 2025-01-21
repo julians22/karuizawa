@@ -48,7 +48,7 @@
 
                         <div class="bg-primary-50 my-5 w-full h-[1px]"></div>
 
-                        <div class="flex justify-center">
+                        <div class="flex justify-center h-[35vh] overflow-y-auto">
                             <table>
                                 <thead class="w-full divide-y divide-primary-100">
                                     <tr class="bg-primary-50 text-secondary">
