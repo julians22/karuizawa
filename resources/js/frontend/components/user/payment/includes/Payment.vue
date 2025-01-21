@@ -79,7 +79,7 @@
     const preferredBank = ref('BCA');
     const downPayment = ref(0);
     const payAmount = ref(0);
-    const transactionNumber = ref('');
+    const transactionNumber = ref('-');
 
     watch(downPayment, (val) => {
         if (val == 1) {

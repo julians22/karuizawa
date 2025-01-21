@@ -207,6 +207,9 @@ class OrderController extends Controller
 
         $storeId = $storeId == 0 ? 1 : $storeId;
 
+        // convert orderdate from dd/mm/yyyy h:i
+        $orderDate = Carbon::createFromFormat('d/m/Y H:i', $request->order_date);
+
         DB::beginTransaction();
 
         try {
@@ -222,6 +225,7 @@ class OrderController extends Controller
                 'payment' => null,
                 'bank' => null,
                 'status' => config('enums.order_status.pending'),
+                'order_date' => $orderDate
             ]);
 
             // insert order items type product

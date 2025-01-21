@@ -83,7 +83,7 @@
 <template>
     <div class="relative mb-0 min-h-svh">
 
-        <div class="grid grid-cols-2 gap-6">
+        <div class="gap-6 grid grid-cols-2">
             <div>
                 <!-- collar -->
                 <div id="collar">
@@ -91,49 +91,49 @@
                         <div class="cat-name">02. Collar</div>
                     </div>
 
-                    <div class="grid grid-cols-6 gap-2 px-4 my-4 whitespace-nowrap">
+                    <div class="gap-2 grid grid-cols-6 my-4 px-4 whitespace-nowrap">
                         <div class="col-span-2">
                             <div class="flex" v-for="(collar, index) in dataConfig.collar.data.options.option_1" :key="index">
                                 <input :checked="collar?.slug === formOption.collar?.slug" @click.native="formOption.collar = null" class="hidden" v-model="formOption.collar" :value="collar" type="radio" :id="'collar-'+collar.slug">
-                                <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="'collar-'+collar.slug">
+                                <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'collar-'+collar.slug">
                                     <span class="checkbox-inner"></span>
-                                    <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ collar.name }}</div>
+                                    <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ collar.name }}</div>
                                 </label>
                             </div>
-                            <div class="mt-2 mb-3 text-xs font-roboto text-pink-ka">*No Additional Charge for above items</div>
+                            <div class="mt-2 mb-3 font-roboto text-pink-ka text-xs">*No Additional Charge for above items</div>
                         </div>
                         <div class="col-span-4">
-                            <div class="grid grid-cols-1 p-2 border border-pink-ka 2xl:grid-cols-2">
+                            <div class="border-pink-ka grid grid-cols-1 2xl:grid-cols-2 p-2 border">
                                 <div class="flex" v-for="(collar50, index) in dataConfig.collar.data.options.option_2" :key="index">
                                     <input :checked="collar50?.slug === formOption.collar?.slug" @click.native="formOption.collar = null" class="hidden" type="radio" v-model="formOption.collar" :value="collar50" :id="'collar-'+collar50.slug">
-                                    <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="'collar-'+collar50.slug">
+                                    <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'collar-'+collar50.slug">
                                         <span class="checkbox-inner"></span>
-                                        <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ collar50.name }}</div>
+                                        <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ collar50.name }}</div>
                                     </label>
                                 </div>
-                                <div class="self-end col-span-2 justify-items-end">
+                                <div class="justify-items-end col-span-2 self-end">
                                     <div class="">
                                         <input class="hidden" type="radio" name="collar-50" :id="`50rb`">
-                                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`50rb`">
-                                            <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm">
+                                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`50rb`">
+                                            <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider">
                                                 {{ currencyFormat(dataConfig.collar.data.options.option_2[0].price) }}
                                             </div>
                                         </label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="grid grid-cols-3 p-2 border border-pink-ka">
+                            <div class="border-pink-ka grid grid-cols-3 p-2 border">
                                 <div class="col-span-3">
                                     <div class="flex" v-for="(collar100, index) in dataConfig.collar.data.options.option_3" :key="index">
                                         <input  :checked="collar100?.slug === formOption.collar?.slug" @click.native="formOption.collar = null" class="hidden" v-model="formOption.collar" :value="collar100" type="radio" :id="`collar-${collar100.slug}`">
-                                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`collar-${collar100.slug}`">
+                                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`collar-${collar100.slug}`">
                                             <span class="checkbox-inner"></span>
-                                            <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ collar100.name }}</div>
+                                            <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ collar100.name }}</div>
                                         </label>
                                     </div>
                                 </div>
-                                <div class="flex items-center col-span-2 mt-4 max-xl:flex-wrap lg:gap-4 fabric-code">
-                                    <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
+                                <div class="flex max-xl:flex-wrap items-center lg:gap-4 col-span-2 mt-4 fabric-code">
+                                    <label for="fabric-code" class="text-primary-50 uppercase tracking-wider whitespace-nowrap">fabric code (4 digit)</label>
                                     <div class="flex font-roboto">
                                         <div ref="inputCont" class="box-input-wrapper" v-if="formOption.collar?.fabricCode !== undefined">
                                             <input
@@ -155,11 +155,11 @@
                                         <!-- <boxInput :digitCount="4" @update:input="onInputBox($event, 'collar', 'fabricCode')"/> -->
                                     </div>
                                 </div>
-                                <div class="self-end justify-items-end col-3">
+                                <div class="justify-items-end col-3 self-end">
                                     <div class="">
                                         <input class="hidden" type="radio" name="collar-100" :id="`100rb`">
-                                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`100rb`">
-                                            <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm">
+                                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`100rb`">
+                                            <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider">
                                                 {{ currencyFormat(dataConfig.collar.data.options.option_3[0].price) }}
                                             </div>
                                             <!-- <span class="checkbox-inner pink"></span> -->
@@ -177,32 +177,32 @@
                         <div class="cat-name">03. cuffs</div>
                     </div>
 
-                    <div class="grid grid-cols-6 gap-2 my-4 px-4cwhitespace-nowrap">
+                    <div class="gap-2 grid grid-cols-6 my-4 px-4cwhitespace-nowrap">
                         <div class="col-span-2">
                             <div class="flex" v-for="(cuffs, index) in dataConfig.cuffs.data.options.option_1" :key="index">
                                 <input :checked="formOption.cuffs?.slug == cuffs?.slug" @click.native="formOption.cuffs = null" class="hidden" type="radio" name="cuffs" v-model="formOption.cuffs" :value="cuffs" :id="`cuffs-${cuffs.slug}`">
-                                <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cuffs-${cuffs.slug}`">
+                                <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`cuffs-${cuffs.slug}`">
                                     <span class="checkbox-inner"></span>
-                                    <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ cuffs.name }}</div>
+                                    <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ cuffs.name }}</div>
                                 </label>
                             </div>
-                            <div class="mt-4 text-xs font-roboto text-pink-ka">*No Additional Charge for above items</div>
+                            <div class="mt-4 font-roboto text-pink-ka text-xs">*No Additional Charge for above items</div>
                         </div>
                         <div class="col-span-4">
                             <div>
-                                <div class="grid grid-cols-1 gap-4 p-2 border border-pink-ka 2xl:grid-cols-2">
+                                <div class="gap-4 border-pink-ka grid grid-cols-1 2xl:grid-cols-2 p-2 border">
                                     <div class="flex" v-for="(cuffs, index) in dataConfig.cuffs.data.options.option_2" :key="index">
                                         <input :checked="formOption.cuffs?.slug == cuffs?.slug" @click.native="formOption.cuffs = null" class="hidden" v-model="formOption.cuffs" :value="cuffs" type="radio" name="cuffs" :id="`cuffs-${cuffs.slug}`">
-                                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cuffs-${cuffs.slug}`">
+                                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`cuffs-${cuffs.slug}`">
                                             <span class="checkbox-inner"></span>
-                                            <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ cuffs.name }}</div>
+                                            <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ cuffs.name }}</div>
                                         </label>
                                     </div>
-                                    <div class="self-end justify-items-end col-3">
+                                    <div class="justify-items-end col-3 self-end">
                                         <div class="">
                                             <input class="hidden" type="radio" name="cuffs-70" :id="`cuffs-70rb`">
-                                            <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cuffs-70rb`">
-                                                <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm">
+                                            <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`cuffs-70rb`">
+                                                <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider">
                                                     {{ currencyFormat(dataConfig.cuffs.data.options.option_2[0].price) }}
                                                 </div>
                                                 <!-- <span class="checkbox-inner pink"></span> -->
@@ -210,18 +210,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-3 p-2 border border-pink-ka">
+                                <div class="border-pink-ka grid grid-cols-3 p-2 border">
                                     <div class="col-span-3">
                                         <div class="flex" v-for="(cuffs, index) in dataConfig.cuffs.data.options.option_3" :key="index">
                                             <input :checked="formOption.cuffs?.slug == cuffs?.slug" @click.native="formOption.cuffs = null" class="hidden" v-model="formOption.cuffs" :value="cuffs" type="radio" name="cuffs" :id="`cuffs-${cuffs.slug}`">
-                                            <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cuffs-${cuffs.slug}`">
+                                            <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`cuffs-${cuffs.slug}`">
                                                 <span class="checkbox-inner"></span>
-                                                <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ cuffs.name }}</div>
+                                                <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ cuffs.name }}</div>
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="flex items-center col-span-2 mt-4 max-lg:flex-wrap lg:gap-8 fabric-code">
-                                        <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
+                                    <div class="flex max-lg:flex-wrap items-center lg:gap-8 col-span-2 mt-4 fabric-code">
+                                        <label for="fabric-code" class="text-primary-50 uppercase tracking-wider whitespace-nowrap">fabric code (4 digit)</label>
                                         <div class="flex font-roboto">
                                             <div ref="inputCont" class="box-input-wrapper" v-if="formOption.cuffs?.fabricCode !== undefined && formOption.cuffs?.fabricCode !== null">
                                                 <input
@@ -243,11 +243,11 @@
                                             <!-- <boxInput :digitCount="4" @update:input="onInputBox($event, 'cuffs', 'fabricCode')"/> -->
                                         </div>
                                     </div>
-                                    <div class="self-end justify-items-end cols-3">
+                                    <div class="justify-items-end cols-3 self-end">
                                         <div class="">
                                             <input class="hidden" type="radio" name="cuffs-100" :id="`cuffs-100rb`">
-                                            <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cuffs-100rb`">
-                                                <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm">
+                                            <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`cuffs-100rb`">
+                                                <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider">
                                                     {{ currencyFormat(dataConfig.cuffs.data.options.option_3[0].price) }}
                                                 </div>
                                                 <!-- <span class="checkbox-inner pink"></span> -->
@@ -262,18 +262,18 @@
                                 <div class="wrap-opt-cat">
                                     <div class="cat-name">04. FRONT BODY</div>
                                 </div>
-                                <div class="flex justify-between p-2 mt-4 border border-pink-ka">
+                                <div class="flex justify-between border-pink-ka mt-4 p-2 border">
                                     <div class="flex" v-for="(frontBody, index) in dataConfig.front_body.data.options.option_1" :key="index">
                                         <input :checked="formOption.cuffs?.slug == frontBody?.slug" @click.native="formOption.frontBody = null" class="hidden" type="radio" name="front-body" :value="frontBody" v-model="formOption.frontBody"  :id="`hidden-placket`">
-                                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`hidden-placket`">
+                                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`hidden-placket`">
                                             <span class="checkbox-inner"></span>
-                                            <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ frontBody.name }}</div>
+                                            <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ frontBody.name }}</div>
                                         </label>
                                     </div>
                                     <div class="">
                                         <input class="hidden" type="radio" name="front-bdy-100" :id="`front-bdy-100`">
-                                        <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`front-bdy-100`">
-                                            <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm">
+                                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`front-bdy-100`">
+                                            <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider">
                                                 {{ currencyFormat(dataConfig.front_body.data.options.option_1[0].price) }}
                                             </div>
                                             <!-- <span class="checkbox-inner pink"></span> -->
@@ -291,12 +291,12 @@
                         <div class="wrap-opt-cat">
                             <div class="cat-name">08. BUTTON</div>
                         </div>
-                        <div class="flex justify-between p-2 mt-4 border border-pink-ka max-xl:mx-6 max-xl:mb-4 ml-14">
+                        <div class="flex justify-between border-pink-ka max-xl:mx-6 mt-4 max-xl:mb-4 ml-14 p-2 border">
                             <div v-for="(button, index) in dataConfig.button.data.options.option_1" :key="index">
                                 <input :checked="formOption.button?.slug == button?.slug" @click.native="formOption.button = null" :value="button" class="hidden" type="radio" v-model="formOption.button" :id="`btn-${button.slug}`">
-                                <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`btn-${button.slug}`">
+                                <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`btn-${button.slug}`">
                                     <span class="checkbox-inner"></span>
-                                    <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ button.name }}</div>
+                                    <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ button.name }}</div>
                                 </label>
                             </div>
                             <div class="flex font-roboto">
@@ -320,8 +320,8 @@
                             </div>
                             <div class="">
                                 <input class="hidden" type="radio" name="button-100" :id="`button-100`">
-                                <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`button-100`">
-                                    <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm">
+                                <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`button-100`">
+                                    <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider">
                                         {{ currencyFormat(dataConfig.button.data.options.option_1[0].price) }}
                                     </div>
                                     <!-- <span class="checkbox-inner pink"></span> -->
@@ -333,18 +333,18 @@
                         <div class="wrap-opt-cat">
                             <div class="cat-name">09. BODY SNAP BUTTON</div>
                         </div>
-                        <div class="flex justify-between p-2 mt-4 border border-pink-ka max-xl:mx-6 mr-14">
+                        <div class="flex justify-between border-pink-ka max-xl:mx-6 mt-4 mr-14 p-2 border">
                             <div v-for="bodySnapButton in dataConfig.body_snap_button.data.options.option_1" :key="bodySnapButton">
                                 <input class="hidden" @click.native="formOption.bodySnapButton = null" :value="bodySnapButton" v-model="formOption.bodySnapButton" type="radio" :id="`${bodySnapButton.slug}`">
-                                <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`${bodySnapButton.slug}`">
+                                <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`${bodySnapButton.slug}`">
                                     <span class="checkbox-inner"></span>
-                                    <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ bodySnapButton.name }}</div>
+                                    <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ bodySnapButton.name }}</div>
                                 </label>
                             </div>
                             <div class="">
                                 <input class="hidden" type="radio" name="bdy-snap-100" :id="`bdy-snap-50`">
-                                <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`bdy-snap-50`">
-                                    <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm">
+                                <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`bdy-snap-50`">
+                                    <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider">
                                         {{ currencyFormat(dataConfig.body_snap_button.data.options.option_1[0].price) }}
                                     </div>
                                     <!-- <span class="checkbox-inner pink"></span> -->
@@ -361,35 +361,35 @@
                      </div>
 
                      <div v-for="(dataCleric, index) in dataConfig.cleric.data.options" :key="index"
-                        class="p-4 mx-6 mt-4 space-y-4 border border-pink-ka ">
-                        <div v-for="(subCeleric, index) in dataCleric" :key="index" class="flex gap-2">
+                        class="space-y-4 border-pink-ka mx-6 mt-4 p-4 border">
+                        <div v-for="(subCeleric, idx) in dataCleric" :key="idx" class="flex gap-2">
                             <div>
                                 <input :checked="isChecked(subCeleric)" v-model="formOption.cleric"class="hidden" type="radio"  :value="subCeleric" :id="`${subCeleric.slug}`">
-                                <label class="grid items-center h-full grid-cols-2 gap-1 rounded cursor-pointer" :for="`${subCeleric.slug}`">
-                                    <div class="text-sm font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ subCeleric.no }}</div>
+                                <label class="items-center gap-1 grid grid-cols-2 rounded h-full cursor-pointer" :for="`${subCeleric.slug}`">
+                                    <div class="font-bold text-center text-primary-50 text-sm xl:text-sm uppercase tracking-wider">{{ subCeleric.no }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
                             </div>
                             <div class="flex gap-2 checkbox-cleric" :class="{ 'pointer-events-none': formOption.cleric?.slug != subCeleric.slug}">
-                                <div v-for="(clericItems, index) in subCeleric.data">
+                                <div v-for="(clericItems) in subCeleric.data">
                                     <div>
                                         <input :checked="isChecked(clericItems)" class="hidden" type="checkbox" :id="`cleric-${subCeleric.no}-${clericItems.slug}`">
-                                        <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`cleric-${subCeleric.no}-${clericItems.slug}`">
+                                        <label class="flex items-center gap-2 rounded h-full cursor-pointer" :for="`cleric-${subCeleric.no}-${clericItems.slug}`">
                                             <span class="checkbox-inner"></span>
-                                            <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ clericItems.name }}</div>
+                                            <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ clericItems.name }}</div>
                                         </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="flex self-end gap-2 justify-self-end">
-                            <div class="flex flex-col col-span-2 gap-1 mt-4 fabric-code">
-                                    <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
+                        <div class="flex justify-self-end gap-2 self-end">
+                            <div class="flex flex-col gap-1 col-span-2 mt-4 fabric-code">
+                                    <label for="fabric-code" class="text-primary-50 uppercase tracking-wider whitespace-nowrap">fabric code (4 digit)</label>
                                     <div class="flex font-roboto">
                                         <div ref="inputCont" class="box-input-wrapper" v-if="dataConfig.cleric.data.fabric[index].code.length">
                                             <input
-                                                v-for="(digit, index) in split(formOption.cleric.fabricCode)"
+                                                v-for="(digit) in split(formOption.cleric.fabricCode)"
                                                 type="text"
                                                 maxlength="1"
                                                 :value="digit"
@@ -398,7 +398,7 @@
                                         </div>
                                         <div v-else class="box-input-wrapper">
                                             <input
-                                                v-for="(digit, index) in 4"
+                                                v-for="(digit) in 4"
                                                 type="text"
                                                 maxlength="1"
                                                 class="box-input"
@@ -408,8 +408,8 @@
                                 </div>
                             <div class="self-end">
                                 <input class="hidden" type="radio" name="cleric-50rb" :id="`cleric-50rb`">
-                                <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cleric-50rb`">
-                                    <!-- <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm">{{ currencyFormat(dataConfig[0].price) }}</div> -->
+                                <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`cleric-50rb`">
+                                    <!-- <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider">{{ currencyFormat(dataConfig[0].price) }}</div> -->
                                 </label>
                             </div>
                         </div>
@@ -419,26 +419,26 @@
 
             <div>
                 <!-- button hole, button thread, stitch thread -->
-                <div class="grid grid-cols-3 gap-1 mt-0 whitespace-nowrap">
+                <div class="gap-1 grid grid-cols-3 mt-0 whitespace-nowrap">
                    <!-- button hole -->
                    <div class="">
                        <div class="wrap-opt-cat">
-                           <div class="text-lg font-bold tracking-wider text-white uppercase">11. button hole</div>
+                           <div class="font-bold text-lg text-white uppercase tracking-wider">11. button hole</div>
                        </div>
 
-                       <div class="grid grid-cols-2 gap-2 p-2 mx-2 mt-2 border border-pink-ka">
+                       <div class="gap-2 border-pink-ka grid grid-cols-2 mx-2 mt-2 p-2 border">
                            <div class="flex" v-for="(buttonHole, index) in dataConfig.button_hole.data.options.option_1" :key="index">
                                <input :checked="formOption.buttonHole?.slug == buttonHole?.slug" @click.native="formOption.buttonHole = null" class="hidden" type="radio" name="button-hole" :value="buttonHole" v-model="formOption.buttonHole"  :id="`botton-hole-${buttonHole.slug}`">
-                               <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-hole-${buttonHole.slug}`">
+                               <label class="flex items-center gap-2 rounded h-full cursor-pointer" :for="`botton-hole-${buttonHole.slug}`">
                                    <span class="checkbox-inner"></span>
-                                   <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ index + 1 }}. {{ buttonHole.name }}</div>
+                                   <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ index + 1 }}. {{ buttonHole.name }}</div>
                                </label>
                            </div>
 
-                           <div class="self-end col-span-2 justify-self-end">
+                           <div class="justify-self-end col-span-2 self-end">
                                <input class="hidden" type="radio" name="button-hole-30rb" :id="`button-hole-30rb`">
-                               <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`button-hole-30rb`">
-                                   <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm">
+                               <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`button-hole-30rb`">
+                                   <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider">
                                        {{ currencyFormat(dataConfig.button_hole.data.options.option_1[0].price) }}
                                    </div>
                                    <!-- <span class="checkbox-inner pink"></span> -->
@@ -450,22 +450,22 @@
                    <!-- button thread -->
                    <div class="">
                        <div class="wrap-opt-cat">
-                           <div class="text-lg font-bold tracking-wider text-white uppercase">12. button thread</div>
+                           <div class="font-bold text-lg text-white uppercase tracking-wider">12. button thread</div>
                        </div>
 
-                       <div class="grid grid-cols-2 gap-2 p-2 mx-2 mt-2 border border-pink-ka">
+                       <div class="gap-2 border-pink-ka grid grid-cols-2 mx-2 mt-2 p-2 border">
                            <div class="flex" v-for="(buttonThread, index) in dataConfig.button_thread.data.options.option_1" :key="index">
                                <input :checked="formOption.buttonThread?.slug == buttonThread?.slug" @click.native="formOption.buttonThread = null" class="hidden" type="radio" name="button-thread" :value="buttonThread" v-model="formOption.buttonThread" :id="`botton-thread-${buttonThread.slug}`">
-                               <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-thread-${buttonThread.slug}`">
+                               <label class="flex items-center gap-2 rounded h-full cursor-pointer" :for="`botton-thread-${buttonThread.slug}`">
                                    <span class="checkbox-inner"></span>
-                                   <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ index + 1 }}. {{ buttonThread.name }}</div>
+                                   <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ index + 1 }}. {{ buttonThread.name }}</div>
                                </label>
                            </div>
 
-                           <div class="self-end col-span-2 justify-self-end">
+                           <div class="justify-self-end col-span-2 self-end">
                                <input class="hidden" type="radio" name="button-thread-30rb" :id="`button-thread-30rb`">
-                               <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`button-thread-30rb`">
-                                   <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm">
+                               <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`button-thread-30rb`">
+                                   <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider">
                                        {{ currencyFormat(dataConfig.button_thread.data.options.option_1[0].price) }}
                                    </div>
                                    <!-- <span class="checkbox-inner pink"></span> -->
@@ -477,22 +477,22 @@
                    <!-- stitch thread -->
                    <div class="">
                        <div class="wrap-opt-cat">
-                           <div class="text-lg font-bold tracking-wider text-white uppercase">13. stitch thread</div>
+                           <div class="font-bold text-lg text-white uppercase tracking-wider">13. stitch thread</div>
                        </div>
 
-                       <div class="grid grid-cols-2 gap-2 p-2 mx-2 mt-2 border border-pink-ka">
+                       <div class="gap-2 border-pink-ka grid grid-cols-2 mx-2 mt-2 p-2 border">
                            <div class="flex" v-for="(stitchThread, index) in dataConfig.stitch_thread.data.options.option_1" :key="index">
                                <input :checked="formOption.stitchThread?.slug == stitchThread?.slug" @click.native="formOption.stitchThread = null" class="hidden" type="radio" name="stitch-thread" :value="stitchThread" v-model="formOption.stitchThread" :id="`stitch-thread-${stitchThread.slug}`">
-                               <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`stitch-thread-${stitchThread.slug}`">
+                               <label class="flex items-center gap-2 rounded h-full cursor-pointer" :for="`stitch-thread-${stitchThread.slug}`">
                                    <span class="checkbox-inner"></span>
-                                   <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ index + 1 }}. {{ stitchThread.name }}</div>
+                                   <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ index + 1 }}. {{ stitchThread.name }}</div>
                                </label>
                            </div>
 
-                           <div class="self-end col-span-2 justify-self-end">
+                           <div class="justify-self-end col-span-2 self-end">
                                <input class="hidden" type="radio" name="stitch-thread-30rb" :id="`stitch-thread-30rb`">
-                               <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`stitch-thread-30rb`">
-                                   <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm">
+                               <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`stitch-thread-30rb`">
+                                   <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider">
                                        {{ currencyFormat(dataConfig.stitch_thread.data.options.option_1[0].price) }}
                                    </div>
                                    <!-- <span class="checkbox-inner pink"></span> -->
@@ -505,45 +505,45 @@
                 <!-- embroidery -->
                 <div class="mt-2">
                    <div class="wrap-opt-cat">
-                       <div class="text-lg font-bold tracking-wider text-white uppercase">14. embroidery</div>
+                       <div class="font-bold text-lg text-white uppercase tracking-wider">14. embroidery</div>
                    </div>
 
-                   <div class="mx-2 mt-4 space-y-4 border border-pink-ka">
+                   <div class="space-y-4 border-pink-ka mx-2 mt-4 border">
                        <div class="grid grid-cols-3">
                            <!-- position -->
-                           <div class="p-2 space-y-2 border-b border-r border-pink-ka border-b-dashed">
-                               <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">position</div>
+                           <div class="space-y-2 border-pink-ka p-2 border-r border-b border-b-dashed">
+                               <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">position</div>
                                <div class="flex" v-for="(embroideryPosition, index) in dataConfig.embroidery.data.options.position" :key="index">
                                    <input @click.native="formOption.embroidery.position = null" class="hidden"type="radio" name="embroidery-position" :value="embroideryPosition" v-model="formOption.embroidery.position" :id="`embroidery-position-${embroideryPosition.slug}`">
-                                   <label class="flex items-center h-full gap-1 rounded cursor-pointer" :for="`embroidery-position-${embroideryPosition.slug}`">
+                                   <label class="flex items-center gap-1 rounded h-full cursor-pointer" :for="`embroidery-position-${embroideryPosition.slug}`">
                                        <span class="checkbox-inner"></span>
-                                       <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ embroideryPosition.name }}</div>
+                                       <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ embroideryPosition.name }}</div>
                                    </label>
                                </div>
                            </div>
 
                            <!-- color -->
-                           <div class="p-2 space-y-2 border-b border-l border-r border-pink-ka border-b-dashed">
-                               <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">color</div>
-                               <div class="grid grid-cols-2 gap-1">
+                           <div class="space-y-2 border-pink-ka p-2 border-r border-b border-b-dashed border-l">
+                               <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">color</div>
+                               <div class="gap-1 grid grid-cols-2">
                                    <div class="flex" v-for="(embroideryColor, index) in dataConfig.embroidery.data.options.color" :key="index">
                                        <input @click.native="formOption.embroidery.color = null" class="hidden" type="radio" name="embroidery-color" :value="embroideryColor" v-model="formOption.embroidery.color" :id="`embroidery-color-${embroideryColor.slug}`">
-                                       <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-color-${embroideryColor.slug}`">
+                                       <label class="flex items-center gap-2 rounded h-full cursor-pointer" :for="`embroidery-color-${embroideryColor.slug}`">
                                            <span class="checkbox-inner"></span>
-                                           <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ (index + 1)+'. '+ embroideryColor.name }}</div>
+                                           <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ (index + 1)+'. '+ embroideryColor.name }}</div>
                                        </label>
                                    </div>
                                </div>
                            </div>
 
                            <!-- font type -->
-                           <div class="p-2 space-y-2 border-b border-pink-ka border-b-dashed">
-                               <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">font type</div>
+                           <div class="space-y-2 border-pink-ka p-2 border-b border-b-dashed">
+                               <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">font type</div>
                                <div class="flex" v-for="(embroideryFontType, index) in dataConfig.embroidery.data.options.font_type" :key="index">
                                    <input @click.native="formOption.embroidery.fontType = null" class="hidden" type="radio" name="embroidery-font-type" :value="embroideryFontType" v-model="formOption.embroidery.fontType" :id="`embroidery-font-type-${embroideryFontType.slug}`">
-                                   <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-font-type-${embroideryFontType.slug}`">
+                                   <label class="flex items-center gap-2 rounded h-full cursor-pointer" :for="`embroidery-font-type-${embroideryFontType.slug}`">
                                        <span class="checkbox-inner"></span>
-                                       <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ +(index + 1)+'. '+embroideryFontType.name }}</div>
+                                       <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ +(index + 1)+'. '+embroideryFontType.name }}</div>
                                    </label>
                                </div>
                            </div>
@@ -551,9 +551,9 @@
                            <div class="col-span-3 p-4">
                                <div class="flex items-end gap-4">
                                    <div class="flex items-end font-roboto">
-                                       <input v-model="formOption.embroidery.initialName.x" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border border-primary-50 size-10">
-                                       <input v-model="formOption.embroidery.initialName.dot" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-primary-50 border-y size-5">
-                                       <input v-model="formOption.embroidery.initialName.y" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-l border-r border-primary-50 border-y size-10">
+                                       <input v-model="formOption.embroidery.initialName.x" type="text" maxlength="1" class="block border-primary-50 p-2 border text-center text-gray-900 text-sm size-10">
+                                       <input v-model="formOption.embroidery.initialName.dot" type="text" maxlength="1" class="block border-primary-50 border-y p-2 text-center text-gray-900 text-sm size-5">
+                                       <input v-model="formOption.embroidery.initialName.y" type="text" maxlength="1" class="block border-primary-50 border-y p-2 border-r border-l text-center text-gray-900 text-sm size-10">
                                        <!-- <boxInput :digitCount="10" @update:input="onInputIntialName($event)"/> -->
                                        <div ref="inputCont" class="box-input-wrapper"
                                            v-if="formOption.embroidery.initialName.z !== undefined && formOption.embroidery.initialName.z !== null && formOption.embroidery.initialName.z !== ''">
@@ -574,18 +574,18 @@
                                            >
                                        </div>
                                    </div>
-                                   <div class="flex w-full gap-4">
-                                       <input type="text" v-model="formOption.embroidery.longName" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50 font-roboto">
+                                   <div class="flex gap-4 w-full">
+                                       <input type="text" v-model="formOption.embroidery.longName" class="block border-primary-50 p-2 border w-full h-8 font-roboto text-gray-900 text-sm">
                                        <div class="whitespace-nowrap">
                                            <input class="hidden" type="radio" name="embroidery-50rb" :id="`embroidery-50rb`">
-                                           <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`embroidery-50rb`">
-                                               <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm">{{ currencyFormat(dataConfig.embroidery.data.options.price) }}</div>
+                                           <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`embroidery-50rb`">
+                                               <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider">{{ currencyFormat(dataConfig.embroidery.data.options.price) }}</div>
                                                <!-- <span class="checkbox-inner pink"></span> -->
                                            </label>
                                        </div>
                                    </div>
                                </div>
-                               <div class="mt-2 text-xs font-roboto text-pink-ka">*please write down your initial (font type 1,2,3) or long name (font type 4) into above boxes</div>
+                               <div class="mt-2 font-roboto text-pink-ka text-xs">*please write down your initial (font type 1,2,3) or long name (font type 4) into above boxes</div>
                            </div>
                        </div>
                    </div>
@@ -594,31 +594,31 @@
                 <!-- interlining -->
                 <div class="mt-2">
                    <div class="wrap-opt-cat">
-                       <div class="text-lg font-bold tracking-wider text-white uppercase">15. interlining</div>
+                       <div class="font-bold text-lg text-white uppercase tracking-wider">15. interlining</div>
                    </div>
 
-                   <div class="flex items-center justify-between mx-6 mt-4 ">
-                       <div class="p-4 border border-pink-ka lg:w-1/2">
+                   <div class="flex justify-between items-center mx-6 mt-4">
+                       <div class="border-pink-ka p-4 border lg:w-1/2">
                            <div class="flex" v-for="(interlining, index) in dataConfig.interlining.data.options.option_1" :key="index">
                                <input @click.native="formOption.interlining = null" class="hidden" type="radio" name="interlining" :value="interlining" v-model="formOption.interlining" :id="`interlining-${interlining.slug}`">
-                               <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`interlining-${interlining.slug}`">
+                               <label class="flex items-center gap-2 rounded h-full cursor-pointer" :for="`interlining-${interlining.slug}`">
                                    <span class="checkbox-inner"></span>
-                                   <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ interlining.name }}</div>
+                                   <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ interlining.name }}</div>
                                </label>
                            </div>
                        </div>
-                       <div class="flex items-center justify-between w-full p-4 border border-pink-ka">
+                       <div class="flex justify-between items-center border-pink-ka p-4 border w-full">
                            <div v-for="(interlining, index) in dataConfig.interlining.data.options.option_2" :key="index">
                                <input @click.native="formOption.interlining = null" class="hidden" type="radio" name="interlining" :value="interlining" v-model="formOption.interlining" :id="`interlining-${interlining.slug}`">
-                               <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`interlining-${interlining.slug}`">
+                               <label class="flex items-center gap-2 rounded h-full cursor-pointer" :for="`interlining-${interlining.slug}`">
                                    <span class="checkbox-inner"></span>
-                                   <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ interlining.name  }}</div>
+                                   <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ interlining.name  }}</div>
                                </label>
                            </div>
                            <div class="whitespace-nowrap">
                                <input class="hidden" type="radio" name="interlining-100rb" :id="`interlining-100rb`">
-                               <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`interlining-100rb`">
-                                   <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm">{{ currencyFormat(dataConfig.interlining.data.options.option_2[0].price) }} </div>
+                               <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`interlining-100rb`">
+                                   <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider">{{ currencyFormat(dataConfig.interlining.data.options.option_2[0].price) }} </div>
                                    <!-- <span class="checkbox-inner pink"></span> -->
                                </label>
                            </div>
@@ -629,22 +629,22 @@
                <!-- sewing option -->
                <div class="mt-2">
                    <div class="wrap-opt-cat">
-                       <div class="text-lg font-bold tracking-wider text-white uppercase">15. sewing option</div>
+                       <div class="font-bold text-lg text-white uppercase tracking-wider">15. sewing option</div>
                    </div>
 
-                   <div class="flex flex-col items-center justify-between mx-6 mt-4 ">
-                       <div v-for="(sewing, index) in dataConfig.sewing_option.data.options" :key="index" class="flex items-center justify-between w-full p-4 border border-pink-ka">
+                   <div class="flex flex-col justify-between items-center mx-6 mt-4">
+                       <div v-for="(sewing, index) in dataConfig.sewing_option.data.options" :key="index" class="flex justify-between items-center border-pink-ka p-4 border w-full">
                            <div v-for="(sewingOption, index) in sewing" :key="index">
                                <input @click.native="formOption.sewingOption = null" class="hidden" type="radio" name="sewing-option" :value="sewingOption" v-model="formOption.sewingOption" :id="`sewing-${sewingOption.slug}`">
-                               <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`sewing-${sewingOption.slug}`">
+                               <label class="flex items-center gap-2 rounded h-full cursor-pointer" :for="`sewing-${sewingOption.slug}`">
                                    <span class="checkbox-inner"></span>
-                                   <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50">{{ sewingOption.name }}</div>
+                                   <div class="font-bold text-center text-primary-50 text-xs uppercase tracking-wider">{{ sewingOption.name }}</div>
                                </label>
                            </div>
                            <div class="whitespace-nowrap">
                                <input class="hidden" type="radio" name="sewing-100rb" :id="`sewing-100rb`">
-                               <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`sewing-100rb`">
-                                   <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm"> {{ currencyFormat(dataConfig.sewing_option.data.options[index][0].price) }}</div>
+                               <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`sewing-100rb`">
+                                   <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider"> {{ currencyFormat(dataConfig.sewing_option.data.options[index][0].price) }}</div>
                                    <!-- <span class="checkbox-inner pink"></span> -->
                                </label>
                            </div>
@@ -654,10 +654,10 @@
 
                <div class="mt-2">
                    <div class="wrap-opt-cat">
-                       <div class="text-lg font-bold tracking-wider text-white uppercase">17. TAPE (INNER COLLAR STAND & LOWER PLACKET)</div>
+                       <div class="font-bold text-lg text-white uppercase tracking-wider">17. TAPE (INNER COLLAR STAND & LOWER PLACKET)</div>
                    </div>
 
-                   <div class="flex items-center justify-between gap-4 p-4 mx-6 mt-4 border border-pink-ka ">
+                   <div class="flex justify-between items-center gap-4 border-pink-ka mx-6 mt-4 p-4 border">
                        <div class="flex font-roboto">
                            <!-- <boxInput :digitCount="5" @update:input="onInputTape($event)"/> -->
                            <div ref="inputCont" class="box-input-wrapper" v-if="formOption.tape?.collar !== undefined && formOption.tape?.collar !== null && formOption.tape?.collar !== ''">
@@ -679,12 +679,12 @@
                            </div>
                        </div>
                        <div class="w-9/12">
-                           <input type="text" v-model="formOption.tape.lower" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50 font-roboto">
+                           <input type="text" v-model="formOption.tape.lower" class="block border-primary-50 p-2 border w-full h-8 font-roboto text-gray-900 text-sm">
                        </div>
                        <div class="whitespace-nowrap">
                            <input class="hidden" type="radio" name="sewing-200rb" :id="`sewing-200rb`">
-                           <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer font-roboto" :for="`sewing-200rb`">
-                               <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm"> {{ currencyFormat(formOption.tape.price ?? 200000)  }} </div>
+                           <label class="flex items-center gap-4 px-2 rounded h-full font-roboto cursor-pointer" :for="`sewing-200rb`">
+                               <div class="font-bold text-center text-pink-ka text-xs xl:text-sm uppercase tracking-wider"> {{ currencyFormat(formOption.tape.price ?? 200000)  }} </div>
                                <!-- <span class="checkbox-inner pink"></span> -->
                            </label>
                        </div>
@@ -692,51 +692,51 @@
                </div>
 
                <div class="mt-2">
-                   <div class="flex items-center justify-between px-4 py-2 bg-blue-ka">
-                       <div class="font-bold tracking-widest text-white uppercase lg:text-xl">ADDITIONAL NOTES</div>
+                   <div class="flex justify-between items-center bg-blue-ka px-4 py-2">
+                       <div class="font-bold text-white lg:text-xl uppercase tracking-widest">ADDITIONAL NOTES</div>
                    </div>
-                   <div class="grid grid-cols-6 gap-3 px-2 mt-2">
+                   <div class="gap-3 grid grid-cols-6 mt-2 px-2">
                         <div class="col-span-3">
-                            <table class="w-full text-sm uppercase text-primary-50">
+                            <table class="w-full text-primary-50 text-sm uppercase">
                                 <thead>
-                                    <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50 *:text-center">
+                                    <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border *:text-center">
                                         <th colspan="2">option</th>
                                         <th>quantity</th>
                                         <th>sub total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50 *:text-center">
+                                    <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border *:text-center">
                                         <td>a</td>
                                         <td>30.000</td>
                                         <td>{{ dataPriceTable?.[30000]?.quantity }}</td>
                                         <td class="!text-left">{{ currencyFormat(dataPriceTable?.[30000]?.subTotal) }}</td>
                                     </tr>
-                                    <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50 *:text-center">
+                                    <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border *:text-center">
                                         <td>b</td>
                                         <td>50.000</td>
                                         <td>{{ dataPriceTable?.[50000]?.quantity }}</td>
                                         <td class="!text-left">{{ currencyFormat(dataPriceTable?.[50000]?.subTotal) }}</td>
                                     </tr>
-                                    <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50 *:text-center">
+                                    <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border *:text-center">
                                         <td>c</td>
                                         <td>70.000</td>
                                         <td>{{ dataPriceTable?.[70000]?.quantity }}</td>
                                         <td class="!text-left">{{ currencyFormat(dataPriceTable?.[70000]?.subTotal) }}</td>
                                     </tr>
-                                    <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50 *:text-center">
+                                    <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border *:text-center">
                                         <td>d</td>
                                         <td>100.000</td>
                                         <td>{{ dataPriceTable?.[100000]?.quantity }}</td>
                                         <td class="!text-left">{{ currencyFormat(dataPriceTable?.[100000]?.subTotal) }}</td>
                                     </tr>
-                                    <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50 *:text-center">
+                                    <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border *:text-center">
                                         <td>e</td>
                                         <td>200.000</td>
                                         <td>{{ dataPriceTable?.[200000]?.quantity }}</td>
                                         <td class="!text-left">{{ currencyFormat(dataPriceTable?.[200000]?.subTotal) }}</td>
                                     </tr>
-                                    <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50 *:text-center">
+                                    <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border *:text-center">
                                         <td colspan="3">option total</td>
                                         <td>{{ currencyFormat(dataPriceTable?.optionTotal) }}</td>
                                     </tr>
@@ -745,15 +745,15 @@
                         </div>
                         <div class="col-span-3">
                             <div class="col-span-3">
-                                <textarea class="w-full h-full p-2 border border-primary-50 font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" v-model="additionalNote" name="" id="" placeholder="NOTE"></textarea>
+                                <textarea class="border-primary-50 p-2 border w-full h-full font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" v-model="additionalNote" name="" id="" placeholder="NOTE"></textarea>
                             </div>
-                            <div class="col-span-2 space-y-2">
+                            <div class="space-y-2 col-span-2">
                                 <input v-model="discount" type="number"
-                                        class="w-full px-4 pt-2 pb-1 border border-pink-ka text-primary-50 number-input" placeholder="DISCOUNT"/>
-                                <!-- <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border border-pink-ka text-primary-50 number-input" placeholder="RP" /> -->
-                                <VueNumber v-model.lazy="price" v-bind="number_input" class="w-full px-4 pt-2 pb-1 border border-pink-ka text-primary-50 number-input"></VueNumber>
+                                        class="border-pink-ka px-4 pt-2 pb-1 border w-full text-primary-50 number-input" placeholder="DISCOUNT"/>
+                                <!-- <input v-model="price" type="number" class="border-pink-ka px-4 pt-2 pb-1 border w-full text-primary-50 number-input" placeholder="RP" /> -->
+                                <VueNumber v-model.lazy="price" v-bind="number_input" class="border-pink-ka px-4 pt-2 pb-1 border w-full text-primary-50 number-input"></VueNumber>
                                 <div class="print:hidden">
-                                    <button class="w-full px-5 pt-3 pb-2 text-center bg-secondary text-pink-ka">APPLY PRICE</button>
+                                    <button class="bg-secondary px-5 pt-3 pb-2 w-full text-center text-pink-ka">APPLY PRICE</button>
                                 </div>
                             </div>
                         </div>

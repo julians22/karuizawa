@@ -92,6 +92,7 @@ class OrderController extends Controller
                 $response = $response->json();
                 $order->accurate_order_id = $response['r']['id'];
                 $order->accurate_order_number = $response['r']['number'];
+                $order->accurate_sync_date = now();
 
                 $order->save();
             }else{

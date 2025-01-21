@@ -67,23 +67,40 @@ class DashboardController
                     foreach ($dataConfig['cleric']['data']['options'] as $keyK => $configs){
                         foreach ($configs as $keyL => $config){
                             if ($config['slug'] == $slugSelected){
-                                $dataConfig['cleric']['data']['fabric'][$keyK]['code'] = $semiCustom['option_form']["cleric"]['fabricCode'];
                                 $dataConfig['cleric']['data']['options'][$keyK][$keyL]['selected'] = true;
-
                                 $clericSubData = $dataConfig['cleric']['data']['options'][$keyK][$keyL]['data'];
-
                                 foreach ($optionClericSubData as $keyM => $value){
                                     foreach ($clericSubData as $keyN => $config){
                                         if ($config['slug'] == $optionClericSubData[$keyM]['slug']){
                                             $dataConfig['cleric']['data']['options'][$keyK][$keyL]['data'][$keyN]['selected'] = true;
-                                            // dd($dataConfig['cleric']['data']['options'][$keyK][$keyL]['data'][$keyN]);
                                         }
                                     }
                                 }
-                            }else {
-                                $dataConfig['cleric']['data']['fabric'][$keyK]['code'] = [];
                             }
                         }
+
+                        foreach ($configs as $keyL => $config){
+                            if ($config['slug'] == $slugSelected){
+                                if (array_key_exists('fabricCode', $semiCustom['option_form']["cleric"])){
+                                    $dataConfig['cleric']['data']['fabric'][$keyK]['code'] = $semiCustom['option_form']["cleric"]['fabricCode'];
+                                }else{
+                                    $dataConfig['cleric']['data']['fabric'][$keyK]['code'] = [];
+
+                                    dd('as');
+                                }
+                            }else{
+                                $dataConfig['cleric']['data']['fabric'][$keyK]['code'] = [];
+                            }
+
+                        }
+                    }
+                }else{
+                    foreach ($dataConfig['cleric']['data']['options'] as $keyK => $configs){
+                        foreach ($configs as $keyL => $config){
+                            $dataConfig['cleric']['data']['options'][$keyK][$keyL]['selected'] = false;
+                        }
+
+                        $dataConfig['cleric']['data']['fabric'][$keyK]['code'] = [];
                     }
                 }
             }
