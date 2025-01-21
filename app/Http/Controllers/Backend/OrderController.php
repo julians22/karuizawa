@@ -31,6 +31,11 @@ class OrderController extends Controller
             $customerNo = config('accurate.customer_list.' . $order->store->code);
         }
 
+        $warehouseName = config('accurate.warehouse_list.AST');
+        if ($order->store->code !== null) {
+            $warehouseName = config('accurate.warehouse_list.' . $order->store->code);
+        }
+
         $detailItem = [];
         foreach ($orderItems as $orderItem) {
             if ($orderItem->isReadyToWear())
@@ -38,10 +43,10 @@ class OrderController extends Controller
                 $detailItem[] = [
                     'itemNo' => $orderItem->product->sku,
                     'unitPrice' => $orderItem->price,
-                    'detailName' => $orderItem->product->name,
+                    'detailName' => $orderItem->product->product_name,
                     'quantity' => $orderItem->quantity,
-                    'warehouseName' => $order->store->accurate_alias,
                     'departmentName' => 'Apparel',
+                    'warehouseName' => $warehouseName,
                 ];
             }
             else if($orderItem->isSemiCustom())
@@ -51,8 +56,8 @@ class OrderController extends Controller
                     'unitPrice' => $orderItem->price,
                     'detailName' => $orderItem->product->name,
                     'quantity' => $orderItem->quantity,
-                    'warehouseName' => $order->store->accurate_alias,
                     'departmentName' => 'Apparel',
+                    'warehouseName' => $warehouseName
                 ];
             }
         }
@@ -69,13 +74,6 @@ class OrderController extends Controller
             'typeAutoNumber' => 55
         ];
 
-        // pre $data
-        echo "<pre>";
-        print_r(json_encode($data, JSON_PRETTY_PRINT));
-        echo "</pre>";
-
-        die();
-
         try {
 
             $cachedAuth = cache()->get('accurate_token');
@@ -88,62 +86,34 @@ class OrderController extends Controller
             ];
 
             $response = Http::withHeaders($headers)
-                ->post($appUrl . '/accurate/api/sales-order/save.do', $data);
-
-            dd($response);
+                ->post($appUrl . '/accurate/api/sales-invoice/save.do', $data);
 
             if ($response->status() == 200) {
                 $response = $response->json();
-                dd($response->json());
                 $order->accurate_order_id = $response['r']['id'];
                 $order->accurate_order_number = $response['r']['number'];
+                $order->accurate_sync_date = now();
 
                 $order->save();
             }else{
-                dd($response);
                 return redirect()->route('admin.order.show', $order)->withFlashDanger(__('An error occurred while uploading the order.'));
             }
 
         } catch (\Throwable $th) {
             Log::error($th);
-
             return redirect()->route('admin.order.show', $order)->withFlashDanger(__('An error occurred while uploading the order.'));
         }
 
         return redirect()->route('admin.order.show', $order)->withFlashSuccess(__('The order was successfully uploaded.'));
     }
 
+    private function setUpPayment($invoiceNumber, $paymentAmount)
+    {
+        return [
+            'invoiceNumber' => $invoiceNumber,
+            'paymentAmount' => $paymentAmount
+        ];
 
-    // {
-    //     "customerNo": "C.00001",
-    //     "detailDownPayment": [
-    //       {
-    //         "invoiceNumber": "2025.01.0001",
-    //         "paymentAmount": 500000
-    //       }
-    //     ],
-    //     "detailItem": [
-    //       {
-    //         "itemNo": "D08",
-    //         "unitPrice": 500000,
-    //         "detailName": "Dasi BLACK D08",
-    //         "detailNotes": "Halo 123",
-    //         "quantity": 2
-    //       },
-    //       {
-    //         "itemNo": "AJST95COL02M",
-    //         "unitPrice": 1500000,
-    //         "detailName": "Light Jacket Karuizawa Shirt AJST95 col 02 M",
-    //         "detailNotes": "Halo 123",
-    //         "quantity": 2
-    //       }
-    //     ],
-    //     "transDate": "14/01/2025",
-    //     "currencyCode": "IDR",
-    //     "description": "string",
-    //     "documentCode": "DIGUNGGUNG",
-    //     "taxable": true,
-    //     "inclusiveTax": true,
-    //     "typeAutoNumber": 56
-    //   }
+    }
+
 }

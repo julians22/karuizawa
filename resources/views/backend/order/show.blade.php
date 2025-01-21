@@ -53,10 +53,6 @@
                                         <th>@lang('Total Price')</th>
                                         <td>{{ price_format( $order->total_price) }}</td>
                                     </tr>
-                                    <tr @class(['table-warning', 'table-info' => $order->isPaymentComplete()])>
-                                        <th>@lang('Remaining Payment')</th>
-                                        <td>{{ price_format($order->remaining_amount) }}</td>
-                                    </tr>
 
                                     <tr>
                                         <th colspan="2">@lang('Crew Incharge')</th>
@@ -162,9 +158,18 @@
                                 </table>
                             </div>
 
+                            {{-- If synced to accurate --}}
+                            @if ($order->isSyncedToAccurate())
+                                <div class="alert alert-success">
+                                    @lang('Order is synced to Accurate')
+                                    {{-- Date --}}
+                                    <small>{{ $order->accurate_synced_at->diffForHumans() }}</small>
+                                </div>
+                            @else
                             {{-- Upload to accurate --}}
                             <x-utils.link :href="route('admin.order.upload-accurate', $order)"
                                 class="btn btn-warning btn-sm" :text="'Upload to Accurate'" />
+                            @endif
                         @endif
 
                     </x-slot>
