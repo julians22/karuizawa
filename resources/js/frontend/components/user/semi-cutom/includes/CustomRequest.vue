@@ -5,6 +5,15 @@
     import  InputBox  from '@frontend/components/utils/fields/InputBox.vue';
     import { useProducts } from '../../../../store/product';
 
+    import { component as VueNumber } from '@coders-tm/vue-number-format';
+
+    const number_input = {
+        separator: '.',
+        prefix: 'Rp ',
+        precision: 0,
+        masked: false,
+    }
+
 
     const props = defineProps({
         dataOptions: Object
@@ -56,7 +65,7 @@
         total: 0
     });
 
-    const price = ref(null);
+    const price = ref(0);
     const discount = ref(null);
     const dataPrice = ref(null);
 
@@ -69,7 +78,7 @@
 
         amount.value.optionPrice = x;
         amount.value.discount = disc;
-        amount.value.basicPrice = y;
+        amount.value.price = y;
         amount.value.total = total;
 
         emitFrom('additional-option', amount);
@@ -755,7 +764,9 @@
                 <div class="col-span-2 space-y-2">
                     <input v-model="discount" type="number"
                          class="w-full px-4 pt-2 pb-1 border number-input border-pink-ka text-primary-50" placeholder="DISCOUNT"/>
-                    <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border number-input border-pink-ka text-primary-50" placeholder="RP" />
+                    <!-- <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border number-input border-pink-ka text-primary-50" placeholder="RP" /> -->
+                    <VueNumber v-model.lazy="price" v-bind="number_input" class="w-full px-4 pt-2 pb-1 border number-input border-pink-ka text-primary-50" placeholder="RP"></VueNumber>
+
                     <div>
                         <button @click="amountOption()" class="w-full px-5 pt-3 pb-2 text-center text-pink-ka bg-secondary">APPLY PRICE</button>
                     </div>

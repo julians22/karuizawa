@@ -12,6 +12,10 @@
 
     const onPrint = () => {
         console.log(booking);
+        window.open(
+        `/print-bill/${booking.value.order_id}`,
+        '_blank'
+        );
     }
 
     defineExpose({
@@ -22,31 +26,31 @@
 
 <template>
     <dialog :open="dialog" style="z-index: 999;">
-        <div class="flex justify-center items-center w-full h-full overflow-auto">
+        <div class="flex items-center justify-center w-full h-full overflow-auto">
             <div class="relative flex-1 md:m-auto max-md:mx-10 rounded-2xl md:max-w-lg lg:max-w-xl xl:max-w-3xl 2xl:max-w-4xl">
-                <div class="flex max-md:flex-col bg-white shadow-2xl p-10 rounded-2xl w-full h-full overflow-hidden">
-                    <div class="top-3 right-5 absolute">
+                <div class="flex w-full h-full p-10 overflow-hidden bg-white shadow-2xl max-md:flex-col rounded-2xl">
+                    <div class="absolute top-3 right-5">
                         <button @click="closeDialog"><img src="/img/icons/close.png" alt=""></button>
                     </div>
                     <div class="w-full font-roboto" v-if="booking">
-                        <div class="mb-10 font-josefin text-2xl text-center text-primary-50 uppercase tracking-wider">detail order</div>
+                        <div class="mb-10 text-2xl tracking-wider text-center uppercase font-josefin text-primary-50">detail order</div>
 
                         <div class="bg-primary-50 my-5 w-full h-[1px]"></div>
 
-                        <div class="font-bold text-center text-lg capitalize">Order number: {{ booking.booking_code }}</div>
+                        <div class="text-lg font-bold text-center capitalize">Order number: {{ booking.booking_code }}</div>
 
                         <div class="bg-primary-50 my-5 w-full h-[1px]"></div>
 
                         <div>
-                            <div class="text-center text-sm capitalize">total payment</div>
-                            <div class="font-josefin font-light text-center text-xl uppercase tracking-widest">{{ booking.amount_formatted }}</div>
+                            <div class="text-sm text-center capitalize">total payment</div>
+                            <div class="text-xl font-light tracking-widest text-center uppercase font-josefin">{{ booking.amount_formatted }}</div>
                         </div>
 
                         <div class="bg-primary-50 my-5 w-full h-[1px]"></div>
 
                         <div class="flex justify-center">
                             <table>
-                                <thead class="divide-y divide-primary-100 w-full">
+                                <thead class="w-full divide-y divide-primary-100">
                                     <tr class="bg-primary-50 text-secondary">
                                         <th class="px-4 py-4 text-left">Product Name</th>
                                         <th class="px-4 py-4 text-left">Qty</th>
@@ -55,7 +59,7 @@
                                     </tr>
                                 </thead>
 
-                                <tbody class="divide-y divide-primary-100 w-full">
+                                <tbody class="w-full divide-y divide-primary-100">
                                     <tr class="divide-x divide-primary-100" v-for="item in booking.items">
                                         <td class="px-4 py-4">{{ item.product_name }}</td>
                                         <td class="px-4 py-4 text-center">{{ item.qty }}</td>
@@ -63,29 +67,29 @@
                                         <td class="px-4 py-4">{{ item.total_price_formatted }}</td>
                                     </tr>
                                     <tr class="bg-white" v-if="booking.discount > 0">
-                                        <td colspan="3" class="text-right bg-primary-50 px-4 py-4 font-bold text-white">Coupon</td>
+                                        <td colspan="3" class="px-4 py-4 font-bold text-right text-white bg-primary-50">Coupon</td>
                                         <td class="px-4 py-4 font-bold text-primary-50">
                                             -{{ booking.discount_formatted }} ({{ booking.discount_details.coupon }}%)
                                         </td>
                                     </tr>
                                     <tr class="bg-white">
-                                        <td colspan="3" class="text-right bg-primary-50 px-4 py-4 font-bold text-white">Subtotal</td>
+                                        <td colspan="3" class="px-4 py-4 font-bold text-right text-white bg-primary-50">Subtotal</td>
                                         <td class="px-4 py-4 font-bold text-primary-50">{{ booking.amount_formatted }}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
 
-                        <div class="flex justify-end items-center gap-4 mt-10">
+                        <div class="flex items-center justify-end gap-4 mt-10">
 
                             <!-- button print -->
-                            <button @click="onPrint()" class="flex items-center gap-2 bg-primary-50 p-6 font-josefin text-white tracking-widest">
+                            <button @click="onPrint()" class="flex items-center gap-2 p-6 tracking-widest text-white bg-primary-50 font-josefin">
                                 <span>PRINT</span>
                                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                             </button>
 
                             <!-- button send mail -->
-                            <button class="flex items-center gap-2 bg-secondary-50 p-6 font-josefin text-white tracking-widest">
+                            <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50 font-josefin">
                                 <span>SEND MAIL</span>
                                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                             </button>

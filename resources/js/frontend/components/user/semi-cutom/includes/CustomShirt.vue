@@ -3,6 +3,15 @@
     import  InputBox  from '@frontend/components/utils/fields/InputBox.vue';
     import { useProducts } from '../../../../store/product';
 
+    import { component as VueNumber } from '@coders-tm/vue-number-format';
+
+    const number_input = {
+        separator: '.',
+        prefix: 'Rp ',
+        precision: 0,
+        masked: false,
+    }
+
     const props = defineProps({
         dataSemiCustom: Object
     });
@@ -77,7 +86,7 @@
 
     const additionalNote = ref(null);
 
-    const price = ref(null);
+    const price = ref(0);
     const discount = ref(null);
 
     const amount = ref({
@@ -160,14 +169,14 @@
                     <div v-for="collar in dataCustomShirt.collar.data.basic">
                         <input class="hidden" type="radio" v-model="form.collar" :value="collar" name="collar"  :id="'collar-' + collar.slug">
                         <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'collar-' + collar.slug">
-                            <img class="h-24" :src="collar.image" alt="">
-                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ collar.name }}</div>
+                            <img class="h-auto" :src="collar.image" alt="">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">{{ collar.name }}</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                 </div>
                 <div class="flex items-center gap-12 mx-20 my-10">
-                    <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg xl:text-base">OPTION NUMBER</div>
+                    <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg">OPTION NUMBER</div>
                     <div class="flex font-roboto">
                         <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'collar', 'optionNumber')"/>
                     </div>
@@ -185,14 +194,14 @@
                         <div v-for="cuff in dataCustomShirt.cuffs.data.basic">
                             <input class="hidden" type="radio" v-model="form.cuff" name="cuff" :value="cuff" :id="'cuff-' + cuff.slug">
                             <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'cuff-' + cuff.slug">
-                                <img class="h-24 xl:h-28" :src="cuff.image" alt="">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ cuff.name }}</div>
+                                <img class="h-auto" :src="cuff.image" alt="">
+                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">{{ cuff.name }}</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
                     </div>
                     <div class="flex items-center gap-12 px-6 my-10 xl:mx-20">
-                        <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg xl:text-base">OPTION NUMBER</div>
+                        <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg">OPTION NUMBER</div>
                         <div class="flex font-roboto">
                             <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'cuff', 'optionNumber')"/>
                         </div>
@@ -207,14 +216,14 @@
                         <div v-for="frontBody in dataCustomShirt.front_body.data.basic">
                             <input class="hidden" type="radio" name="front-body" v-model="form.frontBody" :value="frontBody" :id="'front-body-' + frontBody.slug">
                             <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'front-body-' + frontBody.slug">
-                                <img class="h-28" :src="frontBody.image" alt="">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ frontBody.name }}</div>
+                                <img class="h-auto" :src="frontBody.image" alt="">
+                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">{{ frontBody.name }}</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
                     </div>
                     <div class="flex items-center gap-12 px-6 my-10 xl:mx-20 lg:px-10">
-                        <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg xl:text-base">OPTION NUMBER</div>
+                        <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg">OPTION NUMBER</div>
                         <div class="flex font-roboto">
                             <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'frontBody', 'optionNumber')"/>
                         </div>
@@ -233,8 +242,8 @@
                             <div v-for="pocket in dataCustomShirt.pocket.data.basic">
                                 <input class="hidden" type="radio" v-model="form.pocket" :value="pocket" name="pocket" :id="'pocket-'+pocket.slug">
                                 <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'pocket-'+pocket.slug">
-                                    <img class="h-28" :src="pocket.image" alt="">
-                                    <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ pocket.name }}</div>
+                                    <img class="h-auto" :src="pocket.image" alt="">
+                                    <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">{{ pocket.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
                             </div>
@@ -249,8 +258,8 @@
                         <div v-for="hem in dataCustomShirt.hem.data.basic">
                             <input class="hidden" type="radio" name="hem" v-model="form.hem"  :value="hem" :id="'hem-'+hem.slug">
                             <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'hem-'+hem.slug">
-                                <img class="h-28" :src="hem.image" alt="">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ hem.name }}</div>
+                                <img class="h-auto" :src="hem.image" alt="">
+                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">{{ hem.name }}</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
@@ -267,8 +276,8 @@
                     <div v-for="backBody in dataCustomShirt.back_body.data.basic">
                         <input class="hidden" type="radio" name="back-body" v-model="form.backBody" :value="backBody" :id="'back-body-'+backBody.slug">
                         <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'back-body-'+backBody.slug">
-                            <img class="h-28" :src="backBody.image" alt="">
-                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ backBody.name }}</div>
+                            <img class="h-auto" :src="backBody.image" alt="">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">{{ backBody.name }}</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
@@ -284,8 +293,8 @@
                     <div v-for="button in dataCustomShirt.button.data.basic">
                         <input class="hidden" type="radio" name="button" :id="`button-${button.slug}`" v-model="form.button" :value="button">
                         <label class="flex flex-col items-center justify-between h-full px-2 rounded cursor-pointer" :for="`button-${button.slug}`">
-                            <img class="h-28" :src="button.image" alt="">
-                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">{{ button.name }}</div>
+                            <img class="h-auto" :src="button.image" alt="">
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">{{ button.name }}</div>
                             <span class="mt-4 checkbox-inner"></span>
                         </label>
                     </div>
@@ -301,21 +310,21 @@
                     <div>
                         <input v-model="formSize.order" class="hidden" value="1. NEW ORDER" type="radio" name="size" :id="`new-order`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`new-order`">
-                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">1. NEW ORDER</div>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">1. NEW ORDER</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="justify-self-center xl:col-span-2">
                         <input v-model="formSize.order" class="hidden" type="radio" value="2. REPEAT ORDER" name="size" :id="`repeat-order`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`repeat-order`">
-                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">2. REPEAT ORDER</div>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">2. REPEAT ORDER</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div>
                         <input v-model="formSize.order" class="hidden" type="radio" name="size" value="3. GARMENT SAMPLE" :id="`garment-sample`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`garment-sample`">
-                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">3. GARMENT SAMPLE</div>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">3. GARMENT SAMPLE</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
@@ -323,40 +332,40 @@
                 <!-- body type -->
                 <div class="grid grid-cols-4 grid-rows-2 gap-2 px-6 my-10 lg:px-10 xl:px-14">
                     <div class="max-xl:col-span-4 xl:row-span-2">
-                        <div class="inline-block border-2 border-primary-50 px-2 pt-1.5 font-bold text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">BODY TYPE</div>
+                        <div class="inline-block border-2 border-primary-50 px-2 pt-1.5 font-bold text-primary-50 text-xs 2xl:text-lg uppercase tracking-widest">BODY TYPE</div>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input v-model="formSize.bodyType" value="2. SLIM" class="hidden" type="radio" name="body-type" :id="`slim`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`slim`">
-                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">2. SLIM</div>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">2. SLIM</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input v-model="formSize.bodyType" value="3. STANDARD I" class="hidden" type="radio" name="body-type" :id="`standard-1`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-1`">
-                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">3. STANDARD I</div>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">3. STANDARD I</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input v-model="formSize.bodyType" value="4. STANDARD II" class="hidden" type="radio" name="body-type" :id="`standard-2`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-2`">
-                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">4. STANDARD II</div>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">4. STANDARD II</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input v-model="formSize.bodyType" value="5. BIG I" class="hidden" type="radio" name="body-type" :id="`big-1`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`big-1`">
-                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">5. BIG I</div>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">5. BIG I</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input v-model="formSize.bodyType" value="7. BIG II" class="hidden" type="radio" name="body-type" :id="`big-2`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`big-2`">
-                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">7. BIG II</div>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">7. BIG II</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
@@ -365,19 +374,19 @@
                 <!-- sleeve -->
                 <div class="grid grid-cols-4 grid-rows-2 gap-2 px-6 mt-6 lg:px-10 xl:px-14">
                     <div class="max-xl:col-span-4 xl:row-span-2">
-                        <div class="inline-block border-2 border-primary-50 px-2 pt-1.5 font-bold text-primary-50 text-xs 2xl:text-lg xl:text-base uppercase tracking-widest">SLEEVE</div>
+                        <div class="inline-block border-2 border-primary-50 px-2 pt-1.5 font-bold text-primary-50 text-xs 2xl:text-lg uppercase tracking-widest">SLEEVE</div>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input v-model="formSize.sleeve" value="1. SLIM SLEEVE" class="hidden" type="radio" name="sleeve" :id="`slim-sleeve`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`slim-sleeve`">
-                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">1. SLIM SLEEVE</div>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">1. SLIM SLEEVE</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
                     <div class="max-xl:col-span-2">
                         <input v-model="formSize.sleeve" value="2. REGULAR SLEEVE" class="hidden" type="radio" name="sleeve" :id="`regular-sleeve`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`regular-sleeve`">
-                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg xl:text-base">2. REGULAR SLEEVE</div>
+                            <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">2. REGULAR SLEEVE</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
@@ -444,7 +453,7 @@
                         </table>
                     </div>
 
-                    <div class="grid grid-cols-2 xl:grid-cols-4 mt-10 mb-10 *:px-2 *:pt-2 *:pb-1 text-primary-50 tracking-widest whitespace-pre">
+                    <div class="grid grid-cols-2 xl:grid-cols-4 mt-10 mb-10 *:px-2 *:pt-2 *:pb-1 text-sm text-primary-50 tracking-widest whitespace-pre">
                         <div class="border-2 border-primary-50">SPECIAL ADJUSTMENT</div>
                         <div class="flex border-r-2 border-primary-50 border-y-2">
                             <div>NECK SIZE :</div>
@@ -478,7 +487,9 @@
                     </div>
                     <div class="col-span-2 space-y-2">
                         <input v-model="discount" type="number"  class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50 number-input" placeholder="DISCOUNT"/>
-                        <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50 number-input" placeholder="RP" />
+                        <!-- <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50 number-input" placeholder="RP" /> -->
+                        <VueNumber v-model.lazy="price" v-bind="number_input" class="w-full px-4 pt-2 pb-1 border-2 border-primary-50 text-primary-50 number-input" placeholder="RP"></VueNumber>
+
                         <div>
                             <button @click="basicAmount()" class="w-full px-5 pt-3 pb-2 text-center bg-secondary text-primary-50">APPLY PRICE</button>
                         </div>
