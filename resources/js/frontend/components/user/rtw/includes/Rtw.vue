@@ -60,7 +60,6 @@
                 });
 
                 storeProducts.setProducts = selectedProducts.value;
-                window.location.href = "/cart";
             })
             .catch(error => {
                 console.error('There was an error!', error.response.data.message);
@@ -134,6 +133,9 @@
     const btnProcess = () => {
         if (form.value.shirtsSelected.length) {
             selectProducts();
+            setTimeout(() => {
+                window.location.href = "/cart";
+            }, 300)
         }else{
             formError.value = ['Please select at least one item']
             console.log(formError.value);
@@ -144,11 +146,13 @@
     const goToSemiCustom = () => {
         if (form.value.shirtsSelected.length) {
             selectProducts();
-            if (useCustomer().getCustomer != null) {
-                window.location.href = "/semi-custom?page=semi-custom";
-            }else {
-                window.location.href = "/semi-custom";
-            }
+            setTimeout(() => {
+                if (useCustomer().getCustomer != null) {
+                    window.location.href = "/semi-custom?page=semi-custom";
+                }else {
+                    window.location.href = "/semi-custom";
+                }
+            }, 300)
         }else{
             formError.value = ['Please select at least one item']
             alert('Please select at least one item');
