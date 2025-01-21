@@ -53,10 +53,6 @@
                                         <th>@lang('Total Price')</th>
                                         <td>{{ price_format( $order->total_price) }}</td>
                                     </tr>
-                                    <tr @class(['table-warning', 'table-info' => $order->isPaymentComplete()])>
-                                        <th>@lang('Remaining Payment')</th>
-                                        <td>{{ price_format($order->remaining_amount) }}</td>
-                                    </tr>
 
                                     <tr>
                                         <th colspan="2">@lang('Crew Incharge')</th>

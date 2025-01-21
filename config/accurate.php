@@ -43,7 +43,11 @@ return [
     'customer_list' => [
         'AST' => 'C.00359',
         'PIK' => 'C.00651',
-    ]
+    ],
+    'warehouse_list' => [
+        'AST' => 'Ashta Mall',
+        'PIK' => 'Gudang PIK',
+    ],
 ]
 
 ?>

@@ -1,6 +1,5 @@
 <script setup>
     import { computed, defineAsyncComponent, onMounted, ref, defineEmits, watch } from 'vue';
-    import { useCustomer } from '@frontend/store/customer';
     import { priceFormat } from '@frontend/helpers/currency';
 
     import { component as VueNumber } from '@coders-tm/vue-number-format'
@@ -51,10 +50,7 @@
 
     const childDoPayment = ref(null);
 
-    // const products = computed(() => useProducts().getProducts);
-    const customer = computed(() => useCustomer().getCustomer);
     const couponUsed = computed(() => props.order.discount_details.coupon);
-    // const semiCustom = computed(() => useProducts().getSemiCustom);
 
     const totalPayment = computed(() => {
         let total = 0;
@@ -340,7 +336,8 @@
         </section>
 
         <!-- Create Input Transnumber & downpayment check -->
-        <section>
+         <!-- Downpayment not needed -->
+        <section class="hidden">
             <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
                 <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">PAYMENT DETAILS</div>
             </div>

@@ -22,4 +22,6 @@ export const useOrder = defineStore('order', {
             return state.orderDate + ' ' + state.orderTime;
         },
     },
+
+    persist: true,
 });
