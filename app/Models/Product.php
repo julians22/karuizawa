@@ -1,6 +1,7 @@
 <?php
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -77,12 +78,20 @@ class Product extends Model
         return $query->where('sku', $sku);
     }
 
-    public function scopeValidProduct($query)
+    public function scopeValidProduct(Builder $query, int $store_id = 0): void
     {
-        return $query
-            ->whereHas('productActualStocks', function ($query) {
+
+        if (!$store_id) {
+            $query->whereHas('productActualStocks', function ($query) {
                 $query->where('stock_quantity', '>', 0);
-            })
-            ->where('price', '>', 0);
+            });
+        }else{
+            $query->whereHas('productActualStocks', function ($query) use ($store_id) {
+                $query->where('store_id', $store_id)
+                    ->where('stock_quantity', '>', 0);
+            });
+        }
+
+        $query->where('price', '>', 0);
     }
 }
