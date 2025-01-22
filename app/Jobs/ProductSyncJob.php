@@ -2,7 +2,9 @@
 
 namespace App\Jobs;
 
+use Bus;
 use Http;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -11,7 +13,7 @@ use Illuminate\Queue\SerializesModels;
 
 class ProductSyncJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $endpoint;
     protected $params;
@@ -58,14 +60,21 @@ class ProductSyncJob implements ShouldQueue
                 return $productData;
             });
 
+            $jobs = [];
+
             foreach ($products as $product) {
                 // Dispatch the job to sync the product when the product price is not 0
-                if ($product['price'] > 0) {
-                    dispatch(new SyncProduct($product));
-                }
+                $jobs[] = new SyncProduct($product);
             }
-        }else{
-            $this->release(10);
+
+            // can be optimized by dispatching the jobs in batch
+            // chunk the jobs into smaller batch
+
+            $chunkedJobs = array_chunk($jobs, 100);
+
+            foreach ($chunkedJobs as $chunk) {
+                Bus::batch($chunk)->onQueue('default')->dispatch();
+            }
         }
     }
 }

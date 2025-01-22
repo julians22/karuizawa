@@ -36,10 +36,13 @@ class ProductApi
             'X-Session-ID' => $this->cachedDb['session'],
         ];
         $params = [
+            'filter.itemCategoryId.op' => 'EQUAL',
+            'filter.itemCategoryId.val' => $itemCategory,
+            'filter.itemType.op' => 'EQUAL',
+            'filter.itemType.val' => 'INVENTORY',
             'sp.pageSize' => $pageSize,
             'sp.page' => $page,
             'fields' => $fields,
-            'filter.itemCategoryId.val' => $itemCategory,
         ];
 
         $response = Http::withHeaders($headers)
@@ -60,21 +63,30 @@ class ProductApi
                 return $productData;
             });
 
+            $jobs = [];
+
             foreach ($products as $product) {
                 // Dispatch the job to sync the product when the product price is not 0
-                if ($product['price'] > 0) {
-                    dispatch(new SyncProduct($product));
-                }
+                $jobs[] = new SyncProduct($product);
+            }
+
+            $chunkedJobs = array_chunk($jobs, 100);
+
+            foreach ($chunkedJobs as $chunk) {
+                Bus::batch($chunk)->onQueue('default')->dispatch();
             }
 
             $pageCount = $response['sp']['pageCount'];
 
             if ($pageCount > 0) {
                 $nextPage = $page + 1;
+                $apiJobs = [];
                 for($nextPage; $nextPage <= $pageCount; $nextPage++) {
-                    $params['page'] = $nextPage;
-                    dispatch(new ProductSyncJob($endpoint, $params));
+                    $params['sp.page'] = $nextPage;
+                    $apiJobs[] = new ProductSyncJob($endpoint, $params);
                 }
+
+                Bus::batch($apiJobs)->onQueue('default')->dispatch();
             }
 
             return true;
