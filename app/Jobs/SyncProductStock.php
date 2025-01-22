@@ -40,6 +40,8 @@ class SyncProductStock implements ShouldQueue
         $actualStock = ProductActualStock::firstOrCreate([
             'product_id' => $this->data['product_id'],
             'store_id' => $this->data['store_id']
+        ], [
+            'stock_quantity' => 0
         ]);
 
         $actualStock->stock_quantity = $this->data['stock_quantity'];
