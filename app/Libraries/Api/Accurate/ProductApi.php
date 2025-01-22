@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use App\Jobs\SyncProduct;
 use App\Models\Product;
 use App\Models\Store;
+use Bus;
 
 class ProductApi
 {
@@ -111,26 +112,34 @@ class ProductApi
                 $response = $response->json();
                 $data = $response['d'];
 
-                $stocks = collect($data)->map(function ($stock) use ($store) {
+                $stocks = [];
 
-                    $findProduct = Product::where('sku', $stock['no'])->first();
+                foreach ($data as $key => $value) {
+                    $findProduct = Product::where('sku', $value['no'])->first();
+
                     if ($findProduct) {
+                        $quantity = $value['quantity'] < 0 ? 0 : $value['quantity'];
 
                         $stockData = [
                             'product_id' => $findProduct->id,
                             'store_id' => $store->id,
-                            'stock_quantity' => $stock['quantity'] < 0 ? 0 : $stock['quantity']
+                            'stock_quantity' => $quantity
                         ];
-                        return $stockData;
+
+                        $stocks[] = $stockData;
                     }
-                });
+                }
+
+                $jobs = [];
 
                 foreach ($stocks as $stock) {
 
                     if ($stock && $stock['stock_quantity'] > 0) {
-                        dispatch(new SyncProductStock($stock));
+                        $jobs[] = new SyncProductStock($stock);
                     }
                 }
+
+                Bus::batch($jobs)->onQueue('default')->dispatch();
 
                 $pageCount = $response['sp']['pageCount'];
 
@@ -140,14 +149,12 @@ class ProductApi
 
                     for($nextPage; $nextPage <= $pageCount; $nextPage++) {
                         $params['sp.page'] = $nextPage;
-                        dispatch(new ProductStockSyncJob($endpoint, $params, $store));
+                        dump($params);
+
+                        // dispatch(new ProductStockSyncJob($endpoint, $params, $store));
                     }
                 }
-
-                return true;
             }
-
-            return false;
         }
     }
 }
