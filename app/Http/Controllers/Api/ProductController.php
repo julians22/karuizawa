@@ -35,7 +35,7 @@ class ProductController extends Controller
 
             })
             ->when($request->has('color'), function ($query) use ($request) {
-                $query->where('product_name', 'like', '% UKURAN' . $request->color . '%');
+                $query->whereRaw("UPPER(product_name) like '%" . strtoupper($request->color) . "%'");
             })
             ->when($request->has('sort'), function ($query) use ($request) {
                 if ($request->sort == 'Newest') {

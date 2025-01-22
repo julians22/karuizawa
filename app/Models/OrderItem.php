@@ -14,7 +14,18 @@ class OrderItem extends Model
         'product_type',
         'product_id',
         'quantity',
+        'discount',
+        'discount_detail',
         'price',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'discount_detail' => 'array',
     ];
 
     /**

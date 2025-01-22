@@ -22,7 +22,7 @@ class OrderItemResource extends JsonResource
             $product_name = $this->product ? $this->product->product_name : '';
         }
 
-        $total_price = $this->price * $this->quantity;
+        $total_price = ($this->price - $this->discount) * $this->quantity;
 
 
         return [
@@ -33,6 +33,8 @@ class OrderItemResource extends JsonResource
             'qty' => $this->quantity,
             'total_price' => $total_price,
             'total_price_formatted' => price_format($total_price, 0),
+            'discount' => $this->discount,
+            'discount_detail' => $this->discount_detail,
         ];
     }
 }
