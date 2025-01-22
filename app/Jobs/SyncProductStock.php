@@ -29,7 +29,7 @@ class SyncProductStock implements ShouldQueue
     public function handle(): void
     {
         // Update or create product stock
-        $actualStock = ProductActualStock::firstOrNew([
+        $actualStock = ProductActualStock::firstOrCreate([
             'product_id' => $this->data['product_id'],
             'store_id' => $this->data['store_id']
         ]);
