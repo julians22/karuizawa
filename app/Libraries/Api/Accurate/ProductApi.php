@@ -149,9 +149,7 @@ class ProductApi
 
                     for($nextPage; $nextPage <= $pageCount; $nextPage++) {
                         $params['sp.page'] = $nextPage;
-                        dump($params);
-
-                        // dispatch(new ProductStockSyncJob($endpoint, $params, $store));
+                        dispatch(new ProductStockSyncJob($endpoint, $params, $store));
                     }
                 }
             }
