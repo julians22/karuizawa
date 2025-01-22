@@ -84,7 +84,9 @@ class ProductApi
 
     function stockJobs($pageSize = 100, $page = 1) {
 
-        $stores = Store::whereNotNull('accurate_alias')->get();
+        $stores = Store::whereNotNull('accurate_alias')
+            ->orderBy('updated_at', 'asc')
+            ->get();
 
         foreach ($stores as $store) {
             $endpoint = $this->appUrl . '/accurate/api/item/list-stock.do';
