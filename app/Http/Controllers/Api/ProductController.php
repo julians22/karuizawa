@@ -18,13 +18,14 @@ class ProductController extends Controller
         $products = Product::when($request->has('store_id'), function ($query) use ($request) {
                 $query->with(['productActualStocks' => function ($query) use ($request) {
                     return $query->select('product_id', 'store_id', 'stock_quantity')
-                        ->where('store_id', $request->store_id)
-                        ->where('stock_quantity', '>', 0);
-                }])
-                    ->whereHas('productActualStocks', function ($query) use ($request) {
-                        return $query->where('store_id', $request->store_id)
-                            ->where('stock_quantity', '>', 0);
-                    });
+                            ->where('store_id', $request->store_id)
+                            ->where('stock_quantity', '>', 0)
+                            ->with('store');
+                        }])
+                        ->whereHas('productActualStocks', function ($query) use ($request) {
+                            return $query->where('store_id', $request->store_id)
+                                ->where('stock_quantity', '>', 0);
+                        });
             })
             ->when($request->has('search'), function ($query) use ($request) {
                 if (empty($request->search)) {
@@ -67,7 +68,9 @@ class ProductController extends Controller
     {
         // slug to array
         $sku = explode(',', $slug);
-        $product = Product::whereIn('sku', $sku)->get();
+        $product = Product::whereIn('sku', $sku)
+            ->with('productActualStocks', 'productActualStocks.store')
+            ->get();
         return response()->json($product);
     }
 }

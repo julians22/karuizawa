@@ -17,6 +17,8 @@
         coupons: Array
     });
 
+    const userStoreId = props.user?.store_id ?? 0;
+
     const storePage = usePage();
 
     const customer = computed(() => useCustomer().getCustomer);
@@ -32,20 +34,6 @@
     });
 
     const sendOrder = async () => {
-
-        // let semi_custom_data = {
-        //     basic_form: {},
-        //     base_price: 0,
-        //     base_discount: 0,
-        //     base_note: '',
-        //     option_form: {},
-        //     option_total: 0,
-        //     option_additional_price: 0,
-        //     option_discount: 0,
-        //     option_note: '',
-        //     size: {},
-        //     total: 0
-        // };
 
         let semi_custom_data = [];
 
@@ -80,52 +68,6 @@
                     size: semi_custom.basic.formSize,
                     total: semi_custom.totalPrice
                 })
-
-                // if (index == 'totalPrice') {
-                //     semi_custom_data.total = semi_custom;
-                // }
-
-                // if (index == 'basic'){
-                //     semi_custom_data.basic_form = semi_custom.form;
-
-                //     if (semi_custom.amount) {
-                //         if (semi_custom.amount.price) {
-                //             semi_custom_data.base_price = semi_custom.amount.price;
-                //         }
-                //         if (semi_custom.amount.discount) {
-                //             semi_custom_data.base_discount = semi_custom.amount.discount;
-                //         }
-                //     }
-
-                //     if (semi_custom.formSize) {
-                //         semi_custom_data.size = semi_custom.formSize;
-                //     }
-
-                //     if (semi_custom.additionalNote) {
-                //         semi_custom_data.base_note = semi_custom.additionalNote;
-                //     }
-                // }
-
-                // if (index == 'option') {
-                //     semi_custom_data.option_form = semi_custom.form;
-
-                //     if (semi_custom.amount) {
-                //         if (semi_custom.amount.price) {
-                //             semi_custom_data.option_additional_price = semi_custom.amount.price;
-                //         }
-                //         if (semi_custom.amount.discount) {
-                //             semi_custom_data.option_discount = semi_custom.amount.discount;
-                //         }
-                //         if (semi_custom.optionTotal) {
-                //             semi_custom_data.option_total = semi_custom.amount.optionTotal;
-                //         }
-                //     }
-
-                //     if (semi_custom.additionalNote) {
-                //         semi_custom_data.option_note = semi_custom.additionalNote;
-                //     }
-                // }
-
             });
         }
 
@@ -144,22 +86,14 @@
         axios.post(props.api_store_order, orders)
         .then(response => {
             if (response.data.success) {
-                console.log(response.data);
-                // $emit('btn-next', 'payment');
-                // redirect to payment page
-
                 storeProducts.setSlug = [];
                 storeProducts.setProducts = [];
                 storeProducts.semi_custom = [];
                 storeProducts.coupon_rtw = 0;
                 storeProducts.semi_custom = [];
-
                 useCustomer().resetCustomer();
-
                 window.location.href = response.data.redirect;
             }
-
-            console.log(response.data);
         })
         .catch(error => {
             console.log(error);
@@ -174,7 +108,9 @@
     const products = computed(function () {
         let productsState = storeProducts.getProducts;
         forEach(productsState, (product, index) => {
-            productsState[index].total = (product.price * product.qty) - product.discount ?? 0;
+            let discount = product.discount ?? 0;
+            let price = product.price * product.qty;
+            productsState[index].total = price - (price * discount / 100);
         });
 
         return productsState;
@@ -217,7 +153,9 @@
 
         if (products.value.length !== 0) {
             products.value.map(product => {
-                totalProducts += product.total - product.discount ?? 0;
+                let subdis = product.discount ?? 0;
+                let sub_price = product.price * product.qty;
+                totalProducts += sub_price - (sub_price * subdis / 100);
             });
         }
 
@@ -235,7 +173,7 @@
     const loadCoupon = () => {
         // add couppon each product
         let coupon = 0;
-        
+
         if (products.value.length !== 0) {
             products.value.map(product => {
                 product.discount = coupon;
@@ -298,6 +236,13 @@
                         <tr class="border-b" v-for="(product, index) in products">
                             <td class="py-3 pr-6 text-left text-primary-50">
                                 <div class="text-[#606060]">{{ product.product_name }}</div>
+                                <template v-if="product.product_actual_stocks">
+                                    <template v-if="product.product_actual_stocks.length">
+                                        <div class="my-1 text-left text-primary-300 text-xs" v-for="(stock, index) in product.product_actual_stocks" :key="index">
+                                            <span v-if="stock.stock_quantity && (userStoreId == stock.store.id)">{{ stock.store.code }}: {{ stock.stock_quantity }} in stock</span>
+                                        </div>
+                                    </template>
+                                </template>
                                 <div class="text-[#A3A3A3] text-sm">{{product.sku}}</div>
                             </td>
                             <td class="px-6 py-3 text-center text-primary-50">
