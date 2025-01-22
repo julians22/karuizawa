@@ -300,7 +300,7 @@ class OrderController extends Controller
                 }
 
                 if ($item->isSemiCustom()) {
-                    $calucate = $item->product->base_price + $item->product->option_total + $item->product->option_additional_price;
+                    $calucate = ($item->product->base_price + $item->product->option_total) - $semiCustomProuduct->option_discount;;
                     $totalPrice += $calucate;
                 }
             }

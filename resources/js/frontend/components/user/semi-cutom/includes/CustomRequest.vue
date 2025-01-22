@@ -61,25 +61,31 @@
     const amount = ref({
         optionPrice: 0,
         basicPrice: 0,
-        discount: 0,
+        // discount: 0,
+        giftCard: 0,
         total: 0
     });
 
     const price = ref(0);
     const discount = ref(null);
     const dataPrice = ref(null);
+    const giftCard = ref(0);
 
     const amountOption = () => {
         let x = parseInt(dataPrice.value?.optionTotal) ? parseInt(dataPrice.value?.optionTotal) : 0;
         let y = parseInt(price?.value) ? parseInt(price?.value) : 0;
-        let disc = parseInt(discount?.value) ? parseInt(discount?.value) : 0;
+        // let disc = parseInt(discount?.value) ? parseInt(discount?.value) : 0;
+        let gift_card = parseInt(giftCard.value) ? parseInt(giftCard.value) : 0;
         let z = x + y;
-        let total = z - (z * disc / 100);
+        // let total = z - (z * disc / 100);
 
         amount.value.optionPrice = x;
-        amount.value.discount = disc;
+        // amount.value.discount = disc;
+        amount.value.giftCard = gift_card;
+        amount.value.selected_price = x;
         amount.value.price = y;
-        amount.value.total = total;
+        amount.value.total = z;
+        // amount.value.total = total;
 
         emitFrom('additional-option', amount);
     };
@@ -762,9 +768,12 @@
                     <textarea class="w-full h-full p-2 border placeholder:font-josefin font-roboto border-primary-50 placeholder-primary-50 placeholder:tracking-widest" v-model="additionalNote" name="" id="" placeholder="NOTE"></textarea>
                 </div>
                 <div class="col-span-2 space-y-2">
-                    <input v-model="discount" type="number"
-                         class="w-full px-4 pt-2 pb-1 border number-input border-pink-ka text-primary-50" placeholder="DISCOUNT"/>
-                    <!-- <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border number-input border-pink-ka text-primary-50" placeholder="RP" /> -->
+                    <!-- <input v-model="discount" type="number"
+                         class="w-full px-4 pt-2 pb-1 border number-input border-pink-ka text-primary-50" placeholder="DISCOUNT"/> -->
+                         <!-- <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border number-input border-pink-ka text-primary-50" placeholder="RP" /> -->
+                          <small>Gift Card</small>
+                         <VueNumber v-model="giftCard" v-bind="number_input"
+                              class="w-full px-4 pt-2 pb-1 border number-input border-pink-ka text-primary-50" placeholder="GIFT CARD"/>
                     <VueNumber v-model.lazy="price" v-bind="number_input" class="w-full px-4 pt-2 pb-1 border number-input border-pink-ka text-primary-50" placeholder="RP"></VueNumber>
 
                     <div>

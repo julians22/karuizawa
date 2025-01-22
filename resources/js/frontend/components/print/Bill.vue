@@ -1,6 +1,6 @@
 <script setup>
 import { useVueToPrint } from "vue-to-print";
-import { priceFormat, priceFormat2 } from "@frontend/helpers/currency";
+import { priceFormat, priceFormat2, percentPrice } from "@frontend/helpers/currency";
 import moment from "moment";
 import { computed, ref } from "vue";
 
@@ -32,17 +32,17 @@ const { handlePrint } = useVueToPrint({
 </script>
 
 <template>
-    <div class="mx-auto p-4 max-w-md">
-        <button @click="handlePrint" class="inline-block bg-primary-50 mx-auto p-2 text-white">Print</button>
-        <div ref="componentRef" class="border max-w-md">
+    <div class="max-w-md p-4 mx-auto">
+        <button @click="handlePrint" class="inline-block p-2 mx-auto text-white bg-primary-50">Print</button>
+        <div ref="componentRef" class="max-w-md border">
           <div>
-              <div class="font-bold text-center text-lg">KARUIZAWA SHIRT</div>
-              <div class="font-bold text-center text-sm">{{ props.data_order.store.address }}</div>
+              <div class="text-lg font-bold text-center">KARUIZAWA SHIRT</div>
+              <div class="text-sm font-bold text-center">{{ props.data_order.store.address }}</div>
               <div class="text-center">Karuizawashirt.official</div>
               <div class="mt-2 text-center">Casier: {{ props.data_order.user.name }}</div>
               <div class="text-center">{{ moment(props.data_order.payments[0].created_at).format("DD MMM YYYY  hh:mm:ss") }}</div>
-              <div class="bg-black w-full h-px"></div>
-              <table class="px-2 w-full">
+              <div class="w-full h-px bg-black"></div>
+              <table class="w-full px-2">
 
                 <tbody>
                     <template v-for="(order, index) in props.data_order.order_items">
@@ -55,7 +55,7 @@ const { handlePrint } = useVueToPrint({
                             <td class="text-right">{{ priceFormat(order.price) }}</td>
                         </tr>
                     </template>
-    
+
                     <tr class="pt-4 border-t">
                         <td colspan="2" class="text-right">Subtotal:</td>
                         <td class="text-right">{{ priceFormat(subTotal) }}</td>
@@ -73,7 +73,7 @@ const { handlePrint } = useVueToPrint({
                 </tbody>
               </table>
 
-              <div class="bg-black w-full h-px"></div>
+              <div class="w-full h-px bg-black"></div>
 
                 <div class="px-2 py-2">
                     Terms & Conditions:
@@ -95,7 +95,7 @@ const { handlePrint } = useVueToPrint({
                 </div>
 
                 <!-- border dot -->
-                <div class="border-t border-black border-dotted w-full h-px"></div>
+                <div class="w-full h-px border-t border-black border-dotted"></div>
           </div>
         </div>
     </div>

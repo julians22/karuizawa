@@ -101,8 +101,13 @@
     watch(amount.value, (items) => {
         let basic = parseInt(items.basic?.total ?? 0);
         let option = parseInt(items.option?.total ?? 0);
+        let giftCard = parseInt(items.option?.giftCard ?? 0);
 
-        totalPrice.value = basic + option;
+        console.log(giftCard);
+
+
+        // totalPrice.value = basic + option;
+        totalPrice.value = basic + option - giftCard;
 
         childBasic.value.amount = amount.value.basic;
         childOption.value.amount = amount.value.option;
@@ -124,7 +129,7 @@
 
     const currencyFormat = (value) => {
         if (!value){
-            return ''
+            return 0
         }
         return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(
             value,
@@ -395,6 +400,11 @@
                                         <td>Option</td>
                                         <td class="text-center">:</td>
                                         <td class="">{{ currencyFormat(amount?.option?.total) ?? '0' }}</td>
+                                    </tr>
+                                    <tr class="lg:whitespace-nowrap" v-if="amount?.option?.giftCard > 0">
+                                        <td>Gift Card</td>
+                                        <td class="text-center">:</td>
+                                        <td class="">- {{ currencyFormat(amount?.option?.giftCard) ?? '0' }}</td>
                                     </tr>
                                     <tr class="lg:whitespace-nowrap">
                                         <td>Total Price</td>
