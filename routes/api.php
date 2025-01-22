@@ -38,6 +38,7 @@ Route::group(['prefix' => 'customer'], function () {
                 ->orWhere('phone', 'like', '%' . $keyword . '%')
                 ->orWhere('email', 'like', '%' . $keyword . '%');
         })
+        ->orderBy('full_name', 'asc')
         ->paginate(20);
 
         return $data;

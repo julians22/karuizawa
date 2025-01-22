@@ -22,7 +22,7 @@ class DashboardController
     {
         $order = Order::where('uuid', $order_uuid)
             ->with('orderItems', 'orderItems.product')
-            ->first();
+            ->firstOrFail();
 
         if($order->isPaymentComplete()) {
             return redirect()->route('frontend.user.dashboard')->with('flash_success', 'Payment already completed');

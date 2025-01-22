@@ -28,7 +28,9 @@
                 sku: item.product.sku,
                 qty: item.quantity,
                 price: item.price,
-                total: item.total_price
+                total: item.total_price,
+                discount: item.discount,
+                discount_detail: item.discount_detail
             }
         });
     });
@@ -56,7 +58,7 @@
         let total = 0;
         products.value.forEach(product => {
             // parse float to remove comma
-            total += parseFloat(product.total);
+            total += parseFloat(product.total - product.discount);
         });
 
         semiCustom.value.forEach(sc => {
@@ -300,11 +302,11 @@
                             </tr>
                             <tr v-for="product in products" :key="product.sku" class="mt-2">
                                 <td class="font-roboto">
-                                    <div class="font-bold text-[#606060]">{{ product.name }}</div>
+                                    <div class="font-bold text-[#606060]">{{ product.name }} <div class="inline text-[#A3A3A3]">@ {{ priceFormat(product.price) }}</div></div>
                                     <div class="text-[#A3A3A3]">{{ product.sku }}</div>
                                 </td>
                                 <td class="font-bold text-[#606060]">{{ product.qty }}</td>
-                                <td class="font-bold text-[#606060]" v-html="priceFormat(product.price)"></td>
+                                <td class="font-bold text-[#606060]">{{ priceFormat(product.price - product.discount) }} <span v-if="product.discount">-({{ product.discount_detail.discount }}%)</span></td>
                             </tr>
                         </tbody>
                     </table>

@@ -207,8 +207,11 @@ class OrderController extends Controller
 
         $storeId = $storeId == 0 ? 1 : $storeId;
 
-        // convert orderdate from dd/mm/yyyy h:i
-        $orderDate = Carbon::createFromFormat('d/m/Y H:i', $request->order_date);
+        list($date, $time) = explode(' ', $request->order_date);
+        list($day, $month, $year) = explode('/', $date);
+        list($hour, $minute) = explode(':', $time);
+        $minute = str_pad($minute, 2, '0', STR_PAD_LEFT);
+        $orderDate = Carbon::createFromFormat('d/m/Y H:i', "$day/$month/$year $hour:$minute")->format('Y-m-d H:i');
 
         DB::beginTransaction();
 
@@ -230,10 +233,21 @@ class OrderController extends Controller
 
             // insert order items type product
             foreach ($request->products as $product) {
+                $dicsount = $product['discount'] ?? 0;
                 $productdb = Product::sku($product['sku'])->first();
+
+                $discountAmount = $productdb->price * $dicsount / 100;
+
+                $dicsountDetail = [
+                    'discount' => $dicsount,
+                    'discount_amount' => $discountAmount,
+                ];
+
                 $orderItem = new OrderItem([
                     'quantity' => $product['qty'],
                     'price' => $productdb->price,
+                    'discount' => $discountAmount,
+                    'discount_detail' => $dicsountDetail,
                 ]);
 
                 $stock = ProductActualStock::where('product_id', $productdb->id)
@@ -276,9 +290,14 @@ class OrderController extends Controller
                         'option_note' => $sc['option_note'],
                     ]);
 
+                    $basePrice = $semiCustomProuduct->base_price - ($semiCustomProuduct->base_price * $semiCustomProuduct->base_discount / 100);
+                    $optionPrice = ($semiCustomProuduct->option_total + $semiCustomProuduct->option_additional_price) - $semiCustomProuduct->option_discount;
+
+                    $totalPrice = $basePrice + $optionPrice;
+
                     $orderItem = new OrderItem([
                         'quantity' => 1,
-                        'price' => $semiCustomProuduct->base_price + $semiCustomProuduct->option_total + $semiCustomProuduct->option_additional_price,
+                        'price' => $totalPrice,
                     ]);
 
                     $orderItem->product()->associate($semiCustomProuduct);
@@ -291,11 +310,11 @@ class OrderController extends Controller
             foreach ($order->orderItems as $item) {
 
                 if ($item->isReadyToWear()) {
-                    $totalPrice += $item->price * $item->quantity;
+                    $totalPrice += $item->price * $item->quantity - $item->discount;
                 }
 
                 if ($item->isSemiCustom()) {
-                    $calucate = $item->product->base_price + $item->product->option_total + $item->product->option_additional_price;
+                    $calucate = ($item->product->base_price + $item->product->option_total) - $semiCustomProuduct->option_discount;
                     $totalPrice += $calucate;
                 }
             }
