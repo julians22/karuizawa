@@ -25,10 +25,10 @@ class SyncProductStock implements ShouldQueue
     }
 
     // withoutOverlapping() method is used to prevent the same job from being executed multiple times
-    public function middleware()
-    {
-        return [new WithoutOverlapping($this->data['product_id'] . "-" . $this->data['store_id'])];
-    }
+    // public function middleware()
+    // {
+    //     return [new WithoutOverlapping($this->data['product_id'] . "-" . $this->data['store_id'])];
+    // }
 
     /**
      * Execute the job.

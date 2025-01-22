@@ -113,13 +113,20 @@
                                     @foreach ($order->orderItems as $item)
                                         <tr>
                                             @if ($item->product_type == 'App\Models\Product')
-                                            <td>{{ $item->product->sku }} - {{ $item->product->product_name }}</td>
+                                            <td>
+                                                {{ $item->product->sku }} - {{ $item->product->product_name }}
+                                            </td>
                                             @else
                                             <td>{{ $item->product->name }}</td>
                                             @endif
                                             <td>{{ $item->quantity }}</td>
                                             <td>{{ price_format($item->price) }}</td>
-                                            <td>{{ price_format($item->total_price) }}</td>
+                                            <td>
+                                                {{ price_format($item->total_price) }}
+                                                @if ($item->discount)
+                                                    <span class="badge bg-danger">{{ $item->discount }}%</span>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
