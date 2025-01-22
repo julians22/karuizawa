@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
 class SyncProductStock implements ShouldQueue
@@ -21,6 +22,12 @@ class SyncProductStock implements ShouldQueue
     public function __construct($data)
     {
         $this->data = $data;
+    }
+
+    // withoutOverlapping() method is used to prevent the same job from being executed multiple times
+    public function middleware()
+    {
+        return [new WithoutOverlapping($this->data['product_id'] . "-" . $this->data['store_id'])];
     }
 
     /**
