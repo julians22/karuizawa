@@ -147,12 +147,18 @@ class ProductApi
 
                     $nextPage = $page + 1;
 
+                    $apiJobs = [];
+
                     for($nextPage; $nextPage <= $pageCount; $nextPage++) {
                         $params['sp.page'] = $nextPage;
-                        dispatch(new ProductStockSyncJob($endpoint, $params, $store));
+                        $apiJobs[] = new ProductStockSyncJob($endpoint, $params, $store);
                     }
+
+                    Bus::batch($apiJobs)->onQueue('default')->dispatch();
                 }
             }
         }
+
+        return true;
     }
 }
