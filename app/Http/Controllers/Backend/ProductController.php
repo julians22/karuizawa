@@ -22,7 +22,7 @@ class ProductController extends Controller
     public function fetchStock()
     {
         $productApi = new ProductApi();
-        $products = $productApi->stockJobs(200, 1);
+        $products = $productApi->stockJobs(500, 1);
 
         if ($products) {
             return redirect()->route('admin.product.index')->withFlashSuccess(__('The product was successfully fetched.'));
@@ -33,7 +33,7 @@ class ProductController extends Controller
     public function fetchPrice()
     {
         $productApi = new ProductApi();
-        $products = $productApi->productJobs(200, 1, 350, 'id,name,no,unitPrice');
+        $products = $productApi->productJobs(500, 1, 350, 'id,name,no,unitPrice');
 
         if ($products) {
             return redirect()->route('admin.product.index')->withFlashSuccess(__('The price was successfully fetched.'));

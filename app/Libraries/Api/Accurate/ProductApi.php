@@ -99,7 +99,7 @@ class ProductApi
                 'sp.pageSize' => $pageSize,
                 'sp.page' => $page,
                 'sp.sort' => 'no|asc',
-                'warehouseId' => (int) $store->accurate_alias,
+                'warehouseId' => (int)$store->accurate_alias,
                 'asOfDate' => date('d/m/Y'),
                 'filter.itemCategoryId.val' => 350,
             ];
