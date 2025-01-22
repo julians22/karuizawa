@@ -207,8 +207,11 @@ class OrderController extends Controller
 
         $storeId = $storeId == 0 ? 1 : $storeId;
 
-        // convert orderdate from dd/mm/yyyy h:i
-        $orderDate = Carbon::createFromFormat('d/m/Y H:i', $request->order_date);
+        list($date, $time) = explode(' ', $request->order_date);
+        list($day, $month, $year) = explode('/', $date);
+        list($hour, $minute) = explode(':', $time);
+        $minute = str_pad($minute, 2, '0', STR_PAD_LEFT);
+        $orderDate = Carbon::createFromFormat('d/m/Y H:i', "$day/$month/$year $hour:$minute")->format('Y-m-d H:i');
 
         DB::beginTransaction();
 

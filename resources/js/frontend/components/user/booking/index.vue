@@ -143,7 +143,6 @@
                     <div @click="onClikFilter()">
                         <span>
                             <i class="text-white fa fa-filter fill-white" aria-hidden="true"></i>
-                            Filter
                         </span>
                     </div>
                 </div>

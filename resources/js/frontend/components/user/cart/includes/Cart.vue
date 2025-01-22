@@ -397,18 +397,11 @@
                     <span>BACK</span>
                 </button>
 
-                <div class="flex">
-                    <button
-                        @click="addRtw"
-                        class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white tracking-widest">
-                        <span>Add Ready To Wear</span>
-                    </button>
-                    <div v-if="storePage.get !== 'products'"></div>
-                    <button @click="btnProcess()" class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">
-                        <span>PROCEED TO PAYMENT</span>
-                        <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
-                    </button>
-                </div>
+                <div v-if="storePage.get !== 'products'"></div>
+                <button @click="btnProcess()" class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">
+                    <span>PROCEED TO PAYMENT</span>
+                    <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+                </button>
             </div>
         </section>
     </div>
