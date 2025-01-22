@@ -30,11 +30,6 @@ class ProductStockSyncJob implements ShouldQueue
         $this->store = $store;
     }
 
-    function middleware()
-    {
-        return [new WithoutOverlapping($this->endpoint)];
-    }
-
     /**
      * Execute the job.
      */
