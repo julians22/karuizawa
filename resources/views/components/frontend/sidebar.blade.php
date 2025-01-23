@@ -1,7 +1,9 @@
 <div class="grid grid-cols-8 lg:min-h-[86svh]">
         <div class="col-span-2">
             <div class="flex flex-col items-center lg:min-h-[86svh] py-20 bg-right-bottom bg-no-repeat bg-cover px-7" style="background-image: url('{{ asset('img/bg-02.jpg') }}');">
-                <div class="border-4 border-white border-solid rounded-full size-32 lg:size-36 bg-primary-50"></div>
+                <div class="overflow-hidden border-4 border-white border-solid rounded-full size-32 lg:size-36 bg-primary-50">
+                    <img class="w-full h-full" src="{{ $logged_in_user->avatar }}" alt="">
+                </div>
                 <div class="mt-4 tracking-widest text-center text-white uppercase lg:text-xl">
                     Hi, <br>
                     {{ $logged_in_user->name }}
