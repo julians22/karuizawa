@@ -6,6 +6,7 @@ use phpDocumentor\Reflection\Types\Boolean;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\FittingController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Frontend\User\SemiCustomConteroller;
 
 /*
@@ -96,3 +97,7 @@ Route::post('store-order', [OrderController::class, 'store']);
 Route::post('send-payment', [OrderController::class, 'store_payment']);
 
 Route::post('semi-custom/submit', [SemiCustomConteroller::class, 'submit']);
+
+Route::group(['prefix' => 'profile', 'as' => 'profile.'], function() {
+    Route::patch('update', [ProfileController::class, 'update'])->name('update');
+});

@@ -206,18 +206,18 @@
     }
 
     const btnBack = () => {
-        if (props.onPage == 'products') {
+        // if (props.onPage == 'products') {
             // $emit('btn-next', 'products');
             window.location.href = '/ready-to-wear?page=products';
-        }else if (props.onPage == 'semi-custom') {
-            $emit('btn-next', 'semi-custom');
-        }
+        // }else if (props.onPage == 'semi-custom') {
+        //     $emit('btn-next', 'semi-custom');
+        // }
     }
 </script>
 
 <template>
     <div class="space-y-10">
-        <section>
+        <section class="mb-40">
             <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
                 <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">Total shop</div>
             </div>
@@ -335,18 +335,18 @@
             </div>
         </section> -->
 
-        <section>
-            <div class="flex justify-between">
-                <button v-if="storePage.get == 'products'" @click="btnBack()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white tracking-widest">
-                    <img class="inline-block mb-1.5 rotate-180" src="img/icons/arrw-ck-right.png" alt="">
-                    <span>BACK</span>
+        <section class="bottom-0 absolute w-full">
+            <div class="flex justify-end">
+                
+                <button @click="addRtw()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white uppercase tracking-widest">
+                    <span>Add Ready to Wear</span>
                 </button>
 
-                <div v-if="storePage.get !== 'products'"></div>
                 <button @click="btnProcess()" class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">
                     <span>PROCEED TO PAYMENT</span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                 </button>
+
             </div>
         </section>
     </div>

@@ -62,6 +62,19 @@ class OrderController extends Controller
             }
         }
 
+        $autoNumber = 55;
+
+        if ($order->store->code !== null) {
+            if ($order->store->code == 'PIK') {
+                $autoNumber = config('accurate.trans_no.PIK');
+            }
+
+            if ($order->store->code == 'AST') {
+                $autoNumber = config('accurate.trans_no.AST');
+            }
+        }
+
+
         $data = [
             'customerNo' => $customerNo,
             'detailItem' => $detailItem,
@@ -71,7 +84,7 @@ class OrderController extends Controller
             'documentCode' => 'DIGUNGGUNG',
             'taxable' => true,
             'inclusiveTax' => true,
-            'typeAutoNumber' => 55
+            'typeAutoNumber' => $autoNumber,
         ];
 
         try {
