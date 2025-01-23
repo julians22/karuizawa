@@ -57,11 +57,11 @@
                                 type="text"
                                 maxlength="1"
                                 :value="digit"
-                                class="box-input"
+                                class="box-input print:text-lg"
                             >
                         </div>
                         <!-- <boxInput :digitCount="4" @update:input="onInputBox($event, 'fabric', 'fabricCode')"/> -->
-                        <input v-model="form.fabric.text" type="text" class="block w-full h-8 p-2 text-sm text-gray-900 border border-r border-primary-50 font-roboto">
+                        <input v-model="form.fabric.text" type="text" class="block w-full h-8 p-2 text-sm text-gray-900 border border-r print:text-lg border-primary-50 font-roboto">
                     </div>
                 </div>
 
@@ -75,7 +75,7 @@
                             <input @click.native="form.collar = null" class="hidden" type="radio" v-model="form.collar" :value="collar" name="collar"  :id="'collar-' + collar.slug">
                             <label class="flex flex-col items-center justify-between h-full gap-2 px-2 rounded cursor-pointer" :for="'collar-' + collar.slug">
                                 <img class="h-auto" :src="'/'+collar.image" alt="">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">{{ collar.name }}</div>
+                                <div class="label-name">{{ collar.name }}</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
@@ -116,7 +116,7 @@
                                 <input @click.native="form.cuff = null" class="hidden" type="radio" v-model="form.cuff" name="cuff" :value="cuff" :id="'cuff-' + cuff.slug">
                                 <label class="flex flex-col items-center justify-between h-full gap-2 px-2 rounded cursor-pointer" :for="'cuff-' + cuff.slug">
                                     <img class="h-auto" :src="'/'+cuff.image" alt="">
-                                    <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">{{ cuff.name }}</div>
+                                    <div class="label-name">{{ cuff.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
                             </div>
@@ -155,7 +155,7 @@
                                 <input @click.native="form.frontBody = null" class="hidden" type="radio" name="front-body" v-model="form.frontBody" :value="frontBody" :id="'front-body-' + frontBody.slug">
                                 <label class="flex flex-col items-center justify-between h-full gap-2 px-2 rounded cursor-pointer" :for="'front-body-' + frontBody.slug">
                                     <img class="h-28" :src="'/'+frontBody.image" alt="">
-                                    <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">{{ frontBody.name }}</div>
+                                    <div class="label-name">{{ frontBody.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
                             </div>
@@ -197,7 +197,7 @@
                                 <input @click.native="form.pocket = null" class="hidden" type="radio" v-model="form.pocket" :value="pocket" name="pocket" :id="'pocket-'+pocket.slug">
                                 <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'pocket-'+pocket.slug">
                                     <img class="h-28" :src="'/'+pocket.image" alt="">
-                                    <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">{{ pocket.name }}</div>
+                                    <div class="label-name">{{ pocket.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
                             </div>
@@ -213,7 +213,7 @@
                                 <input @click.native="form.hem = null" class="hidden" type="radio" name="hem" v-model="form.hem"  :value="hem" :id="'hem-'+hem.slug">
                                 <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'hem-'+hem.slug">
                                     <img class="h-28" :src="'/'+hem.image" alt="">
-                                    <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">{{ hem.name }}</div>
+                                    <div class="label-name">{{ hem.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
                             </div>
@@ -231,7 +231,7 @@
                             <input @click.native="form.backBody = null" class="hidden" type="radio" name="back-body" v-model="form.backBody" :value="backBody" :id="'back-body-'+backBody.slug">
                             <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'back-body-'+backBody.slug">
                                 <img class="h-auto" :src="'/'+backBody.image" alt="">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">{{ backBody.name }}</div>
+                                <div class="label-name">{{ backBody.name }}</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
@@ -251,7 +251,7 @@
                             <input @click.native="form.button = null" class="hidden" type="radio" name="button" :id="`button-${button.slug}`" v-model="form.button" :value="button">
                             <label class="flex flex-col items-center justify-between h-full px-2 rounded cursor-pointer" :for="`button-${button.slug}`">
                                 <img class="h-auto" :src="'/'+button.image" alt="">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">{{ button.name }}</div>
+                                <div class="label-name">{{ button.name }}</div>
                                 <span class="mt-4 checkbox-inner"></span>
                             </label>
                         </div>
@@ -266,21 +266,21 @@
                         <div>
                             <input v-model="formSize.order" class="hidden" value="1. NEW ORDER" type="radio" name="size" :id="`new-order`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`new-order`">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">1. NEW ORDER</div>
+                                <div class="label-name">1. NEW ORDER</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
                         <div class="">
                             <input v-model="formSize.order" class="hidden" type="radio" value="2. REPEAT ORDER" name="size" :id="`repeat-order`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`repeat-order`">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">2. REPEAT ORDER</div>
+                                <div class="label-name">2. REPEAT ORDER</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
                         <div>
                             <input v-model="formSize.order" class="hidden" type="radio" name="size" value="3. GARMENT SAMPLE" :id="`garment-sample`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`garment-sample`">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">3. GARMENT SAMPLE</div>
+                                <div class="label-name">3. GARMENT SAMPLE</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
@@ -293,42 +293,42 @@
                         <div class="">
                             <input v-model="formSize.bodyType" value="2. SLIM" class="hidden" type="radio" name="body-type" :id="`slim`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`slim`">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">2. SLIM</div>
+                                <div class="label-name">2. SLIM</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
                         <div class="">
                             <input v-model="formSize.bodyType" value="3. STANDARD I" class="hidden" type="radio" name="body-type" :id="`standard-1`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-1`">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">3. STANDARD I</div>
+                                <div class="label-name">3. STANDARD I</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
                         <div class="">
                             <input v-model="formSize.bodyType" value="4. STANDARD II" class="hidden" type="radio" name="body-type" :id="`standard-2`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-2`">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">4. STANDARD II</div>
+                                <div class="label-name">4. STANDARD II</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
                         <div class="">
                             <input v-model="formSize.bodyType" value="5. BIG I" class="hidden" type="radio" name="body-type" :id="`big-1`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`big-1`">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">5. BIG I</div>
+                                <div class="label-name">5. BIG I</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
                         <div class="">
                             <input v-model="formSize.bodyType" value="7. BIG II" class="hidden" type="radio" name="body-type" :id="`big-2`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`big-2`">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">7. BIG II</div>
+                                <div class="label-name">7. BIG II</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
                         <div class="">
                             <input v-model="formSize.bodyType" value="3. STANDARD II" class="hidden" type="radio" name="body-type" :id="`standard-3`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`standard-3`">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">3. STANDARD II</div>
+                                <div class="label-name">3. STANDARD II</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
@@ -342,14 +342,14 @@
                         <div class="">
                             <input v-model="formSize.sleeve" value="1. SLIM SLEEVE" class="hidden" type="radio" name="sleeve" :id="`slim-sleeve`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`slim-sleeve`">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">1. SLIM SLEEVE</div>
+                                <div class="label-name">1. SLIM SLEEVE</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
                         <div class="">
                             <input v-model="formSize.sleeve" value="2. REGULAR SLEEVE" class="hidden" type="radio" name="sleeve" :id="`regular-sleeve`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`regular-sleeve`">
-                                <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50">2. REGULAR SLEEVE</div>
+                                <div class="label-name">2. REGULAR SLEEVE</div>
                                 <span class="checkbox-inner"></span>
                             </label>
                         </div>
@@ -373,67 +373,67 @@
                                     <tr class="*:border-2 *:border-primary-50 *:text-center">
                                         <td>SHIRT</td>
                                         <td>
-                                            <input v-model="formSize.shirt.neck" type="text" class="w-full text-center font-roboto">
+                                            <input v-model="formSize.shirt.neck" type="text" class="w-full text-center font-roboto print:text-lg">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.rightSleeve" type="text" class="w-full text-center font-roboto">
+                                            <input v-model="formSize.shirt.rightSleeve" type="text" class="w-full text-center font-roboto print:text-lg">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.leftSleeve" type="text" class="w-full text-center font-roboto">
+                                            <input v-model="formSize.shirt.leftSleeve" type="text" class="w-full text-center font-roboto print:text-lg">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.chest" type="text" class="w-full text-center font-roboto">
+                                            <input v-model="formSize.shirt.chest" type="text" class="w-full text-center font-roboto print:text-lg">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.waist" type="text" class="w-full text-center font-roboto">
+                                            <input v-model="formSize.shirt.waist" type="text" class="w-full text-center font-roboto print:text-lg">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.shoulder" type="text" class="w-full text-center font-roboto">
+                                            <input v-model="formSize.shirt.shoulder" type="text" class="w-full text-center font-roboto print:text-lg">
                                         </td>
                                     </tr>
                                     <tr class="*:border-2 *:border-primary-50 *:text-center">
                                         <td>ACTUAL</td>
                                         <td>
-                                            <input v-model="formSize.actual.neck" type="text" class="w-full text-center font-roboto">
+                                            <input v-model="formSize.actual.neck" type="text" class="w-full text-center font-roboto print:text-lg">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.rightSleeve" type="text" class="w-full text-center font-roboto">
+                                            <input v-model="formSize.actual.rightSleeve" type="text" class="w-full text-center font-roboto print:text-lg">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.leftSleeve" type="text" class="w-full text-center font-roboto">
+                                            <input v-model="formSize.actual.leftSleeve" type="text" class="w-full text-center font-roboto print:text-lg">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.chest" type="text" class="w-full text-center font-roboto">
+                                            <input v-model="formSize.actual.chest" type="text" class="w-full text-center font-roboto print:text-lg">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.waist" type="text" class="w-full text-center font-roboto">
+                                            <input v-model="formSize.actual.waist" type="text" class="w-full text-center font-roboto print:text-lg">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.shoulder" type="text" class="w-full text-center font-roboto">
+                                            <input v-model="formSize.actual.shoulder" type="text" class="w-full text-center font-roboto print:text-lg">
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
 
-                        <div class="grid grid-cols-2 xl:grid-cols-4 mt-10 mb-10 *:px-2 *:pt-2 *:pb-1 text-primary-50 text-sm tracking-widest whitespace-pre">
+                        <div class="grid grid-cols-2 xl:grid-cols-4 mt-10 mb-10 *:px-2 *:pt-2 *:pb-1 text-primary-50 tracking-widest whitespace-pre">
                             <div class="border-2 border-primary-50">SPECIAL ADJUSTMENT</div>
                             <div class="flex border-r-2 border-primary-50 border-y-2">
                                 <div>NECK SIZE :</div>
                                 <div>
-                                    <input v-model="formSize.sa.neckSize" type="text" class="w-full text-center font-roboto">
+                                    <input v-model="formSize.sa.neckSize" type="text" class="w-full text-center font-roboto print:text-lg">
                                 </div>
                             </div>
                             <div class="flex border-r-2 border-primary-50 border-y-2 max-xl:border-l-2">
                                 <div>SHOULDER :</div>
                                 <div>
-                                    <input v-model="formSize.sa.shoulder" type="text" class="w-full text-center font-roboto">
+                                    <input v-model="formSize.sa.shoulder" type="text" class="w-full text-center font-roboto print:text-lg">
                                 </div>
                             </div>
                             <div class="flex border-r-2 border-primary-50 border-y-2">
                                 <div>BACK LENGTH :</div>
                                 <div>
-                                    <input v-model="formSize.sa.backLength" type="text" class="w-full text-center font-roboto">
+                                    <input v-model="formSize.sa.backLength" type="text" class="w-full text-center font-roboto print:text-lg">
                                 </div>
                             </div>
                         </div>
@@ -449,8 +449,10 @@
                             <textarea v-model="additionalNote" class="w-full h-full p-2 border-2 border-primary-50 font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" name="" id="" placeholder="NOTE"></textarea>
                         </div>
                         <div class="col-span-2 space-y-2">
-                            <input v-model="discount" type="number"  class="w-full px-4 pt-2 pb-1 border-2 number-input border-primary-50 text-primary-50" placeholder="DISCOUNT"/>
-                            <!-- <input v-model="price" type="number" class="w-full px-4 pt-2 pb-1 border-2 number-input border-primary-50 text-primary-50" placeholder="RP" /> -->
+                            <div class="flex items-center">
+                                <input v-model="discount" type="number" class="w-full px-4 pt-2 pb-1 border-2 number-input border-primary-50 text-primary-50" placeholder="DISCOUNT"/>
+                                <span>%</span>
+                            </div>
                             <VueNumber v-model.lazy="price" v-bind="number_input" class="w-full px-4 pt-2 pb-1 border-2 number-input border-primary-50 text-primary-50"></VueNumber>
                             <div class="print:hidden">
                                 <button @click="basicAmount()" class="w-full px-5 pt-3 pb-2 text-center bg-secondary text-primary-50">APPLY PRICE</button>
@@ -473,6 +475,10 @@
             @apply font-bold tracking-widest text-white uppercase
         }
 
+    }
+
+    .label-name {
+        @apply text-xs print:text-lg font-bold tracking-widest text-center uppercase text-primary-50;
     }
 
     input[type="radio"] + label span.checkbox-inner {

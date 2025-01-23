@@ -61,7 +61,7 @@ const { handlePrint } = useVueToPrint({
                         <tr>
                             <td width="20%">{{ order.quantity + 'x' }}</td>
                             <td width="20%">{{ priceFormat2(order.price) }}</td>
-                            <td class="text-right"><span v-if="order.discount_detail?.discount">(-{{ order.discount_detail.discount }}%)</span>{{ priceFormat(order.total_price - order.discount) }}  </td>
+                            <td class="text-right"><span v-if="order.discount_detail?.discount">(-{{ order.discount_detail.discount }}%)</span>{{ priceFormat(order.total_price - (order?.discount ?? 0)) }}  </td>
                         </tr>
                     </template>
 
