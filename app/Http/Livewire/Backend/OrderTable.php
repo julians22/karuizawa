@@ -14,6 +14,10 @@ class OrderTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id');
+
+        $this->setBulkActions([
+            'syncAccurate' => 'Sync to Accurate',
+        ]);
     }
 
     public function filters(): array
