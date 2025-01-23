@@ -170,7 +170,7 @@
                                 <div class="alert alert-success">
                                     @lang('Order is synced to Accurate')
                                     {{-- Date --}}
-                                    <small>{{ $order->accurate_synced_at->diffForHumans() }}</small>
+                                    <small>{{ $order->accurate_sync_date->diffForHumans() }}</small>
                                 </div>
                             @else
                             {{-- Upload to accurate --}}
