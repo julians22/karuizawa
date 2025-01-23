@@ -210,16 +210,16 @@
 <template>
     <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" :extends="extend">
         <template #sidebar>
-            <div :class="{'hidden': !extend}" class="sticky top-0 h-screen overflow-y-auto scroll-box bg-green">
-                <div class="py-20 bg-primary-50">
+            <div :class="{'hidden': !extend}" class="top-0 sticky bg-green h-screen overflow-y-auto scroll-box">
+                <div class="bg-primary-50 py-20">
                     <div class="mx-[5%] xl:mx-[10%] 2xl:mx-[20%] font-roboto text-white">
                         <div>
-                            <div class="text-2xl tracking-widest text-center uppercase xl:text-4xl font-josefin">ORDER SUMMARY</div>
-                            <div class="w-4/6 h-0.5 bg-white mx-auto opacity-70 my-10"></div>
+                            <div class="font-josefin text-2xl text-center xl:text-4xl uppercase tracking-widest">ORDER SUMMARY</div>
+                            <div class="bg-white opacity-70 mx-auto my-10 w-4/6 h-0.5"></div>
                             <div>
                                 <table>
                                     <tbody class="*:space-y-4">
-                                        <tr class="lg:whitespace-pre-wrap *:align-top max-xl:text-sm"
+                                        <tr class="*:align-top max-xl:text-sm lg:whitespace-pre-wrap"
                                             v-for="(summaryBasic, key) in formBasic" :key="key">
                                             <td class="capitalize">{{ stingConvert(key) }}</td>
                                             <td class="w-4 text-center">:</td>
@@ -237,7 +237,7 @@
                                         <tr>
                                             <td class="font-bold uppercase">Option:</td>
                                         </tr>
-                                        <tr class="lg:whitespace-pre-wrap *:align-top max-xl:text-sm"
+                                        <tr class="*:align-top max-xl:text-sm lg:whitespace-pre-wrap"
                                             v-for="(summaryOption, key) in formOptions" :key="key">
                                             <td class="capitalize">{{ stingConvert(key) }} </td>
                                             <td class="w-4 text-center">:</td>
@@ -280,8 +280,8 @@
                             </div>
                         </div>
                         <div class="mt-20">
-                            <div class="text-2xl tracking-widest text-center uppercase xl:text-4xl font-josefin">ACTUAL</div>
-                            <div class="w-4/6 h-0.5 bg-white mx-auto opacity-70 my-10"></div>
+                            <div class="font-josefin text-2xl text-center xl:text-4xl uppercase tracking-widest">ACTUAL</div>
+                            <div class="bg-white opacity-70 mx-auto my-10 w-4/6 h-0.5"></div>
                             <div>
                                 <table>
                                     <tbody class="*:space-y-4">
@@ -381,8 +381,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="text-white font-roboto">
-                    <div class="py-8 bg-secondary-50 px-[5%] xl:px-[10%] 2xl:px-[20%]">
+                <div class="font-roboto text-white">
+                    <div class="bg-secondary-50 px-[5%] xl:px-[10%] 2xl:px-[20%] py-8">
                         <div>
                             <table>
                                 <tbody class="*:space-y-4 font-bold">
@@ -415,7 +415,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="pt-3 pb-2 font-bold tracking-widest text-center uppercase bg-black lg:text-lg xl:text-xl 2xl:text-3xl font-josefin">
+                    <div class="bg-black pt-3 pb-2 font-bold font-josefin text-center lg:text-lg xl:text-xl 2xl:text-3xl uppercase tracking-widest">
                         IDR {{ currencyFormat(totalPrice) ?? '0' }},-
                     </div>
                 </div>
@@ -435,20 +435,17 @@
             </template>
 
         <template v-if="storePage.get == 'semi-custom' && storeCustomer.getCustomer != null">
-            <!-- <template v-if="currentSection == 'custom-shirt'"> -->
-                <CustomShirt @additionalBasic="additionalBasic" :dataSemiCustom="props.data_semi_custom" ref="childBasic" />
-            <!-- </template> -->
+            
+            <CustomShirt @additionalBasic="additionalBasic" :dataSemiCustom="props.data_semi_custom" ref="childBasic" />
+            
+            <CustomRequest @additionalOption="additionalOption" :dataOptions="props.data_semi_custom" ref="childOption"/>
 
-            <!-- <template v-if="currentSection == 'custom-request'"> -->
-                <CustomRequest @additionalOption="additionalOption" :dataOptions="props.data_semi_custom" ref="childOption"/>
-            <!-- </template> -->
-
-            <div class="absolute bottom-0 right-0 flex">
-                <button @click="addCustomRequest()" class="flex items-center gap-2 p-6 tracking-widest text-white bg-primary-300">
-                    <span>ADD CUSTOM REQUEST </span>
+            <div class="right-0 bottom-0 absolute flex">
+                <button @click="addCustomRequest()" class="flex items-center gap-2 bg-primary-300 p-6 text-white tracking-widest">
+                    <span>ADD ANOTHER CUSTOM REQUEST </span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                 </button>
-                <button @click="btnSubmit()" class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50">
+                <button @click="btnSubmit()" class="flex items-center gap-2 bg-secondary-50 p-6 text-white tracking-widest">
                     <span>SUBMIT</span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                 </button>

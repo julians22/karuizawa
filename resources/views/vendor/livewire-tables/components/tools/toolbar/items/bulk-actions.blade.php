@@ -30,7 +30,7 @@
             @if($this->isTailwind)
                         x-on:click="open = !open"
                         @else
-                        data-toggle="dropdown" data-bs-toggle="dropdown"
+                        data-coreui-toggle="dropdown" data-bs-toggle="dropdown"
                         @endif
             aria-haspopup="true" aria-expanded="false">
 

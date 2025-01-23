@@ -123,8 +123,8 @@
                                             <td>{{ price_format($item->price) }}</td>
                                             <td>
                                                 {{ price_format($item->total_price) }}
-                                                @if ($item->discount)
-                                                    <span class="badge bg-danger">{{ $item->discount }}%</span>
+                                                @if ($item->discount && $item->discount_detail)
+                                                    <span class="badge bg-danger">{{ $item->discount_detail['discount'] }}%</span>
                                                 @endif
                                             </td>
                                         </tr>
@@ -170,8 +170,10 @@
                                 <div class="alert alert-success">
                                     @lang('Order is synced to Accurate')
                                     {{-- Date --}}
-                                    <small>{{ $order->accurate_sync_date->diffForHumans() }}</small>
+                                    <small>{{ $order->accurate_sync_date->diffForHumans() }} <span class="badge bg-info">No Faktur: {{ $order->accurate_order_number }}</span></small>
                                 </div>
+
+
                             @else
                             {{-- Upload to accurate --}}
                             <x-utils.link :href="route('admin.order.upload-accurate', $order)"

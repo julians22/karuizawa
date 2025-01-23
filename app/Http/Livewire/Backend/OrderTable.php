@@ -2,9 +2,12 @@
 
 namespace App\Http\Livewire\Backend;
 
+use App\Domains\Auth\Models\User;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Order;
+use Livewire\Attributes\On;
+use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class OrderTable extends DataTableComponent
@@ -37,6 +40,14 @@ class OrderTable extends DataTableComponent
                     '3' => 'PIK'
                 ])
                 ->filter(fn($builder, $value) => $builder->where('store_id', $value)),
+            DateFilter::make('Order Date')
+                ->filter(fn($builder, $value) => $builder->whereDate('order_date', $value)),
+            SelectFilter::make('Sync Status')
+                ->options([
+                    'synced' => 'Synced',
+                    'not_synced' => 'Not Synced',
+                ])
+                ->filter(fn($builder, $value) => $builder->where('accurate_order_number', $value === 'synced' ? '!=' : '=', null)),
         ];
     }
 
@@ -58,8 +69,8 @@ class OrderTable extends DataTableComponent
                 ->sortable(),
             Column::make("Semi Custom?")
                 ->label(fn($row, Column $column) => $row->orderItems->where('product_type', 'App\Models\SemiCustomProduct')->count() > 0 ? 'Yes' : 'No'),
-            Column::make('Synced?')
-                ->label(fn($row, Column $column) => $row->accurate_order_id ? 'Yes' : 'No'),
+            Column::make('Accurate Info', 'accurate_order_number')
+                ->format(fn($value, $row) => $value ? $value : "Not Synced"),
             Column::make("Created at", "created_at")
                 ->sortable(),
             Column::make("Updated at", "updated_at")
@@ -67,5 +78,17 @@ class OrderTable extends DataTableComponent
             Column::make("Actions")
                 ->label(fn($row, Column $column) => view('backend.order.includes.actions', ['order' => $row])),
         ];
+    }
+
+    function syncAccurate(){
+
+        // check if order_date, status, is applied to the selected orders
+        $filters = $this->getAppliedFiltersWithValues('sync_status');
+        $syncStatus = $filters['sync_status'] ?? 'not_synced';
+
+        if ($syncStatus === 'synced') {
+            $this->dispatch('notify-feature');
+        }
+        $this->dispatch('notify-feature');
     }
 }
