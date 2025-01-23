@@ -12,7 +12,7 @@
     const Layout = defineAsyncComponent(() => import('../includes/Layout.vue'));
 
     const personal_data = reactive({
-        user_id: user.id,
+        user_id: props.user.id,
         full_name: '',
         phone: '',
         address: '',
@@ -77,7 +77,7 @@
             </div>
             <div class="items-center grid grid-cols-6 mb-4">
                 <label for="phone" class="block col-span-1 mb-2 font-medium text-primary-50 uppercase tracking-widest">Phone No</label>
-                <input type="text" id="phone" 
+                <input type="text" id="phone"
                     v-model.lazy="personal_data.phone"
                     class="block border-primary-50 col-span-5 bg-transparent p-2.5 border rounded-full w-full text-primary-50"/>
             </div>
@@ -105,7 +105,7 @@
 
         <!-- Change password -->
         <div class="flex justify-between items-center bg-primary-50 px-14 py-7">
-            <div class="font-bold text-2xl text-white uppercase tracking-widest">Change password 
+            <div class="font-bold text-2xl text-white uppercase tracking-widest">Change password
                 <span class="text-base">
                     (Leave blank if you don't want to change password)
                 </span>
