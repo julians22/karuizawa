@@ -34,7 +34,8 @@ Route::group(['prefix' => 'customer'], function () {
     Route::get('search', function (Request $request) {
         $keyword = $request->keyword;
 
-        $data = \App\Models\Customer::where(function ($query) use ($keyword) {
+        $data = \App\Models\Customer::where('id', '!=', 1)
+            ->where(function ($query) use ($keyword) {
             $query->where('full_name', 'like', '%' . $keyword . '%')
                 ->orWhere('phone', 'like', '%' . $keyword . '%')
                 ->orWhere('email', 'like', '%' . $keyword . '%');
