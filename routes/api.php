@@ -99,5 +99,5 @@ Route::post('send-payment', [OrderController::class, 'store_payment']);
 Route::post('semi-custom/submit', [SemiCustomConteroller::class, 'submit']);
 
 Route::group(['prefix' => 'profile', 'as' => 'profile.'], function() {
-    Route::patch('update', [ProfileController::class, 'update'])->name('update');
+    Route::post('update', [ProfileController::class, 'update'])->name('update');
 });

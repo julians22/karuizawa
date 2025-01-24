@@ -6,7 +6,7 @@
         user: Object,
         route_edit_profile: String,
         route_logout: String,
-        route_edit_profile: String,
+        route_update_user: String,
     });
 
     const Layout = defineAsyncComponent(() => import('../includes/Layout.vue'));
@@ -22,21 +22,28 @@
         confirm_password: '',
     });
 
+    const isLoading = ref(false);
+
     const updateProfile = () => {
+
+        isLoading.value = true;
 
         // validate
         if (personal_data.current_password && !personal_data.new_password) {
             alert('Please enter new password');
+            isLoading.value = false;
             return;
         }
 
         if (personal_data.current_password && (personal_data.new_password && !personal_data.confirm_password)) {
             alert('Please enter confirm password');
+            isLoading.value = false;
             return;
         }
 
         if (personal_data.current_password && (personal_data.new_password !== personal_data.confirm_password)) {
             alert('Password does not match');
+            isLoading.value = false;
             return;
         }
 
@@ -45,20 +52,60 @@
         form.append('full_name', personal_data.full_name);
         form.append('phone', personal_data.phone);
         form.append('address', personal_data.address);
+        form.append('is_male', personal_data.is_male);
         if (personal_data.current_password) {
             form.append('current_password', personal_data.current_password);
             form.append('new_password', personal_data.new_password);
             form.append('confirm_password', personal_data.confirm_password);
         }
 
-        console.log(personal_data.value);
+        try {
+            // post data method patch to route_update_user
+            axios.post(props.route_update_user, form)
+                .then(response => {
+                    console.log(response.data);
+                    
+                    if (response.data.success) {
+                        alert('Profile updated');
+
+                        // reload page
+                        location.reload();
+                    }
+
+                    if (response.data.error) {
+                        alert(response.data.error);
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+
+                    // if error validation code 422
+                    // loop the erros
+                    if (error.response.status === 422) {
+                        let errors = error.response.data.errors;
+                        let message = '';
+                        for (let key in errors) {
+                            message += errors[key][0] + '\n';
+                        }
+                        alert(message);
+                    }
+                })
+                .finally(() => {
+                    isLoading.value = false;
+                });
+        }
+        catch (error) {
+            console.log(error);
+
+            isLoading.value = false;
+        }
     }
 
     onMounted(() => {
         personal_data.full_name = props.user.name;
-        personal_data.phone = props.user.personalData?.phone;
-        personal_data.address = props.user.personalData?.address;
-        personal_data.is_male = props.user.personalData?.is_male || 1;
+        personal_data.phone = props.user.personal_data?.phone;
+        personal_data.address = props.user.personal_data?.address;
+        personal_data.is_male = props.user.personal_data?.is_male ?? 1;
     });
 
 
@@ -119,16 +166,19 @@
             </div>
             <div class="items-center gap-4 grid grid-cols-8 mb-4">
                 <label for="new-pass" class="block col-span-2 mb-2 font-medium text-primary-50 uppercase tracking-widest">new password</label>
-                <input type="text" v-model="personal_data.new_password" id="new-pass" class="block border-primary-50 col-span-6 bg-transparent p-2.5 border rounded-full w-full text-primary-50"/>
+                <input type="password" v-model="personal_data.new_password" id="new-pass" class="block border-primary-50 col-span-6 bg-transparent p-2.5 border rounded-full w-full text-primary-50"/>
             </div>
             <div class="items-center gap-4 grid grid-cols-8 mb-4">
                 <label for="confirm-pass" class="block col-span-2 mb-2 font-medium text-primary-50 uppercase tracking-widest">CONFIRM password</label>
-                <input type="text" v-model="personal_data.confirm_password" id="confirm-pass" class="block border-primary-50 col-span-6 bg-transparent p-2.5 border rounded-full w-full text-primary-50"/>
+                <input type="password" v-model="personal_data.confirm_password" id="confirm-pass" class="block border-primary-50 col-span-6 bg-transparent p-2.5 border rounded-full w-full text-primary-50"/>
             </div>
         </div>
 
         <div class="float-right">
-                <button @click="updateProfile" class="flex items-center gap-2 bg-secondary-50 px-14 py-6 text-white tracking-widest">
+                <button @click="updateProfile" :disabled="isLoading"
+                    class="flex items-center gap-2 bg-secondary-50 px-14 py-6 text-white tracking-widest"
+                    :class="{'opacity-50': isLoading}"
+                    >
                     <span class="uppercase">update</span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                 </button>

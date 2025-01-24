@@ -14,7 +14,7 @@ class ProfileController extends Controller
     {
         $request->validate([
             'phone' => 'required|min:10',
-            'address' => 'required|string',
+            'address' => 'sometimes|nullable|string',
             'is_male' => 'required|boolean',
             'user_id' => 'required|exists:users,id',
         ]);
@@ -26,6 +26,14 @@ class ProfileController extends Controller
                 'success' => false,
                 'message' => 'User not found',
             ], 404);
+        }
+
+        if (!$user->isCrew()) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'You are not authorized to update this profile',
+            ], 403);
         }
 
         if ($request->has('current_password')) {
@@ -58,7 +66,8 @@ class ProfileController extends Controller
             ['user_id' => $request->user_id],
             [
                 'phone' => $request->phone,
-                'address' => $request->address,
+                'address' => $request->address ?? '',
+                'is_male' => $request->is_male
             ]);
 
 
