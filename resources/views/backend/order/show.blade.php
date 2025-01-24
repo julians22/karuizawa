@@ -122,7 +122,7 @@
                                             <td>{{ $item->quantity }}</td>
                                             <td>{{ price_format($item->price) }}</td>
                                             <td>
-                                                {{ price_format($item->total_price) }}
+                                                {{ price_format($item->total_price - $item->discount) }}
                                                 @if ($item->discount && $item->discount_detail)
                                                     <span class="badge bg-danger">{{ $item->discount_detail['discount'] }}%</span>
                                                 @endif

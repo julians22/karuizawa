@@ -162,6 +162,10 @@
         }
     }
 
+    const goToCart = () => {
+        window.location.href = "/cart";
+    }
+
     const addCustomRequest = () => {
         childBasic.value.basicAmount();
         childOption.value.amountOption();
@@ -205,6 +209,11 @@
 //                 console.log('error');
 //             })
 //     }
+
+    const hasSemiCustom = computed(() => {
+        return storeProducts.semi_custom.length > 0 ? true : false;
+    });
+
 </script>
 
 <template>
@@ -435,12 +444,17 @@
             </template>
 
         <template v-if="storePage.get == 'semi-custom' && storeCustomer.getCustomer != null">
-            
+
             <CustomShirt @additionalBasic="additionalBasic" :dataSemiCustom="props.data_semi_custom" ref="childBasic" />
-            
+
             <CustomRequest @additionalOption="additionalOption" :dataOptions="props.data_semi_custom" ref="childOption"/>
 
             <div class="right-0 bottom-0 absolute flex">
+
+                <button v-if="hasSemiCustom" @click="goToCart" class="flex items-center gap-2 bg-secondary-50 p-6 text-white tracking-widest">
+                    <span>CANCEL & SUBMIT</span>
+                </button>
+
                 <button @click="addCustomRequest()" class="flex items-center gap-2 bg-primary-300 p-6 text-white tracking-widest">
                     <span>ADD ANOTHER CUSTOM REQUEST </span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">

@@ -43,6 +43,7 @@ class OrderController extends Controller
                 $detailItem[] = [
                     'itemNo' => $orderItem->product->sku,
                     'unitPrice' => $orderItem->price,
+					'itemCashDiscount' => $orderItem->discount,
                     'detailName' => $orderItem->product->product_name,
                     'quantity' => $orderItem->quantity,
                     'departmentName' => 'Apparel',
