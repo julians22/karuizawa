@@ -33,7 +33,7 @@
 </script>
 
 <template>
-    <div class="printable min-w-[1900px]">
+    <div class="printable min-w-[1900px] pointer-events-none">
         <div class="w-full py-3 mb-2 bg-secondary">
             <div class="flex items-center justify-between mx-20 text-secondary-50">
                 <div>
