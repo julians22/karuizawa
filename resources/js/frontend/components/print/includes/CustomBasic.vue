@@ -11,7 +11,21 @@
         prefix: 'Rp ',
         precision: 0,
         masked: false,
-    }
+    };
+
+    const baseAmount = computed(() => {
+        let base =  props.dataSemiCustom.base_price;
+        let discount = props.dataSemiCustom.base_discount;
+        let option_discount = props.dataSemiCustom.option_discount;
+
+        let baseAfterDiscount = base - (base * discount / 100);
+
+        return baseAfterDiscount - option_discount;
+    });
+
+    const optionAmount = computed(() => {
+        return props.dataSemiCustom.option_additional_price + props.dataSemiCustom.option_total;
+    })
 
 
     const props = defineProps({
@@ -445,10 +459,101 @@
                         <div class="cat-name">ADDITIONAL NOTES</div>
                     </div>
                     <div class="grid grid-cols-5 gap-3 px-6 my-4">
-                        <div class="col-span-3">
+                        <div class="col-span-6">
                             <textarea v-model="additionalNote" class="w-full h-full p-2 border-2 border-primary-50 font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" name="" id="" placeholder="NOTE"></textarea>
                         </div>
-                        <div class="col-span-2 space-y-2">
+                        <div class="w-full col-span-5 p-2 bg-secondary">
+                            <div class="w-full">
+                                <div class="text-sm tracking-widest uppercase text-primary-50">Total price</div>
+                                <div class="grid w-full uppercase grid-cols-[repeat(27,1fr)] items-center text-center">
+                                    <div class="flex flex-col col-span-6 bg-white border-2 border-primary-50">
+                                        <div class="py-0.5 text-center bg-primary-50 text-white text-sm">price</div>
+                                        <div class="flex flex-col items-center justify-center px-2 py-1 h-14">
+                                            <div class="capitalize font-roboto">{{ priceFormat(baseAmount) }}</div>
+                                            <small class="text-[8px]">(base, discount, GC)</small>
+                                        </div>
+                                    </div>
+                                    <div class="col-span-1">+</div>
+                                    <div class="flex flex-col col-span-6 bg-white border-2 border-primary-50">
+                                        <div class="py-0.5 text-center bg-primary-50 text-white text-sm">option</div>
+                                        <div class="flex items-center justify-center px-2 py-1 h-14">
+                                            <div class="capitalize font-roboto">{{ priceFormat(optionAmount) }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-span-1">+</div>
+                                    <div class="flex flex-col col-span-6 bg-white border-2 border-primary-50">
+                                        <div class="py-0.5 text-center bg-primary-50 text-white text-sm">delivery cost</div>
+                                        <div class="flex items-center justify-center px-2 py-1 h-14">
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-span-1">=</div>
+                                    <div class="flex flex-col col-span-6 bg-white border-2 border-primary-50">
+                                        <div class="py-0.5 text-center bg-primary-50 text-white text-sm">total</div>
+                                        <div class="flex items-center justify-center px-2 py-1 h-14">
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-5 gap-2 mt-2">
+                                <div class="col-span-3">
+                                    <table class="w-full">
+                                        <thead>
+                                            <tr class="*:border *:border-primary-50 *:px-2 *:pt-2 *:pb-1">
+                                                <th>membership number</th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+
+                                    <table>
+                                        <thead class="text-sm text-left uppercase">
+                                            <tr class="*:border-x *:border-primary-50 *:px-2 *:pt-2 *:pb-1">
+                                                <th>Name</th>
+                                                <th class="w-full">{{ props.dataSemiCustom.customer.full_name }}</th>
+                                            </tr>
+                                            <tr class="*:border *:border-primary-50 *:px-2 *:pt-2 *:pb-1">
+                                                <th>address</th>
+                                                <th class="w-full">{{ props.dataSemiCustom.customer.address }}</th>
+                                            </tr>
+                                            <tr class="*:border *:border-primary-50 *:px-2 *:pt-2 *:pb-1">
+                                                <th>tel / hp</th>
+                                                <th class="w-full">{{ props.dataSemiCustom.customer.phone }}</th>
+                                            </tr>
+                                            <tr class="*:border *:border-primary-50 *:px-2 *:pt-2 *:pb-1">
+                                                <th>email</th>
+                                                <th class="w-full">{{ props.dataSemiCustom.customer.email }}</th>
+                                            </tr>
+                                            <tr class="*:border *:border-primary-50 *:px-2 *:pt-2 *:pb-1">
+                                                <th class="whitespace-nowrap">handling date</th>
+                                                <th class="w-full"></th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                                <div class="flex flex-col justify-between col-span-2 uppercase">
+                                    <div class="flex flex-col col-span-6 bg-white border-2 border-primary-50">
+                                        <div class="py-0.5 text-center bg-primary-50 text-white text-sm">customer sign</div>
+                                        <div class="flex items-center justify-center h-16 px-2 py-1">
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col col-span-6 bg-white border-2 border-primary-50">
+                                        <div class="py-0.5 text-center bg-primary-50 text-white text-sm">store sign</div>
+                                        <div class="flex items-center justify-center h-16 px-2 py-1">
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-span-2 space-y-2">
                             <div class="flex items-center">
                                 <input v-model="discount" type="number" class="w-full px-4 pt-2 pb-1 border-2 number-input border-primary-50 text-primary-50" placeholder="DISCOUNT"/>
                                 <span>%</span>
@@ -457,7 +562,7 @@
                             <div class="print:hidden">
                                 <button @click="basicAmount()" class="w-full px-5 pt-3 pb-2 text-center bg-secondary text-primary-50">APPLY PRICE</button>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>

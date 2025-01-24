@@ -33,7 +33,7 @@ class DashboardController
 
     public function print_sc($id)
     {
-        $semiCustom = SemiCustomProduct::findOrFail($id);
+        $semiCustom = SemiCustomProduct::with(['orderItems', 'orderItems.order','customer'])->findOrFail($id);
         $dataConfig = config('karuizawa-master');
 
         $semiCustom = $semiCustom->toArray();

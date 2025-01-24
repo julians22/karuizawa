@@ -419,6 +419,11 @@
                         </div>
                     </div>
                  </div>
+
+                 <div class="flex items-center gap-2 p-4 mx-6 mt-4 bg-secondary">
+                    <label for="fabric-code" class="text-sm tracking-wider uppercase text-primary-50 whitespace-nowrap">name</label>
+                    <input type="text" :value="props.dataSemiCustom.name" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50 font-roboto">
+                 </div>
             </div>
 
             <div>
@@ -695,12 +700,15 @@
                    </div>
                </div>
 
-               <div class="mt-2">
+               <div class="mt-2 m">
                    <div class="flex items-center justify-between px-4 py-2 bg-blue-ka">
                        <div class="font-bold tracking-widest text-white uppercase lg:text-xl">ADDITIONAL NOTES</div>
                    </div>
                    <div class="grid grid-cols-6 gap-3 px-2 mt-2">
-                        <div class="col-span-3">
+                        <div class="col-span-6">
+                            <textarea class="w-full h-full p-2 border border-primary-50 font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" v-model="additionalNote" name="" id="" placeholder="NOTE"></textarea>
+                        </div>
+                        <div class="col-span-6">
                             <table class="w-full text-sm uppercase text-primary-50">
                                 <thead>
                                     <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border *:text-center">
@@ -747,7 +755,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="col-span-3">
+                        <!-- <div class="col-span-3">
                             <div class="col-span-3">
                                 <textarea class="w-full h-full p-2 border border-primary-50 font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" v-model="additionalNote" name="" id="" placeholder="NOTE"></textarea>
                             </div>
@@ -765,7 +773,7 @@
                                     <button class="w-full px-5 pt-3 pb-2 text-center bg-secondary text-pink-ka">APPLY PRICE</button>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                    </div>
                </div>
             </div>
