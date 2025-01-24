@@ -33,7 +33,7 @@ class DashboardController
 
     public function print_sc($id)
     {
-        $semiCustom = SemiCustomProduct::with(['orderItems', 'orderItems.order','customer'])->findOrFail($id);
+        $semiCustom = SemiCustomProduct::with(['customer', 'orderItem', 'orderItem.order.user'])->findOrFail($id);
         $dataConfig = config('karuizawa-master');
 
         $semiCustom = $semiCustom->toArray();
@@ -85,11 +85,7 @@ class DashboardController
                                     $dataConfig['cleric']['data']['fabric'][$keyK]['code'] = $semiCustom['option_form']["cleric"]['fabricCode'];
                                 }else{
                                     $dataConfig['cleric']['data']['fabric'][$keyK]['code'] = [];
-
-                                    dd('as');
                                 }
-                            }else{
-                                $dataConfig['cleric']['data']['fabric'][$keyK]['code'] = [];
                             }
 
                         }

@@ -33,28 +33,28 @@
 </script>
 
 <template>
-    <div class="printable min-w-[1900px] pointer-events-none">
-        <div class="w-full py-3 mb-2 bg-secondary">
-            <div class="flex items-center justify-between mx-20 text-secondary-50">
+    <div class="min-w-[1900px] pointer-events-none printable">
+        <div class="bg-secondary mb-2 py-3 w-full">
+            <div class="flex justify-between items-center mx-20 text-secondary-50">
                 <div>
                     <img class="w-60" src="/img/brand/logo-01.png" alt="logo">
                 </div>
                 <div class="text-base text-center uppercase">
                     <div class="">Pattern order shirt (for men)</div>
-                    <div class="h-[1px] bg-secondary-50 mb-0.5"></div>
+                    <div class="bg-secondary-50 mb-0.5 h-[1px]"></div>
                     <div class="text-sm tracking-widest">Order Form</div>
                 </div>
                 <div>
                     <div class="text-right uppercase">
-                        <div class="text-sm">Order No : {{ props.data_semi_custom.order_items[0].order.order_number }}</div>
+                        <div class="text-sm">Order No : {{ props.data_semi_custom.order_item.order.order_number }}</div>
                         <div class="text-sm">
-                            <span>Order Date : {{ moment(props.data_semi_custom.order_items[0].order.created_at).format('DD/MM/YYYY') }}</span>
+                            <span>Order Date : {{ moment(props.data_semi_custom.order_item.order.created_at).format('DD/MM/YYYY') }}</span>
                             <span> | </span>
                             <span>
                                 Option
                                 <div class="inline-block">
                                     <input :checked="props.data_semi_custom.option_total > 0" class="hidden" type="radio" :id="`options`">
-                                    <label class="flex items-center h-full rounded cursor-pointer" :for="`options`">
+                                    <label class="flex items-center rounded h-full cursor-pointer" :for="`options`">
                                         <!-- <div class="label-name">1. SLIM SLEEVE</div> -->
                                         <span class="checkbox-inner"></span>
                                     </label>
@@ -67,20 +67,20 @@
         </div>
         <CustomBasic @additionalBasic="additionalBasic" :dataConfig="props.data_config" :dataSemiCustom="props.data_semi_custom" ref="childBasic" />
         <div style="page-break-before: always;"></div>
-        <div class="w-full py-3 mb-2 bg-secondary">
-            <div class="flex items-center justify-between mx-20 text-secondary-50">
+        <div class="bg-secondary mb-2 py-3 w-full">
+            <div class="flex justify-between items-center mx-20 text-secondary-50">
                 <div>
                     <img class="w-60" src="/img/brand/logo-01.png" alt="logo">
                 </div>
                 <div class="text-base text-center uppercase">
                     <div class="">Pattern order shirt (for men)</div>
-                    <div class="h-[1px] bg-secondary-50 mb-0.5"></div>
+                    <div class="bg-secondary-50 mb-0.5 h-[1px]"></div>
                     <div class="text-sm tracking-widest">Order Form</div>
                 </div>
                 <div>
                     <div class="text-right uppercase">
-                        <div class="text-sm">Order No : {{ props.data_semi_custom.order_items[0].order.order_number }}</div>
-                        <div class="text-sm ">
+                        <div class="text-sm">Order No : {{ props.data_semi_custom.order_item.order.order_number }}</div>
+                        <div class="text-sm">
                             <span>
                                 fabric code:
                                 <div class="inline-flex">
@@ -90,7 +90,7 @@
                                             type="text"
                                             maxlength="1"
                                             :value="digit"
-                                            class="box-input print:text-lg"
+                                            class="print:text-lg box-input"
                                         >
                                     </div>
                                 </div>
@@ -112,7 +112,7 @@ input[type="radio"]:checked + label span.checkbox-inner {
         background-size: 14px 10px;
     }
     .checkbox-inner {
-        @apply flex justify-center items-center border border-secondary-50 text-transparent size-4;
+        @apply flex justify-center items-center border-secondary-50 border text-transparent size-4;
         background: transparent no-repeat center;
     }
 
@@ -122,7 +122,7 @@ input[type="radio"]:checked + label span.checkbox-inner {
     }
 
     .box-input-wrapper .box-input {
-        @apply block border-secondary-50 p-2 border text-center text-gray-900 text-xs size-7 bg-transparent;
+        @apply block border-secondary-50 bg-transparent p-2 border text-center text-gray-900 text-xs size-7;
     }
 
     .box-input-wrapper .box-input:not(:first-child) {
