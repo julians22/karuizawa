@@ -42,10 +42,10 @@
     @media print {
         .printable {
             -webkit-print-color-adjust: exact;
-            zoom: 50%;
+            zoom: 46%;
             @page {
                 size: 20in 14.5in;
-                margin: 0mm;
+                margin: 1mm;
             }
         }
 
