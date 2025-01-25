@@ -385,43 +385,43 @@
                                     <tr class="*:border-2 *:border-primary-50 *:text-center">
                                         <td>SHIRT</td>
                                         <td>
-                                            <input v-model="formSize.shirt.neck" type="text" class="w-full text-center font-roboto print:text-lg">
+                                            <input v-model="formSize.shirt.neck" type="text" class="w-full text-center font-roboto print:text-xl">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.rightSleeve" type="text" class="w-full text-center font-roboto print:text-lg">
+                                            <input v-model="formSize.shirt.rightSleeve" type="text" class="w-full text-center font-roboto print:text-xl">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.leftSleeve" type="text" class="w-full text-center font-roboto print:text-lg">
+                                            <input v-model="formSize.shirt.leftSleeve" type="text" class="w-full text-center font-roboto print:text-xl">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.chest" type="text" class="w-full text-center font-roboto print:text-lg">
+                                            <input v-model="formSize.shirt.chest" type="text" class="w-full text-center font-roboto print:text-xl">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.waist" type="text" class="w-full text-center font-roboto print:text-lg">
+                                            <input v-model="formSize.shirt.waist" type="text" class="w-full text-center font-roboto print:text-xl">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.shoulder" type="text" class="w-full text-center font-roboto print:text-lg">
+                                            <input v-model="formSize.shirt.shoulder" type="text" class="w-full text-center font-roboto print:text-xl">
                                         </td>
                                     </tr>
                                     <tr class="*:border-2 *:border-primary-50 *:text-center">
                                         <td>ACTUAL</td>
                                         <td>
-                                            <input v-model="formSize.actual.neck" type="text" class="w-full text-center font-roboto print:text-lg">
+                                            <input v-model="formSize.actual.neck" type="text" class="w-full text-center font-roboto print:text-xl">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.rightSleeve" type="text" class="w-full text-center font-roboto print:text-lg">
+                                            <input v-model="formSize.actual.rightSleeve" type="text" class="w-full text-center font-roboto print:text-xl">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.leftSleeve" type="text" class="w-full text-center font-roboto print:text-lg">
+                                            <input v-model="formSize.actual.leftSleeve" type="text" class="w-full text-center font-roboto print:text-xl">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.chest" type="text" class="w-full text-center font-roboto print:text-lg">
+                                            <input v-model="formSize.actual.chest" type="text" class="w-full text-center font-roboto print:text-xl">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.waist" type="text" class="w-full text-center font-roboto print:text-lg">
+                                            <input v-model="formSize.actual.waist" type="text" class="w-full text-center font-roboto print:text-xl">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.shoulder" type="text" class="w-full text-center font-roboto print:text-lg">
+                                            <input v-model="formSize.actual.shoulder" type="text" class="w-full text-center font-roboto print:text-xl">
                                         </td>
                                     </tr>
                                 </tbody>
@@ -433,19 +433,19 @@
                             <div class="flex border-r-2 border-primary-50 border-y-2">
                                 <div>NECK SIZE :</div>
                                 <div>
-                                    <input v-model="formSize.sa.neckSize" type="text" class="w-full text-center font-roboto print:text-lg">
+                                    <input v-model="formSize.sa.neckSize" type="text" class="w-full text-center font-roboto print:text-xl">
                                 </div>
                             </div>
                             <div class="flex border-r-2 border-primary-50 border-y-2 max-xl:border-l-2">
                                 <div>SHOULDER :</div>
                                 <div>
-                                    <input v-model="formSize.sa.shoulder" type="text" class="w-full text-center font-roboto print:text-lg">
+                                    <input v-model="formSize.sa.shoulder" type="text" class="w-full text-center font-roboto print:text-xl">
                                 </div>
                             </div>
                             <div class="flex border-r-2 border-primary-50 border-y-2">
                                 <div>BACK LENGTH :</div>
                                 <div>
-                                    <input v-model="formSize.sa.backLength" type="text" class="w-full text-center font-roboto print:text-lg">
+                                    <input v-model="formSize.sa.backLength" type="text" class="w-full text-center font-roboto print:text-xl">
                                 </div>
                             </div>
                         </div>
