@@ -71,6 +71,11 @@ return [
                         'price' => 0
                     ],
                     [
+                        'slug' => 'stand-collar',
+                        'name' => '10. stand collar',
+                        'price' => 0
+                    ],
+                    [
                         'slug' => 'low-bottom-down',
                         'name' => '12. low bottom down',
                         'price' => 0
@@ -181,6 +186,11 @@ return [
                     [
                         'slug' => 'short-round',
                         'name' => '8. short round',
+                        'price' => 0
+                    ],
+                    [
+                        'slug' => 'short-mitred',
+                        'name' => '9. short mitred',
                         'price' => 0
                     ]
                 ],
