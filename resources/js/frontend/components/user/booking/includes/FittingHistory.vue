@@ -13,14 +13,18 @@
                 applyKeyword: ''
             })
         },
-        user: Object
+        user: Object,
+        api_set_handling: String
     });
 
     const isRetrieving = ref(false);
 
     const DetailOrder = defineAsyncComponent(() => import('../utils/DetailFitting.vue'));
+    const SetHandlingDate = defineAsyncComponent(() => import('../utils/HandlingDate.vue'));
 
     const orderDetail = ref(false);
+    const handlingDate = ref(false);
+
 
     const bookings = ref(null);
 
@@ -62,6 +66,15 @@
         orderDetail.value.booking = await booking
     }
 
+    const onClickFittingDate = async (booking) => {
+        handlingDate.value.dialog = true
+        handlingDate.value.order_item = await booking
+    }
+
+    const handlingDateUpdated = (booking_item) => {
+        getBookings();
+    } 
+
     defineExpose({
         getBookings
     })
@@ -70,13 +83,14 @@
 <template>
     <div>
         <DetailOrder ref="orderDetail"/>
+        <SetHandlingDate ref="handlingDate" :api_set_handling="api_set_handling" @handling-date-updated="handlingDateUpdated"/>
 
-        <div class="container pt-10 pb-28">
+        <div class="pt-10 pb-28 container">
             <div v-if="isRetrieving">Loading Orders ...</div>
             <div v-else-if="!isRetrieving && bookings" v-for="booking in bookings.data">
                 <div class="flex justify-between">
                     <div class="space-y-2 font-roboto">
-                        <div class="text-xl font-bold">Booking Number: {{ booking.order.order_number}}</div>
+                        <div class="font-bold text-xl">Booking Number: {{ booking.order.order_number}}</div>
                         <div>
                             {{ booking.product.customer.full_name }}
                         </div>
@@ -85,9 +99,18 @@
                         <div>{{ booking.product.customer.is_male ? 'Male' : 'Female' }}</div>
                     </div>
                     <div class="space-y-3 font-roboto">
-                        <div class="text-xl font-bold">Booking Time</div>
-                        <div>{{ moment(booking.created_at).format("YYYY-MM-DD | H:m") }}</div>
-                        <button @click="onClickDetail(booking)" class="flex items-center gap-3 px-4 py-2 tracking-widest text-white bg-primary-50 lg:px-3 lg:py-2 font-josefin">
+                        <div class="font-bold text-xl">Handling Date</div>
+                        <div v-if="booking.product.handling_date">{{ moment(booking.product.handling_date).format("YYYY-MM-DD") }}</div>
+                        <div v-else>
+                            <button @click="onClickFittingDate(booking)" 
+                                class="flex items-center gap-3 bg-primary-50 px-4 lg:px-3 py-2 lg:py-2 font-josefin text-white tracking-widest">
+                                <span class="mt-1 text-xs">SET HANDLING DATE</span>
+                                <img class="inline-block size-4" src="img/icons/arrw-ck-right.png" alt="">
+                            </button>
+                        </div>
+                        <div class="font-bold text-xl">Booking Time</div>
+                        <div>{{ moment(booking.order.order_date).format("YYYY-MM-DD | H:m") }}</div>
+                        <button @click="onClickDetail(booking)" class="flex items-center gap-3 bg-primary-50 px-4 lg:px-3 py-2 lg:py-2 font-josefin text-white tracking-widest">
                             <span class="mt-1 text-xs">SEE DETAIL</span>
                             <img class="inline-block size-4" src="img/icons/arrw-ck-right.png" alt="">
                         </button>
@@ -107,12 +130,12 @@
             />
         </div>
 
-        <!-- <div class="absolute bottom-0 right-0 flex">
-            <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-primary-50">
+        <!-- <div class="right-0 bottom-0 absolute flex">
+            <button class="flex items-center gap-2 bg-primary-50 p-6 text-white tracking-widest">
                 <span>NEXT PAGE</span>
                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
             </button>
-            <button class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50">
+            <button class="flex items-center gap-2 bg-secondary-50 p-6 text-white tracking-widest">
                 <span>PAGE 1 of 100</span>
                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
             </button>

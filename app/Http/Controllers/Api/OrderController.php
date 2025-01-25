@@ -363,4 +363,28 @@ class OrderController extends Controller
 
     }
 
+    function set_handling_date(Request $request, $semiCustomId) {
+
+        $request->validate([
+            'date' => 'required',
+        ]);
+
+        // format date from '30/1/2025'
+        list($day, $month, $year) = explode('/', $request->date);
+        $date = Carbon::createFromFormat('d/m/Y', "$day/$month/$year")->format('Y-m-d');
+
+
+        $semiCustom = SemiCustomProduct::findOrFail($semiCustomId);
+
+        $semiCustom->update([
+            'handling_date' => $date,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Handling date set',
+        ], 200);
+
+    }
+
 }

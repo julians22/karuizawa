@@ -529,7 +529,9 @@
                                             </tr>
                                             <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border">
                                                 <th class="whitespace-nowrap">handling date</th>
-                                                <th class="w-full"></th>
+                                                <th class="w-full">
+                                                    {{ props.dataSemiCustom.handling_date }}
+                                                </th>
                                             </tr>
                                         </thead>
                                     </table>

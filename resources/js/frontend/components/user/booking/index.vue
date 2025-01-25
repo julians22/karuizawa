@@ -8,7 +8,8 @@
         route_logout: String,
         api_booking_url: String,
         api_incoming_url: String,
-        api_fitting_url: String
+        api_fitting_url: String,
+        api_set_handling: String
     });
 
     const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
@@ -171,6 +172,7 @@
             <FittingHistory
                 ref="fittingHistoryRef"
                 :api_fitting_url="api_fitting_url"
+                :api_set_handling="api_set_handling"
                 :filterData="filterData"
                 :user="user"
             />
