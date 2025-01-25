@@ -108,7 +108,7 @@
     <div>
         <addCustumer ref="childAddCustomer" />
         <section>
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
+            <div class="page-header">
                 <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">Customer data</div>
                 <button @click="childAddCustomer.open = true" class="text-white max-lg:text-sm uppercase tracking-widest">Add Customer <span class="font-roboto text-2xl">+</span></button>
             </div>
@@ -142,7 +142,7 @@
             </div>
         </section>
         <section class="pb-40">
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
+            <div class="page-header">
                 <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">CONFIRM DATE & TIME</div>
             </div>
             <div class="flex gap-10 py-10 container">

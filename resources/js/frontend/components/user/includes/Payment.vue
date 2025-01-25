@@ -104,7 +104,7 @@
             :sending-payment="sendingPayment"
             ref="childDoPayment"/>
         <section>
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
+            <div class="page-header">
                 <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">TOTAL AMOUNT TO BE PAID</div>
             </div>
             <div class="space-y-20 lg:px-14 lg:py-20 p-6">
@@ -193,7 +193,7 @@
         </section>
 
         <section>
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
+            <div class="page-header">
                 <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">DETAIL ORDER</div>
             </div>
 

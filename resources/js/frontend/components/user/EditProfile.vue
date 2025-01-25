@@ -113,8 +113,8 @@
 
 <template>
     <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf">
-        <div class="flex justify-between items-center bg-primary-50 px-14 py-7">
-            <div class="font-bold text-2xl text-white uppercase tracking-widest">PERSONAL DATA</div>
+        <div class="page-header">
+            <div class="page-title">PERSONAL DATA</div>
         </div>
 
         <div class="py-10 container">
@@ -151,8 +151,8 @@
         </div>
 
         <!-- Change password -->
-        <div class="flex justify-between items-center bg-primary-50 px-14 py-7">
-            <div class="font-bold text-2xl text-white uppercase tracking-widest">Change password
+        <div class="page-header">
+            <div class="page-title">Change password
                 <span class="text-base">
                     (Leave blank if you don't want to change password)
                 </span>

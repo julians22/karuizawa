@@ -1,7 +1,7 @@
 @props(['bgImage' => ''])
 <div class="grid grid-cols-8 min-h-[86svh]">
     <div class="col-span-2" >
-        <div class="flex flex-col items-center py-20 bg-right-bottom bg-no-repeat bg-cover px-7" style="background-image: url('{{ asset('img/bg-02.jpg') }}');">
+        <div class="flex flex-col items-center sidebar" style="background-image: url('{{ asset('img/bg-02.jpg') }}');">
             <div class="border-4 border-white border-solid rounded-full size-36 bg-primary-50"></div>
             <div class="mt-4 text-xl tracking-widest text-center text-white uppercase">
                 Hi, <br>

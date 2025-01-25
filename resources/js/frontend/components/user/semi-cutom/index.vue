@@ -431,17 +431,17 @@
             </div>
         </template>
 
-            <template v-if="storePage.get == 'total-shop'">
-                <TotalShop onPage="semi-custom" @btn-next="btnNext"/>
-            </template>
+        <template v-if="storePage.get == 'total-shop'">
+            <TotalShop onPage="semi-custom" @btn-next="btnNext"/>
+        </template>
 
-            <template v-if="storePage.get == 'customer-data' || storeCustomer.getCustomer == null">
-                <Customer onPage="semi-custom" @btn-next="btnNext"/>
-            </template>
+        <template v-if="storePage.get == 'customer-data' || storeCustomer.getCustomer == null">
+            <Customer onPage="semi-custom" @btn-next="btnNext"/>
+        </template>
 
-            <template v-if="storePage.get == 'payment'">
-                <Payment :api_store_order="api_store_order" @btn-next="btnNext"/>
-            </template>
+        <template v-if="storePage.get == 'payment'">
+            <Payment :api_store_order="api_store_order" @btn-next="btnNext"/>
+        </template>
 
         <template v-if="storePage.get == 'semi-custom' && storeCustomer.getCustomer != null">
 

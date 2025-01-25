@@ -169,7 +169,7 @@
 
 <template>
     <section class="pb-20">
-        <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
+        <div class="page-header">
             <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">Ready to wear</div>
             <div class="w-2/5">
                 <label for="default-search" class="mb-2 font-medium text-gray-900 text-sm dark:text-white sr-only">Search</label>
@@ -189,11 +189,11 @@
                 </div>
             </div>
         </div>
-        <div class="flex justify-between items-center gap-2 bg-secondary-50 lg:px-14 lg:py-7 p-6">
-            <div class="flex max-lg:flex-col items-center gap-2 lg:gap-4 w-full">
-                <div class="text-white uppercase tracking-widest whitespace-pre">Sort by</div>
-                <div class="relative w-full">
-                    <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 rounded-r-full w-10 text-primary-50 pointer-events-none">
+        <div class="page-header secondary">
+            <div class="form-group-inline">
+                <div class="form-label">Sort by</div>
+                <div class="select-wrapper">
+                    <span class="select-icon">
                         ▼
                     </span>
                     <select id="sort" class="block bg-white before:bg-blue-400 p-2.5 focus:border-blue-500 rounded-full focus:ring-blue-500 w-full"
@@ -205,10 +205,10 @@
                     </select>
                 </div>
             </div>
-            <div class="flex max-lg:flex-col items-center gap-2 lg:gap-4 w-full">
-                <div class="text-white uppercase tracking-widest whitespace-pre">Color</div>
-                <div class="relative w-full">
-                    <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 rounded-r-full w-10 text-primary-50 pointer-events-none">
+            <div class="form-group-inline">
+                <div class="form-label">Color</div>
+                <div class="select-wrapper">
+                    <span class="select-icon">
                         ▼
                     </span>
                     <select id="color" class="block bg-white before:bg-blue-400 p-2.5 focus:border-blue-500 rounded-full focus:ring-blue-500 w-full"
@@ -219,10 +219,10 @@
                     </select>
                 </div>
             </div>
-            <div class="flex max-lg:flex-col items-center gap-2 lg:gap-4 w-full">
-                <div class="text-white uppercase tracking-widest whitespace-pre">Size</div>
-                <div class="relative w-full">
-                    <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 rounded-r-full w-10 text-primary-50 pointer-events-none">
+            <div class="form-group-inline">
+                <div class="form-label">Size</div>
+                <div class="select-wrapper">
+                    <span class="select-icon">
                         ▼
                     </span>
                     <select id="size" class="block bg-white before:bg-blue-400 p-2.5 focus:border-blue-500 rounded-full focus:ring-blue-500 w-full"
@@ -234,25 +234,27 @@
                 </div>
             </div>
         </div>
-        <div class="py-20 container">
-            <div class="gap-20 grid grid-cols-3 lg:grid-cols-4">
+        <div class="py-10 xl:py-20 container">
+            <div class="product-container">
                 <div v-if="products.data && !isLoading" v-for="(product) in products.data">
                     <input v-model="form.shirtsSelected" class="hidden" type="checkbox" :value="product.sku" :id="`poduct-${product.id}`">
-                    <label class="flex flex-col items-center px-2 rounded cursor-pointer" :for="`poduct-${product.id}`">
-                        <div class="text-[#606060] text-center">{{ product.product_name }}</div>
-                        <template v-if="product.product_actual_stocks">
-                            <template v-if="product.product_actual_stocks.length">
-                                <div class="my-1 text-center text-primary-300 text-xs" v-for="(stock, index) in product.product_actual_stocks" :key="index">
-                                    <span v-if="stock.stock_quantity">{{ stock.store.code }}: {{ stock.stock_quantity }} in stock</span>
-                                </div>
+                    <label class="product-content-item" :for="`poduct-${product.id}`" :class="{ 'border border-secondary-50/40': form.shirtsSelected.includes(product.sku) }">
+                        <div class="product-content">
+                            <div class="text-[#606060] text-center">{{ product.product_name }}</div>
+                            <template v-if="product.product_actual_stocks">
+                                <template v-if="product.product_actual_stocks.length">
+                                    <div class="my-1 text-center text-primary-300 text-xs" v-for="(stock, index) in product.product_actual_stocks" :key="index">
+                                        <span v-if="stock.stock_quantity">{{ stock.store.code }}: {{ stock.stock_quantity }} in stock</span>
+                                    </div>
+                                </template>
                             </template>
-                        </template>
-                        <div class="text-[#A3A3A3] text-center text-sm">{{ product.sku }}</div>
-                        <div class="text-center text-lg text-secondary-50">{{ priceFormat(product.price) }}</div>
+                            <div class="text-[#A3A3A3] text-center text-sm">{{ product.sku }}</div>
+                            <div class="text-center text-lg text-secondary-50">{{ priceFormat(product.price) }}</div>
+                        </div>
                         <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
                     </label>
                 </div>
-                <div v-else-if="isLoading" v-for="i in 8">
+                <div v-else-if="isLoading" v-for="i in 4">
                     <div class="flex flex-col justify-center items-center gap-2">
                         <div class="rounded-full w-16 h-3 is-preloader"></div>
                         <div class="rounded-full w-10 h-3 is-preloader"></div>

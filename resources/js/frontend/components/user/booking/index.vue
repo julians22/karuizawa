@@ -104,7 +104,7 @@
         ref="childFilter" />
 
     <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" >
-        <div class="flex justify-between items-center bg-primary-50 xl:px-14 lg:py-7 p-6">
+        <div class="page-header">
             <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">CUSTOMER BOOKING</div>
             <div class="w-2/5">
                 <label for="default-search" class="mb-2 font-medium text-gray-900 text-sm dark:text-white sr-only">Search</label>

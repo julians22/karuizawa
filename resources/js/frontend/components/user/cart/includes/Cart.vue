@@ -218,8 +218,8 @@
 <template>
     <div class="space-y-10">
         <section class="mb-40">
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">Total shop</div>
+            <div class="page-header">
+                <div class="page-title">Total shop</div>
             </div>
             <div class="lg:px-14 lg:py-10 p-6">
                 <table class="w-full" v-if="products.length !== 0">
@@ -312,8 +312,8 @@
         </section>
 
         <!-- <section>
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">COUPON CODE & POINTS</div>
+            <div class="page-header">
+                <div class="page-title">COUPON CODE & POINTS</div>
             </div>
             <div class="lg:px-14 lg:py-10 p-6">
                 <div class="flex items-center gap-4">
@@ -337,7 +337,7 @@
 
         <section class="bottom-0 absolute w-full">
             <div class="flex justify-end">
-                
+
                 <button @click="addRtw()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white uppercase tracking-widest">
                     <span>Add Ready to Wear</span>
                 </button>

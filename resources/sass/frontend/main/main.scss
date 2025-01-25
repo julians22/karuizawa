@@ -54,6 +54,7 @@
 
 @layer components {
 
+    // form input
     .box-input-wrapper{
         @apply flex font-roboto;
     }
@@ -73,6 +74,73 @@
         &::-webkit-outer-spin-button {
             appearance: none;
         }
+    }
+
+    // select form
+    .form-group-inline{
+        @apply flex max-lg:flex-col items-center gap-2 xl:gap-4 w-full;
+
+        .form-label {
+            @apply text-white uppercase lg:tracking-wider xl:tracking-widest whitespace-pre;
+        }
+
+        .select-wrapper {
+            @apply relative w-full max-w-none lg:max-w-[120px];
+            .select-icon{
+                @apply top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 rounded-r-full w-10 text-primary-50 pointer-events-none;
+            }
+        }
+
+    }
+
+    .sidebar{
+        @apply bg-cover bg-no-repeat bg-right-bottom px-5 xl:px-7 lg:py-10 xl:py-20;
+    }
+
+
+    .page-header{
+        @apply flex justify-between items-center bg-primary-50 px-4 lg:px-8 xl:px-14 py-4 lg:py-4 xl:py-7;
+
+        &.secondary {
+            @apply bg-secondary-50;
+        }
+
+        .page-title {
+            @apply font-bold text-lg text-white lg:text-xl uppercase tracking-wider xl:tracking-widest;
+        }
+    }
+
+    .product-container{
+        @apply gap-6 lg:gap-8 xl:gap-20 grid grid-cols-3 lg:grid-cols-4;
+
+        .product-content-item{
+            @apply flex flex-col justify-between items-center px-2 pt-2 pb-3 rounded h-full transition-all duration-300 cursor-pointer ease-in-out;
+            
+            .product-content{
+                @apply flex flex-col items-center;
+            }
+        }
+
+    }
+
+
+    // style for semi custom form
+    .semi-custom{
+        @apply relative min-h-svh;
+
+        // Basic Form
+        &.basic-form{
+
+            .form-title{
+                @apply flex justify-between items-center bg-primary-300 px-4 lg:px-8 xl:px-14 py-4 lg:py-4 xl:py-7;
+
+                .title{
+                    @apply font-bold text-lg text-white xl:text-xl uppercase leading-none lg:tracking-normal xl:tracking-widest;
+                }
+            }
+        }
+
+
     }
 }
 
