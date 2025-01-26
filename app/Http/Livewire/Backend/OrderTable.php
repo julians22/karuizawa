@@ -84,7 +84,7 @@ class OrderTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make("Id", "id")
+            Column::make("Order Id", "order_number")
                 ->deselected()
                 ->sortable(),
             Column::make("Customer", "customer.full_name")
