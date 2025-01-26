@@ -8,6 +8,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Order;
 use App\Models\Store;
 use Livewire\Attributes\On;
+use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
@@ -65,6 +66,7 @@ class OrderTable extends DataTableComponent
     {
         return [
             Column::make("Id", "id")
+                ->deselected()
                 ->sortable(),
             Column::make("Customer", "customer.full_name")
                 ->sortable(),
@@ -77,8 +79,10 @@ class OrderTable extends DataTableComponent
                 ->format(fn($value) => price_format($value)),
             Column::make("Status", "status")
                 ->sortable(),
-            Column::make("Semi Custom?")
-                ->label(fn($row, Column $column) => $row->orderItems->where('product_type', 'App\Models\SemiCustomProduct')->count() > 0 ? 'Yes' : 'No'),
+            BooleanColumn::make("Semi Custom?", "id")
+                ->setCallback(function(string $value, $row) {
+                    return $row->hasSemiCustom();
+                }),
             Column::make('Accurate Info', 'accurate_order_number')
                 ->format(fn($value, $row) => $value ? $value : "Not Synced"),
             Column::make("Created at", "created_at")

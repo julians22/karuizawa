@@ -64,6 +64,13 @@ class Order extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function hasSemiCustom()
+    {
+        return $this->orderItems()->whereHas('product', function ($query) {
+            $query->where('product_type', 'App\Models\SemiCustomProduct');
+        })->exists();
+    }
+
     public function getDownPaymentAmountAttribute()
     {
         return $this->payments()->where('is_downpayment', 1)->sum('amount');
