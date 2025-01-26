@@ -6,6 +6,7 @@ use App\Domains\Auth\Models\User;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Order;
+use App\Models\Store;
 use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
@@ -13,6 +14,16 @@ use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 class OrderTable extends DataTableComponent
 {
     protected $model = Order::class;
+
+    public $stores = [];
+
+    function mount(){
+        $stores = Store::all();
+
+        foreach ($stores as $store) {
+            $this->stores[$store->id] = $store->code;
+        }
+    }
 
     public function configure(): void
     {
@@ -29,17 +40,16 @@ class OrderTable extends DataTableComponent
             SelectFilter::make('Status')
                 ->options([
                     'pending' => 'Pending',
-                    'processing' => 'Processing',
+                    // 'processing' => 'Processing',
                     'completed' => 'Completed',
-                    'cancelled' => 'Cancelled',
+                    // 'cancelled' => 'Cancelled',
                 ])
                 ->filter(fn($builder, $value) => $builder->where('status', $value)),
             SelectFilter::make('Store')
-                ->options([
-                    '1' => 'Ashta Mall',
-                    '3' => 'PIK'
-                ])
-                ->filter(fn($builder, $value) => $builder->where('store_id', $value)),
+                ->options(
+                    $this->stores
+                )
+                ->filter(fn($builder, $value) => $builder->where('orders.store_id', $value)),
             DateFilter::make('Order Date')
                 ->filter(fn($builder, $value) => $builder->whereDate('order_date', $value)),
             SelectFilter::make('Sync Status')
