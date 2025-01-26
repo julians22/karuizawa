@@ -59,6 +59,25 @@ class OrderTable extends DataTableComponent
                     'not_synced' => 'Not Synced',
                 ])
                 ->filter(fn($builder, $value) => $builder->where('accurate_order_number', $value === 'synced' ? '!=' : '=', null)),
+            SelectFilter::make('Order Type')
+                ->options([
+                    'all' => 'All',
+                    'sc' => 'Semi Custom',
+                    'rtw' => 'Only Ready to Wear',
+                ])
+                ->filter(function($builder, $value){
+                    if ($value === 'sc') {
+                        return $builder->whereHas('orderItems', function($query){
+                            $query->where('product_type', 'App\Models\SemiCustomProduct');
+                        });
+                    }
+
+                    if ($value === 'rtw') {
+                        return $builder->whereDoesntHave('orderItems', function($query){
+                            $query->where('product_type', 'App\Models\SemiCustomProduct');
+                        });
+                    }
+                }),
         ];
     }
 
