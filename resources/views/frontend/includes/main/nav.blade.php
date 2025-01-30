@@ -45,6 +45,9 @@
                                 </div>
                             </li>
                         </li>
+                        @auth
+                            <li class="{{ Route::is('frontend.user.booking') ? 'active' : '' }}"><a href="{{ route('frontend.user.booking') }}" class="py-1">CUSTOMER BOOKING</a></li>
+                        @endauth
                         <li><a href="{{ route('frontend.about-us') }}">About Us</a></li>
                         <li class="self-center"><div class="h-[1px] w-10 md:w-20 lg:w-40 bg-primary-50"></div></li>
                         @if ($logged_in_user)
