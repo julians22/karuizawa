@@ -138,7 +138,7 @@
                                 </div>
                                 <div class="flex items-center col-span-2 mt-4 max-xl:flex-wrap lg:gap-4 fabric-code">
                                     <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
-                                    <div class="flex font-roboto">
+                                    <div class="flex font-roboto print-props">
                                         <div ref="inputCont" class="box-input-wrapper" v-if="formOption.collar?.fabricCode !== undefined">
                                             <input
                                                 v-for="(digit, index) in split(formOption.collar.fabricCode)"
@@ -226,7 +226,7 @@
                                     </div>
                                     <div class="flex items-center col-span-2 mt-4 max-lg:flex-wrap lg:gap-8 fabric-code">
                                         <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
-                                        <div class="flex font-roboto">
+                                        <div class="flex font-roboto print-props">
                                             <div ref="inputCont" class="box-input-wrapper" v-if="formOption.cuffs?.fabricCode !== undefined && formOption.cuffs?.fabricCode !== null">
                                                 <input
                                                     v-for="(digit, index) in split(formOption.cuffs.fabricCode ?? '')"
@@ -303,7 +303,7 @@
                                     <div class="label-name">{{ button.name }}</div>
                                 </label>
                             </div>
-                            <div class="flex font-roboto">
+                            <div class="flex font-roboto print-props">
                                 <div ref="inputCont" class="box-input-wrapper" v-if="formOption.button?.buttonCode !== undefined && formOption.button?.buttonCode !== null">
                                     <input
                                         v-for="(digit, index) in split(formOption.button.buttonCode ?? '')"
@@ -390,7 +390,7 @@
                         <div class="flex self-end gap-2 justify-self-end">
                             <div class="flex flex-col col-span-2 gap-1 mt-4 fabric-code">
                                     <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
-                                    <div class="flex font-roboto">
+                                    <div class="flex font-roboto print-props">
                                         <div ref="inputCont" class="box-input-wrapper" v-if="dataConfig.cleric.data.fabric[index]?.code?.length">
                                             <input
                                                 v-for="(digit) in split(formOption.cleric.fabricCode)"
@@ -420,7 +420,7 @@
                     </div>
                  </div>
 
-                 <div class="flex items-center gap-2 p-4 mx-6 mt-4 bg-secondary">
+                 <div class="flex items-center gap-2 p-4 mx-6 mt-4 bg-secondary print-props">
                     <label for="fabric-code" class="text-sm tracking-wider uppercase text-primary-50 whitespace-nowrap">name</label>
                     <input type="text" :value="props.dataSemiCustom.name" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50 font-roboto">
                  </div>
@@ -559,7 +559,7 @@
 
                            <div class="col-span-3 p-4">
                                <div class="flex items-end gap-4">
-                                   <div class="flex items-end font-roboto">
+                                   <div class="flex items-end font-roboto print-props-embroidery">
                                        <input v-model="formOption.embroidery.initialName.x" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border border-primary-50 size-10">
                                        <input v-model="formOption.embroidery.initialName.dot" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-primary-50 border-y size-5">
                                        <input v-model="formOption.embroidery.initialName.y" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-l border-r border-primary-50 border-y size-10">
@@ -583,8 +583,8 @@
                                            >
                                        </div>
                                    </div>
-                                   <div class="flex w-full gap-4">
-                                       <input type="text" v-model="formOption.embroidery.longName" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50 font-roboto">
+                                   <div class="flex w-full gap-4 print-props-embroidery">
+                                       <input type="text" v-model="formOption.embroidery.longName" class="block w-full h-8 p-2 text-sm text-gray-900 border print-props border-primary-50 font-roboto">
                                        <div class="whitespace-nowrap">
                                            <input class="hidden" type="radio" name="embroidery-50rb" :id="`embroidery-50rb`">
                                            <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`embroidery-50rb`">
@@ -667,7 +667,7 @@
                    </div>
 
                    <div class="flex items-center justify-between gap-4 p-4 mx-6 mt-4 border border-pink-ka">
-                       <div class="flex font-roboto">
+                       <div class="flex font-roboto print-props">
                            <!-- <boxInput :digitCount="5" @update:input="onInputTape($event)"/> -->
                            <div ref="inputCont" class="box-input-wrapper" v-if="formOption.tape?.collar !== undefined && formOption.tape?.collar !== null && formOption.tape?.collar !== ''">
                                <input
@@ -687,7 +687,7 @@
                                >
                            </div>
                        </div>
-                       <div class="w-9/12">
+                       <div class="w-9/12 print-props">
                            <input type="text" v-model="formOption.tape.lower" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50 font-roboto">
                        </div>
                        <div class="whitespace-nowrap">
@@ -711,13 +711,13 @@
                         <div class="col-span-6">
                             <table class="w-full text-sm uppercase text-primary-50">
                                 <thead>
-                                    <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border *:text-center">
+                                    <tr class="*:border-primary-50 *:border *:text-center">
                                         <th colspan="2">option</th>
                                         <th>quantity</th>
                                         <th>sub total</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="print-props-md">
                                     <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border *:text-center">
                                         <td>a</td>
                                         <td>30.000</td>
