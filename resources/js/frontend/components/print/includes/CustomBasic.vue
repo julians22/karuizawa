@@ -94,7 +94,7 @@
                     </div>
                     <div class="flex items-center gap-4 mx-10 my-3">
                         <div class="text-xs font-bold tracking-widest uppercase text-primary-50">OPTION NUMBER</div>
-                        <div class="flex font-roboto">
+                        <div class="flex font-roboto print-props">
                             <div v-if="form.collar?.optionNumber" ref="inputCont" class="box-input-wrapper">
                                 <input
                                     v-for="(digit, index) in split(form.collar?.optionNumber)"
@@ -135,7 +135,7 @@
                         </div>
                         <div class="flex items-center gap-2 px-2 my-4">
                             <div class="text-xs font-bold tracking-widest uppercase text-primary-50">OPTION NUMBER</div>
-                            <div class="flex font-roboto">
+                            <div class="flex font-roboto print-props">
                                 <div v-if="form.cuff?.optionNumber" ref="inputCont" class="box-input-wrapper">
                                     <input
                                         v-for="(digit, index) in split(form.cuff?.optionNumber)"
@@ -174,7 +174,7 @@
                         </div>
                         <div class="flex items-center gap-2 px-2 my-4">
                             <div class="text-xs font-bold tracking-widest uppercase text-primary-50">OPTION NUMBER</div>
-                            <div class="flex font-roboto">
+                            <div class="flex font-roboto print-props">
                                 <div v-if="form.front_body?.optionNumber" ref="inputCont" class="box-input-wrapper">
                                     <input
                                         v-for="(digit, index) in split(form.front_body?.optionNumber)"
@@ -467,7 +467,7 @@
                                     <div class="flex flex-col col-span-6 bg-white border-2 border-primary-50">
                                         <div class="bg-primary-50 py-0.5 text-center text-sm text-white">price</div>
                                         <div class="flex flex-col items-center justify-center px-2 py-1 h-14">
-                                            <div class="capitalize font-roboto">{{ priceFormat(baseAmount) }}</div>
+                                            <div class="capitalize font-roboto print-props">{{ priceFormat(baseAmount) }}</div>
                                             <small class="text-[8px]">(base, discount, GC)</small>
                                         </div>
                                     </div>
@@ -475,7 +475,7 @@
                                     <div class="flex flex-col col-span-6 bg-white border-2 border-primary-50">
                                         <div class="bg-primary-50 py-0.5 text-center text-sm text-white">option</div>
                                         <div class="flex items-center justify-center px-2 py-1 h-14">
-                                            <div class="capitalize font-roboto">{{ priceFormat(optionAmount) }}</div>
+                                            <div class="capitalize font-roboto print-props">{{ priceFormat(optionAmount) }}</div>
                                         </div>
                                     </div>
                                     <div class="col-span-1">+</div>
