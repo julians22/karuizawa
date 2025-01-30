@@ -74,6 +74,39 @@
             appearance: none;
         }
     }
+
+    .print-props {
+        @apply print:text-2xl;
+
+        .box-input{
+            @apply print:text-2xl p-px;
+        }
+
+        input {
+            @apply print:text-2xl print:uppercase;
+        }
+
+        &-md {
+            @apply print:text-xl;
+
+            td, th {
+                @apply print:py-px print:px-1;
+            }
+        }
+
+        &-embroidery {
+            @apply print:text-2xl;
+
+            input {
+                @apply print:text-2xl;
+            }
+
+            .box-input{
+                @apply print:text-2xl p-px;
+            }
+        }
+
+    }
 }
 
 .arrow-right {

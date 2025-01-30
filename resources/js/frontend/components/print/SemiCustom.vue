@@ -34,8 +34,8 @@
 
 <template>
     <div class="min-w-[1900px] pointer-events-none printable">
-        <div class="bg-secondary mb-2 py-3 w-full">
-            <div class="flex justify-between items-center mx-20 text-secondary-50">
+        <div class="w-full py-3 mb-2 bg-secondary">
+            <div class="flex items-center justify-between mx-20 text-secondary-50">
                 <div>
                     <img class="w-60" src="/img/brand/logo-01.png" alt="logo">
                 </div>
@@ -45,7 +45,7 @@
                     <div class="text-sm tracking-widest">Order Form</div>
                 </div>
                 <div>
-                    <div class="text-right uppercase">
+                    <div class="text-right uppercase print:scale-150">
                         <div class="text-sm">Order No : {{ props.data_semi_custom.order_item.order.order_number }}</div>
                         <div class="text-sm">
                             <span>Order Date : {{ moment(props.data_semi_custom.order_item.order.created_at).format('DD/MM/YYYY') }}</span>
@@ -54,7 +54,7 @@
                                 Option
                                 <div class="inline-block">
                                     <input :checked="props.data_semi_custom.option_total > 0" class="hidden" type="radio" :id="`options`">
-                                    <label class="flex items-center rounded h-full cursor-pointer" :for="`options`">
+                                    <label class="flex items-center h-full rounded cursor-pointer" :for="`options`">
                                         <!-- <div class="label-name">1. SLIM SLEEVE</div> -->
                                         <span class="checkbox-inner"></span>
                                     </label>
@@ -67,8 +67,8 @@
         </div>
         <CustomBasic @additionalBasic="additionalBasic" :dataConfig="props.data_config" :dataSemiCustom="props.data_semi_custom" ref="childBasic" />
         <div style="page-break-before: always;"></div>
-        <div class="bg-secondary mb-2 py-3 w-full">
-            <div class="flex justify-between items-center mx-20 text-secondary-50">
+        <div class="w-full py-3 mb-2 bg-secondary">
+            <div class="flex items-center justify-between mx-20 text-secondary-50">
                 <div>
                     <img class="w-60" src="/img/brand/logo-01.png" alt="logo">
                 </div>
@@ -78,7 +78,7 @@
                     <div class="text-sm tracking-widest">Order Form</div>
                 </div>
                 <div>
-                    <div class="text-right uppercase">
+                    <div class="text-right uppercase print-props print:scale-150">
                         <div class="text-sm">Order No : {{ props.data_semi_custom.order_item.order.order_number }}</div>
                         <div class="text-sm">
                             <span>
@@ -122,7 +122,7 @@ input[type="radio"]:checked + label span.checkbox-inner {
     }
 
     .box-input-wrapper .box-input {
-        @apply block border-secondary-50 bg-transparent p-2 border text-center text-gray-900 text-xs size-7;
+        @apply block border-secondary-50 bg-transparent p-2 print:p-px border text-center text-gray-900 text-xs print:text-xl size-7;
     }
 
     .box-input-wrapper .box-input:not(:first-child) {

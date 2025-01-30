@@ -61,7 +61,7 @@
                     <div class="wrap-cat">
                         <div class="cat-name">01. FABRIC</div>
                     </div>
-                    <div class="flex items-center gap-4 px-6 my-3 fabric-code">
+                    <div class="flex items-center gap-4 px-6 my-3 fabric-code print-props">
                         <label for="fabric-code" class="text-sm tracking-widest uppercase text-primary-50 whitespace-nowrap">fabric code</label>
                         <div ref="inputCont" class="box-input-wrapper">
                             <input
@@ -73,7 +73,7 @@
                             >
                         </div>
                         <!-- <boxInput :digitCount="4" @update:input="onInputBox($event, 'fabric', 'fabricCode')"/> -->
-                        <input v-model="form.fabric.text" type="text" class="block w-full h-8 p-2 text-sm text-gray-900 border border-r border-primary-50 font-roboto print:text-lg">
+                        <input v-model="form.fabric.text" type="text" class="block w-full h-8 p-2 text-sm text-gray-900 border border-r border-primary-50 font-roboto">
                     </div>
                 </div>
 
@@ -274,7 +274,7 @@
                     <div class="wrap-cat">
                         <div class="cat-name">SIZE</div>
                     </div>
-                    <div class="grid grid-cols-3 gap-2 px-2 my-4">
+                    <div class="grid grid-cols-3 gap-2 px-2 mt-1">
                         <div>
                             <input v-model="formSize.order" class="hidden" value="1. NEW ORDER" type="radio" name="size" :id="`new-order`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`new-order`">
@@ -298,7 +298,7 @@
                         </div>
                     </div>
                     <!-- body type -->
-                    <div class="grid grid-cols-4 grid-rows-2 gap-2 px-2 my-4">
+                    <div class="grid grid-cols-4 grid-rows-2 gap-2 px-2">
                         <div class="row-span-2">
                             <div class="inline-block border-2 border-primary-50 px-2 pt-1.5 font-bold text-primary-50 text-sm uppercase tracking-widest">BODY TYPE</div>
                         </div>
@@ -347,7 +347,7 @@
                     </div>
 
                     <!-- sleeve -->
-                    <div class="grid grid-cols-4 grid-rows-2 gap-2 px-6 mt4">
+                    <div class="grid grid-cols-4 grid-rows-2 gap-2 px-6">
                         <div class="row-span-2">
                             <div class="inline-block border-2 border-primary-50 px-2 pt-1.5 font-bold text-primary-50 text-sm uppercase tracking-widest">SLEEVE</div>
                         </div>
@@ -367,7 +367,7 @@
                         </div>
                     </div>
 
-                    <div class="px-6 mt4">
+                    <div class="px-6">
                         <div class="overflow-x-auto">
                             <table class="w-full text-primary-50">
                                 <thead>
@@ -385,67 +385,67 @@
                                     <tr class="*:border-2 *:border-primary-50 *:text-center">
                                         <td>SHIRT</td>
                                         <td>
-                                            <input v-model="formSize.shirt.neck" type="text" class="w-full text-center font-roboto print:text-xl">
+                                            <input v-model="formSize.shirt.neck" type="text" class="w-full text-center font-roboto print-props">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.rightSleeve" type="text" class="w-full text-center font-roboto print:text-xl">
+                                            <input v-model="formSize.shirt.rightSleeve" type="text" class="w-full text-center font-roboto print-props">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.leftSleeve" type="text" class="w-full text-center font-roboto print:text-xl">
+                                            <input v-model="formSize.shirt.leftSleeve" type="text" class="w-full text-center font-roboto print-props">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.chest" type="text" class="w-full text-center font-roboto print:text-xl">
+                                            <input v-model="formSize.shirt.chest" type="text" class="w-full text-center font-roboto print-props">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.waist" type="text" class="w-full text-center font-roboto print:text-xl">
+                                            <input v-model="formSize.shirt.waist" type="text" class="w-full text-center font-roboto print-props">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.shirt.shoulder" type="text" class="w-full text-center font-roboto print:text-xl">
+                                            <input v-model="formSize.shirt.shoulder" type="text" class="w-full text-center font-roboto print-props">
                                         </td>
                                     </tr>
                                     <tr class="*:border-2 *:border-primary-50 *:text-center">
                                         <td>ACTUAL</td>
                                         <td>
-                                            <input v-model="formSize.actual.neck" type="text" class="w-full text-center font-roboto print:text-xl">
+                                            <input v-model="formSize.actual.neck" type="text" class="w-full text-center font-roboto print-props">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.rightSleeve" type="text" class="w-full text-center font-roboto print:text-xl">
+                                            <input v-model="formSize.actual.rightSleeve" type="text" class="w-full text-center font-roboto print-props">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.leftSleeve" type="text" class="w-full text-center font-roboto print:text-xl">
+                                            <input v-model="formSize.actual.leftSleeve" type="text" class="w-full text-center font-roboto print-props">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.chest" type="text" class="w-full text-center font-roboto print:text-xl">
+                                            <input v-model="formSize.actual.chest" type="text" class="w-full text-center font-roboto print-props">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.waist" type="text" class="w-full text-center font-roboto print:text-xl">
+                                            <input v-model="formSize.actual.waist" type="text" class="w-full text-center font-roboto print-props">
                                         </td>
                                         <td>
-                                            <input v-model="formSize.actual.shoulder" type="text" class="w-full text-center font-roboto print:text-xl">
+                                            <input v-model="formSize.actual.shoulder" type="text" class="w-full text-center font-roboto print-props">
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
 
-                        <div class="grid grid-cols-2 xl:grid-cols-4 mt-10 mb-10 *:px-2 *:pt-2 *:pb-1 text-primary-50 tracking-widest whitespace-pre">
+                        <div class="grid grid-cols-2 xl:grid-cols-4 mt-2 mb-2 *:px-2 *:pt-2 *:pb-1 text-primary-50 tracking-widest whitespace-pre">
                             <div class="border-2 border-primary-50">SPECIAL ADJUSTMENT</div>
                             <div class="flex border-r-2 border-primary-50 border-y-2">
                                 <div>NECK SIZE :</div>
                                 <div>
-                                    <input v-model="formSize.sa.neckSize" type="text" class="w-full text-center font-roboto print:text-xl">
+                                    <input v-model="formSize.sa.neckSize" type="text" class="w-full text-center font-roboto print-props">
                                 </div>
                             </div>
                             <div class="flex border-r-2 border-primary-50 border-y-2 max-xl:border-l-2">
                                 <div>SHOULDER :</div>
                                 <div>
-                                    <input v-model="formSize.sa.shoulder" type="text" class="w-full text-center font-roboto print:text-xl">
+                                    <input v-model="formSize.sa.shoulder" type="text" class="w-full text-center font-roboto print-props">
                                 </div>
                             </div>
                             <div class="flex border-r-2 border-primary-50 border-y-2">
                                 <div>BACK LENGTH :</div>
                                 <div>
-                                    <input v-model="formSize.sa.backLength" type="text" class="w-full text-center font-roboto print:text-xl">
+                                    <input v-model="formSize.sa.backLength" type="text" class="w-full text-center font-roboto print-props">
                                 </div>
                             </div>
                         </div>
@@ -513,23 +513,23 @@
                                         <thead class="text-sm text-left uppercase">
                                             <tr class="*:border-primary-50 *:border-x *:px-2 *:pt-2 *:pb-1">
                                                 <th>Name</th>
-                                                <th class="w-full">{{ props.dataSemiCustom.customer.full_name }}</th>
+                                                <th class="w-full print-props">{{ props.dataSemiCustom.customer.full_name }}</th>
                                             </tr>
                                             <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border">
                                                 <th>address</th>
-                                                <th class="w-full">{{ props.dataSemiCustom.customer.address }}</th>
+                                                <th class="w-full print-props">{{ props.dataSemiCustom.customer.address }}</th>
                                             </tr>
                                             <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border">
                                                 <th>tel / hp</th>
-                                                <th class="w-full">{{ props.dataSemiCustom.customer.phone }}</th>
+                                                <th class="w-full print-props">{{ props.dataSemiCustom.customer.phone }}</th>
                                             </tr>
                                             <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border">
                                                 <th>email</th>
-                                                <th class="w-full">{{ props.dataSemiCustom.customer.email }}</th>
+                                                <th class="w-full print-props">{{ props.dataSemiCustom.customer.email }}</th>
                                             </tr>
                                             <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border">
                                                 <th class="whitespace-nowrap">handling date</th>
-                                                <th class="w-full">
+                                                <th class="w-full print-props">
                                                     {{ props.dataSemiCustom.handling_date }}
                                                 </th>
                                             </tr>
@@ -539,14 +539,14 @@
                                 <div class="flex flex-col justify-between col-span-2 uppercase">
                                     <div class="flex flex-col col-span-6 bg-white border-2 border-primary-50">
                                         <div class="bg-primary-50 py-0.5 text-center text-sm text-white">customer sign</div>
-                                        <div class="flex items-center justify-center h-16 px-2 py-1">
+                                        <div class="flex items-center justify-center h-16 px-2 py-1 print:h-24">
                                             <div></div>
                                         </div>
                                     </div>
                                     <div class="flex flex-col col-span-6 bg-white border-2 border-primary-50">
                                         <div class="bg-primary-50 py-0.5 text-center text-sm text-white">store sign</div>
-                                        <div class="flex items-center justify-center h-16 px-2 py-1">
-                                            <div>
+                                        <div class="flex items-center justify-center h-16 px-2 py-1 print:h-24">
+                                            <div class="print-props">
                                                 {{ props.dataSemiCustom.order_item.order.user.name }}
 
                                             </div>
