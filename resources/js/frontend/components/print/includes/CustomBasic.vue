@@ -3,6 +3,7 @@
     import boxInput from '@frontend/components/utils/fields/boxInput.vue';
     import { useProducts } from '@frontend//store/product';
     import { priceFormat } from "@frontend/helpers/currency";
+    import { str_limit } from '@/frontend/helpers/strlimit';
 
     import { component as VueNumber } from '@coders-tm/vue-number-format';
 
@@ -517,7 +518,7 @@
                                             </tr>
                                             <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border">
                                                 <th>address</th>
-                                                <th class="w-full print-props">{{ props.dataSemiCustom.customer.address }}</th>
+                                                <th class="w-full print-props">{{ str_limit(props.dataSemiCustom.customer.address, 60) }}</th>
                                             </tr>
                                             <tr class="*:border-primary-50 *:px-2 *:pt-2 *:pb-1 *:border">
                                                 <th>tel / hp</th>

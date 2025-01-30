@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, defineProps, onMounted, watch } from 'vue'
+    import { ref, defineProps, onMounted, watch } from 'vue';
 
     import { component as VueNumber } from '@coders-tm/vue-number-format';
 
