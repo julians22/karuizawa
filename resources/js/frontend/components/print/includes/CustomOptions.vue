@@ -181,7 +181,7 @@
                         <div class="cat-name">03. cuffs</div>
                     </div>
 
-                    <div class="grid grid-cols-6 gap-2 my-4 px-4cwhitespace-nowrap">
+                    <div class="grid grid-cols-6 gap-2 px-2 my-4 whitespace-nowrap">
                         <div class="col-span-2">
                             <div class="flex" v-for="(cuffs, index) in dataConfig.cuffs.data.options.option_1" :key="index">
                                 <input :checked="formOption.cuffs?.slug == cuffs?.slug" @click.native="formOption.cuffs = null" class="hidden" type="radio" name="cuffs" v-model="formOption.cuffs" :value="cuffs" :id="`cuffs-${cuffs.slug}`">
@@ -295,7 +295,7 @@
                         <div class="wrap-opt-cat">
                             <div class="cat-name">08. BUTTON</div>
                         </div>
-                        <div class="flex justify-between p-2 mt-4 border border-pink-ka max-xl:mx-6 max-xl:mb-4 ml-14">
+                        <div class="flex justify-between p-2 mt-4 ml-2 border border-pink-ka max-xl:mx-2 max-xl:mb-4">
                             <div v-for="(button, index) in dataConfig.button.data.options.option_1" :key="index">
                                 <input :checked="formOption.button?.slug == button?.slug" @click.native="formOption.button = null" :value="button" class="hidden" type="radio" v-model="formOption.button" :id="`btn-${button.slug}`">
                                 <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`btn-${button.slug}`">
@@ -337,7 +337,7 @@
                         <div class="wrap-opt-cat">
                             <div class="cat-name">09. BODY SNAP BUTTON</div>
                         </div>
-                        <div class="flex justify-between p-2 mt-4 border border-pink-ka max-xl:mx-6 mr-14">
+                        <div class="flex justify-between p-2 mt-4 mr-2 border border-pink-ka max-xl:mx-2">
                             <div v-for="bodySnapButton in dataConfig.body_snap_button.data.options.option_1" :key="bodySnapButton">
                                 <input class="hidden" @click.native="formOption.bodySnapButton = null" :value="bodySnapButton" v-model="formOption.bodySnapButton" type="radio" :id="`${bodySnapButton.slug}`">
                                 <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`${bodySnapButton.slug}`">
@@ -365,7 +365,7 @@
                      </div>
 
                      <div v-for="(dataCleric, index) in dataConfig.cleric.data.options" :key="index"
-                        class="p-4 mx-6 mt-4 space-y-4 border border-pink-ka">
+                        class="p-4 mx-2 mt-4 space-y-4 border border-pink-ka">
                         <div v-for="(subCeleric, idx) in dataCleric" :key="idx" class="flex gap-2">
                             <div>
                                 <input :checked="isChecked(subCeleric)" v-model="formOption.cleric"class="hidden" type="radio"  :value="subCeleric" :id="`${subCeleric.slug}`">
@@ -420,7 +420,7 @@
                     </div>
                  </div>
 
-                 <div class="flex items-center gap-2 p-4 mx-6 mt-4 bg-secondary print-props">
+                 <div class="flex items-center gap-2 p-4 mx-2 mt-4 bg-secondary print-props">
                     <label for="fabric-code" class="text-sm tracking-wider uppercase text-primary-50 whitespace-nowrap">name</label>
                     <input type="text" :value="props.dataSemiCustom.name" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50 font-roboto">
                  </div>
@@ -606,7 +606,7 @@
                        <div class="text-lg font-bold tracking-wider text-white uppercase">15. interlining</div>
                    </div>
 
-                   <div class="flex items-center justify-between mx-6 mt-4">
+                   <div class="flex items-center justify-between mx-2 mt-4">
                        <div class="p-4 border border-pink-ka lg:w-1/2">
                            <div class="flex" v-for="(interlining, index) in dataConfig.interlining.data.options.option_1" :key="index">
                                <input @click.native="formOption.interlining = null" class="hidden" type="radio" name="interlining" :value="interlining" v-model="formOption.interlining" :id="`interlining-${interlining.slug}`">
@@ -641,7 +641,7 @@
                        <div class="text-lg font-bold tracking-wider text-white uppercase">15. sewing option</div>
                    </div>
 
-                   <div class="flex flex-col items-center justify-between mx-6 mt-4">
+                   <div class="flex flex-col items-center justify-between mx-2 mt-4">
                        <div v-for="(sewing, index) in dataConfig.sewing_option.data.options" :key="index" class="flex items-center justify-between w-full p-4 border border-pink-ka">
                            <div v-for="(sewingOption, index) in sewing" :key="index">
                                <input @click.native="formOption.sewingOption = null" class="hidden" type="radio" name="sewing-option" :value="sewingOption" v-model="formOption.sewingOption" :id="`sewing-${sewingOption.slug}`">
@@ -666,7 +666,7 @@
                        <div class="text-lg font-bold tracking-wider text-white uppercase">17. TAPE (INNER COLLAR STAND & LOWER PLACKET)</div>
                    </div>
 
-                   <div class="flex items-center justify-between gap-4 p-4 mx-6 mt-4 border border-pink-ka">
+                   <div class="flex items-center justify-between gap-4 p-4 mx-2 mt-4 border border-pink-ka">
                        <div class="flex font-roboto print-props">
                            <!-- <boxInput :digitCount="5" @update:input="onInputTape($event)"/> -->
                            <div ref="inputCont" class="box-input-wrapper" v-if="formOption.tape?.collar !== undefined && formOption.tape?.collar !== null && formOption.tape?.collar !== ''">

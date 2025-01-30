@@ -61,7 +61,7 @@
                     <div class="wrap-cat">
                         <div class="cat-name">01. FABRIC</div>
                     </div>
-                    <div class="flex items-center gap-4 px-6 my-3 fabric-code print-props">
+                    <div class="flex items-center gap-4 px-2 my-3 fabric-code print-props">
                         <label for="fabric-code" class="text-sm tracking-widest uppercase text-primary-50 whitespace-nowrap">fabric code</label>
                         <div ref="inputCont" class="box-input-wrapper">
                             <input
@@ -82,7 +82,7 @@
                     <div class="wrap-cat">
                         <div class="cat-name">02. COLLAR</div>
                     </div>
-                    <div class="grid grid-cols-6 px-6 my-4">
+                    <div class="grid grid-cols-6 px-2 my-4">
                         <div v-for="collar in props.dataConfig.collar.data.basic">
                             <input @click.native="form.collar = null" class="hidden" type="radio" v-model="form.collar" :value="collar" name="collar"  :id="'collar-' + collar.slug">
                             <label class="flex flex-col items-center justify-between h-full gap-2 px-2 rounded cursor-pointer" :for="'collar-' + collar.slug">
@@ -123,7 +123,7 @@
                         <div class="wrap-cat">
                             <div class="cat-name">03. CUFFS</div>
                         </div>
-                        <div class="grid grid-cols-3 px-6 my-4">
+                        <div class="grid grid-cols-3 px-2 my-4">
                             <div v-for="cuff in props.dataConfig.cuffs.data.basic">
                                 <input @click.native="form.cuff = null" class="hidden" type="radio" v-model="form.cuff" name="cuff" :value="cuff" :id="'cuff-' + cuff.slug">
                                 <label class="flex flex-col items-center justify-between h-full gap-2 px-2 rounded cursor-pointer" :for="'cuff-' + cuff.slug">
@@ -133,7 +133,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2 px-6 my-4">
+                        <div class="flex items-center gap-2 px-2 my-4">
                             <div class="text-xs font-bold tracking-widest uppercase text-primary-50">OPTION NUMBER</div>
                             <div class="flex font-roboto">
                                 <div v-if="form.cuff?.optionNumber" ref="inputCont" class="box-input-wrapper">
@@ -162,7 +162,7 @@
                         <div class="wrap-cat">
                             <div class="cat-name">04. FRONT BODY</div>
                         </div>
-                        <div class="grid grid-cols-2 px-6 my-4">
+                        <div class="grid grid-cols-2 px-2 my-4">
                             <div v-for="frontBody in props.dataConfig.front_body.data.basic">
                                 <input @click.native="form.frontBody = null" class="hidden" type="radio" name="front-body" v-model="form.frontBody" :value="frontBody" :id="'front-body-' + frontBody.slug">
                                 <label class="flex flex-col items-center justify-between h-full gap-2 px-2 rounded cursor-pointer" :for="'front-body-' + frontBody.slug">
@@ -172,7 +172,7 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2 px-6 my-4">
+                        <div class="flex items-center gap-2 px-2 my-4">
                             <div class="text-xs font-bold tracking-widest uppercase text-primary-50">OPTION NUMBER</div>
                             <div class="flex font-roboto">
                                 <div v-if="form.front_body?.optionNumber" ref="inputCont" class="box-input-wrapper">
@@ -271,10 +271,10 @@
                 </div>
 
                 <div>
-                    <div class="wrap-cat">
+                    <div class="mb-3 print:mb-2 wrap-cat">
                         <div class="cat-name">SIZE</div>
                     </div>
-                    <div class="grid grid-cols-3 gap-2 px-2 mt-1">
+                    <div class="grid grid-cols-3 gap-2 px-2 mb-2">
                         <div>
                             <input v-model="formSize.order" class="hidden" value="1. NEW ORDER" type="radio" name="size" :id="`new-order`">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`new-order`">
@@ -298,7 +298,7 @@
                         </div>
                     </div>
                     <!-- body type -->
-                    <div class="grid grid-cols-4 grid-rows-2 gap-2 px-2">
+                    <div class="grid grid-cols-4 grid-rows-2 gap-2 px-2 mb-2">
                         <div class="row-span-2">
                             <div class="inline-block border-2 border-primary-50 px-2 pt-1.5 font-bold text-primary-50 text-sm uppercase tracking-widest">BODY TYPE</div>
                         </div>
@@ -347,7 +347,7 @@
                     </div>
 
                     <!-- sleeve -->
-                    <div class="grid grid-cols-4 grid-rows-2 gap-2 px-6">
+                    <div class="grid grid-cols-4 gap-2 px-2 grid-rows-0">
                         <div class="row-span-2">
                             <div class="inline-block border-2 border-primary-50 px-2 pt-1.5 font-bold text-primary-50 text-sm uppercase tracking-widest">SLEEVE</div>
                         </div>
@@ -367,7 +367,7 @@
                         </div>
                     </div>
 
-                    <div class="px-6">
+                    <div class="px-2">
                         <div class="overflow-x-auto">
                             <table class="w-full text-primary-50">
                                 <thead>
@@ -456,7 +456,7 @@
                     <div class="wrap-cat">
                         <div class="cat-name">ADDITIONAL NOTES</div>
                     </div>
-                    <div class="grid grid-cols-5 gap-3 px-6 my-4">
+                    <div class="grid grid-cols-5 gap-3 px-2 my-4">
                         <div class="col-span-6">
                             <textarea v-model="additionalNote" class="w-full h-full p-2 border-2 border-primary-50 font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" name="" id="" placeholder="NOTE"></textarea>
                         </div>
