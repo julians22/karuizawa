@@ -27,7 +27,7 @@
                                 <tbody>
                                     <tr>
                                         <th>@lang('Order ID')</th>
-                                        <td>{{ $order->id }}</td>
+                                        <td>{{ $order->order_number }}</td>
                                     </tr>
                                     <tr>
                                         <th>@lang('Store')</th>

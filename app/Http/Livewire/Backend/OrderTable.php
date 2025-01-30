@@ -6,13 +6,25 @@ use App\Domains\Auth\Models\User;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Order;
+use App\Models\Store;
 use Livewire\Attributes\On;
+use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class OrderTable extends DataTableComponent
 {
     protected $model = Order::class;
+
+    public $stores = [];
+
+    function mount(){
+        $stores = Store::all();
+
+        foreach ($stores as $store) {
+            $this->stores[$store->id] = $store->code;
+        }
+    }
 
     public function configure(): void
     {
@@ -29,17 +41,16 @@ class OrderTable extends DataTableComponent
             SelectFilter::make('Status')
                 ->options([
                     'pending' => 'Pending',
-                    'processing' => 'Processing',
+                    // 'processing' => 'Processing',
                     'completed' => 'Completed',
-                    'cancelled' => 'Cancelled',
+                    // 'cancelled' => 'Cancelled',
                 ])
                 ->filter(fn($builder, $value) => $builder->where('status', $value)),
             SelectFilter::make('Store')
-                ->options([
-                    '1' => 'Ashta Mall',
-                    '3' => 'PIK'
-                ])
-                ->filter(fn($builder, $value) => $builder->where('store_id', $value)),
+                ->options(
+                    $this->stores
+                )
+                ->filter(fn($builder, $value) => $builder->where('orders.store_id', $value)),
             DateFilter::make('Order Date')
                 ->filter(fn($builder, $value) => $builder->whereDate('order_date', $value)),
             SelectFilter::make('Sync Status')
@@ -48,13 +59,33 @@ class OrderTable extends DataTableComponent
                     'not_synced' => 'Not Synced',
                 ])
                 ->filter(fn($builder, $value) => $builder->where('accurate_order_number', $value === 'synced' ? '!=' : '=', null)),
+            SelectFilter::make('Order Type')
+                ->options([
+                    'all' => 'All',
+                    'sc' => 'Semi Custom',
+                    'rtw' => 'Only Ready to Wear',
+                ])
+                ->filter(function($builder, $value){
+                    if ($value === 'sc') {
+                        return $builder->whereHas('orderItems', function($query){
+                            $query->where('product_type', 'App\Models\SemiCustomProduct');
+                        });
+                    }
+
+                    if ($value === 'rtw') {
+                        return $builder->whereDoesntHave('orderItems', function($query){
+                            $query->where('product_type', 'App\Models\SemiCustomProduct');
+                        });
+                    }
+                }),
         ];
     }
 
     public function columns(): array
     {
         return [
-            Column::make("Id", "id")
+            Column::make("Order Id", "order_number")
+                ->deselected()
                 ->sortable(),
             Column::make("Customer", "customer.full_name")
                 ->sortable(),
@@ -67,8 +98,10 @@ class OrderTable extends DataTableComponent
                 ->format(fn($value) => price_format($value)),
             Column::make("Status", "status")
                 ->sortable(),
-            Column::make("Semi Custom?")
-                ->label(fn($row, Column $column) => $row->orderItems->where('product_type', 'App\Models\SemiCustomProduct')->count() > 0 ? 'Yes' : 'No'),
+            BooleanColumn::make("Semi Custom?", "id")
+                ->setCallback(function(string $value, $row) {
+                    return $row->hasSemiCustom();
+                }),
             Column::make('Accurate Info', 'accurate_order_number')
                 ->format(fn($value, $row) => $value ? $value : "Not Synced"),
             Column::make("Created at", "created_at")
