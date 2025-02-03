@@ -79,7 +79,7 @@
         @apply print:text-2xl;
 
         .box-input{
-            @apply print:text-2xl p-px;
+            @apply p-px print:text-2xl;
         }
 
         input {
@@ -90,7 +90,7 @@
             @apply print:text-xl;
 
             td, th {
-                @apply print:py-px print:px-1;
+                @apply print:px-1 print:py-px;
             }
         }
 
@@ -102,10 +102,25 @@
             }
 
             .box-input{
-                @apply print:text-2xl p-px;
+                @apply p-px print:text-2xl;
             }
         }
 
+    }
+
+
+    // Styling for print page form
+    // Buttons
+    .buttons-wrapper{
+        @apply border-pink-ka mt-2 p-2 border;
+
+        .buttons-layout{
+            @apply gap-2 grid grid-cols-2 grid-rows-5 grid-flow-col;
+        }
+
+        .button-price-label{
+            @apply mt-1;
+        }
     }
 }
 
