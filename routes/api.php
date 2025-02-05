@@ -6,6 +6,7 @@ use phpDocumentor\Reflection\Types\Boolean;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\FittingController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Frontend\User\SemiCustomConteroller;
 
 /*
@@ -33,11 +34,13 @@ Route::group(['prefix' => 'customer'], function () {
     Route::get('search', function (Request $request) {
         $keyword = $request->keyword;
 
-        $data = \App\Models\Customer::where(function ($query) use ($keyword) {
+        $data = \App\Models\Customer::where('id', '!=', 1)
+            ->where(function ($query) use ($keyword) {
             $query->where('full_name', 'like', '%' . $keyword . '%')
                 ->orWhere('phone', 'like', '%' . $keyword . '%')
                 ->orWhere('email', 'like', '%' . $keyword . '%');
         })
+        ->orderBy('full_name', 'asc')
         ->paginate(20);
 
         return $data;
@@ -87,6 +90,7 @@ Route::group(['prefix' => 'customer'], function () {
 Route::get('orders', [OrderController::class, 'index']);
 Route::get('incoming-orders', [OrderController::class, 'incoming_order']);
 Route::get('order/{id}', [OrderController::class, 'show']);
+Route::post('set-handling-date/{id}', [OrderController::class, 'set_handling_date']);
 
 Route::get('fitting-orders', [FittingController::class, 'index']);
 
@@ -95,3 +99,7 @@ Route::post('store-order', [OrderController::class, 'store']);
 Route::post('send-payment', [OrderController::class, 'store_payment']);
 
 Route::post('semi-custom/submit', [SemiCustomConteroller::class, 'submit']);
+
+Route::group(['prefix' => 'profile', 'as' => 'profile.'], function() {
+    Route::post('update', [ProfileController::class, 'update'])->name('update');
+});

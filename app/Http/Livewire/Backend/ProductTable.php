@@ -114,6 +114,7 @@ class ProductTable extends DataTableComponent
 
             SelectFilter::make('Stock Warehouse')
                 ->options([
+                    '' => 'All Warehouse',
                     '1' => 'Ashta Mall',
                     '3' => 'PIK'
                 ])

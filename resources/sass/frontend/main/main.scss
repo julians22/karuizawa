@@ -1,4 +1,4 @@
-// @import "../../_global";
+@import "../../_global";
 
 // tailwind
 @import "tailwindcss/base";
@@ -42,12 +42,13 @@
     @media print {
         .printable {
             -webkit-print-color-adjust: exact;
+            zoom: 46%;
+            @page {
+                size: 20in 14.5in;
+                margin: 1mm;
+            }
         }
 
-        @page {
-            size: 20in 14.5in;
-            margin: 5mm;
-        }
     }
 }
 
@@ -58,7 +59,7 @@
     }
 
     .box-input-wrapper .box-input {
-        @apply block border border-primary-50 p-2 text-center text-gray-900 text-sm size-8;
+        @apply block border-primary-50 p-2 border text-center text-gray-900 text-sm size-8;
     }
 
     .box-input-wrapper .box-input:not(:first-child) {
@@ -71,6 +72,54 @@
         &::-webkit-inner-spin-button,
         &::-webkit-outer-spin-button {
             appearance: none;
+        }
+    }
+
+    .print-props {
+        @apply print:text-2xl;
+
+        .box-input{
+            @apply p-px print:text-2xl;
+        }
+
+        input {
+            @apply print:text-2xl print:uppercase;
+        }
+
+        &-md {
+            @apply print:text-xl;
+
+            td, th {
+                @apply print:px-1 print:py-px;
+            }
+        }
+
+        &-embroidery {
+            @apply print:text-2xl;
+
+            input {
+                @apply print:text-2xl;
+            }
+
+            .box-input{
+                @apply p-px print:text-2xl;
+            }
+        }
+
+    }
+
+
+    // Styling for print page form
+    // Buttons
+    .buttons-wrapper{
+        @apply border-pink-ka mt-2 p-2 border;
+
+        .buttons-layout{
+            @apply gap-2 grid grid-cols-2 grid-rows-5 grid-flow-col;
+        }
+
+        .button-price-label{
+            @apply mt-1;
         }
     }
 }

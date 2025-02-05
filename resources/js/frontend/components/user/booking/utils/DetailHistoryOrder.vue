@@ -12,6 +12,10 @@
 
     const onPrint = () => {
         console.log(booking);
+        window.open(
+        `/print-bill/${booking.value.order_id}`,
+        '_blank'
+        );
     }
 
     defineExpose({
@@ -44,7 +48,7 @@
 
                         <div class="bg-primary-50 my-5 w-full h-[1px]"></div>
 
-                        <div class="flex justify-center">
+                        <div class="flex justify-center h-[35vh] overflow-y-auto">
                             <table>
                                 <thead class="divide-y divide-primary-100 w-full">
                                     <tr class="bg-primary-50 text-secondary">
@@ -60,7 +64,9 @@
                                         <td class="px-4 py-4">{{ item.product_name }}</td>
                                         <td class="px-4 py-4 text-center">{{ item.qty }}</td>
                                         <td class="px-4 py-4">{{ item.price_formatted }}</td>
-                                        <td class="px-4 py-4">{{ item.total_price_formatted }}</td>
+                                        <td class="px-4 py-4">
+                                            {{ item.total_price_formatted }} <span v-if="item.discount_detail?.discount">(-{{ item.discount_detail.discount }}%)</span>
+                                        </td>
                                     </tr>
                                     <tr class="bg-white" v-if="booking.discount > 0">
                                         <td colspan="3" class="text-right bg-primary-50 px-4 py-4 font-bold text-white">Coupon</td>
@@ -85,10 +91,10 @@
                             </button>
 
                             <!-- button send mail -->
-                            <button class="flex items-center gap-2 bg-secondary-50 p-6 font-josefin text-white tracking-widest">
+                            <!-- <button class="flex items-center gap-2 bg-secondary-50 p-6 font-josefin text-white tracking-widest">
                                 <span>SEND MAIL</span>
                                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
-                            </button>
+                            </button> -->
                         </div>
                     </div>
                 </div>

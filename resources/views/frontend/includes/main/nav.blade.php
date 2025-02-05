@@ -45,6 +45,9 @@
                                 </div>
                             </li>
                         </li>
+                        @auth
+                            <li class="{{ Route::is('frontend.user.booking') ? 'active' : '' }}"><a href="{{ route('frontend.user.booking') }}" class="py-1">CUSTOMER BOOKING</a></li>
+                        @endauth
                         <li><a href="{{ route('frontend.about-us') }}">About Us</a></li>
                         <li class="self-center"><div class="h-[1px] w-10 md:w-20 lg:w-40 bg-primary-50"></div></li>
                         @if ($logged_in_user)
@@ -57,7 +60,11 @@
                                     <div class="w-0 h-0 border-l-[1rem] border-y-8 border-y-transparent border-l-primary-50"></div>
                                 </div>
                                 <ul class="absolute hidden dropdown-menu group-hover:block bg-primary-50 top-7">
-                                  <li class=""><a class="block px-4 py-2 text-white whitespace-no-wrap hover:text-primary-200" href="{{ route('frontend.user.dashboard') }}">Profile</a></li>
+                                @if ($logged_in_user->type == 'crew')
+                                    <li class=""><a class="block px-4 py-2 text-white whitespace-no-wrap hover:text-primary-200" href="{{ route('crew.dashboard') }}">Profile</a></li>
+                                    @else
+                                    <li class=""><a class="block px-4 py-2 text-white whitespace-no-wrap hover:text-primary-200" href="{{ route('frontend.user.dashboard') }}">Profile</a></li>
+                                @endif
                                   <li><div class="h-[1px] md:w-[88%] bg-white opacity-75 mx-auto"></div></li>
                                   <li class="">
                                     <form method="POST" action="{{ route('frontend.auth.logout') }}">

@@ -3,7 +3,7 @@
 @section('title', __('Home'))
 
 @section('content')
-    <div class="home_hero xl:h-[88svh]">
+    <div class="home_hero 2xl:h-[88svh]">
         <div id="hero_splide" class="splide" role="group">
             <div class="splide__track">
                   <div class="flex splide__list">

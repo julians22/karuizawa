@@ -1,9 +1,8 @@
 <script setup>
     import { computed, defineAsyncComponent, onMounted, ref, defineEmits, watch } from 'vue';
-    import { useCustomer } from '@frontend/store/customer';
     import { priceFormat } from '@frontend/helpers/currency';
 
-    import { component as VueNumber } from '@coders-tm/vue-number-format'
+    import { component as VueNumber } from '@coders-tm/vue-number-format';
 
     const props = defineProps({
         csrf: String,
@@ -29,7 +28,9 @@
                 sku: item.product.sku,
                 qty: item.quantity,
                 price: item.price,
-                total: item.total_price
+                total: item.total_price,
+                discount: item.discount,
+                discount_detail: item.discount_detail
             }
         });
     });
@@ -51,16 +52,13 @@
 
     const childDoPayment = ref(null);
 
-    // const products = computed(() => useProducts().getProducts);
-    const customer = computed(() => useCustomer().getCustomer);
     const couponUsed = computed(() => props.order.discount_details.coupon);
-    // const semiCustom = computed(() => useProducts().getSemiCustom);
 
     const totalPayment = computed(() => {
         let total = 0;
         products.value.forEach(product => {
             // parse float to remove comma
-            total += parseFloat(product.total);
+            total += parseFloat(product.total - product.discount);
         });
 
         semiCustom.value.forEach(sc => {
@@ -83,7 +81,7 @@
     const preferredBank = ref('BCA');
     const downPayment = ref(0);
     const payAmount = ref(0);
-    const transactionNumber = ref('');
+    const transactionNumber = ref('-');
 
     watch(downPayment, (val) => {
         if (val == 1) {
@@ -161,7 +159,6 @@
 
 
     onMounted(() => {
-
         let total = 0;
         products.value.forEach(product => {
             // parse float to remove comma
@@ -305,11 +302,11 @@
                             </tr>
                             <tr v-for="product in products" :key="product.sku" class="mt-2">
                                 <td class="font-roboto">
-                                    <div class="font-bold text-[#606060]">{{ product.name }}</div>
+                                    <div class="font-bold text-[#606060]">{{ product.name }} <div class="inline text-[#A3A3A3]">@ {{ priceFormat(product.price) }}</div></div>
                                     <div class="text-[#A3A3A3]">{{ product.sku }}</div>
                                 </td>
                                 <td class="font-bold text-[#606060]">{{ product.qty }}</td>
-                                <td class="font-bold text-[#606060]" v-html="priceFormat(product.price)"></td>
+                                <td class="font-bold text-[#606060]">{{ priceFormat(product.price - product.discount) }} <span v-if="product.discount">-({{ product.discount_detail.discount }}%)</span></td>
                             </tr>
                         </tbody>
                     </table>
@@ -340,7 +337,8 @@
         </section>
 
         <!-- Create Input Transnumber & downpayment check -->
-        <section>
+         <!-- Downpayment not needed -->
+        <section class="hidden">
             <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
                 <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">PAYMENT DETAILS</div>
             </div>

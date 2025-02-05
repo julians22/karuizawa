@@ -27,7 +27,7 @@
                                 <tbody>
                                     <tr>
                                         <th>@lang('Order ID')</th>
-                                        <td>{{ $order->id }}</td>
+                                        <td>{{ $order->order_number }}</td>
                                     </tr>
                                     <tr>
                                         <th>@lang('Store')</th>
@@ -52,10 +52,6 @@
                                     <tr>
                                         <th>@lang('Total Price')</th>
                                         <td>{{ price_format( $order->total_price) }}</td>
-                                    </tr>
-                                    <tr @class(['table-warning', 'table-info' => $order->isPaymentComplete()])>
-                                        <th>@lang('Remaining Payment')</th>
-                                        <td>{{ price_format($order->remaining_amount) }}</td>
                                     </tr>
 
                                     <tr>
@@ -117,13 +113,20 @@
                                     @foreach ($order->orderItems as $item)
                                         <tr>
                                             @if ($item->product_type == 'App\Models\Product')
-                                            <td>{{ $item->product->sku }} - {{ $item->product->product_name }}</td>
+                                            <td>
+                                                {{ $item->product->sku }} - {{ $item->product->product_name }}
+                                            </td>
                                             @else
                                             <td>{{ $item->product->name }}</td>
                                             @endif
                                             <td>{{ $item->quantity }}</td>
                                             <td>{{ price_format($item->price) }}</td>
-                                            <td>{{ price_format($item->total_price) }}</td>
+                                            <td>
+                                                {{ price_format($item->total_price - $item->discount) }}
+                                                @if ($item->discount && $item->discount_detail)
+                                                    <span class="badge bg-danger">{{ $item->discount_detail['discount'] }}%</span>
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -162,9 +165,20 @@
                                 </table>
                             </div>
 
+                            {{-- If synced to accurate --}}
+                            @if ($order->isSyncedToAccurate())
+                                <div class="alert alert-success">
+                                    @lang('Order is synced to Accurate')
+                                    {{-- Date --}}
+                                    <small>{{ $order->accurate_sync_date->diffForHumans() }} <span class="badge bg-info">No Faktur: {{ $order->accurate_order_number }}</span></small>
+                                </div>
+
+
+                            @else
                             {{-- Upload to accurate --}}
                             <x-utils.link :href="route('admin.order.upload-accurate', $order)"
                                 class="btn btn-warning btn-sm" :text="'Upload to Accurate'" />
+                            @endif
                         @endif
 
                     </x-slot>

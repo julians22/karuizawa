@@ -34,8 +34,8 @@ class UpdateUserPasswordRequest extends FormRequest
                 [
                     'max:100',
                     new UnusedPassword((int) $this->segment(4)),
+                    Password::min(8)->mixedCase()->numbers()
                 ],
-                Password::min(8)
             ),
         ];
     }

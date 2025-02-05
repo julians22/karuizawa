@@ -11,7 +11,6 @@ return [
         // 'db' => 290005 //
         'db' => env('ACCURATE_DB', null),
 
-        // customer_save%20customer_view%20customer_delete%20item_save%20item_view%20item_adjustment_save%20sales_order_save%20glaccount_view%20glaccount_save%20sales_invoice_save%20sales_invoice_view%20sales_receipt_save%20sales_receipt_view%20purchase_invoice_view%20receive_item_view%20stock_mutation_history_view%20department_view%20department_save
         'scopes' => [
             'warehouse_view',
             'item_save',
@@ -43,6 +42,14 @@ return [
     'customer_list' => [
         'AST' => 'C.00359',
         'PIK' => 'C.00651',
+    ],
+    'warehouse_list' => [
+        'AST' => 'Ashta Mall',
+        'PIK' => 'Gudang PIK',
+    ],
+    'trans_no' => [
+        'PIK' => '1800',
+        'AST' => '1801',
     ]
 ]
 

@@ -24,14 +24,16 @@ class Order extends Model
         'status',
         'order_number',
         'order_date',
+        'accurate_order_number',
+        'accurate_order_id',
+        'accurate_sync_date'
     ];
 
     protected $casts = [
         'discount_details' => 'array',
+        'order_date' => 'datetime:Y-m-d h:i',
+        'accurate_sync_date' => 'datetime:Y-m-d H:i:s'
     ];
-
-    // order date yyyy-mm-dd
-    protected $dates = ['order_date'];
 
     protected $appends = ['down_payment_amount', 'completion_amount', 'remaining_amount'];
 
@@ -60,6 +62,13 @@ class Order extends Model
     public function payments()
     {
         return $this->hasMany(Payment::class);
+    }
+
+    public function hasSemiCustom()
+    {
+        return $this->orderItems()->whereHas('product', function ($query) {
+            $query->where('product_type', 'App\Models\SemiCustomProduct');
+        })->exists();
     }
 
     public function getDownPaymentAmountAttribute()
@@ -91,5 +100,10 @@ class Order extends Model
     {
         $totalPayments = $this->payments()->sum('amount');
         return $totalPayments == $this->total_price;
+    }
+
+    public function isSyncedToAccurate()
+    {
+        return ($this->accurate_order_id != null && $this->accurate_order_number != null) && $this->accurate_sync_date != null;
     }
 }

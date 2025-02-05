@@ -1,11 +1,10 @@
-{{-- @dd($dataSemiCustom) --}}
 <!doctype html>
 <html lang="{{ htmlLang() }}" @langrtl dir="rtl" @endlangrtl>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $dataSemiCustom['name'] }} - {{ $dataSemiCustom['order_item']['order']['order_number'] }} - {{ $dataSemiCustom['order_item']['order']['order_date'] }}</title>
+    <title>{{ appName() }} @yield('title')</title>
     <meta name="description" content="@yield('meta_description', appName())">
     <meta name="author" content="@yield('meta_author', 'F_Skn')">
     @yield('meta')
@@ -18,10 +17,7 @@
 </head>
 <body>
     <div id="app">
-        <print-semi-custom
-        :data_config="{{ $dataConfig }}"
-        :data_semi_custom="{{ $dataSemiCustom }}"
-        ></print-semi-custom>
+        <print-bill :data_order="{{ $order }}"></print-bill>
     </div><!--app-->
 
     @stack('before-scripts')

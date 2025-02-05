@@ -19,13 +19,10 @@ class ProductController extends Controller
         return view('backend.product.index');
     }
 
-    public function fetchStock(ProductService $productService)
+    public function fetchStock()
     {
-        $auth = new Oauth();
-        $auth->makeSignature();
-
         $productApi = new ProductApi();
-        $products = $productApi->stockJobs(100, 2, 'Ashta');
+        $products = $productApi->stockJobs(500, 1);
 
         if ($products) {
             return redirect()->route('admin.product.index')->withFlashSuccess(__('The product was successfully fetched.'));
@@ -36,7 +33,7 @@ class ProductController extends Controller
     public function fetchPrice()
     {
         $productApi = new ProductApi();
-        $products = $productApi->productJobs(100, 1, 350, 'id,name,no,unitPrice');
+        $products = $productApi->productJobs(500, 1, 350, 'id,name,no,unitPrice');
 
         if ($products) {
             return redirect()->route('admin.product.index')->withFlashSuccess(__('The price was successfully fetched.'));

@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Product;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -11,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 
 class SyncProduct implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $data = [];
 
@@ -30,8 +31,8 @@ class SyncProduct implements ShouldQueue
     {
         $product = Product::firstOrNew([
             'sku' => $this->data['sku'],
-            'product_name' => $this->data['product_name']
         ], [
+            'product_name' => $this->data['product_name'],
             'category_id' => 1
         ]);
         $product->price = $this->data['price'];

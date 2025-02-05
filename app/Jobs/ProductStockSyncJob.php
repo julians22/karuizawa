@@ -4,17 +4,18 @@ namespace App\Jobs;
 
 use App\Models\Product;
 use App\Models\Store;
+use Bus;
 use Http;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
 class ProductStockSyncJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $endpoint;
     protected $params;
@@ -28,11 +29,6 @@ class ProductStockSyncJob implements ShouldQueue
         $this->endpoint = $endpoint;
         $this->params = $params;
         $this->store = $store;
-    }
-
-    function middleware()
-    {
-        return [new WithoutOverlapping($this->endpoint)];
     }
 
     /**
@@ -59,25 +55,34 @@ class ProductStockSyncJob implements ShouldQueue
             $data = $response['d'];
             $store = $this->store;
 
-            $stocks = collect($data)->map(function ($stock) use ($store) {
-                $findProduct = Product::where('sku', $stock['no'])->first();
-                if ($findProduct) {
-                    $quantity = $stock['quantity'] < 0 ? 0 : $stock['quantity'];
+            $stocks = [];
 
-                    $stockData = [
-                        'product_id' => $findProduct->id,
-                        'store_id' => $store->id,
-                        'stock_quantity' => $quantity
-                    ];
-                    return $stockData;
+            foreach ($data as $key => $value) {
+                $findProduct = Product::where('sku', $value['no'])->first();
+                if ($findProduct) {
+                    $quantity = $value['quantity'] < 0 ? 0 : $value['quantity'];
+
+                    if ($quantity > 0) {
+
+                        $stockData = [
+                            'product_id' => $findProduct->id,
+                            'store_id' => $store->id,
+                            'stock_quantity' => $quantity
+                        ];
+                        $stocks[] = $stockData;
+                    }
                 }
-            });
+            }
+
+            $jobs = [];
 
             foreach ($stocks as $stock) {
                 if ($stock && $stock['stock_quantity'] > 0) {
-                    dispatch(new SyncProductStock($stock));
+                    $jobs[] = new SyncProductStock($stock);
                 }
             }
+
+            Bus::batch($jobs)->onQueue('default')->dispatch();
         }
     }
 }

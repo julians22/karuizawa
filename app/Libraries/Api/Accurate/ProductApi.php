@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use App\Jobs\SyncProduct;
 use App\Models\Product;
 use App\Models\Store;
+use Bus;
 
 class ProductApi
 {
@@ -35,10 +36,13 @@ class ProductApi
             'X-Session-ID' => $this->cachedDb['session'],
         ];
         $params = [
+            'filter.itemCategoryId.op' => 'EQUAL',
+            'filter.itemCategoryId.val' => $itemCategory,
+            'filter.itemType.op' => 'EQUAL',
+            'filter.itemType.val' => 'INVENTORY',
             'sp.pageSize' => $pageSize,
             'sp.page' => $page,
             'fields' => $fields,
-            'filter.itemCategoryId.val' => $itemCategory,
         ];
 
         $response = Http::withHeaders($headers)
@@ -59,21 +63,30 @@ class ProductApi
                 return $productData;
             });
 
+            $jobs = [];
+
             foreach ($products as $product) {
                 // Dispatch the job to sync the product when the product price is not 0
-                if ($product['price'] > 0) {
-                    dispatch(new SyncProduct($product));
-                }
+                $jobs[] = new SyncProduct($product);
+            }
+
+            $chunkedJobs = array_chunk($jobs, 100);
+
+            foreach ($chunkedJobs as $chunk) {
+                Bus::batch($chunk)->onQueue('default')->dispatch();
             }
 
             $pageCount = $response['sp']['pageCount'];
 
             if ($pageCount > 0) {
                 $nextPage = $page + 1;
+                $apiJobs = [];
                 for($nextPage; $nextPage <= $pageCount; $nextPage++) {
-                    $params['page'] = $nextPage;
-                    dispatch(new ProductSyncJob($endpoint, $params));
+                    $params['sp.page'] = $nextPage;
+                    $apiJobs[] = new ProductSyncJob($endpoint, $params);
                 }
+
+                Bus::batch($apiJobs)->onQueue('default')->dispatch();
             }
 
             return true;
@@ -84,7 +97,9 @@ class ProductApi
 
     function stockJobs($pageSize = 100, $page = 1) {
 
-        $stores = Store::whereNotNull('accurate_alias')->get();
+        $stores = Store::whereNotNull('accurate_alias')
+            ->orderBy('updated_at', 'asc')
+            ->get();
 
         foreach ($stores as $store) {
             $endpoint = $this->appUrl . '/accurate/api/item/list-stock.do';
@@ -97,8 +112,9 @@ class ProductApi
                 'sp.pageSize' => $pageSize,
                 'sp.page' => $page,
                 'sp.sort' => 'no|asc',
-                'wareHouseId' => $store->accurate_alias,
+                'warehouseId' => (int)$store->accurate_alias,
                 'asOfDate' => date('d/m/Y'),
+                'filter.itemCategoryId.val' => 350,
             ];
 
             $response = Http::withHeaders($headers)
@@ -108,26 +124,34 @@ class ProductApi
                 $response = $response->json();
                 $data = $response['d'];
 
-                $stocks = collect($data)->map(function ($stock) use ($store) {
+                $stocks = [];
 
-                    $findProduct = Product::where('sku', $stock['no'])->first();
+                foreach ($data as $key => $value) {
+                    $findProduct = Product::where('sku', $value['no'])->first();
+
                     if ($findProduct) {
+                        $quantity = $value['quantity'] < 0 ? 0 : $value['quantity'];
 
                         $stockData = [
                             'product_id' => $findProduct->id,
                             'store_id' => $store->id,
-                            'stock_quantity' => $stock['quantity'] < 0 ? 0 : $stock['quantity']
+                            'stock_quantity' => $quantity
                         ];
-                        return $stockData;
+
+                        $stocks[] = $stockData;
                     }
-                });
+                }
+
+                $jobs = [];
 
                 foreach ($stocks as $stock) {
 
                     if ($stock && $stock['stock_quantity'] > 0) {
-                        dispatch(new SyncProductStock($stock));
+                        $jobs[] = new SyncProductStock($stock);
                     }
                 }
+
+                Bus::batch($jobs)->onQueue('default')->dispatch();
 
                 $pageCount = $response['sp']['pageCount'];
 
@@ -135,16 +159,18 @@ class ProductApi
 
                     $nextPage = $page + 1;
 
+                    $apiJobs = [];
+
                     for($nextPage; $nextPage <= $pageCount; $nextPage++) {
                         $params['sp.page'] = $nextPage;
-                        dispatch(new ProductStockSyncJob($endpoint, $params, $store));
+                        $apiJobs[] = new ProductStockSyncJob($endpoint, $params, $store);
                     }
+
+                    Bus::batch($apiJobs)->onQueue('default')->dispatch();
                 }
-
-                return true;
             }
-
-            return false;
         }
+
+        return true;
     }
 }

@@ -1,73 +1,184 @@
 <script setup>
-    import { defineAsyncComponent, ref } from 'vue';
+    import { defineAsyncComponent, onMounted, reactive, ref } from 'vue';
 
     const props = defineProps({
         csrf: String,
         user: Object,
         route_edit_profile: String,
-        route_logout: String
+        route_logout: String,
+        route_update_user: String,
     });
 
     const Layout = defineAsyncComponent(() => import('../includes/Layout.vue'));
+
+    const personal_data = reactive({
+        user_id: props.user.id,
+        full_name: '',
+        phone: '',
+        address: '',
+        is_male: 1,
+        current_password: '',
+        new_password: '',
+        confirm_password: '',
+    });
+
+    const isLoading = ref(false);
+
+    const updateProfile = () => {
+
+        isLoading.value = true;
+
+        // validate
+        if (personal_data.current_password && !personal_data.new_password) {
+            alert('Please enter new password');
+            isLoading.value = false;
+            return;
+        }
+
+        if (personal_data.current_password && (personal_data.new_password && !personal_data.confirm_password)) {
+            alert('Please enter confirm password');
+            isLoading.value = false;
+            return;
+        }
+
+        if (personal_data.current_password && (personal_data.new_password !== personal_data.confirm_password)) {
+            alert('Password does not match');
+            isLoading.value = false;
+            return;
+        }
+
+        let form = new FormData();
+        form.append('user_id', personal_data.user_id);
+        form.append('full_name', personal_data.full_name);
+        form.append('phone', personal_data.phone);
+        form.append('address', personal_data.address);
+        form.append('is_male', personal_data.is_male);
+        if (personal_data.current_password) {
+            form.append('current_password', personal_data.current_password);
+            form.append('new_password', personal_data.new_password);
+            form.append('confirm_password', personal_data.confirm_password);
+        }
+
+        try {
+            // post data method patch to route_update_user
+            axios.post(props.route_update_user, form)
+                .then(response => {
+                    console.log(response.data);
+                    
+                    if (response.data.success) {
+                        alert('Profile updated');
+
+                        // reload page
+                        location.reload();
+                    }
+
+                    if (response.data.error) {
+                        alert(response.data.error);
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+
+                    // if error validation code 422
+                    // loop the erros
+                    if (error.response.status === 422) {
+                        let errors = error.response.data.errors;
+                        let message = '';
+                        for (let key in errors) {
+                            message += errors[key][0] + '\n';
+                        }
+                        alert(message);
+                    }
+                })
+                .finally(() => {
+                    isLoading.value = false;
+                });
+        }
+        catch (error) {
+            console.log(error);
+
+            isLoading.value = false;
+        }
+    }
+
+    onMounted(() => {
+        personal_data.full_name = props.user.name;
+        personal_data.phone = props.user.personal_data?.phone;
+        personal_data.address = props.user.personal_data?.address;
+        personal_data.is_male = props.user.personal_data?.is_male ?? 1;
+    });
+
+
 </script>
 
 <template>
     <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf">
-        <div class="flex items-center justify-between py-7 px-14 bg-primary-50">
-            <div class="text-2xl font-bold tracking-widest text-white uppercase">PERSONAL DATA</div>
+        <div class="flex justify-between items-center bg-primary-50 px-14 py-7">
+            <div class="font-bold text-2xl text-white uppercase tracking-widest">PERSONAL DATA</div>
         </div>
 
-        <div class="container py-10">
-            <div class="grid items-center grid-cols-6 mb-4">
-                <label for="first_name" class="block col-span-1 mb-2 font-medium tracking-widest uppercase text-primary-50 ">First name</label>
-                <input type="text" id="first_name" class="col-span-5 bg-transparent border border-primary-50 text-primary-50 rounded-full block w-full p-2.5"/>
+        <div class="py-10 container">
+            <div class="items-center grid grid-cols-6 mb-4">
+                <label for="full_name" class="block col-span-1 mb-2 font-medium text-primary-50 uppercase tracking-widest">Full name</label>
+                <input type="text" id="full_name" v-model.lazy="personal_data.full_name" disabled class="block border-primary-50 col-span-5 bg-transparent p-2.5 border rounded-full w-full text-primary-50"/>
             </div>
-            <div class="grid items-center grid-cols-6 mb-4">
-                <label for="phone" class="block col-span-1 mb-2 font-medium tracking-widest uppercase text-primary-50 ">Phone No</label>
-                <input type="text" id="phone" class="col-span-5 bg-transparent border border-primary-50 text-primary-50 rounded-full block w-full p-2.5"/>
+            <div class="items-center grid grid-cols-6 mb-4">
+                <label for="phone" class="block col-span-1 mb-2 font-medium text-primary-50 uppercase tracking-widest">Phone No</label>
+                <input type="text" id="phone"
+                    v-model.lazy="personal_data.phone"
+                    class="block border-primary-50 col-span-5 bg-transparent p-2.5 border rounded-full w-full text-primary-50"/>
             </div>
-            <div class="grid items-center grid-cols-6 mb-4">
-                <label for="email" class="self-start block col-span-1 mb-2 font-medium tracking-widest uppercase text-primary-50">Address</label>
-                <textarea rows="4" name="" id="" class="col-span-5 bg-transparent border border-primary-50 text-primary-50 rounded-3xl block w-full p-2.5"></textarea>
-                <!-- <input type="email" id="email" class="col-span-5 bg-transparent border border-primary-50 text-primary-50 rounded-full block w-full p-2.5"/> -->
+            <div class="items-center grid grid-cols-6 mb-4">
+                <label for="email" class="block col-span-1 mb-2 font-medium text-primary-50 uppercase tracking-widest self-start">Address</label>
+                <textarea rows="4" name="" id=""
+                    v-model.lazy="personal_data.address"
+                    class="block border-primary-50 col-span-5 bg-transparent p-2.5 border rounded-3xl w-full text-primary-50"></textarea>
+                <!-- <input type="email" id="email" class="block border-primary-50 col-span-5 bg-transparent p-2.5 border rounded-full w-full text-primary-50"/> -->
             </div>
-            <div class="grid items-center grid-cols-6">
-                <label class="block col-span-1 mb-2 font-medium tracking-widest uppercase text-primary-50">gender</label>
-                <div class="flex col-span-5 gap-4">
+            <div class="items-center grid grid-cols-6">
+                <label class="block col-span-1 mb-2 font-medium text-primary-50 uppercase tracking-widest">gender</label>
+                <div class="flex gap-4 col-span-5">
                     <div class="flex items-center">
-                        <input id="default-radio-1" type="radio" value="" name="default-radio" class="w-4 h-4 border-gray-300 text-secondary-50 bg-secondary focus:ring-secondary">
-                        <label for="default-radio-1" class="mt-1 uppercase text-primary-50 ms-1">Male</label>
+                        <input id="default-radio-1" v-model="personal_data.is_male" type="radio" value="1" name="default-radio" class="border-gray-300 bg-secondary focus:ring-secondary w-4 h-4 text-secondary-50">
+                        <label for="default-radio-1" class="mt-1 text-primary-50 uppercase ms-1">Male</label>
                     </div>
                     <div class="flex items-center">
-                        <input checked id="default-radio-2" type="radio" value="" name="default-radio" class="w-4 h-4 border-gray-300 text-secondary-50 bg-secondary focus:ring-secondary">
-                        <label for="default-radio-2" class="mt-1 uppercase text-primary-50 ms-1">Female</label>
+                        <input id="default-radio-2" v-model="personal_data.is_male" type="radio" value="0" name="default-radio" class="border-gray-300 bg-secondary focus:ring-secondary w-4 h-4 text-secondary-50">
+                        <label for="default-radio-2" class="mt-1 text-primary-50 uppercase ms-1">Female</label>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Change password -->
-        <div class="flex items-center justify-between py-7 px-14 bg-primary-50">
-            <div class="text-2xl font-bold tracking-widest text-white uppercase">Change password</div>
+        <div class="flex justify-between items-center bg-primary-50 px-14 py-7">
+            <div class="font-bold text-2xl text-white uppercase tracking-widest">Change password
+                <span class="text-base">
+                    (Leave blank if you don't want to change password)
+                </span>
+            </div>
         </div>
 
-        <div class="container py-10">
-            <div class="grid items-center grid-cols-8 gap-4 mb-4">
-                <label for="recent-pass" class="block col-span-2 mb-2 font-medium tracking-widest uppercase text-primary-50 ">recent password</label>
-                <input type="password" id="recent-pass" class="col-span-6 bg-transparent border border-primary-50 text-primary-50 rounded-full block w-full p-2.5"/>
+        <div class="py-10 container">
+            <div class="items-center gap-4 grid grid-cols-8 mb-4">
+                <label for="recent-pass" class="block col-span-2 mb-2 font-medium text-primary-50 uppercase tracking-widest">recent password</label>
+                <input type="password" v-model="personal_data.current_password" id="recent-pass" class="block border-primary-50 col-span-6 bg-transparent p-2.5 border rounded-full w-full text-primary-50"/>
             </div>
-            <div class="grid items-center grid-cols-8 gap-4 mb-4">
-                <label for="new-pass" class="block col-span-2 mb-2 font-medium tracking-widest uppercase text-primary-50 ">new password</label>
-                <input type="text" id="new-pass" class="col-span-6 bg-transparent border border-primary-50 text-primary-50 rounded-full block w-full p-2.5"/>
+            <div class="items-center gap-4 grid grid-cols-8 mb-4">
+                <label for="new-pass" class="block col-span-2 mb-2 font-medium text-primary-50 uppercase tracking-widest">new password</label>
+                <input type="password" v-model="personal_data.new_password" id="new-pass" class="block border-primary-50 col-span-6 bg-transparent p-2.5 border rounded-full w-full text-primary-50"/>
             </div>
-            <div class="grid items-center grid-cols-8 gap-4 mb-4">
-                <label for="confirm-pass" class="block col-span-2 mb-2 font-medium tracking-widest uppercase text-primary-50 ">CONFIRM password</label>
-                <input type="text" id="confirm-pass" class="col-span-6 bg-transparent border border-primary-50 text-primary-50 rounded-full block w-full p-2.5"/>
+            <div class="items-center gap-4 grid grid-cols-8 mb-4">
+                <label for="confirm-pass" class="block col-span-2 mb-2 font-medium text-primary-50 uppercase tracking-widest">CONFIRM password</label>
+                <input type="password" v-model="personal_data.confirm_password" id="confirm-pass" class="block border-primary-50 col-span-6 bg-transparent p-2.5 border rounded-full w-full text-primary-50"/>
             </div>
         </div>
 
         <div class="float-right">
-                <button class="flex items-center gap-2 py-6 tracking-widest text-white px-14 bg-secondary-50">
+                <button @click="updateProfile" :disabled="isLoading"
+                    class="flex items-center gap-2 bg-secondary-50 px-14 py-6 text-white tracking-widest"
+                    :class="{'opacity-50': isLoading}"
+                    >
                     <span class="uppercase">update</span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                 </button>

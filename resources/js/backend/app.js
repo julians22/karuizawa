@@ -10,4 +10,6 @@ window.Swal = require('sweetalert2');
 // require('@coreui/coreui/dist/js/coreui.bundle');
 
 // Boilerplate
+
+require('./livewire-plugins');
 require('../plugins');

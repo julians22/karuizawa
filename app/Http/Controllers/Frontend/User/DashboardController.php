@@ -22,7 +22,7 @@ class DashboardController
     {
         $order = Order::where('uuid', $order_uuid)
             ->with('orderItems', 'orderItems.product')
-            ->first();
+            ->firstOrFail();
 
         if($order->isPaymentComplete()) {
             return redirect()->route('frontend.user.dashboard')->with('flash_success', 'Payment already completed');
@@ -33,7 +33,7 @@ class DashboardController
 
     public function print_sc($id)
     {
-        $semiCustom = SemiCustomProduct::findOrFail($id);
+        $semiCustom = SemiCustomProduct::with(['customer', 'orderItem', 'orderItem.order.user'])->findOrFail($id);
         $dataConfig = config('karuizawa-master');
 
         $semiCustom = $semiCustom->toArray();
@@ -68,19 +68,35 @@ class DashboardController
                         foreach ($configs as $keyL => $config){
                             if ($config['slug'] == $slugSelected){
                                 $dataConfig['cleric']['data']['options'][$keyK][$keyL]['selected'] = true;
-
                                 $clericSubData = $dataConfig['cleric']['data']['options'][$keyK][$keyL]['data'];
-
                                 foreach ($optionClericSubData as $keyM => $value){
                                     foreach ($clericSubData as $keyN => $config){
                                         if ($config['slug'] == $optionClericSubData[$keyM]['slug']){
                                             $dataConfig['cleric']['data']['options'][$keyK][$keyL]['data'][$keyN]['selected'] = true;
-                                            // dd($dataConfig['cleric']['data']['options'][$keyK][$keyL]['data'][$keyN]);
                                         }
                                     }
                                 }
                             }
                         }
+
+                        foreach ($configs as $keyL => $config){
+                            if ($config['slug'] == $slugSelected){
+                                if (array_key_exists('fabricCode', $semiCustom['option_form']["cleric"])){
+                                    $dataConfig['cleric']['data']['fabric'][$keyK]['code'] = $semiCustom['option_form']["cleric"]['fabricCode'];
+                                }else{
+                                    $dataConfig['cleric']['data']['fabric'][$keyK]['code'] = [];
+                                }
+                            }
+
+                        }
+                    }
+                }else{
+                    foreach ($dataConfig['cleric']['data']['options'] as $keyK => $configs){
+                        foreach ($configs as $keyL => $config){
+                            $dataConfig['cleric']['data']['options'][$keyK][$keyL]['selected'] = false;
+                        }
+
+                        $dataConfig['cleric']['data']['fabric'][$keyK]['code'] = [];
                     }
                 }
             }
@@ -91,5 +107,14 @@ class DashboardController
        return view('frontend.print.semi-custom', ['dataSemiCustom' => $semiCustom, 'dataConfig' => collect($dataConfig)]);
 
 
+    }
+
+    public function print_bill($id)
+    {
+        $order = Order::with(['orderItems.product', 'store', 'user', 'payments'])
+        ->findOrFail($id);
+
+        // dd($order);
+        return view('frontend.print.bill', ['order' => $order]);
     }
 }

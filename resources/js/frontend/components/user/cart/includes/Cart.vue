@@ -17,6 +17,8 @@
         coupons: Array
     });
 
+    const userStoreId = props.user?.store_id ?? 0;
+
     const storePage = usePage();
 
     const customer = computed(() => useCustomer().getCustomer);
@@ -33,20 +35,6 @@
 
     const sendOrder = async () => {
 
-        // let semi_custom_data = {
-        //     basic_form: {},
-        //     base_price: 0,
-        //     base_discount: 0,
-        //     base_note: '',
-        //     option_form: {},
-        //     option_total: 0,
-        //     option_additional_price: 0,
-        //     option_discount: 0,
-        //     option_note: '',
-        //     size: {},
-        //     total: 0
-        // };
-
         let semi_custom_data = [];
 
         let product_data = [];
@@ -58,6 +46,7 @@
                     id: product.id,
                     qty: product.qty,
                     price: product.price,
+                    discount: product.discount,
                     total: product.total
                 });
             });
@@ -74,57 +63,11 @@
                     option_form: semi_custom.option.form,
                     option_total: semi_custom.option.amount.optionPrice ?? 0,
                     option_additional_price: semi_custom.option.amount.price ?? 0,
-                    option_discount: semi_custom.option.amount.discount ?? 0,
+                    option_discount: semi_custom.option.amount.giftCard ?? 0,
                     option_note: semi_custom.option.additionalNote,
                     size: semi_custom.basic.formSize,
                     total: semi_custom.totalPrice
                 })
-
-                // if (index == 'totalPrice') {
-                //     semi_custom_data.total = semi_custom;
-                // }
-
-                // if (index == 'basic'){
-                //     semi_custom_data.basic_form = semi_custom.form;
-
-                //     if (semi_custom.amount) {
-                //         if (semi_custom.amount.price) {
-                //             semi_custom_data.base_price = semi_custom.amount.price;
-                //         }
-                //         if (semi_custom.amount.discount) {
-                //             semi_custom_data.base_discount = semi_custom.amount.discount;
-                //         }
-                //     }
-
-                //     if (semi_custom.formSize) {
-                //         semi_custom_data.size = semi_custom.formSize;
-                //     }
-
-                //     if (semi_custom.additionalNote) {
-                //         semi_custom_data.base_note = semi_custom.additionalNote;
-                //     }
-                // }
-
-                // if (index == 'option') {
-                //     semi_custom_data.option_form = semi_custom.form;
-
-                //     if (semi_custom.amount) {
-                //         if (semi_custom.amount.price) {
-                //             semi_custom_data.option_additional_price = semi_custom.amount.price;
-                //         }
-                //         if (semi_custom.amount.discount) {
-                //             semi_custom_data.option_discount = semi_custom.amount.discount;
-                //         }
-                //         if (semi_custom.optionTotal) {
-                //             semi_custom_data.option_total = semi_custom.amount.optionTotal;
-                //         }
-                //     }
-
-                //     if (semi_custom.additionalNote) {
-                //         semi_custom_data.option_note = semi_custom.additionalNote;
-                //     }
-                // }
-
             });
         }
 
@@ -140,27 +83,17 @@
 
         console.log(orders);
 
-
-
         axios.post(props.api_store_order, orders)
         .then(response => {
             if (response.data.success) {
-                console.log(response.data);
-                $emit('btn-next', 'payment');
-                // redirect to payment page
-
                 storeProducts.setSlug = [];
                 storeProducts.setProducts = [];
                 storeProducts.semi_custom = [];
                 storeProducts.coupon_rtw = 0;
                 storeProducts.semi_custom = [];
-
                 useCustomer().resetCustomer();
-
                 window.location.href = response.data.redirect;
             }
-
-            console.log(response.data);
         })
         .catch(error => {
             console.log(error);
@@ -175,7 +108,9 @@
     const products = computed(function () {
         let productsState = storeProducts.getProducts;
         forEach(productsState, (product, index) => {
-            productsState[index].total = product.price * product.qty
+            let discount = product.discount ?? 0;
+            let price = product.price * product.qty;
+            productsState[index].total = price - (price * discount / 100);
         });
 
         return productsState;
@@ -192,7 +127,7 @@
 
     const plusQty = (index) => {
         products.value[index].qty += 1;
-        products.value[index].total = products.value[index].price * products.value[index].qty
+        products.value[index].total = (products.value[index].price * products.value[index].qty) - products.value[index].discount ?? 0;
     }
 
     const minQty = (index) => {
@@ -201,7 +136,7 @@
         }
         // sum total of qty and price
         products.value[index].qty -= 1;
-        products.value[index].total = products.value[index].price * products.value[index].qty
+        products.value[index].total = (products.value[index].price * products.value[index].qty) - products.value[index].discount ?? 0;
     }
 
     onMounted(() => {
@@ -213,12 +148,14 @@
     const totalAllPrice = computed(() => {
         let totalProducts = 0;
         let totalSemiCustom = 0;
-        let discount = coupon.value;
+        let discount = 0;
         let sumTotal = 0;
 
         if (products.value.length !== 0) {
             products.value.map(product => {
-                totalProducts += product.total;
+                let subdis = product.discount ?? 0;
+                let sub_price = product.price * product.qty;
+                totalProducts += sub_price - (sub_price * subdis / 100);
             });
         }
 
@@ -231,6 +168,22 @@
         sumTotal = totalProducts + totalSemiCustom;
 
         return sumTotal - (sumTotal * discount / 100);
+    });
+
+    const loadCoupon = () => {
+        // add couppon each product
+        let coupon = 0;
+
+        if (products.value.length !== 0) {
+            products.value.map(product => {
+                product.discount = coupon;
+            });
+        }
+
+    }
+
+    onMounted(() => {
+        loadCoupon();
     });
 
 
@@ -248,19 +201,23 @@
         sendOrder();
     }
 
+    const addRtw = () => {
+        window.location.href = '/ready-to-wear?page=products';
+    }
+
     const btnBack = () => {
-        if (props.onPage == 'products') {
+        // if (props.onPage == 'products') {
             // $emit('btn-next', 'products');
             window.location.href = '/ready-to-wear?page=products';
-        }else if (props.onPage == 'semi-custom') {
-            $emit('btn-next', 'semi-custom');
-        }
+        // }else if (props.onPage == 'semi-custom') {
+        //     $emit('btn-next', 'semi-custom');
+        // }
     }
 </script>
 
 <template>
     <div class="space-y-10">
-        <section>
+        <section class="mb-40">
             <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
                 <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">Total shop</div>
             </div>
@@ -271,6 +228,7 @@
                             <th class="py-3 pr-6 text-left text-primary-50 uppercase name-col">Product</th>
                             <th class="px-6 py-3 text-center text-primary-50 uppercase price-col">Price</th>
                             <th class="px-6 py-3 text-center text-primary-50 uppercase">qty</th>
+                            <th style="width: 10%;" class="px-6 py-3 text-center text-primary-50 uppercase">Coupon (%)</th>
                             <th class="px-6 py-3 text-center text-primary-50 uppercase total-col">Total</th>
                         </tr>
                     </thead>
@@ -278,6 +236,13 @@
                         <tr class="border-b" v-for="(product, index) in products">
                             <td class="py-3 pr-6 text-left text-primary-50">
                                 <div class="text-[#606060]">{{ product.product_name }}</div>
+                                <template v-if="product.product_actual_stocks">
+                                    <template v-if="product.product_actual_stocks.length">
+                                        <div class="my-1 text-left text-primary-300 text-xs" v-for="(stock, index) in product.product_actual_stocks" :key="index">
+                                            <span v-if="stock.stock_quantity && (userStoreId == stock.store.id)">{{ stock.store.code }}: {{ stock.stock_quantity }} in stock</span>
+                                        </div>
+                                    </template>
+                                </template>
                                 <div class="text-[#A3A3A3] text-sm">{{product.sku}}</div>
                             </td>
                             <td class="px-6 py-3 text-center text-primary-50">
@@ -294,6 +259,11 @@
                                     <button @click="plusQty(index)" class="flex items-center border-primary-50 bg-off-white hover:bg-grey-lightest p-2 border border-l-0 font-bold text-grey-darker no-underline">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"/></svg>
                                     </button>
+                                </div>
+                            </td>
+                            <td class="px-6 py-3 text-center text-primary-50">
+                                <div class="text-center text-secondary-50 lg:text-lg">
+                                    <input type="number" class="border-primary-50 p-2 border w-20 text-center" v-model.lazy="product.discount" placeholder="0">
                                 </div>
                             </td>
                             <td class="px-6 py-3 text-center text-primary-50">
@@ -341,7 +311,7 @@
             </div>
         </section>
 
-        <section>
+        <!-- <section>
             <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
                 <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">COUPON CODE & POINTS</div>
             </div>
@@ -363,19 +333,20 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
 
-        <section>
-            <div class="flex justify-between">
-                <button v-if="storePage.get == 'products'" @click="btnBack()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white tracking-widest">
-                    <img class="inline-block mb-1.5 rotate-180" src="img/icons/arrw-ck-right.png" alt="">
-                    <span>BACK</span>
+        <section class="bottom-0 absolute w-full">
+            <div class="flex justify-end">
+                
+                <button @click="addRtw()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white uppercase tracking-widest">
+                    <span>Add Ready to Wear</span>
                 </button>
-                <div v-if="storePage.get !== 'products'"></div>
+
                 <button @click="btnProcess()" class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">
                     <span>PROCEED TO PAYMENT</span>
                     <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                 </button>
+
             </div>
         </section>
     </div>

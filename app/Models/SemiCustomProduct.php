@@ -36,4 +36,9 @@ class SemiCustomProduct extends Model
     {
         return $this->morphMany(OrderItem::class, 'product');
     }
+
+    public function orderItem()
+    {
+        return $this->morphOne(OrderItem::class, 'product');
+    }
 }

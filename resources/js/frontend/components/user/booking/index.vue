@@ -8,7 +8,8 @@
         route_logout: String,
         api_booking_url: String,
         api_incoming_url: String,
-        api_fitting_url: String
+        api_fitting_url: String,
+        api_set_handling: String
     });
 
     const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
@@ -22,7 +23,7 @@
     const orderHistoryRef = ref();
     const fittingHistoryRef = ref();
 
-    const currentPage = ref('incoming-order');
+    const currentPage = ref('order-history');
 
     const childFilter = ref({
         dialog: false,
@@ -123,7 +124,7 @@
         <div class="flex justify-between items-center bg-primary-100 xl:px-14 py-4 p-6">
             <div class="flex justify-between w-full">
                 <div class="flex gap-5 text-white max-lg:text-sm tracking-wider">
-                    <button :class="{ active: currentPage === 'incoming-order' }" @click="currentPage = 'incoming-order'">INCOMING ORDER</button>
+                    <!-- <button :class="{ active: currentPage === 'incoming-order' }" @click="currentPage = 'incoming-order'">INCOMING ORDER</button> -->
                     <button :class="{ active: currentPage === 'order-history' }" @click="currentPage = 'order-history'">ORDER HISTORY</button>
                     <button :class="{ active: currentPage === 'fitting-history'}" @click="currentPage = 'fitting-history'">FITTING HISTORY</button>
                 </div>
@@ -141,20 +142,22 @@
                     </div>
 
                     <div @click="onClikFilter()">
-                        <i class="text-white fa fa-filter fill-white" aria-hidden="true"></i>
+                        <span>
+                            <i class="text-white fa fa-filter fill-white" aria-hidden="true"></i>
+                        </span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <template v-if="currentPage === 'incoming-order'">
+        <!-- <template v-if="currentPage === 'incoming-order'">
             <IncomingOrder
                 ref="incomingOrderRef"
                 :api_incoming_url="api_incoming_url"
                 :filterData="filterData"
                 :user="user"
                 />
-        </template>
+        </template> -->
 
         <template v-if="currentPage === 'order-history'">
             <OrderHistory
@@ -169,6 +172,7 @@
             <FittingHistory
                 ref="fittingHistoryRef"
                 :api_fitting_url="api_fitting_url"
+                :api_set_handling="api_set_handling"
                 :filterData="filterData"
                 :user="user"
             />
