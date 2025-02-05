@@ -27,6 +27,15 @@
         )
             <li class="nav-title">@lang('Master Data')</li>
 
+            {{-- Customer --}}
+            <li class="nav-item">
+                <x-utils.link
+                    class="nav-link"
+                    :href="route('admin.customer.index')"
+                    :active="activeClass(Route::is('admin.customer.*'), 'active')"
+                    icon="nav-icon fas fa-users"
+                    :text="__('Customer Management')" />
+
             <li class="nav-item">
                 <x-utils.link
                     class="nav-link"

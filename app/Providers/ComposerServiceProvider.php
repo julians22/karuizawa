@@ -21,7 +21,7 @@ class ComposerServiceProvider extends ServiceProvider
     {
         View::composer('*', function ($view) {
             $view->with('logged_in_user', auth()->user())
-                ->with('coupons', Promo::all());
+                ->with('coupons', []);
         });
 
         View::composer(['frontend.index', 'frontend.layouts.app'], function ($view) use ($announcementService) {

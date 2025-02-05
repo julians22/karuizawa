@@ -4,12 +4,13 @@ namespace App\Models;
 
 use App\Domains\Auth\Models\User;
 use App\Models\Traits\Uniqueid;
+use App\Models\Traits\WithoutAppends;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
-    use HasFactory, Uniqueid;
+    use HasFactory, Uniqueid, WithoutAppends;
 
     protected $fillable = [
         'uuid',
