@@ -61,7 +61,7 @@ class OrderController extends Controller
                     });
             })
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(5);
 
         return response()->json(
             OrderHistoryResource::collection($orders)

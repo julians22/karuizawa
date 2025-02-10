@@ -1,4 +1,5 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
+import { parse, stringify } from 'zipson';
 
 export const useOrder = defineStore('order', {
 
@@ -23,5 +24,11 @@ export const useOrder = defineStore('order', {
         },
     },
 
-    persist: true,
+    persist: {
+        serializer: {
+            deserialize: parse,
+            serialize: stringify,
+        },
+        storage: sessionStorage,
+    },
 });

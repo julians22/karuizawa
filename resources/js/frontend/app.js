@@ -45,7 +45,7 @@ Vue.component('payment-component', require('./components/user/payment/index.vue'
 
 Vue.component('booking-component', require('./components/user/booking/index.vue').default);
 
-Vue.component('print-semi-custom', require('./components/print/SemiCustom.vue').default);
+Vue.component('print-semi-custom', require('./components/print/semi-custom/SemiCustom.vue').default);
 
 Vue.component('print-bill', require('./components/print/Bill.vue').default);
 

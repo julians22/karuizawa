@@ -1,11 +1,8 @@
 <script setup>
     import { isNull } from 'lodash';
-    import { ref, defineProps, watch, defineExpose, computed } from 'vue'
-    // import boxInput from '../../../utils/fields/InputBox.vue';
+    import { ref, defineProps, watch, defineExpose, computed, onMounted, nextTick } from 'vue';
     import  InputBox  from '@frontend/components/utils/fields/InputBox.vue';
     import { useProducts } from '../../../../store/product';
-
-    import { component as VueNumber } from '@coders-tm/vue-number-format';
 
     const number_input = {
         separator: '.',
@@ -23,10 +20,60 @@
         'additional-option': 'additional-option',
     });
 
+    onMounted(() => {
+        syncDataDuplicate();
+    });
+
+    const syncDataDuplicate = () => {
+        if (useProducts().getDuplicateSm.length > 0 || !_.isEmpty(useProducts().getDuplicateSm)) {
+            // let index = useProducts().semi_custom_index;
+            // const data = useProducts().getSemiCustom[index].option;
+
+            let data = useProducts().getDuplicateSm.option;
+
+            form.value = data.form;
+
+            if (!_.isEmpty(data.form.embroidery)) {
+                embroidery.value = data.form.embroidery;
+            }
+
+            if (!_.isEmpty(data.form.tape)) {
+                tape.value = data.form.tape;
+            }
+
+            selectCleric.value = data.form.cleric?.data;
+            additionalNote.value = data.additionalNote;
+
+            const dataCleric = props.dataOptions.cleric.data.options; // dataCleric
+            for (const clericOption of Object.entries(dataCleric)) {
+                for (const cleric of clericOption[1]) {
+                    if (cleric.slug === data.form.cleric.slug) {
+                        // push option to cleric
+                        let selectCleric = {
+                            ...cleric,
+                            option: clericOption[0]
+                        }
+                        mainCleric.value = selectCleric;
+                    }
+                }
+            }
+
+            dataPrice.value = groupAndCountByPrice(form.value);
+        }
+    }
+
+    const formDuplicate = computed(() => {
+        if (useProducts().getDuplicateSm.length == 0) {
+            return form.value;
+        }else {
+            return useProducts().getDuplicateSm.option.form;
+        }
+    });
+
     const form = ref({
         collar: {},
         cuffs: {},
-        frontody: {},
+        frontBody: {},
         button: {},
         bodySnapButton: {},
         cleric: {},
@@ -66,39 +113,24 @@
     });
 
     const price = ref(0);
-    const discount = ref(null);
     const dataPrice = ref(null);
     const giftCard = ref(0);
 
     const amountOption = () => {
         let x = parseInt(dataPrice.value?.optionTotal) ? parseInt(dataPrice.value?.optionTotal) : 0;
         let y = parseInt(price?.value) ? parseInt(price?.value) : 0;
-        // let disc = parseInt(discount?.value) ? parseInt(discount?.value) : 0;
         let gift_card = parseInt(giftCard.value) ? parseInt(giftCard.value) : 0;
         let z = x + y;
-        // let total = z - (z * disc / 100);
 
         amount.value.optionPrice = x;
-        // amount.value.discount = disc;
         amount.value.giftCard = gift_card;
         amount.value.selected_price = x;
         amount.value.price = y;
         amount.value.total = z;
-        // amount.value.total = total;
 
         emitFrom('additional-option', amount);
     };
 
-    // const initialName = ref({
-    //     x: '',
-    //     y: '',
-    //     dot: '',
-    //     z: ''
-    // });
-
-    // watch(initialName.value, (items) => {
-    //     embroidery.value.initialName = initialName.value
-    // })
 
     const embroidery = ref({
         slug: 'embroidery',
@@ -164,34 +196,17 @@
     });
 
     watch(form.value, (items) => {
-        const groupedData = groupAndCountByPrice(items);
-        dataPrice.value = groupedData;
-
-        let radio = document.querySelectorAll("input[type=radio]:checked");
-
-        // unchecked radio
-        for(let i = 0; i < radio.length; i++) {
-            radio[i].onclick = function(e) {
-                let myVariable = e.target.name;
-
-                if (myVariable == 'cleric') {
-                    mainCleric.value = null;
-                    selectCleric.value = null;
-                }
-
-                let camelCased = myVariable.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
-
-                if (camelCased !== 'embroideryPosition' || camelCased !== 'embroideryColor' || camelCased !== 'embroideryFontType' || camelCased !== 'embroideryInitialName' || camelCased !== 'embroideryLongName') {
-                    // find form value key
-                    const key = Object.keys(form.value).find(key => key === camelCased);
-
-                    form.value[key] = null;
-                }
-
-
-            }
+        if (useProducts().getDuplicateSm.length == 0) {
+            const groupedData = groupAndCountByPrice(items);
+            dataPrice.value = groupedData;
         }
+    });
 
+    watch(formDuplicate.value, (items) => {
+        // if (useProducts().getDuplicateSm.length > 0) {
+            const groupedData = groupAndCountByPrice(items);
+            dataPrice.value = groupedData;
+        // }
     });
 
     const groupAndCountByPrice = (data) => {
@@ -267,7 +282,7 @@
             <div class="grid grid-cols-6 gap-2 my-10 px-14 whitespace-nowrap">
                 <div class="col-span-6 pt-2 xl:col-span-2">
                     <div class="flex" v-for="(collar, index) in dataOptions.collar.data.options.option_1" :key="index">
-                        <input class="hidden"v-model="form.collar" :value="collar" type="radio" name="collar" :id="'collar-'+collar.slug">
+                        <input :checked="collar.slug == form.collar?.slug" @click.native="form.collar = null" class="hidden" v-model="form.collar" :value="collar" type="radio" name="collar-options" :id="'collar-'+collar.slug">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="'collar-'+collar.slug">
                             <span class="checkbox-inner"></span>
                             <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ collar.name }}</div>
@@ -278,7 +293,7 @@
                 <div class="col-span-6 xl:col-span-4">
                     <div class="grid grid-cols-1 p-2 border border-pink-ka 2xl:grid-cols-2">
                         <div class="flex" v-for="(collar50, index) in dataOptions.collar.data.options.option_2" :key="index">
-                            <input class="hidden" type="radio" name="collar" v-model="form.collar" :value="collar50" :id="'collar-'+collar50.slug">
+                            <input :checked="collar50.slug == form.collar?.slug" @click.native="form.collar = null" class="hidden" type="radio" name="collar" v-model="form.collar" :value="collar50" :id="'collar-'+collar50.slug">
                             <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="'collar-'+collar50.slug">
                                 <span class="checkbox-inner"></span>
                                 <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ collar50.name }}</div>
@@ -298,7 +313,7 @@
                     <div class="grid grid-cols-3 p-2 border border-pink-ka">
                         <div class="col-span-3">
                             <div class="flex" v-for="(collar100, index) in dataOptions.collar.data.options.option_3" :key="index">
-                                <input class="hidden" v-model="form.collar" :value="collar100" type="radio" name="collar" :id="`collar-${collar100.slug}`">
+                                <input :checked="collar100.slug == form.collar?.slug" @click.native="form.collar = null" class="hidden" v-model="form.collar" :value="collar100" type="radio" name="collar" :id="`collar-${collar100.slug}`">
                                 <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`collar-${collar100.slug}`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ collar100.name }}</div>
@@ -308,7 +323,7 @@
                         <div class="flex items-center col-span-2 mt-4 max-xl:flex-wrap lg:gap-4 fabric-code">
                             <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
                             <div class="flex font-roboto">
-                                <InputBox :digitCount="4" @update:input="onInputBox($event, 'collar', 'fabricCode')"/>
+                                <InputBox :digitCount="4" @update:input="onInputBox($event, 'collar', 'fabricCode')" :inputValue="form.collar?.fabricCode"/>
                             </div>
                         </div>
                         <div class="self-end justify-items-end col-3">
@@ -336,7 +351,7 @@
             <div class="grid grid-cols-6 gap-2 my-10 px-14 whitespace-nowrap">
                 <div class="col-span-6 pt-2 xl:col-span-2">
                     <div class="flex" v-for="(cuffs, index) in dataOptions.cuffs.data.options.option_1" :key="index">
-                        <input class="hidden" type="radio" name="cuffs" v-model="form.cuffs" :value="cuffs" :id="`cuffs-${cuffs.slug}`">
+                        <input :checked="cuffs.slug == form.cuffs?.slug" @click.native="form.cuffs = null" class="hidden" type="radio" name="cuffs" v-model="form.cuffs" :value="cuffs" :id="`cuffs-${cuffs.slug}`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cuffs-${cuffs.slug}`">
                             <span class="checkbox-inner"></span>
                             <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ cuffs.name }}</div>
@@ -348,7 +363,7 @@
                     <div>
                         <div class="grid grid-cols-1 gap-4 p-2 border border-pink-ka 2xl:grid-cols-2">
                             <div class="flex" v-for="(cuffs, index) in dataOptions.cuffs.data.options.option_2" :key="index">
-                                <input class="hidden" v-model="form.cuffs" :value="cuffs" type="radio" name="cuffs" :id="`cuffs-${cuffs.slug}`">
+                                <input :checked="cuffs.slug == form.cuffs?.slug" @click.native="form.cuffs = null" class="hidden" v-model="form.cuffs" :value="cuffs" type="radio" name="cuffs" :id="`cuffs-${cuffs.slug}`">
                                 <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cuffs-${cuffs.slug}`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ cuffs.name }}</div>
@@ -369,7 +384,7 @@
                         <div class="grid grid-cols-3 p-2 border border-pink-ka">
                             <div class="col-span-3">
                                 <div class="flex" v-for="(cuffs, index) in dataOptions.cuffs.data.options.option_3" :key="index">
-                                    <input class="hidden" v-model="form.cuffs" :value="cuffs" type="radio" name="cuffs" :id="`cuffs-${cuffs.slug}`">
+                                    <input :checked="cuffs.slug == form.cuffs?.slug" @click.native="form.cuffs = null" class="hidden" v-model="form.cuffs" :value="cuffs" type="radio" name="cuffs" :id="`cuffs-${cuffs.slug}`">
                                     <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`cuffs-${cuffs.slug}`">
                                         <span class="checkbox-inner"></span>
                                         <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ cuffs.name }}</div>
@@ -379,7 +394,7 @@
                             <div class="flex items-center col-span-2 mt-4 max-lg:flex-wrap lg:gap-8 fabric-code">
                                 <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
                                 <div class="flex font-roboto">
-                                    <InputBox :digitCount="4" @update:input="onInputBox($event, 'cuffs', 'fabricCode')"/>
+                                    <InputBox :digitCount="4" @update:input="onInputBox($event, 'cuffs', 'fabricCode')" :inputValue="form.cuffs?.fabricCode"/>
                                 </div>
                             </div>
                             <div class="self-end justify-items-end cols-3">
@@ -403,7 +418,7 @@
                         </div>
                         <div class="flex justify-between p-2 mt-4 border border-pink-ka">
                             <div class="flex" v-for="(frontBody, index) in dataOptions.front_body.data.options.option_1" :key="index">
-                                <input class="hidden" type="radio" name="front-body" :value="frontBody" v-model="form.frontBody"  :id="`hidden-placket`">
+                                <input @click.native="form.frontBody = null" class="hidden" type="radio" name="front-body-option" :value="frontBody" v-model="form.frontBody"  :id="`hidden-placket`">
                                 <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`hidden-placket`">
                                     <span class="checkbox-inner"></span>
                                     <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ frontBody.name }}</div>
@@ -432,14 +447,14 @@
                 </div>
                 <div class="flex justify-between p-2 mt-4 border border-pink-ka max-xl:mx-6 max-xl:mb-4 ml-14">
                     <div v-for="(button, index) in dataOptions.button.data.options.option_1" :key="index">
-                        <input class="hidden" type="radio" :value="button" v-model="form.button" name="button" :id="`btn-${button.slug}`">
+                        <input @click.native="form.button = null" :checked="button.slug == form.button?.slug" class="hidden" type="radio" :value="button" v-model="form.button" name="button-option" :id="`btn-${button.slug}`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`btn-${button.slug}`">
                             <span class="checkbox-inner"></span>
                             <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ button.name }}</div>
                         </label>
                     </div>
                     <div class="flex font-roboto">
-                        <InputBox :digitCount="4" @update:input="onInputBox($event, 'button', 'buttonCode')"/>
+                        <InputBox :digitCount="4" @update:input="onInputBox($event, 'button', 'buttonCode')" :inputValue="form.button?.buttonCode"/>
                     </div>
                     <div class="">
                         <input class="hidden" type="radio" name="button-100" :id="`button-100`">
@@ -458,7 +473,7 @@
                 </div>
                 <div class="flex justify-between p-2 mt-4 border border-pink-ka max-xl:mx-6 mr-14">
                     <div v-for="bodySnapButton in dataOptions.body_snap_button.data.options.option_1" :key="bodySnapButton">
-                        <input class="hidden" :value="bodySnapButton" v-model="form.bodySnapButton" type="radio" name="body-snap-button" :id="`${bodySnapButton.slug}`">
+                        <input @click.native="form.bodySnapButton = null" class="hidden" :value="bodySnapButton" v-model="form.bodySnapButton" type="radio" name="body-snap-button" :id="`${bodySnapButton.slug}`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`${bodySnapButton.slug}`">
                             <span class="checkbox-inner"></span>
                             <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ bodySnapButton.name }}</div>
@@ -487,7 +502,7 @@
                 class="p-4 mx-6 mt-4 space-y-4 border border-pink-ka xl:mx-14">
                 <div v-for="(subCeleric, index) in dataCleric" :key="index" class="flex gap-2">
                     <div>
-                        <input v-model="mainCleric" @change="onChangeCleric" class="hidden" type="radio" name="cleric"  :value="subCeleric" :id="`${subCeleric.slug}`">
+                        <input @click.native="mainCleric = null" :checked="subCeleric.slug == mainCleric?.slug" @change="onChangeCleric" class="hidden" type="radio" name="cleric" v-model="mainCleric"  :value="subCeleric" :id="`${subCeleric.slug}`">
                         <label class="grid items-center h-full grid-cols-2 gap-1 rounded cursor-pointer" :for="`${subCeleric.slug}`">
                             <div class="text-sm font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ subCeleric.no }}</div>
                             <span class="checkbox-inner"></span>
@@ -507,8 +522,11 @@
                 <div class="flex self-end gap-2 justify-self-end">
                     <div class="flex flex-col col-span-2 gap-1 mt-4 fabric-code">
                             <label for="fabric-code" class="tracking-wider uppercase text-primary-50 whitespace-nowrap">fabric code (4 digit)</label>
-                            <div class="flex font-roboto">
-                                <InputBox :digitCount="4" @update:input="onInputBox($event, 'cleric', 'fabricCode')"/>
+                            <div class="flex font-roboto" v-if="mainCleric?.option == index">
+                                <InputBox :digitCount="4" @update:input="onInputBox($event, 'cleric', 'fabricCode')" :inputValue="form.cleric?.fabricCode"/>
+                            </div>
+                            <div class="flex font-roboto" v-else>
+                                <InputBox :digitCount="4" @update:input="onInputBox($event, 'cleric', 'fabricCode')" />
                             </div>
                         </div>
                     <div class="self-end">
@@ -531,7 +549,7 @@
 
                 <div class="grid grid-cols-2 gap-2 p-4 mx-6 mt-4 border border-pink-ka lg:mr-0 lg:ml-6 xl:ml-14">
                     <div class="flex" v-for="(buttonHole, index) in dataOptions.button_hole.data.options.option_1" :key="index">
-                        <input class="hidden" type="radio" name="button-hole" :value="buttonHole" v-model="form.buttonHole"  :id="`botton-hole-${buttonHole.slug}`">
+                        <input @click.native="form.buttonHole = null" class="hidden" type="radio" name="button-hole" :value="buttonHole" v-model="form.buttonHole"  :id="`botton-hole-${buttonHole.slug}`">
                         <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-hole-${buttonHole.slug}`">
                             <span class="checkbox-inner"></span>
                             <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ index + 1 }}. {{ buttonHole.name }}</div>
@@ -558,7 +576,7 @@
 
                 <div class="grid grid-cols-2 gap-2 p-4 mx-6 mt-4 border border-pink-ka xl:mx-0 lg:mr-6 lg:ml-0">
                     <div class="flex" v-for="(buttonThread, index) in dataOptions.button_thread.data.options.option_1" :key="index">
-                        <input class="hidden" type="radio" name="button-thread" :value="buttonThread" v-model="form.buttonThread" :id="`botton-thread-${buttonThread.slug}`">
+                        <input @click.native="form.buttonThread = null" class="hidden" type="radio" name="button-thread" :value="buttonThread" v-model="form.buttonThread" :id="`botton-thread-${buttonThread.slug}`">
                         <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-thread-${buttonThread.slug}`">
                             <span class="checkbox-inner"></span>
                             <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ index + 1 }}. {{ buttonThread.name }}</div>
@@ -585,7 +603,7 @@
 
                 <div class="grid grid-cols-2 gap-2 p-4 mx-6 mt-4 border border-pink-ka xl:mr-14 xl:ml-0">
                     <div class="flex" v-for="(stitchThread, index) in dataOptions.stitch_thread.data.options.option_1" :key="index">
-                        <input class="hidden" type="radio" name="stitch-thread" :value="stitchThread" v-model="form.stitchThread" :id="`stitch-thread-${stitchThread.slug}`">
+                        <input @click.native="form.stitchThread = null" class="hidden" type="radio" name="stitch-thread" :value="stitchThread" v-model="form.stitchThread" :id="`stitch-thread-${stitchThread.slug}`">
                         <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`stitch-thread-${stitchThread.slug}`">
                             <span class="checkbox-inner"></span>
                             <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ index + 1 }}. {{ stitchThread.name }}</div>
@@ -657,7 +675,7 @@
                                 <input v-model="embroidery.initialName.x" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border border-primary-50 size-10">
                                 <input v-model="embroidery.initialName.dot" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-primary-50 border-y size-5">
                                 <input v-model="embroidery.initialName.y" type="text" maxlength="1" class="block p-2 text-sm text-center text-gray-900 border-l border-r border-primary-50 border-y size-10">
-                                <InputBox :digitCount="10" @update:input="onInputIntialName($event)"/>
+                                <InputBox :digitCount="10" @update:input="onInputIntialName($event)" :inputValue="embroidery.initialName?.z"/>
                             </div>
                             <div class="flex w-full gap-4">
                                 <input type="text" v-model="embroidery.longName" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50 font-roboto">
@@ -684,7 +702,7 @@
             <div class="flex items-center justify-between mx-6 mt-4 xl:mx-14">
                 <div class="p-4 border border-pink-ka lg:w-1/2">
                     <div class="flex" v-for="(interlining, index) in dataOptions.interlining.data.options.option_1" :key="index">
-                        <input class="hidden" type="radio" name="interlining" :value="interlining" v-model="form.interlining" :id="`interlining-${interlining.slug}`">
+                        <input @click.native="form.interlining = null" class="hidden" type="radio" name="interlining" :value="interlining" v-model="form.interlining" :id="`interlining-${interlining.slug}`">
                         <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`interlining-${interlining.slug}`">
                             <span class="checkbox-inner"></span>
                             <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ interlining.name }}</div>
@@ -693,7 +711,7 @@
                 </div>
                 <div class="flex items-center justify-between w-full p-4 border border-pink-ka">
                     <div v-for="(interlining, index) in dataOptions.interlining.data.options.option_2" :key="index">
-                        <input class="hidden" type="radio" name="interlining" :value="interlining" v-model="form.interlining" :id="`interlining-${interlining.slug}`">
+                        <input @click.native="form.interlining = null" class="hidden" type="radio" name="interlining" :value="interlining" v-model="form.interlining" :id="`interlining-${interlining.slug}`">
                         <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`interlining-${interlining.slug}`">
                             <span class="checkbox-inner"></span>
                             <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ interlining.name  }}</div>
@@ -718,7 +736,7 @@
             <div class="flex flex-col items-center justify-between mx-6 mt-4 xl:mx-14">
                 <div v-for="(sewing, index) in dataOptions.sewing_option.data.options" :key="index" class="flex items-center justify-between w-full p-4 border border-pink-ka">
                     <div v-for="(sewingOption, index) in sewing" :key="index">
-                        <input class="hidden" type="radio" name="sewing-option" :value="sewingOption" v-model="form.sewingOption" :id="`sewing-${sewingOption.slug}`">
+                        <input @click.native="form.sewingOption = null" class="hidden" type="radio" name="sewing-option" :value="sewingOption" v-model="form.sewingOption" :id="`sewing-${sewingOption.slug}`">
                         <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`sewing-${sewingOption.slug}`">
                             <span class="checkbox-inner"></span>
                             <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ sewingOption.name }}</div>
@@ -742,7 +760,7 @@
 
             <div class="flex items-center justify-between gap-4 p-4 mx-6 mt-4 border border-pink-ka xl:mx-14">
                 <div class="flex font-roboto">
-                    <InputBox :digitCount="5" @update:input="onInputTape($event)"/>
+                    <InputBox :digitCount="5" @update:input="onInputTape($event)" :inputValue="tape.collar"/>
                 </div>
                 <div class="w-9/12">
                     <input type="text" v-model="tape.lower" class="block w-full h-8 p-2 text-sm text-gray-900 border border-primary-50 font-roboto">

@@ -4,7 +4,7 @@ import {
   PinInputGroup,
   PinInputInput,
 } from '@/components/ui/pin-input'
-import { ref, defineProps, watch, reactive } from 'vue'
+import { ref, defineProps, defineExpose, onMounted, nextTick } from 'vue'
 
 const props = defineProps({
     digitCount: {
@@ -14,6 +14,10 @@ const props = defineProps({
     inputType: {
         type: String,
         default: 'text'
+    },
+    inputValue: {
+        type: String,
+        default: null
     }
 });
 
@@ -21,12 +25,27 @@ const emit = defineEmits(['update:input']);
 
 const valueInput = ref([])
 
+const pushInputValue = async () => {
+    if (props.inputValue != null) {
+        valueInput.value = props.inputValue.split('');
+    }else {
+        valueInput.value = [];
+    }
+}
+
+onMounted(() => {
+    nextTick(async () => {
+        await pushInputValue();
+    });
+})
+
 const handleComplete = (e) => {
     //
 }
 const onUpdate = (e) => {
     emit('update:input', e.join(''));
 }
+
 
 defineExpose({
     valueInput
