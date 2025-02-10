@@ -1,0 +1,10 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/wargadjaja/projects/karuizawa/karuizawa-phase1.1
+    - export COMPOSER_PATH=/home/choco/composer.phar
+    - /bin/cp -R * $DEPLOYPATH
+    - php $COMPOSER_PATH install --working-dir=$DEPLOYPATH
+    - /bin/rm -rf $DEPLOYPATH/.git
+    - /bin/rm -rf $DEPLOYPATH/.cpanel.yml
+    - /bin/rm -rf $DEPLOYPATH/.gitignore
