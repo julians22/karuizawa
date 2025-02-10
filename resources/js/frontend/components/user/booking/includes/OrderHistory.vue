@@ -1,5 +1,7 @@
 <script setup>
     import { ref, defineAsyncComponent, onMounted } from 'vue';
+    import { TailwindPagination } from 'laravel-vue-pagination';
+
 
     const props = defineProps({
         api_booking_url: String,
@@ -26,10 +28,14 @@
         getBookings();
     });
 
-    const getBookings = async () => {
+    const getResults = async (page = 1) => {
+        getBookings(page);
+    }
+
+    const getBookings = async (page) => {
         isRetrieving.value = true;
 
-        let url = props.api_booking_url + '?page=1';
+        let url = props.api_booking_url + '?page=' + page;
         if (props.filterData.date && props.filterData.date !== '') {
             url += `&date=${props.filterData.date}`;
         }
@@ -66,7 +72,7 @@
         <DetailOrder ref="orderDetail"/>
         <div class="pt-10 pb-28 container">
             <div v-if="isRetrieving">Loading Orders ...</div>
-            <div v-else-if="!isRetrieving && bookings" v-for="booking in bookings">
+            <div v-else-if="!isRetrieving && bookings" v-for="booking in bookings.data">
                 <div class="flex justify-between">
                     <div class="space-y-2 font-roboto">
                         <div class="font-bold text-xl">Booking Number: {{ booking.booking_code }}</div>
@@ -88,6 +94,16 @@
                 </div>
                 <div class="bg-black my-6 w-full h-0.5"></div>
             </div>
+        </div>
+
+        <div class="flex justify-center pb-20">
+            <TailwindPagination
+                v-if="bookings"
+                :data="bookings"
+                :limit="2"
+                :active-classes="['bg-primary-50', 'text-white']"
+                @pagination-change-page="getResults"
+            />
         </div>
     </div>
 </template>

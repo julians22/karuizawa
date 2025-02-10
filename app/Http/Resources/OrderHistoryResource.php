@@ -29,7 +29,7 @@ class OrderHistoryResource extends JsonResource
             'customer_phone' => $this->customer->phone,
             'customer_address' => $this->customer->address ?? 'N/A',
             'customer_gender' => $this->customer->is_male ? 'Male' : 'Female',
-            'booking_code' => $bookingCode,
+            'booking_code' => $this->booking_code ?? $bookingCode,
             'items' => OrderItemResource::collection($this->orderItems),
             'discount' => (int) $this->discount,
             'discount_formatted' => price_format($this->discount, 0),

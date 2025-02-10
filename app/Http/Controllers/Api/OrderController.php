@@ -63,8 +63,21 @@ class OrderController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
+        $data = [
+            'data' => OrderHistoryResource::collection($orders),
+            'current_page' => $orders->currentPage(),
+            'last_page' => $orders->lastPage(),
+            'per_page' => $orders->perPage(),
+            'total' => $orders->total(),
+            'next_page_url' => $orders->nextPageUrl(),
+            'prev_page_url' => $orders->previousPageUrl(),
+            'from' => $orders->firstItem(),
+            'to' => $orders->lastItem(),
+            'total' => $orders->total(),
+        ];
+
         return response()->json(
-            OrderHistoryResource::collection($orders)
+            $data
         );
     }
 
@@ -310,11 +323,11 @@ class OrderController extends Controller
             foreach ($order->orderItems as $item) {
 
                 if ($item->isReadyToWear()) {
-                    $totalPrice += $item->price * $item->quantity - $item->discount;
+                    $totalPrice += $item->price - $item->discount * $item->quantity;
                 }
 
                 if ($item->isSemiCustom()) {
-                    $totalPrice += $item->price * $item->quantity - $item->discount;
+                    $totalPrice += $item->price - $item->discount * $item->quantity;
                 }
             }
 

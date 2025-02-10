@@ -1,5 +1,6 @@
 <script setup>
     import { ref, defineExpose } from 'vue';
+    import { priceFormat } from '../../../../helpers/currency.js';
 
     const dialog = ref(false);
     const booking = ref(null);;
@@ -18,6 +19,17 @@
         );
     }
 
+    const afterDiscount = (price, discount=0) => {
+
+        console.log(price, discount);
+
+        // parseInt
+        // calculate discount
+        let totalAmount = parseInt(price) - parseInt(discount);
+
+        return priceFormat(totalAmount);
+    }
+
     defineExpose({
         dialog,
         booking
@@ -33,17 +45,17 @@
                         <button @click="closeDialog"><img src="/img/icons/close.png" alt=""></button>
                     </div>
                     <div class="w-full font-roboto" v-if="booking">
-                        <div class="mb-10 font-josefin text-2xl text-center text-primary-50 uppercase tracking-wider">detail order</div>
+                        <div class="mb-10 font-josefin text-primary-50 text-2xl text-center uppercase tracking-wider">detail order</div>
 
                         <div class="bg-primary-50 my-5 w-full h-[1px]"></div>
 
-                        <div class="font-bold text-center text-lg capitalize">Order number: {{ booking.booking_code }}</div>
+                        <div class="font-bold text-lg text-center capitalize">Order number: {{ booking.booking_code }}</div>
 
                         <div class="bg-primary-50 my-5 w-full h-[1px]"></div>
 
                         <div>
-                            <div class="text-center text-sm capitalize">total payment</div>
-                            <div class="font-josefin font-light text-center text-xl uppercase tracking-widest">{{ booking.amount_formatted }}</div>
+                            <div class="text-sm text-center capitalize">total payment</div>
+                            <div class="font-josefin font-light text-xl text-center uppercase tracking-widest">{{ booking.amount_formatted }}</div>
                         </div>
 
                         <div class="bg-primary-50 my-5 w-full h-[1px]"></div>
@@ -65,17 +77,17 @@
                                         <td class="px-4 py-4 text-center">{{ item.qty }}</td>
                                         <td class="px-4 py-4">{{ item.price_formatted }}</td>
                                         <td class="px-4 py-4">
-                                            {{ item.total_price_formatted }} <span v-if="item.discount_detail?.discount">(-{{ item.discount_detail.discount }}%)</span>
+                                            {{ afterDiscount(item.price, item.discount) }} <span v-if="item.discount_detail?.discount">(-{{ item.discount_detail.discount }}%)</span>
                                         </td>
                                     </tr>
                                     <tr class="bg-white" v-if="booking.discount > 0">
-                                        <td colspan="3" class="text-right bg-primary-50 px-4 py-4 font-bold text-white">Coupon</td>
+                                        <td colspan="3" class="bg-primary-50 px-4 py-4 font-bold text-white text-right">Coupon</td>
                                         <td class="px-4 py-4 font-bold text-primary-50">
                                             -{{ booking.discount_formatted }} ({{ booking.discount_details.coupon }}%)
                                         </td>
                                     </tr>
                                     <tr class="bg-white">
-                                        <td colspan="3" class="text-right bg-primary-50 px-4 py-4 font-bold text-white">Subtotal</td>
+                                        <td colspan="3" class="bg-primary-50 px-4 py-4 font-bold text-white text-right">Subtotal</td>
                                         <td class="px-4 py-4 font-bold text-primary-50">{{ booking.amount_formatted }}</td>
                                     </tr>
                                 </tbody>
