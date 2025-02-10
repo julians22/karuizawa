@@ -77,7 +77,7 @@
                                         <td class="px-4 py-4 text-center">{{ item.qty }}</td>
                                         <td class="px-4 py-4">{{ item.price_formatted }}</td>
                                         <td class="px-4 py-4">
-                                            {{ afterDiscount(item.price, item.discount) }} <span v-if="item.discount_detail?.discount">(-{{ item.discount_detail.discount }}%)</span>
+                                            {{ item.total_price_formatted }} <span v-if="item.discount_detail?.discount">(-{{ item.discount_detail.discount }}%)</span>
                                         </td>
                                     </tr>
                                     <tr class="bg-white" v-if="booking.discount > 0">
