@@ -32,3 +32,4 @@ output.txt
 Thumbs.db
 yarn-error.log
 .ignition.json
+.cpanel.yml
