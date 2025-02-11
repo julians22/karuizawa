@@ -24,8 +24,7 @@
     const orderHistoryRef = ref();
     const fittingHistoryRef = ref();
 
-    const currentPage = ref('print-per-day');
-    // const currentPage = ref('order-history');
+    const currentPage = ref('order-history');
 
     const childFilter = ref({
         dialog: false,
@@ -152,15 +151,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- <template v-if="currentPage === 'incoming-order'">
-            <IncomingOrder
-                ref="incomingOrderRef"
-                :api_incoming_url="api_incoming_url"
-                :filterData="filterData"
-                :user="user"
-                />
-        </template> -->
 
         <template v-if="currentPage === 'order-history'">
             <OrderHistory

@@ -17,6 +17,12 @@
 </head>
 <body>
     <div id="app" class="space-y-4">
+        @if ($dataSemiCustom == null || $dataSemiCustom->isEmpty())
+            <div class="flex flex-col items-center justify-center h-screen">
+                <h1 class="text-2xl font-bold text-center text-gray-500">Tidak ada data transaksi semi custom pada tanggal {{ Carbon\Carbon::parse($date)->format('d F Y') }}</h1>
+                <a href="{{ route('frontend.user.booking') }}" class="p-2 mt-10 text-xl font-bold text-white uppercase bg-primary-50">Kembali</a>
+            </div>
+        @endif
         @foreach ($dataSemiCustom as $key => $value )
         <div>
             <print-semi-custom

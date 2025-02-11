@@ -26,10 +26,8 @@
 
     const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
 
-    // const CustomShirt = defineAsyncComponent(() => import('./includes/CustomShirt.vue'));
     const CustomBasic = defineAsyncComponent(() => import('./includes/CustomBasic.vue'));
     const CustomOptions = defineAsyncComponent(() => import('./includes/CustomOptions.vue'));
-    // const CustomRequest = defineAsyncComponent(() => import('./includes/CustomRequest.vue'));
 
     const Customer = defineAsyncComponent(() => import('../includes/CustomerData.vue'));
     const TotalShop = defineAsyncComponent(() => import('../includes/TotalShop.vue'));

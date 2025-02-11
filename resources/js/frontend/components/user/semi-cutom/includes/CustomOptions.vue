@@ -4,6 +4,8 @@
     import  InputBox  from '@frontend/components/utils/fields/InputBox.vue';
     import { useProducts } from '../../../../store/product';
 
+    import { component as VueNumber } from '@coders-tm/vue-number-format';
+
     const number_input = {
         separator: '.',
         prefix: 'Rp ',
