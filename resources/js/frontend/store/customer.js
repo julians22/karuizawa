@@ -1,4 +1,5 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
+import { parse, stringify } from 'zipson';
 
 export const useCustomer = defineStore('customer', {
     state: () => {
@@ -23,5 +24,11 @@ export const useCustomer = defineStore('customer', {
         },
     },
 
-    persist: true,
+    persist: {
+        serializer: {
+            deserialize: parse,
+            serialize: stringify,
+        },
+        storage: sessionStorage,
+    },
 });

@@ -73,8 +73,8 @@
         <div class="pt-10 pb-28 container">
             <div v-if="isRetrieving">Loading Orders ...</div>
             <div v-else-if="!isRetrieving && bookings" v-for="booking in bookings.data">
-                <div class="flex justify-between">
-                    <div class="space-y-2 font-roboto">
+                <div class="gap-2 grid grid-cols-10">
+                    <div class="space-y-2 col-span-7 font-roboto">
                         <div class="font-bold text-xl">Booking Number: {{ booking.booking_code }}</div>
                         <div>
                             {{ booking.customer_name }}
@@ -83,7 +83,7 @@
                         <div>{{ booking.customer_phone }}</div>
                         <div>{{ booking.customer_gender }}</div>
                     </div>
-                    <div class="space-y-3 font-roboto">
+                    <div class="justify-self-end space-y-3 col-span-3 font-roboto">
                         <div class="font-bold text-xl">Booking Time</div>
                         <div>{{ booking.order_date }}</div>
                         <button @click="onClickDetail(booking)" class="flex items-center gap-3 bg-primary-50 px-4 lg:px-3 py-2 lg:py-2 font-josefin text-white tracking-widest">

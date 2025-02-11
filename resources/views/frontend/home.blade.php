@@ -10,22 +10,8 @@
                       <div class="relative splide__slide">
                         <img class="object-cover w-full h-full" src="{{ asset('img/home/bg-hero-1.jpg') }}" alt="">
                         <div class="absolute inset-0 z-10">
-                            <div class="flex flex-col items-center justify-center h-full gap-2 md:gap-4">
-                                <div class="tracking-widest text-center text-white uppercase md:text-5xl xl:text-7xl">
-                                    Grand <br>
-                                    Opening <br>
-                                    discount
-                                </div>
-                                <div class="text-xs tracking-wider text-center text-white md:text-sm xl:text-lg font-roboto">
-                                    Enjoy discount up to 50% <br>
-                                    on PIK Avenue Brach
-                                </div>
-                                <div>
-                                    <a href="#" class="flex items-center gap-2 pl-4 pr-2 pt-2 pb-1.5 border border-white rounded-full">
-                                        <span class="text-xs md:text-xl tracking-widest text-white uppercase mt-0.5">See More</span>
-                                        <span><img src="{{ asset('img/icons/arrw-ck-right.png') }}" alt=""></span>
-                                    </a>
-                                </div>
+                            <div class="flex flex-col items-center justify-center h-full">
+                                <img class="w-[30%]" src="{{ asset('img/home/suits-you.png') }}" alt="">
                             </div>
                         </div>
                       </div>

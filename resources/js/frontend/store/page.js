@@ -1,4 +1,5 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
+import { parse, stringify } from 'zipson';
 
 export const usePage = defineStore('currentPage', {
     state: () => {
@@ -13,5 +14,11 @@ export const usePage = defineStore('currentPage', {
         },
     },
 
-    persist: true,
+    persist: {
+        serializer: {
+            deserialize: parse,
+            serialize: stringify,
+        },
+        storage: sessionStorage,
+    },
 });

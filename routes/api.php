@@ -100,6 +100,8 @@ Route::post('send-payment', [OrderController::class, 'store_payment']);
 
 Route::post('semi-custom/submit', [SemiCustomConteroller::class, 'submit']);
 
+Route::post('semi-custom/customer-size/{id}', [SemiCustomConteroller::class, 'findCustomerSize']);
+
 Route::group(['prefix' => 'profile', 'as' => 'profile.'], function() {
     Route::post('update', [ProfileController::class, 'update'])->name('update');
 });

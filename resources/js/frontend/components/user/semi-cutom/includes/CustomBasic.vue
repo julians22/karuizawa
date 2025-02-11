@@ -1,7 +1,8 @@
 <script setup>
-    import { ref, watch, defineEmits, computed, reactive } from 'vue';
+    import { ref, watch, defineEmits, computed, reactive, onMounted } from 'vue';
     import  InputBox  from '@frontend/components/utils/fields/InputBox.vue';
     import { useProducts } from '../../../../store/product';
+    import { useCustomer } from '@/frontend/store/customer';
 
     import { component as VueNumber } from '@coders-tm/vue-number-format';
 
@@ -13,7 +14,9 @@
     }
 
     const props = defineProps({
-        dataSemiCustom: Object
+        dataSemiCustom: Object,
+        dataCopy: Object,
+        api_customer_size: String
     });
 
     const dataCustomShirt = computed(() => {
@@ -64,25 +67,35 @@
             backLength: null,
             shoulder: null,
         }
-    })
-
-    watch(form.value, (items) => {
-        let radio = document.querySelectorAll("input[type=radio]:checked");
-
-        // unchecked radio
-        for(let i = 0; i < radio.length; i++) {
-            radio[i].onclick = function(e) {
-                let myVariable = e.target.name;
-
-                let camelCased = myVariable.replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
-
-                // find form value key
-                const key = Object.keys(form.value).find(key => key === camelCased);
-                form.value[key] = null;
-            }
-        }
-
     });
+
+    onMounted(() => {
+        syncDataDuplicate();
+        synFormSize();
+    });
+
+    const syncDataDuplicate = () => {
+        if (useProducts().getDuplicateSm.length > 0  || ! _.isEmpty(useProducts().getDuplicateSm)) {
+            const data = useProducts().getDuplicateSm.basic;
+
+            form.value = data.form;
+            formSize.value = data.formSize;
+            additionalNote.value = data.additionalNote;
+        }
+    }
+
+    const synFormSize = async  () => {
+        if (useProducts().getDuplicateSm.length == 0  || _.isEmpty(useProducts().getDuplicateSm)) {
+            await fetch(props.api_customer_size + `/${useCustomer().getCustomer.id}`, {
+                method: 'POST',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    formSize.value = data.data;
+                });
+        }
+    }
 
     const additionalNote = ref(null);
 
@@ -111,7 +124,7 @@
         formSize,
         additionalNote,
         amount,
-        basicAmount
+        basicAmount,
     });
 
 
@@ -155,7 +168,7 @@
                 </div>
                 <div class="flex items-center gap-8 px-6 my-5 lg:px-10 xl:px-14 fabric-code">
                     <label for="fabric-code" class="tracking-widest uppercase text-primary-50 lg:whitespace-pre-wrap">fabric code</label>
-                    <InputBox @update:input="onInputBox($event, 'fabric', 'fabricCode')" />
+                    <InputBox @update:input="onInputBox($event, 'fabric', 'fabricCode')" :inputValue="form.fabric.fabricCode" />
                     <input v-model="form.fabric.text" type="text" class="block w-full h-8 p-2 text-sm text-gray-900 border border-r border-primary-50 font-roboto">
                 </div>
             </div>
@@ -167,7 +180,7 @@
                 </div>
                 <div class="grid grid-cols-6 px-6 my-10 lg:px-10 xl:px-14">
                     <div v-for="collar in dataCustomShirt.collar.data.basic">
-                        <input class="hidden" type="radio" v-model="form.collar" :value="collar" name="collar"  :id="'collar-' + collar.slug">
+                        <input :checked="collar.slug == form.collar?.slug" class="hidden" type="radio" v-model="form.collar" @click.native="form.collar = null" :value="collar" name="collar-basic"  :id="'collar-' + collar.slug">
                         <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'collar-' + collar.slug">
                             <img class="h-auto" :src="collar.image" alt="">
                             <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">{{ collar.name }}</div>
@@ -178,7 +191,7 @@
                 <div class="flex items-center gap-12 mx-20 my-10">
                     <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg">OPTION NUMBER</div>
                     <div class="flex font-roboto">
-                        <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'collar', 'optionNumber')"/>
+                        <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'collar', 'optionNumber')" :inputValue="form.collar?.optionNumber"/>
                     </div>
                 </div>
             </div>
@@ -192,7 +205,7 @@
                     </div>
                     <div class="grid grid-cols-3 px-6 my-10 lg:px-10 xl:px-14">
                         <div v-for="cuff in dataCustomShirt.cuffs.data.basic">
-                            <input class="hidden" type="radio" v-model="form.cuff" name="cuff" :value="cuff" :id="'cuff-' + cuff.slug">
+                            <input class="hidden" type="radio" v-model="form.cuff" @click.native="form.cuff = null" name="cuff" :value="cuff" :id="'cuff-' + cuff.slug">
                             <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'cuff-' + cuff.slug">
                                 <img class="h-auto" :src="cuff.image" alt="">
                                 <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">{{ cuff.name }}</div>
@@ -203,7 +216,7 @@
                     <div class="flex items-center gap-12 px-6 my-10 xl:mx-20">
                         <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg">OPTION NUMBER</div>
                         <div class="flex font-roboto">
-                            <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'cuff', 'optionNumber')"/>
+                            <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'cuff', 'optionNumber')" :inputValue="form.cuff?.optionNumber"/>
                         </div>
                     </div>
                 </div>
@@ -214,7 +227,7 @@
                     </div>
                     <div class="grid grid-cols-2 px-6 my-10 lg:px-10 xl:px-14">
                         <div v-for="frontBody in dataCustomShirt.front_body.data.basic">
-                            <input class="hidden" type="radio" name="front-body" v-model="form.frontBody" :value="frontBody" :id="'front-body-' + frontBody.slug">
+                            <input class="hidden" type="radio" name="front-body-basic" v-model="form.frontBody" @click.native="form.frontBody = null" :value="frontBody" :id="'front-body-' + frontBody.slug">
                             <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'front-body-' + frontBody.slug">
                                 <img class="h-auto" :src="frontBody.image" alt="">
                                 <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">{{ frontBody.name }}</div>
@@ -225,7 +238,7 @@
                     <div class="flex items-center gap-12 px-6 my-10 xl:mx-20 lg:px-10">
                         <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg">OPTION NUMBER</div>
                         <div class="flex font-roboto">
-                            <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'frontBody', 'optionNumber')"/>
+                            <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'frontBody', 'optionNumber')" :inputValue="form.frontBody?.optionNumber"/>
                         </div>
                     </div>
                 </div>
@@ -240,7 +253,7 @@
                             </div>
                             <div class="grid grid-cols-3 px-4 my-10 lg:px-10 xl:px-14">
                             <div v-for="pocket in dataCustomShirt.pocket.data.basic">
-                                <input class="hidden" type="radio" v-model="form.pocket" :value="pocket" name="pocket" :id="'pocket-'+pocket.slug">
+                                <input class="hidden" type="radio" v-model="form.pocket" @click.native="form.pocket = null" :value="pocket" name="pocket" :id="'pocket-'+pocket.slug">
                                 <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'pocket-'+pocket.slug">
                                     <img class="h-auto" :src="pocket.image" alt="">
                                     <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">{{ pocket.name }}</div>
@@ -256,7 +269,7 @@
                         </div>
                         <div class="grid grid-cols-2 px-4 my-10 lg:px-10 xl:px-14">
                         <div v-for="hem in dataCustomShirt.hem.data.basic">
-                            <input class="hidden" type="radio" name="hem" v-model="form.hem"  :value="hem" :id="'hem-'+hem.slug">
+                            <input class="hidden" type="radio" name="hem" v-model="form.hem" @click.native="form.hem = null" :value="hem" :id="'hem-'+hem.slug">
                             <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'hem-'+hem.slug">
                                 <img class="h-auto" :src="hem.image" alt="">
                                 <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">{{ hem.name }}</div>
@@ -274,7 +287,7 @@
                 </div>
                 <div class="grid grid-cols-4 p-6 my-8 xl:my-10 lg:px-10 xl:px-14">
                     <div v-for="backBody in dataCustomShirt.back_body.data.basic">
-                        <input class="hidden" type="radio" name="back-body" v-model="form.backBody" :value="backBody" :id="'back-body-'+backBody.slug">
+                        <input class="hidden" type="radio" name="back-body" v-model="form.backBody" @click.native="form.backBody = null" :value="backBody" :id="'back-body-'+backBody.slug">
                         <label class="flex flex-col items-center justify-between h-full gap-4 px-2 rounded cursor-pointer" :for="'back-body-'+backBody.slug">
                             <img class="h-auto" :src="backBody.image" alt="">
                             <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">{{ backBody.name }}</div>
@@ -291,7 +304,7 @@
                 </div>
                 <div class="grid grid-cols-5 gap-4 px-6 my-10 xl:grid-cols-9 lg:px-10 xl:px-14">
                     <div v-for="button in dataCustomShirt.button.data.basic">
-                        <input class="hidden" type="radio" name="button" :id="`button-${button.slug}`" v-model="form.button" :value="button">
+                        <input class="hidden" type="radio" name="button-basic" :id="`button-${button.slug}`" v-model="form.button" @click.native="form.button = null" :value="button">
                         <label class="flex flex-col items-center justify-between h-full px-2 rounded cursor-pointer" :for="`button-${button.slug}`">
                             <img class="h-auto" :src="button.image" alt="">
                             <div class="text-xs font-bold tracking-widest text-center uppercase text-primary-50 2xl:text-lg">{{ button.name }}</div>
