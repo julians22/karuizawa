@@ -166,19 +166,18 @@
                             </div>
 
                             {{-- If synced to accurate --}}
-                            @if ($order->isSyncedToAccurate())
-                                <div class="alert alert-success">
+                            {{-- @if ($order->isSyncedToAccurate()) --}}
+                                {{-- <div class="alert alert-success">
                                     @lang('Order is synced to Accurate')
-                                    {{-- Date --}}
                                     <small>{{ $order->accurate_sync_date->diffForHumans() }} <span class="badge bg-info">No Faktur: {{ $order->accurate_order_number }}</span></small>
-                                </div>
+                                </div> --}}
 
-
-                            @else
+                            {{-- @else --}}
                             {{-- Upload to accurate --}}
-                            <x-utils.link :href="route('admin.order.upload-accurate', $order)"
+
+                            {{-- <x-utils.link :href="route('admin.order.upload-accurate', $order)"
                                 class="btn btn-warning btn-sm" :text="'Upload to Accurate'" />
-                            @endif
+                            @endif --}}
                         @endif
 
                     </x-slot>
