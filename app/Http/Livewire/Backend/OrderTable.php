@@ -33,6 +33,10 @@ class OrderTable extends DataTableComponent
         $this->setBulkActions([
             'syncAccurate' => 'Sync to Accurate',
         ]);
+
+        $this->setSingleSortingDisabled();
+
+        $this->setDefaultSort('created_at', 'desc');
     }
 
     public function filters(): array
@@ -105,8 +109,10 @@ class OrderTable extends DataTableComponent
             Column::make('Accurate Info', 'accurate_order_number')
                 ->format(fn($value, $row) => $value ? $value : "Not Synced"),
             Column::make("Created at", "created_at")
+                ->format(fn($value) => $value->diffForHumans())
                 ->sortable(),
             Column::make("Updated at", "updated_at")
+                ->format(fn($value) => $value->diffForHumans())
                 ->sortable(),
             Column::make("Actions")
                 ->label(fn($row, Column $column) => view('backend.order.includes.actions', ['order' => $row])),
