@@ -42,7 +42,7 @@ class ProductTable extends DataTableComponent
             ];
         });
 
-        $this->setDefaultSort('products.updated_at', 'desc');
+        $this->setDefaultSort('updated_at', 'desc');
         $this->setDefaultSortingLabels('Asc', 'Desc');
     }
 
