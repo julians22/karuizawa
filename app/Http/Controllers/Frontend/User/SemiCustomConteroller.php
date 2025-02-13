@@ -31,7 +31,7 @@ class SemiCustomConteroller extends Controller
 
     public function findCustomerSize($id)
     {
-        $data = SemiCustomProduct::where('customer_id', $id)->latest()->first();
+        $data = SemiCustomProduct::where('customer_id', $id)->latest()->firstOrFail();
 
         // dd($data);
         return response()->json([
