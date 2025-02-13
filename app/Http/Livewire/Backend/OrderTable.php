@@ -64,7 +64,7 @@ class OrderTable extends DataTableComponent
                 ->options(
                     $this->stores
                 )
-                ->filter(fn($builder, $value) => $builder->where('store_id', $value)),
+                ->filter(fn($builder, $value) => $builder->where('orders.store_id', $value)),
             DateFilter::make('Order Date')
                 ->filter(fn($builder, $value) => $builder->whereDate('order_date', $value)),
             SelectFilter::make('Sync Status')
