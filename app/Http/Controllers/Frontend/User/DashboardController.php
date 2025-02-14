@@ -50,7 +50,6 @@ class DashboardController
         $order = Order::with(['orderItems.product', 'store', 'user', 'payments'])
         ->findOrFail($id);
 
-        // dd($order);
         return view('frontend.print.bill', ['order' => $order]);
     }
 

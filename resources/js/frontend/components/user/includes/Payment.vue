@@ -104,10 +104,10 @@
             :sending-payment="sendingPayment"
             ref="childDoPayment"/>
         <section>
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">TOTAL AMOUNT TO BE PAID</div>
+            <div class="flex justify-between items-center bg-primary-50 p-6 lg:px-14 lg:py-7">
+                <div class="font-bold text-white text-lg lg:text-xl uppercase tracking-widest">TOTAL AMOUNT TO BE PAID</div>
             </div>
-            <div class="space-y-20 lg:px-14 lg:py-20 p-6">
+            <div class="space-y-20 p-6 lg:px-14 lg:py-20">
                 <div class="items-end gap-20 grid grid-cols-4 w-full">
                     <div>
                         <input
@@ -121,8 +121,8 @@
                             <div>
                                 <img src="img/icons/manual-tf.png" alt="">
                             </div>
-                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Manual Transfer</div>
-                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
+                            <div class="font-roboto font-bold text-secondary-50 text-sm lg:text-base xl:text-lg text-center text-nowrap">Manual Transfer</div>
+                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full size-10 text-transparent checkbox-inner"></span>
                         </label>
                     </div>
                     <div>
@@ -137,8 +137,8 @@
                             <div>
                                 <img src="img/icons/credit-card.png" alt="">
                             </div>
-                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Credit Card</div>
-                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
+                            <div class="font-roboto font-bold text-secondary-50 text-sm lg:text-base xl:text-lg text-center text-nowrap">Credit Card</div>
+                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full size-10 text-transparent checkbox-inner"></span>
                         </label>
                     </div>
                     <div>
@@ -153,8 +153,8 @@
                             <div>
                                 <img src="img/icons/credit-card.png" alt="">
                             </div>
-                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">Debit Card</div>
-                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
+                            <div class="font-roboto font-bold text-secondary-50 text-sm lg:text-base xl:text-lg text-center text-nowrap">Debit Card</div>
+                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full size-10 text-transparent checkbox-inner"></span>
                         </label>
                     </div>
                     <div>
@@ -166,23 +166,23 @@
                             value="qris"
                             :id="`qris`">
                         <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`qris`">
-                            <div class="font-bold font-roboto text-center text-nowrap text-secondary-50 text-sm lg:text-base xl:text-lg">QRIS</div>
-                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
+                            <div class="font-roboto font-bold text-secondary-50 text-sm lg:text-base xl:text-lg text-center text-nowrap">QRIS</div>
+                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full size-10 text-transparent checkbox-inner"></span>
                         </label>
                     </div>
                 </div>
 
                 <div v-show="showPreferredBank">
-                    <div class="font-bold text-lg text-primary-50 lg:text-2xl uppercase tracking-widest">Manual Transfer</div>
+                    <div class="font-bold text-primary-50 text-lg lg:text-2xl uppercase tracking-widest">Manual Transfer</div>
                     <div class="flex items-center gap-4 mt-6">
                         <div class="font-roboto text-[#606060] tracking-widest whitespace-pre">Pilih Bank Tujuan</div>
                         <div class="relative">
-                            <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center border-primary-50 border-y bg-secondary pt-2 pr-3 pl-2.5 border-r rounded-r-full w-10 text-primary-50 pointer-events-none">
+                            <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 border-primary-50 border-y border-r rounded-r-full w-10 text-primary-50 pointer-events-none">
                                 ▼
                             </span>
                             <select
                                 v-model="preferredBank"
-                                id="prefered-bank" class="block border-primary-50 bg-white before:bg-blue-400 py-2.5 pr-10 pl-2.5 border focus:border-blue-500 rounded-full focus:ring-blue-500 w-full *:text-[#606060] uppercase">
+                                id="prefered-bank" class="block bg-white before:bg-blue-400 py-2.5 pr-10 pl-2.5 border border-primary-50 focus:border-blue-500 rounded-full focus:ring-blue-500 w-full *:text-[#606060] uppercase">
                                 <option value="BCA">BCA</option>
                             </select>
                         </div>
@@ -193,8 +193,8 @@
         </section>
 
         <section>
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">DETAIL ORDER</div>
+            <div class="flex justify-between items-center bg-primary-50 p-6 lg:px-14 lg:py-7">
+                <div class="font-bold text-white text-lg lg:text-xl uppercase tracking-widest">DETAIL ORDER</div>
             </div>
 
             <div class="space-y-5 px-14 pt-12 pb-32">
@@ -204,7 +204,7 @@
                 </div>
                 <div class="bg-[#606060] opacity-40 w-full h-0.5"></div>
                 <div>
-                    <div class="grid grid-cols-3 font-bold font-roboto text-secondary-50">
+                    <div class="grid grid-cols-3 font-roboto font-bold text-secondary-50">
                         <div>Product</div>
                         <div>Qty</div>
                         <div>Price</div>
@@ -220,7 +220,7 @@
                     </div>
                 </div>
                 <div>
-                    <div class="grid grid-cols-3 font-bold font-roboto text-secondary-50">
+                    <div class="grid grid-cols-3 font-roboto font-bold text-secondary-50">
                         <div>Semi Custom</div>
                         <div>Qty</div>
                         <div>Price</div>
@@ -236,7 +236,7 @@
                     </div>
                 </div>
                 <div class="bg-[#606060] opacity-40 w-full h-0.5"></div>
-                <div class="grid grid-cols-3 font-bold font-roboto text-secondary-50">
+                <div class="grid grid-cols-3 font-roboto font-bold text-secondary-50">
                     <div class="col-span-2">Subtotal</div>
                     <div
                         v-html="priceFormat(totalPayment)"></div>
@@ -247,7 +247,7 @@
                         v-html="priceFormat(afterDiscount)"
                         ></div>
                 </div>
-                <div class="grid grid-cols-3 bg-secondary px-4 pt-4 pb-3 font-bold text-lg text-primary-50 lg:text-2xl">
+                <div class="grid grid-cols-3 bg-secondary px-4 pt-4 pb-3 font-bold text-primary-50 text-lg lg:text-2xl">
                     <div class="col-span-2">TOTAL AMOUNT TO BE PAID</div>
                     <div class="">{{ priceFormat(afterDiscount) }}</div>
                 </div>

@@ -47,6 +47,11 @@ class OrderItem extends Model
 
     public function getTotalPriceAttribute()
     {
+        if ($this->isReadyToWear()) {
+            $price = $this->price - $this->discount;
+            return $price * $this->quantity;
+        }
+
         return $this->quantity * $this->price;
     }
 

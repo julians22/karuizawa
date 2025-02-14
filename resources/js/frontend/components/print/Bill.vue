@@ -60,7 +60,13 @@ const { handlePrint } = useVueToPrint({
                         <tr>
                             <td width="20%">{{ order.quantity + 'x' }}</td>
                             <td width="20%">{{ priceFormat2(order.price) }}</td>
-                            <td class="text-right"><span v-if="order.discount_detail?.discount">(-{{ order.discount_detail.discount }}%)</span>{{ priceFormat(order.total_price - (order?.discount ?? 0)) }}  </td>
+                            <td class="text-right" v-if="order.type === 'RTW'">
+                                <span v-if="order.discount_detail?.discount">(-{{ order.discount_detail.discount }}%)</span>
+                                {{ priceFormat(order.total_price) }}
+                            </td>
+                            <td class="text-right" v-else>
+                                {{ priceFormat(order.total_price) }}
+                            </td>
                         </tr>
                     </template>
 
@@ -107,6 +113,6 @@ const { handlePrint } = useVueToPrint({
           </div>
         </div>
 
-        <button @click="handlePrint" class="block print:hidden bg-primary-50 mx-auto mb-2 p-2 text-white">Print</button>
+        <button @click="handlePrint" class="print:hidden block bg-primary-50 mx-auto mb-2 p-2 text-white">Print</button>
     </div>
 </template>

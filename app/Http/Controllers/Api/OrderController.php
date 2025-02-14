@@ -323,11 +323,12 @@ class OrderController extends Controller
             foreach ($order->orderItems as $item) {
 
                 if ($item->isReadyToWear()) {
-                    $totalPrice += $item->price - $item->discount * $item->quantity;
+                    $multipyPrice = $item->price * $item->quantity;
+                    $totalPrice += $multipyPrice - $item->discount * $item->quantity;
                 }
 
                 if ($item->isSemiCustom()) {
-                    $totalPrice += $item->price - $item->discount * $item->quantity;
+                    $totalPrice += $item->price;
                 }
             }
 

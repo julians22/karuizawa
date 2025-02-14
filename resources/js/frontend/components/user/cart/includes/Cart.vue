@@ -148,14 +148,13 @@
     const totalAllPrice = computed(() => {
         let totalProducts = 0;
         let totalSemiCustom = 0;
-        let discount = 0;
         let sumTotal = 0;
 
         if (products.value.length !== 0) {
             products.value.map(product => {
-                let subdis = product.discount ?? 0;
-                let sub_price = product.price * product.qty;
-                totalProducts += sub_price - (sub_price * subdis / 100);
+                let multiply_price = product.price * product.qty;
+                let item_discount = product.discount ?? 0;
+                totalProducts += multiply_price - (multiply_price * item_discount / 100);
             });
         }
 
@@ -167,7 +166,7 @@
 
         sumTotal = totalProducts + totalSemiCustom;
 
-        return sumTotal - (sumTotal * discount / 100);
+        return sumTotal;
     });
 
     const loadCoupon = () => {
@@ -218,56 +217,56 @@
 <template>
     <div class="space-y-10">
         <section class="mb-40">
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">Total shop</div>
+            <div class="flex justify-between items-center bg-primary-50 p-6 lg:px-14 lg:py-7">
+                <div class="font-bold text-white text-lg lg:text-xl uppercase tracking-widest">Total shop</div>
             </div>
-            <div class="lg:px-14 lg:py-10 p-6">
+            <div class="p-6 lg:px-14 lg:py-10">
                 <table class="w-full" v-if="products.length !== 0">
                     <thead>
                         <tr>
-                            <th class="py-3 pr-6 text-left text-primary-50 uppercase name-col">Product</th>
-                            <th class="px-6 py-3 text-center text-primary-50 uppercase price-col">Price</th>
-                            <th class="px-6 py-3 text-center text-primary-50 uppercase">qty</th>
-                            <th style="width: 10%;" class="px-6 py-3 text-center text-primary-50 uppercase">Coupon (%)</th>
-                            <th class="px-6 py-3 text-center text-primary-50 uppercase total-col">Total</th>
+                            <th class="name-col py-3 pr-6 text-primary-50 text-left uppercase">Product</th>
+                            <th class="px-6 py-3 text-primary-50 text-center uppercase price-col">Price</th>
+                            <th class="px-6 py-3 text-primary-50 text-center uppercase">qty</th>
+                            <th style="width: 10%;" class="px-6 py-3 text-primary-50 text-center uppercase">Coupon (%)</th>
+                            <th class="px-6 py-3 text-primary-50 text-center uppercase total-col">Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="border-b" v-for="(product, index) in products">
-                            <td class="py-3 pr-6 text-left text-primary-50">
+                            <td class="py-3 pr-6 text-primary-50 text-left">
                                 <div class="text-[#606060]">{{ product.product_name }}</div>
                                 <template v-if="product.product_actual_stocks">
                                     <template v-if="product.product_actual_stocks.length">
-                                        <div class="my-1 text-left text-primary-300 text-xs" v-for="(stock, index) in product.product_actual_stocks" :key="index">
+                                        <div class="my-1 text-primary-300 text-xs text-left" v-for="(stock, index) in product.product_actual_stocks" :key="index">
                                             <span v-if="stock.stock_quantity && (userStoreId == stock.store.id)">{{ stock.store.code }}: {{ stock.stock_quantity }} in stock</span>
                                         </div>
                                     </template>
                                 </template>
                                 <div class="text-[#A3A3A3] text-sm">{{product.sku}}</div>
                             </td>
-                            <td class="px-6 py-3 text-center text-primary-50">
-                                <div class="text-[#606060] text-center lg:text-lg"
+                            <td class="px-6 py-3 text-primary-50 text-center">
+                                <div class="text-[#606060] lg:text-lg text-center"
                                     v-html="priceFormat(product.price)"></div>
                             </td>
-                            <td class="px-6 py-3 text-center text-primary-50">
+                            <td class="px-6 py-3 text-primary-50 text-center">
                                 <div class="flex justify-center w-full text-left number-input" data-controller="quantity">
-                                    <button @click="minQty(index)" class="flex items-center border-primary-50 bg-off-white hover:bg-grey-lightest p-2 border border-r-0 font-bold text-grey-darker no-underline">
+                                    <button @click="minQty(index)" class="flex items-center bg-off-white hover:bg-grey-lightest p-2 border border-primary-50 border-r-0 font-bold text-grey-darker no-underline">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M424 318.2c13.3 0 24-10.7 24-24v-76.4c0-13.3-10.7-24-24-24H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h400z"/></svg>
                                     </button>
-                                    <input type="number" class="border-primary-50 p-2 border w-10 text-center" :value="product.qty" data-target="quantity.value">
+                                    <input type="number" class="p-2 border border-primary-50 w-10 text-center" :value="product.qty" data-target="quantity.value">
 
-                                    <button @click="plusQty(index)" class="flex items-center border-primary-50 bg-off-white hover:bg-grey-lightest p-2 border border-l-0 font-bold text-grey-darker no-underline">
+                                    <button @click="plusQty(index)" class="flex items-center bg-off-white hover:bg-grey-lightest p-2 border border-primary-50 border-l-0 font-bold text-grey-darker no-underline">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="fill-current size-3"><path d="M448 294.2v-76.4c0-13.3-10.7-24-24-24H286.2V56c0-13.3-10.7-24-24-24h-76.4c-13.3 0-24 10.7-24 24v137.8H24c-13.3 0-24 10.7-24 24v76.4c0 13.3 10.7 24 24 24h137.8V456c0 13.3 10.7 24 24 24h76.4c13.3 0 24-10.7 24-24V318.2H424c13.3 0 24-10.7 24-24z"/></svg>
                                     </button>
                                 </div>
                             </td>
-                            <td class="px-6 py-3 text-center text-primary-50">
-                                <div class="text-center text-secondary-50 lg:text-lg">
-                                    <input type="number" class="border-primary-50 p-2 border w-20 text-center" v-model.lazy="product.discount" placeholder="0">
+                            <td class="px-6 py-3 text-primary-50 text-center">
+                                <div class="text-secondary-50 lg:text-lg text-center">
+                                    <input type="number" class="p-2 border border-primary-50 w-20 text-center" v-model.lazy="product.discount" placeholder="0">
                                 </div>
                             </td>
-                            <td class="px-6 py-3 text-center text-primary-50">
-                                <div class="text-center text-secondary-50 lg:text-lg">{{ priceFormat(product.total ?? product.price) }}</div>
+                            <td class="px-6 py-3 text-primary-50 text-center">
+                                <div class="text-secondary-50 lg:text-lg text-center">{{ priceFormat(product.total ?? product.price) }}</div>
                             </td>
                         </tr>
                     </tbody>
@@ -277,34 +276,34 @@
                     <table class="w-full">
                         <thead>
                             <tr>
-                                <th class="py-3 pr-6 text-left text-primary-50 uppercase name-col">Semi Custom </th>
-                                <th class="px-6 py-3 text-center text-primary-50 uppercase price-col">Price</th>
-                                <th class="px-6 py-3 text-center text-primary-50 uppercase">qty</th>
-                                <th class="px-6 py-3 text-center text-primary-50 uppercase total-col">Total</th>
+                                <th class="name-col py-3 pr-6 text-primary-50 text-left uppercase">Semi Custom </th>
+                                <th class="px-6 py-3 text-primary-50 text-center uppercase price-col">Price</th>
+                                <th class="px-6 py-3 text-primary-50 text-center uppercase">qty</th>
+                                <th class="px-6 py-3 text-primary-50 text-center uppercase total-col">Total</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr class="border-b" v-for="(semiCustom, index) in semiCustom" >
-                                <td class="py-3 pr-6 text-left text-primary-50">
+                                <td class="py-3 pr-6 text-primary-50 text-left">
                                     <div class="text-[#606060]">SEMI-CUSTOM MTM</div>
                                     <div class="text-[#A3A3A3] text-sm">{{ semiCustom.basic.form.fabric.fabricCode }}</div>
                                 </td>
-                                <td class="px-6 py-3 text-center text-primary-50">
-                                    <div class="text-[#606060] text-center lg:text-lg"
+                                <td class="px-6 py-3 text-primary-50 text-center">
+                                    <div class="text-[#606060] lg:text-lg text-center"
                                         v-html="priceFormat(semiCustom.totalPrice)"></div>
                                 </td>
-                                <td class="px-6 py-3 text-center text-primary-50">
+                                <td class="px-6 py-3 text-primary-50 text-center">
                                     1
                                 </td>
-                                <td class="px-6 py-3 text-center text-primary-50">
-                                    <div class="text-center text-secondary-50 lg:text-lg">{{ priceFormat(semiCustom.totalPrice) }}</div>
+                                <td class="px-6 py-3 text-primary-50 text-center">
+                                    <div class="text-secondary-50 lg:text-lg text-center">{{ priceFormat(semiCustom.totalPrice) }}</div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <div class="flex justify-between bg-secondary px-4 pt-4 pb-3 font-bold text-lg text-primary-50 lg:text-2xl">
+                <div class="flex justify-between bg-secondary px-4 pt-4 pb-3 font-bold text-primary-50 text-lg lg:text-2xl">
                     <div class="col-span-2">TOTAL AMOUNT</div>
                     <div class="mr-10 text-center">{{ priceFormat(totalAllPrice) }}</div>
                 </div>
@@ -312,18 +311,18 @@
         </section>
 
         <!-- <section>
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">COUPON CODE & POINTS</div>
+            <div class="flex justify-between items-center bg-primary-50 p-6 lg:px-14 lg:py-7">
+                <div class="font-bold text-white text-lg lg:text-xl uppercase tracking-widest">COUPON CODE & POINTS</div>
             </div>
-            <div class="lg:px-14 lg:py-10 p-6">
+            <div class="p-6 lg:px-14 lg:py-10">
                 <div class="flex items-center gap-4">
                     <div class="text-[#606060] uppercase tracking-widest whitespace-pre">Coupon Code</div>
                     <div class="relative">
-                        <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center border-primary-50 border-y bg-secondary pt-2 pr-3 pl-2.5 border-r rounded-r-full w-10 text-primary-50 pointer-events-none">
+                        <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 border-primary-50 border-y border-r rounded-r-full w-10 text-primary-50 pointer-events-none">
                             ▼
                         </span>
                         <select v-model="coupon"
-                            id="coupon" class="block border-primary-50 bg-white before:bg-blue-400 py-2.5 pr-10 pl-2.5 border focus:border-blue-500 rounded-full focus:ring-blue-500 w-full *:text-[#606060] uppercase">
+                            id="coupon" class="block bg-white before:bg-blue-400 py-2.5 pr-10 pl-2.5 border border-primary-50 focus:border-blue-500 rounded-full focus:ring-blue-500 w-full *:text-[#606060] uppercase">
                             <option :selected="useProducts.getCouponRtw == 0 || coupon == 0" value="0">0%</option>
                             <option
                                 v-for="(cp, index) in coupons"
@@ -337,7 +336,7 @@
 
         <section class="bottom-0 absolute w-full">
             <div class="flex justify-end">
-                
+
                 <button @click="addRtw()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white uppercase tracking-widest">
                     <span>Add Ready to Wear</span>
                 </button>
