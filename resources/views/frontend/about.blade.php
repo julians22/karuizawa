@@ -15,25 +15,31 @@
                     after:content-[''] after:block after:aspect-[40/3] after:h-2 after:bg-primary-50 after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2
                     before:content-[''] before:block before:aspect-[40/3] before:h-2 before:bg-primary-50 before:absolute before:top-0 before:left-1/2 before:-translate-x-1/2
                 ">
-                    <p class="text-2xl text-center text-primary-50">Karuizawa is the name of Japan’s premier resort town located in the east of Nagano Japan, just a little over an hour away from Tokyo by bullet train “Shinkansen”. </p>
+                    <p class="text-2xl text-center text-primary-50">"Karuizawa" is a representative resort in Shinshu, Nagano that has been loved by many people, including cultural figures from Japan and abroad.</p>
                 </div>
             </div>
-            <p class="text-xl leading-loose text-justify font-roboto text-primary-50">The history of Karuizawa as a resort town began in 1888, when Alexander Croft Shaw, a missionary of the Anglican Communion, took a liking to the cool climate of the area and built here a cottage to spend summers in. Since that time by word of mouth Karuizawa became more and more popular, and many foreign representatives, people working in political or business circles in Tokyo one after another built their cottages in the area. As of now, there are already over 14,000 cottages in the town. This quintessential resort area is also loved by Japan’s imperial family and international celebrities alike. For the Japanese, summering in Karuizawa represents one of their highest status symbols. Japanese political, business and cultural figures have all built holiday cottages here in order to spend their summers in comfort. It was in Karuizawa in 1958 that the current Emperor of Japan and then-Crown Prince first met Michiko, the present Empress of Japan. John Lennon, a founder member of the worldwide famous rock band the BEATLES and his wife, Yoko Ono, used to take their family along to Karuizawa every summer.</p>
+            <p class="text-xl leading-loose text-justify font-roboto text-primary-50">
+                Born in 1940, our factory has manufactured shirts with the notion that the basic of clothing is "comfort" has not changed.
+                There are many things involved in comfort, such as mold, fabric, sewing technique, and interlining. High quality and overall balance are necessary for each.
+                With this in mind, we bring with sincerity, from a Japanese factory that has been in business for over 80 years to Indonesia.
+            </p>
         </div>
     </div>
-    <div class="py-14 bg-primary">
+    {{-- <div class="py-14 bg-primary">
         <p class="container text-xl leading-loose text-justify text-white font-roboto">
-            Because the town was established by a missionary, Karuizawa is truly steeped with the spirit of Christianity, and it is dotted with old churches that were established during the Meiji Period, such as the Karuizawa Shaw Memorial Church and Karuizawa Union Church to name but a few. Since the Showa Period, many chapels were also built all around the town, serving as spaces for religious services unconstrained by sects. As a holy place for devout prayers surrounded by ample riches of nature, Karuizawa is a place of choice for many couples who decide to hold their marriage and exchange their sacred vows here. Since the days long passed, the rich natural environment and cool climate of Karuizawa never ceased to captivate the hearts of many people. Many literary men and artists choose Karuizawa as a place to live and create, and many couples come here to hold a marriage ceremony.
+            Each of us is unique, and that's why it's becoming our promise to constantly developing a collection inspired by modern Japanese culture, craftsmanship with a high quality material that easily customized to suits you, no matter what. Size, Shape, Cut, almost anything for any occasion.
         </p>
-    </div>
+    </div> --}}
     <div class="bg-white py-14">
         <div class="container grid-cols-5 lg:grid gap-14">
             <div class="order-2 col-span-2 max-lg:w-1/2 max-lg:float-right max-lg:ml-4 max-lg:mt-4">
                 <img src="{{ asset('img/about/abotu-img.png') }}" alt="">
             </div>
             <div class="float-none col-span-3 space-y-10 text-xl leading-loose text-justify font-roboto text-primary-50">
-                <p>Karuizawa is also well known as Sports Resort, with golf, tennis, horseback riding in the summer, and curling, skating, skiing and hockey in winter, and it was even selected as the site for curling championship during the 1998 Winter Olympic Games held in Nagano.</p>
-                <p>Captivated by the refreshing air and the unique atmosphere of Karuizawa, many men of letters have lived and worked here since the Meiji Period. Up to Taisho Period, there were many literary men who spent summers staying in Karuizawa and writing in hotels or villas, but since the Showa Period, many writers such as Saisei Muro bought their own cottages in the area. One attractive point of Karuizawa is that it became a place for literati to spend time together, as they could visit each other's cottages in spare moments from writing. Today, as both the transportation network and the means of communication have improved so much compared with the days of the past, there are more and more literary men like Yasuo Uchida, who settle down here in Karuizawa.</p>
+                <p>Each of us is unique, and that's why it's becoming our promise to constantly developing a collection inspired by modern Japanese culture, craftsmanship with a high quality material that easily customized to suits you, no matter what. Size, Shape, Cut, almost anything for any occasion.</p>
+                <p>
+                    Our Japanese high-quality shirt is designed to match typical Asian Fit with options to customize the essential parts of your shirt. A semi-bespoke Japanese made-to-order set will serve you well.
+                </p>
             </div>
         </div>
     </div>

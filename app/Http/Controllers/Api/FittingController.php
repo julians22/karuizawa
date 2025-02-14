@@ -28,7 +28,22 @@ class FittingController extends Controller
                 $query->where('store_id', $store_id);
             });
         })
-
+        ->when($request->date, function ($query) use ($request) {
+            $date = Carbon::parse($request->date);
+            return $query->whereDate('created_at', $date);
+        })
+        ->when($request->status, function ($query) use ($request) {
+            return $query->whereHas('order', function ($query) use ($request) {
+                $query->where('status', $request->status);
+            });
+        })
+        ->when($request->keyword, function ($query) use ($request) {
+            return $query->whereHas('order.customer', function ($query) use ($request) {
+                $query->where('full_name', 'like', "%$request->keyword%")
+                    ->orWhere('email', 'like', "%$request->keyword%")
+                    ->orWhere('phone', 'like', "%$request->keyword%");
+            });
+        })
         ->orderBy('created_at', 'desc')
         ->paginate(10);
 

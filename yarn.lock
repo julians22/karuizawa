@@ -6885,3 +6885,8 @@ yargs@^17.2.1:
     string-width "^4.2.3"
     y18n "^5.0.5"
     yargs-parser "^21.1.1"
+
+zipson@^0.2.12:
+  version "0.2.12"
+  resolved "https://registry.npmjs.org/zipson/-/zipson-0.2.12.tgz"
+  integrity sha512-+u+fyZQXJUJDTf4NGCChW+LoWGqCrhwHAfvtCtcmE0e40KmQt4YSP4l3TOay1WjRNv+VfODgBD/vNwaSSGnDwA==

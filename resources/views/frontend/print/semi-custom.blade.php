@@ -20,7 +20,7 @@
     <div id="app">
         <print-semi-custom
         :data_config="{{ $dataConfig }}"
-        :data_semi_custom="{{ $dataSemiCustom }}"
+        :data_semi_custom="{{ JSON_encode($dataSemiCustom) }}"
         ></print-semi-custom>
     </div><!--app-->
 

@@ -15,7 +15,8 @@
     const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
     const OrderHistory = defineAsyncComponent(() => import('./includes/OrderHistory.vue'));
     const IncomingOrder = defineAsyncComponent(() => import('./includes/IncomingOrder.vue'));
-    const FittingHistory = defineAsyncComponent(() => import('./includes/FittingHistory.vue'))
+    const FittingHistory = defineAsyncComponent(() => import('./includes/FittingHistory.vue'));
+    const PrintPerDay = defineAsyncComponent(() => import('./includes/PrintPerDay.vue'));
 
     const FilterDialog = defineAsyncComponent(() => import('./utils/FilterDialog.vue'));
 
@@ -104,14 +105,14 @@
         ref="childFilter" />
 
     <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" >
-        <div class="flex justify-between items-center bg-primary-50 xl:px-14 lg:py-7 p-6">
-            <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">CUSTOMER BOOKING</div>
+        <div class="flex items-center justify-between p-6 bg-primary-50 xl:px-14 lg:py-7">
+            <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">CUSTOMER BOOKING</div>
             <div class="w-2/5">
-                <label for="default-search" class="mb-2 font-medium text-gray-900 text-sm dark:text-white sr-only">Search</label>
+                <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                 <div class="relative">
                     <input
                         v-model="keyword"
-                        type="search" id="default-search" class="block bg-white px-4 py-2 rounded-full w-full text-gray-900 text-sm pe-10"/>
+                        type="search" id="default-search" class="block w-full px-4 py-2 text-sm text-gray-900 bg-white rounded-full pe-10"/>
                     <button @click="applyKeyword"
                         type="submit" class="absolute inset-y-0 flex items-center end-0 pe-4">
                         <svg class="text-primary-50 size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -121,23 +122,24 @@
                 </div>
             </div>
         </div>
-        <div class="flex justify-between items-center bg-primary-100 xl:px-14 py-4 p-6">
+        <div class="flex items-center justify-between p-6 py-4 bg-primary-100 xl:px-14">
             <div class="flex justify-between w-full">
-                <div class="flex gap-5 text-white max-lg:text-sm tracking-wider">
+                <div class="flex flex-wrap gap-5 tracking-wider text-white max-lg:text-sm">
                     <!-- <button :class="{ active: currentPage === 'incoming-order' }" @click="currentPage = 'incoming-order'">INCOMING ORDER</button> -->
                     <button :class="{ active: currentPage === 'order-history' }" @click="currentPage = 'order-history'">ORDER HISTORY</button>
                     <button :class="{ active: currentPage === 'fitting-history'}" @click="currentPage = 'fitting-history'">FITTING HISTORY</button>
+                    <button :class="{ active: currentPage === 'print-per-day'}" @click="currentPage = 'print-per-day'">PRINT PER DAY</button>
                 </div>
                 <div class="flex items-center gap-5">
 
                     <div v-if="filterData.date || filterData.status || filterData.keyword">
-                        <ul class="flex items-center gap-2">
+                        <ul class="flex flex-wrap items-center gap-2">
                             <strong class="text-white">Filter Applied:</strong>
-                            <li v-if="filterData.date"><small class="font-serif text-primary-50 text-sm"><span class="bg-secondary px-2 py-2">Date: {{ filterData.date }}</span></small></li>
-                            <li v-if="filterData.status"><small class="font-serif text-primary-50 text-sm"><span class="bg-secondary px-2 py-2">Status: {{ filterData.status }}</span></small></li>
-                            <li v-if="filterData.keyword"><small class="font-serif text-primary-50 text-sm"><span class="bg-secondary px-2 py-2">Keyword: {{ filterData.keyword }}</span></small></li>
+                            <li v-if="filterData.date"><small class="font-serif text-sm text-primary-50"><span class="px-2 py-2 bg-secondary">Date: {{ filterData.date }}</span></small></li>
+                            <li v-if="filterData.status"><small class="font-serif text-sm text-primary-50"><span class="px-2 py-2 bg-secondary">Status: {{ filterData.status }}</span></small></li>
+                            <li v-if="filterData.keyword"><small class="font-serif text-sm text-primary-50"><span class="px-2 py-2 bg-secondary">Keyword: {{ filterData.keyword }}</span></small></li>
 
-                            <li @click="resetFilter" class="cursor-pointer"><small class="font-serif text-red-950 text-sm"><span class="bg-secondary px-2 py-2">Reset Filter</span></small></li>
+                            <li @click="resetFilter" class="cursor-pointer"><small class="font-serif text-sm text-red-950"><span class="px-2 py-2 bg-secondary">Reset Filter</span></small></li>
                         </ul>
                     </div>
 
@@ -149,15 +151,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- <template v-if="currentPage === 'incoming-order'">
-            <IncomingOrder
-                ref="incomingOrderRef"
-                :api_incoming_url="api_incoming_url"
-                :filterData="filterData"
-                :user="user"
-                />
-        </template> -->
 
         <template v-if="currentPage === 'order-history'">
             <OrderHistory
@@ -176,6 +169,10 @@
                 :filterData="filterData"
                 :user="user"
             />
+        </template>
+
+        <template v-if="currentPage === 'print-per-day'">
+            <PrintPerDay />
         </template>
 
     </Layout>

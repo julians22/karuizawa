@@ -37,7 +37,7 @@
             {{ __($this->getLocalisationPath.'Bulk Actions') }}
 
             @if($this->isTailwind)
-                <x-heroicon-m-chevron-down class="-me-1 ml-2 h-5 w-5" />
+                <x-heroicon-m-chevron-down class="-mr-1 ml-2 h-5 w-5" />
             @endif
         </button>
 

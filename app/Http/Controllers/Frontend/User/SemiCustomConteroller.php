@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend\User;
 use File;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use App\Models\SemiCustomProduct;
 use App\Http\Controllers\Controller;
 
 class SemiCustomConteroller extends Controller
@@ -26,6 +27,17 @@ class SemiCustomConteroller extends Controller
             'success' => true,
             'data' => $data,
         ]);
+    }
+
+    public function findCustomerSize($id)
+    {
+        $data = SemiCustomProduct::where('customer_id', $id)->latest()->firstOrFail();
+
+        // dd($data);
+        return response()->json([
+            'success' => true,
+            'data' => $data->size,
+        ], 200);
     }
 
     private function getCustomRequest()

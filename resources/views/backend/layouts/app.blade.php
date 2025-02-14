@@ -47,11 +47,5 @@
     @stack('after-scripts')
     @livewireScripts
 
-    <script>
-
-        // var mySidebar = document.querySelector('#sidebar')
-        // var sidebar = new coreui.Sidebar(mySidebar)
-
-    </script>
 </body>
 </html>

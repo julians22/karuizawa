@@ -4,7 +4,8 @@
     import { useCustomer } from '../../../store/customer';
     import { useProducts } from '../../../store/product';
     import axios from 'axios';
-    import { sum, isEmpty } from 'lodash';
+    import { isEmpty } from 'lodash';
+
 
     const storePage = usePage();
     const storeCustomer = useCustomer();
@@ -19,12 +20,14 @@
         data_custom_request: Object,
         data_semi_custom: Object,
         api_store_order: String,
+        api_customer_size: String,
 
     });
 
     const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
-    const CustomShirt = defineAsyncComponent(() => import('./includes/CustomShirt.vue'));
-    const CustomRequest = defineAsyncComponent(() => import('./includes/CustomRequest.vue'));
+
+    const CustomBasic = defineAsyncComponent(() => import('./includes/CustomBasic.vue'));
+    const CustomOptions = defineAsyncComponent(() => import('./includes/CustomOptions.vue'));
 
     const Customer = defineAsyncComponent(() => import('../includes/CustomerData.vue'));
     const TotalShop = defineAsyncComponent(() => import('../includes/TotalShop.vue'));
@@ -94,7 +97,7 @@
         }else{
             storePage.currentPage = currentSection.value;
             storeCustomer.customer = null;
-            storeProducts.semi_custom = [];
+            storeProducts.resetSemiCustom();
         }
     });
 
@@ -102,9 +105,6 @@
         let basic = parseInt(items.basic?.total ?? 0);
         let option = parseInt(items.option?.total ?? 0);
         let giftCard = parseInt(items.option?.giftCard ?? 0);
-
-        console.log(giftCard);
-
 
         // totalPrice.value = basic + option;
         totalPrice.value = basic + option - giftCard;
@@ -138,6 +138,7 @@
 
     const btnNext = (section, data) => {
         url.searchParams.set('page', section);
+        url.searchParams.set('index', 0);
         window.history.pushState(null, '', url.toString());
         storePage.currentPage = section;
     }
@@ -155,18 +156,14 @@
             if (totalPrice.value <= 0 && bindForm.value !== null) {
                 alert('Please fill the form OR apply the price first');
             }else {
+                useProducts().resetDuplicateSm();
                 useProducts().setCustom(bindForm.value);
                 window.location.href = "/cart";
-                // onSumbit();
             }
         }
     }
 
-    const goToCart = () => {
-        window.location.href = "/cart";
-    }
-
-    const addCustomRequest = () => {
+    const duplicateSemiCustom = () => {
         childBasic.value.basicAmount();
         childOption.value.amountOption();
 
@@ -178,37 +175,59 @@
             if (totalPrice.value <= 0 && bindForm.value !== null) {
                 alert('Please fill the form OR apply the price first');
             }else {
-                // set time out
+                    let urlParams = new URLSearchParams(window.location.search);
+                    let index = urlParams.get('index');
+                    let nextIndex = parseInt(index);
+
+                    storeProducts.setIndexSemiCustom(nextIndex);
+                    useProducts().setCustom(bindForm.value);
+
+                    //  set duplicate
+                    useProducts().setDuplicateSm(bindForm.value);
+
+                    // useProducts().setCustomWithKey(bindForm.value, nextIndex);
+
+                    setTimeout(() => {
+                        window.location.href = `/semi-custom?page=semi-custom&index=${nextIndex + 1}`;
+                    });
+                    alert('Success');
+                }
+            }
+    }
+
+    const goToCart = () => {
+        window.location.href = "/cart";
+    }
+
+    const addCustomRequest = () => {
+        let urlParams = new URLSearchParams(window.location.search);
+        let index = urlParams.get('index');
+
+        childBasic.value.basicAmount();
+        childOption.value.amountOption();
+
+        if (basic.value.form.fabric.fabricCode == null || basic.value.form.fabric.text == null ||
+            basic.value.form.fabric.fabricCode == '' || basic.value.form.fabric.text == ''
+        ) {
+            alert('Please fill the form Fabric Code');
+        }else {
+            if (totalPrice.value <= 0 && bindForm.value !== null) {
+                alert('Please fill the form OR apply the price first');
+            }else {
+                useProducts().resetDuplicateSm();
                 useProducts().setCustom(bindForm.value);
+                // set time out
                 setTimeout(() => {
-                    // reload page
-                    // storePage.currentPage = 'custom-request';
-                    // url.searchParams.set('page', 'custom-request');
-                    // window.history.pushState(null, '', url.toString());
-                    // window.location.reload();
-                    window.location.href = "/semi-custom?page=semi-custom";
+                    window.location.href = `/semi-custom?page=semi-custom&index=${(parseInt(index) + 1)}`;
                 });
                 alert('Success');
-                // window.location.href = "/cart";
-                // onSumbit();
             }
         }
     }
 
-//   const onSumbit = async () => {
-//         const dataForm = bindForm.value;
-//         await axios.post('/api/semi-custom/submit', dataForm)
-//             .then(response => {
-//                 console.log(response.data.data);
-
-//                 url.searchParams.set('page', 'total-shop');
-//                 window.history.pushState(null, '', url.toString());
-//                 storePage.currentPage = 'total-shop';
-//             })
-//             .catch(error => {
-//                 console.log('error');
-//             })
-//     }
+    const hasDuplicate = computed(() => {
+        return totalPrice.value > 0 ? true : false;
+    });
 
     const hasSemiCustom = computed(() => {
         return storeProducts.semi_custom.length > 0 ? true : false;
@@ -219,11 +238,11 @@
 <template>
     <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" :extends="extend">
         <template #sidebar>
-            <div :class="{'hidden': !extend}" class="top-0 sticky bg-green h-screen overflow-y-auto scroll-box">
-                <div class="bg-primary-50 py-20">
+            <div :class="{'hidden': !extend}" class="sticky top-0 h-screen overflow-y-auto bg-green scroll-box">
+                <div class="py-20 bg-primary-50">
                     <div class="mx-[5%] xl:mx-[10%] 2xl:mx-[20%] font-roboto text-white">
                         <div>
-                            <div class="font-josefin text-2xl text-center xl:text-4xl uppercase tracking-widest">ORDER SUMMARY</div>
+                            <div class="text-2xl tracking-widest text-center uppercase font-josefin xl:text-4xl">ORDER SUMMARY</div>
                             <div class="bg-white opacity-70 mx-auto my-10 w-4/6 h-0.5"></div>
                             <div>
                                 <table>
@@ -289,7 +308,7 @@
                             </div>
                         </div>
                         <div class="mt-20">
-                            <div class="font-josefin text-2xl text-center xl:text-4xl uppercase tracking-widest">ACTUAL</div>
+                            <div class="text-2xl tracking-widest text-center uppercase font-josefin xl:text-4xl">ACTUAL</div>
                             <div class="bg-white opacity-70 mx-auto my-10 w-4/6 h-0.5"></div>
                             <div>
                                 <table>
@@ -390,7 +409,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="font-roboto text-white">
+                <div class="text-white font-roboto">
                     <div class="bg-secondary-50 px-[5%] xl:px-[10%] 2xl:px-[20%] py-8">
                         <div>
                             <table>
@@ -424,45 +443,47 @@
                             </table>
                         </div>
                     </div>
-                    <div class="bg-black pt-3 pb-2 font-bold font-josefin text-center lg:text-lg xl:text-xl 2xl:text-3xl uppercase tracking-widest">
+                    <div class="pt-3 pb-2 font-bold tracking-widest text-center uppercase bg-black font-josefin lg:text-lg xl:text-xl 2xl:text-3xl">
                         IDR {{ currencyFormat(totalPrice) ?? '0' }},-
                     </div>
                 </div>
             </div>
         </template>
 
-            <template v-if="storePage.get == 'total-shop'">
-                <TotalShop onPage="semi-custom" @btn-next="btnNext"/>
-            </template>
-
-            <template v-if="storePage.get == 'customer-data' || storeCustomer.getCustomer == null">
-                <Customer onPage="semi-custom" @btn-next="btnNext"/>
-            </template>
-
-            <template v-if="storePage.get == 'payment'">
-                <Payment :api_store_order="api_store_order" @btn-next="btnNext"/>
-            </template>
+        <template v-if="storePage.get == 'customer-data' || storeCustomer.getCustomer == null">
+            <Customer onPage="semi-custom" @btn-next="btnNext"/>
+        </template>
 
         <template v-if="storePage.get == 'semi-custom' && storeCustomer.getCustomer != null">
 
-            <CustomShirt @additionalBasic="additionalBasic" :dataSemiCustom="props.data_semi_custom" ref="childBasic" />
+            <CustomBasic @additionalBasic="additionalBasic" :dataSemiCustom="props.data_semi_custom" ref="childBasic" :api_customer_size="props.api_customer_size" />
 
-            <CustomRequest @additionalOption="additionalOption" :dataOptions="props.data_semi_custom" ref="childOption"/>
+            <CustomOptions @additionalOption="additionalOption" :dataOptions="props.data_semi_custom" ref="childOption"/>
 
-            <div class="right-0 bottom-0 absolute flex">
+            <div class="absolute bottom-0 right-0">
+                <div class="flex items-end">
+                    <button v-if="hasSemiCustom" @click="goToCart" class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50 h-fit">
+                        <span>CANCEL & SUBMIT</span>
+                        <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+                    </button>
 
-                <button v-if="hasSemiCustom" @click="goToCart" class="flex items-center gap-2 bg-secondary-50 p-6 text-white tracking-widest">
-                    <span>CANCEL & SUBMIT</span>
-                </button>
+                    <div>
+                        <button v-if="hasDuplicate" @click="duplicateSemiCustom()" class="flex items-center justify-between w-full gap-2 p-6 tracking-widest text-white bg-primary-50">
+                            <span>DUPLICATE</span>
+                            <img class="inline-block rotate-90" src="img/icons/arrw-ck-right.png" alt="">
+                        </button>
+                        <button @click="addCustomRequest()" class="flex items-center gap-2 p-6 tracking-widest text-white bg-primary-300 h-fit">
+                            <span>ADD NEW CUSTOM REQUEST </span>
+                            <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+                        </button>
+                    </div>
 
-                <button @click="addCustomRequest()" class="flex items-center gap-2 bg-primary-300 p-6 text-white tracking-widest">
-                    <span>ADD ANOTHER CUSTOM REQUEST </span>
-                    <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
-                </button>
-                <button @click="btnSubmit()" class="flex items-center gap-2 bg-secondary-50 p-6 text-white tracking-widest">
-                    <span>SUBMIT</span>
-                    <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
-                </button>
+                    <button @click="btnSubmit()" class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50 h-fit">
+                        <span>SUBMIT</span>
+                        <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+                    </button>
+
+                </div>
             </div>
         </template>
 

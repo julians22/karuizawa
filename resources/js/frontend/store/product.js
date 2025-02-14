@@ -1,4 +1,6 @@
-import { defineStore } from 'pinia'
+import { reset } from 'laravel-mix/src/Log';
+import { defineStore } from 'pinia';
+import { parse, stringify } from 'zipson';
 
 export const useProducts = defineStore('products', {
     state: () => {
@@ -6,7 +8,9 @@ export const useProducts = defineStore('products', {
           setProducts: [],
           setSlug: [],
           coupon_rtw: 0,
-          semi_custom: []
+          semi_custom: [],
+          duplicate_semi_custom: [],
+          semi_custom_index: null
         }
     },
 
@@ -25,6 +29,18 @@ export const useProducts = defineStore('products', {
 
         getSemiCustom: (state) => {
             return state.semi_custom;
+        },
+
+        getSemiCustomIndex: (state, index) => {
+            return state.semi_custom[index];
+        },
+
+        hasDuplicate: (state) => {
+            return state.semi_custom_index !== null ? true : false;
+        },
+
+        getDuplicateSm: (state) => {
+            return state.duplicate_semi_custom;
         }
     },
 
@@ -32,7 +48,36 @@ export const useProducts = defineStore('products', {
         setCustom(custom) {
             this.semi_custom.push(custom)
         },
+
+        setCustomWithKey(custom, key) {
+            this.semi_custom[key] = custom;
+        },
+
+        setDuplicateSm(custom) {
+            this.duplicate_semi_custom = custom;
+        },
+
+        setIndexSemiCustom(index) {
+            this.semi_custom_index = index
+        },
+
+        resetSemiCustom() {
+            this.semi_custom = []
+            this.semi_custom_index = null
+            this.duplicate_semi_custom = [];
+        },
+
+        resetDuplicateSm() {
+            this.duplicate_semi_custom = [];
+        },
     },
 
-    persist: true,
+    persist: {
+        // omit: ['duplicate_semi_custom'],
+        serializer: {
+            deserialize: parse,
+            serialize: stringify,
+        },
+        storage: sessionStorage,
+    },
 });
