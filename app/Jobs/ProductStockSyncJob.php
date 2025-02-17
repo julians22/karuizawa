@@ -77,7 +77,7 @@ class ProductStockSyncJob implements ShouldQueue
             $jobs = [];
 
             foreach ($stocks as $stock) {
-                if ($stock && $stock['stock_quantity'] > 0) {
+                if ($stock) {
                     $jobs[] = new SyncProductStock($stock);
                 }
             }

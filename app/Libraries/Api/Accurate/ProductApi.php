@@ -10,6 +10,7 @@ use App\Jobs\SyncProduct;
 use App\Models\Product;
 use App\Models\Store;
 use Bus;
+use Illuminate\Support\Facades\DB;
 
 class ProductApi
 {
@@ -95,11 +96,13 @@ class ProductApi
         return false;
     }
 
-    function stockJobs($pageSize = 100, $page = 1) {
+    public function stockJobs($pageSize = 100, $page = 1) {
 
         $stores = Store::whereNotNull('accurate_alias')
             ->orderBy('updated_at', 'asc')
             ->get();
+
+        DB::table('product_actual_stocks')->truncate();
 
         foreach ($stores as $store) {
             $endpoint = $this->appUrl . '/accurate/api/item/list-stock.do';
@@ -145,8 +148,7 @@ class ProductApi
                 $jobs = [];
 
                 foreach ($stocks as $stock) {
-
-                    if ($stock && $stock['stock_quantity'] > 0) {
+                    if ($stock) {
                         $jobs[] = new SyncProductStock($stock);
                     }
                 }
