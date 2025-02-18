@@ -91,7 +91,6 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     formSize.value = data.data;
                 });
         }

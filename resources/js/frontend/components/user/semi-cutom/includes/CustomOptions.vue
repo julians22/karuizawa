@@ -104,6 +104,12 @@
         selectCleric.value = [];
     };
 
+    const onClickNativeCleric = () => {
+        form.value.cleric = {};
+        mainCleric.value = null;
+        selectCleric.value = [];
+    }
+
     const additionalNote = ref(null);
 
     const amount = ref({
@@ -504,13 +510,13 @@
                 class="p-4 mx-6 mt-4 space-y-4 border border-pink-ka xl:mx-14">
                 <div v-for="(subCeleric, index) in dataCleric" :key="index" class="flex gap-2">
                     <div>
-                        <input @click.native="mainCleric = null" :checked="subCeleric.slug == mainCleric?.slug" @change="onChangeCleric" class="hidden" type="radio" name="cleric" v-model="mainCleric"  :value="subCeleric" :id="`${subCeleric.slug}`">
+                        <input @click.native="onClickNativeCleric" :checked="subCeleric.slug == mainCleric?.slug" @change="onChangeCleric" class="hidden" type="radio" name="cleric" v-model="mainCleric"  :value="subCeleric" :id="`${subCeleric.slug}`">
                         <label class="grid items-center h-full grid-cols-2 gap-1 rounded cursor-pointer" :for="`${subCeleric.slug}`">
                             <div class="text-sm font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ subCeleric.no }}</div>
                             <span class="checkbox-inner"></span>
                         </label>
                     </div>
-                    <div class="flex gap-2 checkbox-cleric" :class="{ 'pointer-events-none': mainCleric?.slug != subCeleric.slug}">
+                    <div class="flex gap-2 checkbox-cleric">
                         <div v-for="clericItems in subCeleric.data">
                             <input @change="onSelectCleric" class="hidden" type="checkbox" name="clericItems" v-model="selectCleric" :value="clericItems" :id="`cleric-${subCeleric.no}-${clericItems.slug}`">
                             <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`cleric-${subCeleric.no}-${clericItems.slug}`">
