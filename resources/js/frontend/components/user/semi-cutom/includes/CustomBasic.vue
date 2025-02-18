@@ -91,7 +91,8 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    formSize.value = data.data;
+                    formSize.value = data.data.size;
+                    additionalNote.value = data.data.base_note;
                 });
         }
     }

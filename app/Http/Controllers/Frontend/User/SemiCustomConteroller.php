@@ -36,7 +36,7 @@ class SemiCustomConteroller extends Controller
         // dd($data);
         return response()->json([
             'success' => true,
-            'data' => $data->size,
+            'data' => $data,
         ], 200);
     }
 
