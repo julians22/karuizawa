@@ -33,7 +33,7 @@ class OrderItem extends Model
      *
      * @var array
      */
-    protected $appends = ['total_price', 'type'];
+    protected $appends = ['total_price', 'type', 'discount_percentage'];
 
     public function order()
     {
@@ -58,6 +58,17 @@ class OrderItem extends Model
     public function getTypeAttribute()
     {
         return $this->isSemiCustom() ? 'SC' : 'RTW';
+    }
+
+    public function getDiscountPercentageAttribute()
+    {
+        if ($this->isReadyToWear()) {
+            if ($this->discount_detail && $this->discount_detail['discount']) {
+                return $this->discount_detail['discount'];
+            }
+        }
+
+        return 0;
     }
 
     public function isSemiCustom()

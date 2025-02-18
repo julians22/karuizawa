@@ -207,7 +207,7 @@ class OrderTable extends DataTableComponent
                     $target[$id]['types'][$orderItem->type][] = [
                         'itemNo' => $orderItem->product->sku,
                         'unitPrice' => $orderItem->price,
-                        'itemCashDiscount' => $orderItem->discount,
+                        'itemDiscPercent' => $orderItem->discount_percentage,
                         'detailName' => $orderItem->product->product_name,
                         'quantity' => $orderItem->quantity,
                         'departmentName' => 'Apparel',
@@ -239,6 +239,7 @@ class OrderTable extends DataTableComponent
                 'currencyCode' => $order['currencyCode'],
                 'documentCode' => $order['documentCode'],
                 'taxable' => $order['taxable'],
+                'isTaxable' => $order['taxable'],
                 'inclusiveTax' => $order['inclusiveTax'],
                 'typeAutoNumber' => $order['typeAutoNumber'],
                 'description' => $order['description'],
