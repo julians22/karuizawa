@@ -245,7 +245,7 @@
                             :id="`qris`">
                         <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`qris`">
                             <div>
-                                <img src="/img/icons/qris.png" alt="">
+                                <img  class="mx-auto 2xl:w-1/2" src="/img/icons/qris.png" alt="">
                             </div>
                             <div class="text-sm font-bold text-center font-roboto text-secondary-50 lg:text-base xl:text-lg text-nowrap">QRIS</div>
                             <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 size-10 checkbox-inner"></span>
