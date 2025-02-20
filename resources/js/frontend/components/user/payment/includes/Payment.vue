@@ -182,11 +182,11 @@
             :sending-payment="sendingPayment"
             ref="childDoPayment"/>
         <section>
-            <div class="flex justify-between items-center bg-primary-50 p-6 lg:px-14 lg:py-7">
-                <div class="font-bold text-white text-lg lg:text-xl uppercase tracking-widest">TOTAL AMOUNT TO BE PAID</div>
+            <div class="flex items-center justify-between p-6 bg-primary-50 lg:px-14 lg:py-7">
+                <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">TOTAL AMOUNT TO BE PAID</div>
             </div>
-            <div class="space-y-20 p-6 lg:px-14 lg:py-20">
-                <div class="items-end gap-20 grid grid-cols-4 w-full">
+            <div class="p-6 space-y-20 lg:px-14 lg:py-20">
+                <div class="grid items-end w-full grid-cols-4 gap-20">
                     <div>
                         <input
                             v-model="selectedPayment"
@@ -195,12 +195,12 @@
                             name="check"
                             value="manual-tf"
                             :id="`manual-tf`">
-                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`manual-tf`">
+                        <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`manual-tf`">
                             <div>
                                 <img src="/img/icons/manual-tf.png" alt="">
                             </div>
-                            <div class="font-roboto font-bold text-secondary-50 text-sm lg:text-base xl:text-lg text-center text-nowrap">Manual Transfer</div>
-                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full size-10 text-transparent checkbox-inner"></span>
+                            <div class="text-sm font-bold text-center font-roboto text-secondary-50 lg:text-base xl:text-lg text-nowrap">Manual Transfer</div>
+                            <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 size-10 checkbox-inner"></span>
                         </label>
                     </div>
                     <div>
@@ -211,12 +211,12 @@
                             name="check"
                             value="credit-card"
                             :id="`credit-card`">
-                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`credit-card`">
+                        <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`credit-card`">
                             <div>
                                 <img src="/img/icons/credit-card.png" alt="">
                             </div>
-                            <div class="font-roboto font-bold text-secondary-50 text-sm lg:text-base xl:text-lg text-center text-nowrap">Credit Card</div>
-                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full size-10 text-transparent checkbox-inner"></span>
+                            <div class="text-sm font-bold text-center font-roboto text-secondary-50 lg:text-base xl:text-lg text-nowrap">Credit Card</div>
+                            <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 size-10 checkbox-inner"></span>
                         </label>
                     </div>
                     <div>
@@ -227,12 +227,12 @@
                             name="check"
                             value="debit-card"
                             :id="`debit-card`">
-                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`debit-card`">
+                        <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`debit-card`">
                             <div>
                                 <img src="/img/icons/credit-card.png" alt="">
                             </div>
-                            <div class="font-roboto font-bold text-secondary-50 text-sm lg:text-base xl:text-lg text-center text-nowrap">Debit Card</div>
-                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full size-10 text-transparent checkbox-inner"></span>
+                            <div class="text-sm font-bold text-center font-roboto text-secondary-50 lg:text-base xl:text-lg text-nowrap">Debit Card</div>
+                            <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 size-10 checkbox-inner"></span>
                         </label>
                     </div>
                     <div>
@@ -243,15 +243,18 @@
                             name="check"
                             value="qris"
                             :id="`qris`">
-                        <label class="flex flex-col items-center space-y-3 px-2 rounded cursor-pointer" :for="`qris`">
-                            <div class="font-roboto font-bold text-secondary-50 text-sm lg:text-base xl:text-lg text-center text-nowrap">QRIS</div>
-                            <span class="flex justify-center items-center border-4 border-primary-50 rounded-full size-10 text-transparent checkbox-inner"></span>
+                        <label class="flex flex-col items-center px-2 space-y-3 rounded cursor-pointer" :for="`qris`">
+                            <div>
+                                <img src="/img/icons/qris.png" alt="">
+                            </div>
+                            <div class="text-sm font-bold text-center font-roboto text-secondary-50 lg:text-base xl:text-lg text-nowrap">QRIS</div>
+                            <span class="flex items-center justify-center text-transparent border-4 rounded-full border-primary-50 size-10 checkbox-inner"></span>
                         </label>
                     </div>
                 </div>
 
                 <div v-show="showPreferredBank">
-                    <div class="font-bold text-primary-50 text-lg lg:text-2xl uppercase tracking-widest">Manual Transfer</div>
+                    <div class="text-lg font-bold tracking-widest uppercase text-primary-50 lg:text-2xl">Manual Transfer</div>
                     <div class="flex items-center gap-4 mt-6">
                         <div class="font-roboto text-[#606060] tracking-widest whitespace-pre">Pilih Bank Tujuan</div>
                         <div class="relative">
@@ -271,11 +274,11 @@
         </section>
 
         <section>
-            <div class="flex justify-between items-center bg-primary-50 p-6 lg:px-14 lg:py-7">
-                <div class="font-bold text-white text-lg lg:text-xl uppercase tracking-widest">DETAIL ORDER</div>
+            <div class="flex items-center justify-between p-6 bg-primary-50 lg:px-14 lg:py-7">
+                <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">DETAIL ORDER</div>
             </div>
 
-            <div class="space-y-5 px-14 pt-12 pb-32">
+            <div class="pt-12 pb-32 space-y-5 px-14">
                 <div class="font-roboto text-[#606060]">
                     <div>Ordered number your shirt </div>
                     <div>{{ order.order_number }}</div>
@@ -284,7 +287,7 @@
                 <div>
                     <table class="w-full text-left">
                         <thead>
-                            <tr class="font-roboto font-bold text-secondary-50">
+                            <tr class="font-bold font-roboto text-secondary-50">
                                 <th style="width: 40%;">Product</th>
                                 <th style="width: 20%;">Qty</th>
                                 <th style="width: 20%;">Price</th>
@@ -312,7 +315,7 @@
                     </table>
                 </div>
                 <div class="bg-[#606060] opacity-40 w-full h-0.5"></div>
-                <div class="grid grid-cols-3 font-roboto font-bold text-secondary-50">
+                <div class="grid grid-cols-3 font-bold font-roboto text-secondary-50">
                     <div class="col-span-2">Subtotal</div>
                     <div
                         v-html="priceFormat(totalPayment)"></div>
@@ -323,7 +326,7 @@
                         v-html="priceFormat(afterDiscount)"
                         ></div>
                 </div>
-                <div class="grid grid-cols-3 bg-secondary px-4 pt-4 pb-3 font-bold text-primary-50 text-lg lg:text-2xl">
+                <div class="grid grid-cols-3 px-4 pt-4 pb-3 text-lg font-bold bg-secondary text-primary-50 lg:text-2xl">
                     <div class="col-span-2">TOTAL AMOUNT TO BE PAID</div>
                     <div class="">{{ priceFormat(afterDiscount) }}</div>
                 </div>
@@ -339,10 +342,10 @@
         <!-- Create Input Transnumber & downpayment check -->
          <!-- Downpayment not needed -->
         <section class="hidden">
-            <div class="flex justify-between items-center bg-primary-50 p-6 lg:px-14 lg:py-7">
-                <div class="font-bold text-white text-lg lg:text-xl uppercase tracking-widest">PAYMENT DETAILS</div>
+            <div class="flex items-center justify-between p-6 bg-primary-50 lg:px-14 lg:py-7">
+                <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">PAYMENT DETAILS</div>
             </div>
-            <div class="space-y-5 px-14 pt-12 pb-32">
+            <div class="pt-12 pb-32 space-y-5 px-14">
                 <div class="font-roboto text-[#606060]">
                     <div class="flex items-center gap-4">
                         <input
@@ -392,7 +395,7 @@
 
         <div class="flex justify-end">
             <button @click="confirmPayment()"
-                class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">
+                class="flex items-center gap-2 p-4 tracking-widest text-white bg-secondary-50 lg:p-6">
                 <span>PROCEED TO PAYMENT</span>
                 <img class="inline-block" src="/img/icons/arrw-ck-right.png" alt="">
             </button>

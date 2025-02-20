@@ -1,7 +1,10 @@
 /coverage
 /node_modules
 /public/css
-/public/img
+/public/img/about
+/public/img/brand
+/public/img/custom-shirt
+/public/img/home
 /public/js
 /public/fonts
 /public/hot

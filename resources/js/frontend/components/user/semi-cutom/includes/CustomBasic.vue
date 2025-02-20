@@ -91,8 +91,8 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
-                    formSize.value = data.data;
+                    formSize.value = data.data.size;
+                    additionalNote.value = data.data.base_note;
                 });
         }
     }
@@ -191,7 +191,7 @@
                 <div class="flex items-center gap-12 mx-20 my-10">
                     <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg">OPTION NUMBER</div>
                     <div class="flex font-roboto">
-                        <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'collar', 'optionNumber')" :inputValue="form.collar?.optionNumber"/>
+                        <InputBox :digitCount="2" @update:input="onInputBox($event, 'collar', 'optionNumber')" :inputValue="form.collar?.optionNumber"/>
                     </div>
                 </div>
             </div>
@@ -216,7 +216,7 @@
                     <div class="flex items-center gap-12 px-6 my-10 xl:mx-20">
                         <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg">OPTION NUMBER</div>
                         <div class="flex font-roboto">
-                            <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'cuff', 'optionNumber')" :inputValue="form.cuff?.optionNumber"/>
+                            <InputBox :digitCount="2" @update:input="onInputBox($event, 'cuff', 'optionNumber')" :inputValue="form.cuff?.optionNumber"/>
                         </div>
                     </div>
                 </div>
@@ -238,7 +238,7 @@
                     <div class="flex items-center gap-12 px-6 my-10 xl:mx-20 lg:px-10">
                         <div class="text-xs font-bold tracking-widest uppercase text-primary-50 2xl:text-lg">OPTION NUMBER</div>
                         <div class="flex font-roboto">
-                            <InputBox :digitCount="2" inputType="number" @update:input="onInputBox($event, 'frontBody', 'optionNumber')" :inputValue="form.frontBody?.optionNumber"/>
+                            <InputBox :digitCount="2" @update:input="onInputBox($event, 'frontBody', 'optionNumber')" :inputValue="form.frontBody?.optionNumber"/>
                         </div>
                     </div>
                 </div>
