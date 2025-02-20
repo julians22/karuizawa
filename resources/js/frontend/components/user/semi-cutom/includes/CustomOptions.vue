@@ -555,13 +555,15 @@
                     <div class="text-lg font-bold tracking-wider text-white uppercase">11. button hole</div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2 p-4 mx-6 mt-4 border border-pink-ka lg:mr-0 lg:ml-6 xl:ml-14">
-                    <div class="flex" v-for="(buttonHole, index) in dataOptions.button_hole.data.options.option_1" :key="index">
-                        <input @click.native="form.buttonHole = null" class="hidden" type="radio" name="button-hole" :value="buttonHole" v-model="form.buttonHole"  :id="`botton-hole-${buttonHole.slug}`">
-                        <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-hole-${buttonHole.slug}`">
-                            <span class="checkbox-inner"></span>
-                            <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ index + 1 }}. {{ buttonHole.name }}</div>
-                        </label>
+                <div class="p-4 mx-6 mt-4 border border-pink-ka lg:mr-0 lg:ml-6 xl:ml-14">
+                    <div class="grid grid-flow-col grid-cols-2 grid-rows-5 gap-2">
+                        <div class="flex" v-for="(buttonHole, index) in dataOptions.button_hole.data.options.option_1" :key="index">
+                            <input @click.native="form.buttonHole = null" class="hidden" type="radio" name="button-hole" :value="buttonHole" v-model="form.buttonHole"  :id="`botton-hole-${buttonHole.slug}`">
+                            <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-hole-${buttonHole.slug}`">
+                                <span class="checkbox-inner"></span>
+                                <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ index + 1 }}. {{ buttonHole.name }}</div>
+                            </label>
+                        </div>
                     </div>
 
                     <div class="self-end col-span-2 justify-self-end">
@@ -582,13 +584,15 @@
                     <div class="text-lg font-bold tracking-wider text-white uppercase">12. button thread</div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2 p-4 mx-6 mt-4 border border-pink-ka xl:mx-0 lg:mr-6 lg:ml-0">
-                    <div class="flex" v-for="(buttonThread, index) in dataOptions.button_thread.data.options.option_1" :key="index">
-                        <input @click.native="form.buttonThread = null" class="hidden" type="radio" name="button-thread" :value="buttonThread" v-model="form.buttonThread" :id="`botton-thread-${buttonThread.slug}`">
-                        <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-thread-${buttonThread.slug}`">
-                            <span class="checkbox-inner"></span>
-                            <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ index + 1 }}. {{ buttonThread.name }}</div>
-                        </label>
+                <div class="p-4 mx-6 mt-4 border border-pink-ka xl:mx-0 lg:mr-6 lg:ml-0">
+                    <div class="grid grid-flow-col grid-cols-2 grid-rows-5 gap-2">
+                        <div class="flex" v-for="(buttonThread, index) in dataOptions.button_thread.data.options.option_1" :key="index">
+                            <input @click.native="form.buttonThread = null" class="hidden" type="radio" name="button-thread" :value="buttonThread" v-model="form.buttonThread" :id="`botton-thread-${buttonThread.slug}`">
+                            <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`botton-thread-${buttonThread.slug}`">
+                                <span class="checkbox-inner"></span>
+                                <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ index + 1 }}. {{ buttonThread.name }}</div>
+                            </label>
+                        </div>
                     </div>
 
                     <div class="self-end col-span-2 justify-self-end">
@@ -609,16 +613,18 @@
                     <div class="text-lg font-bold tracking-wider text-white uppercase">13. stitch thread</div>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2 p-4 mx-6 mt-4 border border-pink-ka xl:mr-14 xl:ml-0">
-                    <div class="flex" v-for="(stitchThread, index) in dataOptions.stitch_thread.data.options.option_1" :key="index">
-                        <input @click.native="form.stitchThread = null" class="hidden" type="radio" name="stitch-thread" :value="stitchThread" v-model="form.stitchThread" :id="`stitch-thread-${stitchThread.slug}`">
-                        <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`stitch-thread-${stitchThread.slug}`">
-                            <span class="checkbox-inner"></span>
-                            <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ index + 1 }}. {{ stitchThread.name }}</div>
-                        </label>
+                <div class="p-4 mx-6 mt-4 border border-pink-ka xl:mr-14 xl:ml-0">
+                    <div class="grid grid-flow-col grid-cols-2 grid-rows-5 gap-2">
+                        <div class="flex" v-for="(stitchThread, index) in dataOptions.stitch_thread.data.options.option_1" :key="index">
+                            <input @click.native="form.stitchThread = null" class="hidden" type="radio" name="stitch-thread" :value="stitchThread" v-model="form.stitchThread" :id="`stitch-thread-${stitchThread.slug}`">
+                            <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`stitch-thread-${stitchThread.slug}`">
+                                <span class="checkbox-inner"></span>
+                                <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">{{ index + 1 }}. {{ stitchThread.name }}</div>
+                            </label>
+                        </div>
                     </div>
 
-                    <div class="self-end col-span-2 justify-self-end">
+                    <div class="self-end justify-self-end">
                         <input class="hidden" type="radio" name="stitch-thread-30rb" :id="`stitch-thread-30rb`">
                         <label class="flex items-center h-full gap-4 px-2 rounded cursor-pointer" :for="`stitch-thread-30rb`">
                             <div class="text-xs font-bold tracking-wider text-center uppercase text-pink-ka xl:text-sm">
@@ -654,7 +660,7 @@
                     <!-- color -->
                     <div class="p-4 space-y-4 border-b border-r border-pink-ka max-xl:col-span-3 border-b-dashed">
                         <div class="text-xs font-bold tracking-wider text-center uppercase text-primary-50 xl:text-sm">color</div>
-                        <div class="grid grid-cols-2 gap-2">
+                        <div class="grid grid-flow-col grid-cols-2 grid-rows-5 gap-2">
                             <div class="flex" v-for="(embroideryColor, index) in dataOptions.embroidery.data.options.color" :key="index">
                                 <input @click.native="embroidery.color = null"  class="hidden" type="radio" name="embroidery-color" :value="embroideryColor" v-model="embroidery.color" :id="`embroidery-color-${embroideryColor.slug}`">
                                 <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-color-${embroideryColor.slug}`">

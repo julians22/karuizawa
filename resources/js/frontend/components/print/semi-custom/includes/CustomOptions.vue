@@ -533,12 +533,12 @@
                             <!-- color -->
                             <div class="p-2 space-y-2 border-b border-r border-pink-ka border-b-dashed">
                                 <div class="label-name">color</div>
-                                <div class="grid grid-cols-2 gap-2">
+                                <div class="grid grid-flow-col grid-cols-2 grid-rows-5 gap-2">
                                     <div class="flex" v-for="(embroideryColor, index) in props.dataConfig.embroidery.data.options.color" :key="index">
                                         <input @click.native="embroidery.color = null"  class="hidden" type="radio" :value="embroideryColor" v-model="embroidery.color" :id="`embroidery-color-${embroideryColor.slug}`">
                                         <label class="flex items-center h-full gap-2 rounded cursor-pointer" :for="`embroidery-color-${embroideryColor.slug}`">
                                             <span class="checkbox-inner"></span>
-                                            <div class="label-name">{{ (index + 1)+'. '+ embroideryColor.name }}</div>
+                                            <div class="label-name">{{ index + 1 }}. {{embroideryColor.name }}</div>
                                         </label>
                                     </div>
                                 </div>
