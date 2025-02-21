@@ -25,14 +25,11 @@ class OrderSemiCustomTable extends DataTableComponent
     public function builder(): Builder
     {
         $query = OrderItem::with(['order' =>
-            function($query){
-                $query->with('store');
-            }
-        ])
-            ->semiCustom()
-            ->whereHas('order', function ($query) {
-                $query->where('status', '!=', config('enums.order_status.completed'));
-            });
+                function($query){
+                    return $query->where('status', '!=', config('enums.order_status.completed'));
+                }
+            ])
+            ->semiCustom();
         return $query;
     }
 

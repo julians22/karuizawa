@@ -38,14 +38,11 @@ class OrderReadyToWearTable extends DataTableComponent
     public function builder(): Builder
     {
         $query = OrderItem::with(['order' =>
-            function($query){
-                $query->with('store');
-            }
-        ])
-            ->readyToWear()
-            ->whereHas('order', function ($query) {
-                $query->where('status', '!=', config('enums.order_status.completed'));
-            });
+                function($query){
+                    return $query->where('status', '!=', config('enums.order_status.completed'));
+                }
+            ])
+            ->readyToWear();
         return $query;
     }
 
