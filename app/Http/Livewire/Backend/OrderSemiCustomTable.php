@@ -6,12 +6,26 @@ use App\Models\Order;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\OrderItem;
+use App\Models\Store;
 use Illuminate\Database\Eloquent\Builder;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class OrderSemiCustomTable extends DataTableComponent
 {
+
+    public $stores = [
+        '' => 'All',
+    ];
+
+    function mount(){
+        $stores = Store::all();
+
+        foreach ($stores as $store) {
+            $this->stores[$store->id] = $store->code;
+        }
+    }
+
     public function configure(): void
     {
         $this->setPrimaryKey('id');
