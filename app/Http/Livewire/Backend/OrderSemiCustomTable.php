@@ -7,6 +7,8 @@ use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\OrderItem;
 use Illuminate\Database\Eloquent\Builder;
+use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
+use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class OrderSemiCustomTable extends DataTableComponent
 {
@@ -31,6 +33,19 @@ class OrderSemiCustomTable extends DataTableComponent
             ])
             ->semiCustom();
         return $query;
+    }
+
+    public function filters(): array
+    {
+        return [
+            SelectFilter::make('Store')
+                ->options(
+                    $this->stores
+                )
+                ->filter(fn($builder, $value) => $builder->where('order.store_id', $value)),
+            DateFilter::make('Order Date')
+                ->filter(fn($builder, $value) => $builder->whereDate('order.order_date', $value)),
+        ];
     }
 
     public function columns(): array
