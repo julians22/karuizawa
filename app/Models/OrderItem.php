@@ -45,6 +45,16 @@ class OrderItem extends Model
         return $this->morphTo();
     }
 
+    public function product_rtw()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    public function product_sc()
+    {
+        return $this->belongsTo(SemiCustomProduct::class, 'product_id');
+    }
+
     public function getTotalPriceAttribute()
     {
         if ($this->isReadyToWear()) {
@@ -63,7 +73,7 @@ class OrderItem extends Model
     public function getDiscountPercentageAttribute()
     {
         if ($this->isReadyToWear()) {
-            if ($this->discount_detail && $this->discount_detail['discount']) {
+            if ($this->discount && array_key_exists('discount', $this->discount_detail)) {
                 return $this->discount_detail['discount'];
             }
         }
@@ -79,5 +89,21 @@ class OrderItem extends Model
     public function isReadyToWear()
     {
         return $this->product_type == 'App\Models\Product';
+    }
+
+    /**
+     * Scope a query to only include ready to wear products.
+     */
+    public function scopeReadyToWear($query)
+    {
+        return $query->where('product_type', 'App\Models\Product');
+    }
+
+    /**
+     * Scope a query to only include semi custom products.
+     */
+    public function scopeSemiCustom($query)
+    {
+        return $query->where('product_type', 'App\Models\SemiCustomProduct');
     }
 }

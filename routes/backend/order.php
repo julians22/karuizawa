@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Backend\OrderController;
+use App\Http\Controllers\OrderReadyToWearController;
+use App\Http\Controllers\OrderSemiCustomController;
 use App\Models\Order;
 use Tabuna\Breadcrumbs\Trail;
 
@@ -10,6 +12,27 @@ Route::group(['prefix' => 'order', 'as' => 'order.'], function() {
         ->breadcrumbs(function (Trail $trail) {
             $trail->push(__('Order'), route('admin.order.index'));
         });
+
+    Route::group(['prefix' => 'semi-custom', 'as' => 'semi-custom.'], function() {
+
+        Route::get('/', [OrderSemiCustomController::class, 'index'])
+            ->name('index')
+            ->breadcrumbs(function (Trail $trail) {
+                $trail->parent('admin.order.index');
+                $trail->push(__('Semi Custom'), route('admin.order.semi-custom.index'));
+            });
+    });
+
+
+    Route::group(['prefix' => 'ready-to-wear', 'as' => 'ready-to-wear.'], function() {
+
+        Route::get('/', [OrderReadyToWearController::class, 'index'])
+            ->name('index')
+            ->breadcrumbs(function (Trail $trail) {
+                $trail->parent('admin.order.index');
+                $trail->push(__('Ready to Wear'), route('admin.order.ready-to-wear.index'));
+            });
+    });
 
     Route::get('create', [OrderController::class, 'create'])
         ->name('create')

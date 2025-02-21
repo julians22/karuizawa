@@ -66,13 +66,36 @@
             {{-- Transaction / Order Menu --}}
             <li class="nav-title">@lang('Transaction')</li>
 
+            {{-- All Orders Menu --}}
             <li class="nav-item">
                 <x-utils.link
                     class="nav-link"
                     :href="route('admin.order.index')"
-                    :active="activeClass(Route::is('admin.order.*'), 'active')"
+                    :active="activeClass((Route::is('admin.order.index') || Route::is('admin.order.show')), 'active')"
                     icon="nav-icon fas fa-shopping-cart"
                     :text="__('Order Management')" />
+
+            </li>
+
+            {{-- Semi Custom Order Menu --}}
+            <li class="nav-item">
+                <x-utils.link
+                    class="nav-link"
+                    :href="route('admin.order.semi-custom.index')"
+                    :active="activeClass(Route::is('admin.semi-custom-order.*'), 'active')"
+                    icon="nav-icon fas fa-pencil-ruler"
+                    :text="__('Semi Custom Order')" />
+            </li>
+
+            {{-- Ready To Wear Order Menu --}}
+            <li class="nav-item">
+                <x-utils.link
+                    class="nav-link"
+                    :href="route('admin.order.ready-to-wear.index')"
+                    :active="activeClass(Route::is('admin.ready-to-wear-order.*'), 'active')"
+                    icon="nav-icon fas fa-vest"
+                    :text="__('Ready To Wear Order')" />
+            </li>
 
             <li class="nav-title">@lang('System')</li>
 
