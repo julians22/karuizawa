@@ -44,6 +44,14 @@
                     icon="nav-icon fas fa-box"
                     :text="__('Product Management')" />
             </li>
+            <li class="nav-item">
+                <x-utils.link
+                    class="nav-link"
+                    :href="route('admin.product-category.index')"
+                    :active="activeClass(Route::is('admin.product-category*'), 'active')"
+                    icon="nav-icon fas fa-box"
+                    :text="__('Category Management')" />
+            </li>
 
             <li class="nav-item">
                 <x-utils.link

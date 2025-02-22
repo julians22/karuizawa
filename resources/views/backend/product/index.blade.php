@@ -48,4 +48,67 @@
 
 </x-backend.card>
 
+@push('before-scripts')
+
+{{-- Modal for update category product --}}
+<div class="modal fade" id="updateProductCategory" tabindex="-1" aria-labelledby="updateProductCategoryLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateProductCategoryLabel">Update Product Category</h5>
+                <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @livewire('backend.product.update-category')
+            </div>
+        </div>
+    </div>
+</div>
+
+@endpush
+
+@push('after-scripts')
+
+
+<script>
+
+    document.addEventListener('livewire:init', () => {
+        let modalElement = document.getElementById('updateProductCategory')
+        const updateProductCategory = new coreui.Modal(modalElement);
+
+        Livewire.on('updateProductCategory', ({data}) => {
+            updateProductCategory.show();
+        });
+
+        Livewire.on('sendNotification', ({type = 'success', message}) => {
+
+            updateProductCategory.hide();
+            if (type === 'success') {
+
+                Swal.fire({
+                    title: 'Success!',
+                    text: message,
+                    icon: 'success',
+                    confirmButtonText: 'Close'
+                });
+
+            } else {
+
+
+                Swal.fire({
+                    title: 'Error!',
+                    text: message,
+                    icon: 'error',
+                    confirmButtonText: 'Close'
+                });
+
+            }
+
+        });
+    });
+
+</script>
+
+@endpush
+
 @endsection
