@@ -2,10 +2,13 @@
 
 namespace App\Http\Livewire\Backend;
 
+use App\Http\Livewire\Backend\Product\UpdateCategory;
+use App\Models\Category;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\On;
 use Rappasoft\LaravelLivewireTables\Views\Filters\SelectFilter;
 
 class ProductTable extends DataTableComponent
@@ -14,13 +17,7 @@ class ProductTable extends DataTableComponent
 
     public function mount()
     {
-        $categories = Product::query()
-            ->select('category_id')
-            ->with('category')
-            ->groupBy('category_id')
-            ->get()
-            ->pluck('category.name', 'category_id')
-            ->toArray();
+        $categories = Category::pluck('name', 'id')->toArray();
 
         // push the first option
         $this->categories = ['' => 'All Categories'] + $categories;
@@ -29,18 +26,10 @@ class ProductTable extends DataTableComponent
     public function configure(): void
     {
         $this->setPrimaryKey('id');
-        $this->setTrAttributes(function ($row, $index) {
-            if ($index % 2 === 0) {
-                return [
-                    'default' => false,
-                    'class' => 'rappasoft-striped-row',
-                ];
-            }
-            return [
-                'default' => false,
-                'class' => 'laravel-livewire-tables-odd rappasoft-striped-row',
-            ];
-        });
+
+        $this->setBulkActions([
+            'updateCategory' => 'Update Category',
+        ]);
 
         $this->setDefaultSort('updated_at', 'desc');
         $this->setDefaultSortingLabels('Asc', 'Desc');
@@ -124,5 +113,29 @@ class ProductTable extends DataTableComponent
                     });
                 }),
         ];
+    }
+
+    public function updateCategory()
+    {
+
+        $keys = [];
+
+        foreach($this->getSelected() as $item)
+        {
+            $keys[] = $item;
+        }
+
+        $this->dispatch('bulkActionProduct', data: $keys)
+            ->to(UpdateCategory::class);
+    }
+
+    #[On('updatedProductCategory')]
+    public function updatedProductCategory()
+    {
+        $this->clearSelected();
+
+        $this->dispatch('refreshDatatable');
+
+        $this->dispatch('sendNotification', type: 'success', message: 'Category updated successfully');
     }
 }

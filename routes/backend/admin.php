@@ -3,6 +3,7 @@
 use App\Http\Controllers\Backend\PromoControler;
 use App\Http\Controllers\Backend\CustomerController;
 use App\Http\Controllers\Backend\DashboardController;
+use App\Http\Controllers\Backend\ProductCategoryController;
 use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Backend\StoreController;
 use App\Http\Controllers\Backend\SystemInformationController;
@@ -102,6 +103,27 @@ Route::prefix('promos')->group(function () {
 
         Route::patch('/', [PromoControler::class, 'update'])->name('promo.update');
         Route::delete('/', [PromoControler::class, 'destroy'])->name('promo.destroy');
+    });
+});
+
+// Category Routes
+Route::group(['prefix' => 'product-category', 'as' => 'product-category.'], function() {
+    Route::get('/', [ProductCategoryController::class, 'index'])
+        ->name('index')
+        ->breadcrumbs(function (Trail $trail) {
+            $trail->push(__('Product Category'), route('admin.product-category.index'));
+        });
+
+    Route::group(['prefix' => '{category}'], function() {
+        Route::get('edit', [ProductCategoryController::class, 'edit'])
+            ->name('edit')
+            ->breadcrumbs(function (Trail $trail, $category) {
+                $trail->parent('admin.product-category.index');
+                $trail->push(__('Edit'), route('admin.product-category.edit', $category));
+            });
+
+        Route::patch('/', [ProductCategoryController::class, 'update'])->name('update');
+        Route::delete('/', [ProductCategoryController::class, 'destroy'])->name('destroy');
     });
 });
 
