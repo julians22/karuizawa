@@ -105,6 +105,20 @@
                     :text="__('Ready To Wear Order')" />
             </li>
 
+            {{-- Reports --}}
+            <li class="nav-title">@lang('Reports')</li>
+
+            <li class="nav-item">
+                <x-utils.link
+                    class="nav-link"
+                    :href="route('admin.report.index')"
+                    :active="activeClass(Route::is('admin.report.*'), 'active')"
+                    icon="nav-icon fas fa-chart-line"
+                    :text="__('Report')" />
+            </li>
+
+
+
             <li class="nav-title">@lang('System')</li>
 
             <li class="nav-item">
