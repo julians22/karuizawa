@@ -39,7 +39,7 @@ class OrderReadyToWearTable extends DataTableComponent
     {
         $query = OrderItem::with(['order' =>
                 function($query){
-                    return $query->where('status', '!=', config('enums.order_status.completed'));
+                    return $query->where('status', config('enums.order_status.completed'));
                 }
             ])
             ->readyToWear();

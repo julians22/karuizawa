@@ -47,7 +47,7 @@ class DashboardController
             return with(clone $ordersQuery)->where('created_at', '>=', today()->subDays(30))->sum('total_price');
         });
 
-        
+
         $sellingByStore = cache()->remember('sellingByStore', 60 * 60, function () {
             return $this->getSellingByStore();
         });
@@ -100,6 +100,14 @@ class DashboardController
     }
 
     /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function report()
+    {
+        return view('backend.report.index');
+    }
+
+    /**
      * Get selling by store
      *
      * @return array
@@ -115,7 +123,7 @@ class DashboardController
         }
 
 
-        
+
         $store = Store::select('id', 'name')
             ->with(['orders' => function ($query) {
                 Order::$withoutAppends = true;
