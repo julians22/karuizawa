@@ -12,9 +12,13 @@ class SystemInformationController extends Controller
 {
     public function index()
     {
+        $dbList = [];
+        $dbInfo = [];
         $token = $this->retrieveCachedToken();
-        $dbList = $this->accurateDbList();
-        $dbInfo = cache()->get('accurate_db');
+        if ($token) {
+            $dbList = $this->accurateDbList();
+            $dbInfo = cache()->get('accurate_db');
+        }
 
         return view('backend.system-information.index', ['token' => $token, 'dbList' => $dbList, 'dbInfo' => $dbInfo]);
     }
