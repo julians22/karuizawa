@@ -135,6 +135,8 @@ class OrderTable extends DataTableComponent
             Column::make("Updated at", "updated_at")
                 ->format(fn($value) => $value->diffForHumans())
                 ->sortable(),
+            Column::make('Order Date', 'order_date')
+                ->sortable(),
             Column::make("Actions")
                 ->label(fn($row, Column $column) => view('backend.order.includes.actions', ['order' => $row])),
         ];

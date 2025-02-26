@@ -67,6 +67,7 @@ class OrderSemiCustomTable extends DataTableComponent
         return [
             Column::make("Order id", "order.order_number")
                 ->sortable(),
+            Column::make("Order Status", "order.status"),
             Column::make("Store", "order.store.name")
                 ->sortable()
                 ->searchable(),

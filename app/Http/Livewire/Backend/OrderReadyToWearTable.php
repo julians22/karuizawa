@@ -67,6 +67,7 @@ class OrderReadyToWearTable extends DataTableComponent
             Column::make("Store", "order.store.name")
                 ->sortable()
                 ->searchable(),
+            Column::make("Order Status", "order.status"),
             Column::make("Crew", "order.user.name")
                 ->sortable()
                 ->searchable(),

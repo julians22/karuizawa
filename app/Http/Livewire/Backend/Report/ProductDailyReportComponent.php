@@ -35,6 +35,18 @@ class ProductDailyReportComponent extends Component
         return Store::find($this->store);
     }
 
+    #[Computed]
+    public function month_string()
+    {
+        return Carbon::parse($this->month)->format('m');
+    }
+
+    #[Computed]
+    public function year_string()
+    {
+        return Carbon::parse($this->month)->format('Y');
+    }
+
     public function render()
     {
         return view('livewire.backend.report.product-daily-report-component');
@@ -42,7 +54,6 @@ class ProductDailyReportComponent extends Component
 
     public function generateReportData(){
 
-        $month = Carbon::parse($this->month)->format('Y-m');
         $lastDateOfMonth = Carbon::parse($this->month)->endOfMonth()->format('Y-m-d');
 
         // create date range
@@ -61,33 +72,19 @@ class ProductDailyReportComponent extends Component
                 $data[$value] = [];
             }
 
-            $semiCustom = OrderItem::with('order', 'product_sc', 'order.payments')
+            $semiCustom = OrderItem::with([
+                    'order',
+                    'product_sc',
+                    'order.payments',
+                    'order.customer'
+                ])
                 ->whereHas('order', function ($query) {
-
-                    $monthDigit = Carbon::parse($this->month)->format('m');
-                    $yearDigit = Carbon::parse($this->month)->format('Y');
-
-                    $query->whereMonth('order_date', $monthDigit)
-                        ->whereYear('order_date', $yearDigit)
+                    return $query->whereMonth('order_date', $this->month_string)
+                        ->whereYear('order_date', $this->year_string)
                         ->where('store_id', $this->store)
                         ->where('status', config('enums.order_status.completed'));
                 })
-                ->whereHas('product_sc')
-                ->take(10)
-                ->get();
-
-            $readyToWear = OrderItem::with('order', 'product_rtw', 'order.payments', 'product_rtw.category', 'order.user')
-                ->whereHas('order', function ($query) {
-
-                    $monthDigit = Carbon::parse($this->month)->format('m');
-                    $yearDigit = Carbon::parse($this->month)->format('Y');
-
-                    $query->whereMonth('order_date', $monthDigit)
-                        ->whereYear('order_date', $yearDigit)
-                        ->where('store_id', $this->store)
-                        ->where('status', config('enums.order_status.completed'));
-                })
-                ->whereHas('product_rtw')
+                ->semiCustom()
                 ->get();
 
             $semiCustom->each(function ($item) use (&$data) {
@@ -119,6 +116,16 @@ class ProductDailyReportComponent extends Component
                     'payment_method_sc' => $item->order->payments->first()->payment
                 ];
             });
+
+            $readyToWear = OrderItem::with('order', 'product_rtw', 'order.payments', 'product_rtw.category', 'order.user')
+                ->whereHas('order', function ($query) {
+                    return $query->whereMonth('order_date', $this->month_string)
+                        ->whereYear('order_date', $this->year_string)
+                        ->where('store_id', $this->store)
+                        ->where('status', config('enums.order_status.completed'));
+                })
+                ->readyToWear()
+                ->get();
 
             $readyToWear->each(function ($item) use (&$data) {
                 $date = Carbon::parse($item->order->order_date)->format('d');
