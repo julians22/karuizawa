@@ -1,11 +1,14 @@
 <?php
 
+use Database\Migrations\Traits\DisableForeignKeys;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    use DisableForeignKeys;
+
     /**
      * Run the migrations.
      */
@@ -34,13 +37,13 @@ return new class extends Migration
     private function truncateRelated(): void
     {
         // Disable foreign key check for this operation
-        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        $this->disableForeignKeys();
 
         DB::table('payments')->truncate();
         DB::table('order_items')->truncate();
         DB::table('orders')->truncate();
 
         // Enable foreign key check
-        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+        $this->enableForeignKeys();
     }
 };
