@@ -62,7 +62,6 @@ class DashboardController
                     'columnWidth' => '55%',
                     'borderRadius' => 5,
                     'borderRadiusApplication' => 'end',
-
                 ],
             ],
             'dataLabels' => [

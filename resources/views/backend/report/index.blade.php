@@ -32,3 +32,13 @@
 </x-backend.card>
 
 @endsection
+
+@push('before-scripts')
+    <script>
+        var chartReport = null;
+    </script>
+@endpush
+
+@push('after-scripts')
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+@endpush

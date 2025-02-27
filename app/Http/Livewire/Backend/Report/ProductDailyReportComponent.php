@@ -14,19 +14,13 @@ use Livewire\Component;
 class ProductDailyReportComponent extends Component
 {
     #[Reactive]
-    public $store = "";
-
-    #[Reactive]
     public $month = "";
 
     public $reportData = [];
 
-    public function mount($store, $month)
+    public function mount($month)
     {
-        $this->store = $store;
         $this->month = $month;
-
-        // $this->generateReportData();
     }
 
     #[Computed]
@@ -49,10 +43,11 @@ class ProductDailyReportComponent extends Component
 
     public function render()
     {
-        return view('livewire.backend.report.product-daily-report-component');
+        $stores = Store::all();
+        return view('livewire.backend.report.product-daily-report-component', compact('stores'));
     }
 
-    public function generateReportData(){
+    public function generateReportData($store){
 
         $lastDateOfMonth = Carbon::parse($this->month)->endOfMonth()->format('Y-m-d');
 
@@ -64,7 +59,7 @@ class ProductDailyReportComponent extends Component
             $date->addDay();
         }
 
-        if ($this->store && $this->month) {
+        if ($store && $this->month) {
 
             $data = [];
 
@@ -78,10 +73,10 @@ class ProductDailyReportComponent extends Component
                     'order.payments',
                     'order.customer'
                 ])
-                ->whereHas('order', function ($query) {
+                ->whereHas('order', function ($query) use ($store) {
                     return $query->whereMonth('order_date', $this->month_string)
                         ->whereYear('order_date', $this->year_string)
-                        ->where('store_id', $this->store)
+                        ->where('store_id', $store)
                         ->where('status', config('enums.order_status.completed'));
                 })
                 ->semiCustom()
@@ -118,10 +113,10 @@ class ProductDailyReportComponent extends Component
             });
 
             $readyToWear = OrderItem::with('order', 'product_rtw', 'order.payments', 'product_rtw.category', 'order.user')
-                ->whereHas('order', function ($query) {
+                ->whereHas('order', function ($query) use ($store) {
                     return $query->whereMonth('order_date', $this->month_string)
                         ->whereYear('order_date', $this->year_string)
-                        ->where('store_id', $this->store)
+                        ->where('store_id', $store)
                         ->where('status', config('enums.order_status.completed'));
                 })
                 ->readyToWear()
@@ -226,7 +221,7 @@ class ProductDailyReportComponent extends Component
 
             $yearString = Carbon::parse($this->month)->format('Y');
             $monthString = Carbon::parse($this->month)->format('F');
-            $store = Store::find($this->store);
+            $store = Store::find($store);
 
             $fileName = 'daily_report_' . $store->name . '_' . $monthString . '_' . $yearString . '.xlsx';
 
