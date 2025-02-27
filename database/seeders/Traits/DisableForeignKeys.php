@@ -74,6 +74,6 @@ trait DisableForeignKeys
      */
     private function getDriverCommands()
     {
-        return $this->commands[DB::getDriverName()];
+        return $this->commands[DB::connection()->getDriverName()];
     }
 }
