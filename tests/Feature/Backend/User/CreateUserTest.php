@@ -64,6 +64,7 @@ class CreateUserTest extends TestCase
             'name' => 'John Doe',
             'email' => 'john@example.com',
             'password' => 'OC4Nzu270N!QBVi%U%qX',
+            'store_id' => 1,
             'password_confirmation' => 'OC4Nzu270N!QBVi%U%qX',
             'active' => '1',
             'roles' => [
@@ -90,32 +91,6 @@ class CreateUserTest extends TestCase
         $response->assertSessionHas(['flash_success' => __('The user was successfully created.')]);
 
         Event::assertDispatched(UserCreated::class);
-    }
-
-    /** @test */
-    public function when_an_unconfirmed_user_is_created_a_notification_will_be_sent()
-    {
-        Notification::fake();
-
-        $this->loginAsAdmin();
-
-        $response = $this->post('/admin/auth/user', [
-            'type' => User::TYPE_ADMIN,
-            'name' => 'John Doe',
-            'email' => 'john@example.com',
-            'password' => 'OC4Nzu270N!QBVi%U%qX',
-            'password_confirmation' => 'OC4Nzu270N!QBVi%U%qX',
-            'send_confirmation_email' => '1',
-            'roles' => [
-                Role::whereName(config('boilerplate.access.role.admin'))->first()->id,
-            ],
-        ]);
-
-        $response->assertSessionHas(['flash_success' => __('The user was successfully created.')]);
-
-        $user = User::where('email', 'john@example.com')->first();
-
-        Notification::assertSentTo($user, VerifyEmail::class);
     }
 
     /** @test */

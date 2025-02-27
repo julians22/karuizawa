@@ -129,7 +129,9 @@ class DashboardController
                 $query->select('id', 'store_id', 'total_price', 'created_at')
                     ->without('payments')
                     ->where('status', 'completed')
-                    ->whereRaw('created_at >= CURDATE() - INTERVAL 30 DAY');
+                    // this query not working on sqlite
+                    // change to whereRaw for sqlite
+                    ->where('created_at', '>=', now()->subDays(30));
             }]);
 
         $stores = $store->get();

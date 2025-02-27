@@ -16,13 +16,15 @@ class StoreSeeder extends Seeder
         Store::create([
             'name' => 'Ashta',
             'code' => 'AST',
-            'address' => '123 Main St',
+            'address' => 'ASHTA District 8 Lantai UG Unit UG-18 Jalan Senopati No 8, Senayan Kecamatan Kebayoran Baru Jakarta Selatan 12190',
+            'accurate_alias' => '350'
         ]);
 
         Store::create([
-            'name' => 'PIM',
-            'code' => 'PIM',
-            'address' => '456 Main St',
+            'name' => 'PIK',
+            'code' => 'PIK',
+            'address' => 'PIK AVENUE Jl. Pantai Indah Kapuk Boulevard, RT.6/RW.2, Kamal Muara, Kec. Penjaringan, Jkt Utara, Daerah Khusus Ibukota Jakarta 14470',
+            'accurate_alias' => '450'
         ]);
     }
 }

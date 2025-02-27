@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Domains\Announcement\Models\Announcement;
 use App\Models\Customer;
 use Database\Seeders\Traits\DisableForeignKeys;
 use Database\Seeders\Traits\TruncateTable;
@@ -30,6 +31,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
+            AuthSeeder::class,
+            AnnouncementSeeder::class,
+            StoreSeeder::class,
             ProductSeeder::class,
             StockMovementSeeder::class,
             CustomerSeeder::class
