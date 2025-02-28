@@ -79,6 +79,7 @@ class SystemInformationController extends Controller
 
         $response = $response->json();
 
+        // put cache 14 days from now
         cache()->put('accurate_token', $response, 1295999);
 
         return redirect()->route('admin.system-information.index')->withFlashSuccess(__('The authentication cache was successfully reloaded.'));
