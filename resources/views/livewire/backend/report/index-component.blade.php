@@ -38,7 +38,7 @@
 
                             <div class="card-body">
 
-                                <livewire:backend.report.product-daily-report-component :$month />
+                                <livewire:backend.report.product-daily-report-component :$month :$stores />
 
                             </div>
                         </div>
@@ -55,10 +55,12 @@
 
                             <div class="card-body">
 
-                                {{-- Alert warning for on development --}}
-                                <div class="alert alert-warning" role="alert">
-                                    This feature is under development
+                                <div class="alert alert-info" role="alert">
+                                    <p><strong>Under Development</strong></p>
+                                    <small>You can see Ready to Wear Report Only</small>
                                 </div>
+
+                                <livewire:backend.report.category-value-report-component :$month :$stores />
 
                             </div>
                         </div>
@@ -76,7 +78,7 @@
                             <div class="card-body">
 
                                 {{-- /backend\chart\store-transaction-chart-component --}}
-                                <livewire:backend.chart.store-transaction-chart-component :$month/>
+                                <livewire:backend.chart.store-transaction-chart-component :$month />
 
                             </div>
                         </div>

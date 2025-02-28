@@ -68,4 +68,33 @@ if (! function_exists('price_format')) {
     }
 }
 
+if (! function_exists('is_older_month_year')) {
+
+    /**
+     * Check if the given month and year is older than the current month and year.
+     *
+     * @param string $month
+     * @param string $year
+     * @return bool
+     */
+    function is_older_month_year($month, $year)
+    {
+        $currentMonth = Carbon::now()->format('m');
+        $currentYear = Carbon::now()->format('Y');
+
+        if ($year < $currentYear) {
+            return true;
+        }
+
+        if ($year == $currentYear) {
+            if ($month < $currentMonth) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+}
+
 

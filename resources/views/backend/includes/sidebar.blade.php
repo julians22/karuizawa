@@ -4,7 +4,7 @@
         <i,g class="sidebar-brand-minimized d-block d-md-none" width="30" height="46" alt="Brand Logo" src="{{ asset('img/brand/logo-02.png') }}"/>
     </div><!--sidebar-brand-->
 
-    <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
+    <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="init">
         <li class="nav-item">
             <x-utils.link
                 class="nav-link"

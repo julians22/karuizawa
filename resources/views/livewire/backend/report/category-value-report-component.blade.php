@@ -1,5 +1,6 @@
 <div>
-    {{-- A good traveler has no fixed plans and is not intent upon arriving. --}}
+    {{-- Nothing in the world is as soft and yielding as water. --}}
+
     <div class="alert alert-danger" role="alert"  wire:offline>
         <strong>Offline!</strong> Please check your internet connection.
     </div>
@@ -21,5 +22,4 @@
         </div>
         @endforeach
     </div>
-
 </div>

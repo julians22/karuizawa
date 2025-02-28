@@ -37,11 +37,10 @@ class OrderReadyToWearTable extends DataTableComponent
 
     public function builder(): Builder
     {
-        $query = OrderItem::with(['order' =>
-                function($query){
-                    return $query->where('status', config('enums.order_status.completed'));
-                }
-            ])
+        $query = OrderItem::with(['order'])
+            ->whereHas('order', function ($query) {
+                return $query->where('status', config('enums.order_status.completed'));
+            })
             ->readyToWear();
         return $query;
     }
@@ -67,7 +66,6 @@ class OrderReadyToWearTable extends DataTableComponent
             Column::make("Store", "order.store.name")
                 ->sortable()
                 ->searchable(),
-            Column::make("Order Status", "order.status"),
             Column::make("Crew", "order.user.name")
                 ->sortable()
                 ->searchable(),

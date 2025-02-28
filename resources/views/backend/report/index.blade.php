@@ -23,7 +23,7 @@
 
         <div class="row">
             <div class="col-12">
-                @livewire('backend.report.index-component', ['user' => $logged_in_user], key($logged_in_user->id))
+                <livewire:backend.report.index-component/>
             </div>
         </div>
 

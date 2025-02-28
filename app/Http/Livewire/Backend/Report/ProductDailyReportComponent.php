@@ -3,8 +3,10 @@
 namespace App\Http\Livewire\Backend\Report;
 
 use App\Exports\DailyReport;
+use App\Http\Livewire\Backend\Report\Trait\ReportData;
 use App\Models\OrderItem;
 use App\Models\Store;
+use Cache;
 use Carbon\Carbon;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Reactive;
@@ -13,51 +15,28 @@ use Livewire\Component;
 
 class ProductDailyReportComponent extends Component
 {
+    use ReportData;
+
     #[Reactive]
     public $month = "";
 
-    public $reportData = [];
+    public $stores;
 
-    public function mount($month)
+    public function mount($month, $stores)
     {
         $this->month = $month;
-    }
-
-    #[Computed]
-    public function storeModel()
-    {
-        return Store::find($this->store);
-    }
-
-    #[Computed]
-    public function month_string()
-    {
-        return Carbon::parse($this->month)->format('m');
-    }
-
-    #[Computed]
-    public function year_string()
-    {
-        return Carbon::parse($this->month)->format('Y');
+        $this->stores = $stores;
     }
 
     public function render()
     {
-        $stores = Store::all();
-        return view('livewire.backend.report.product-daily-report-component', compact('stores'));
+        return view('livewire.backend.report.product-daily-report-component');
     }
 
     public function generateReportData($store){
 
-        $lastDateOfMonth = Carbon::parse($this->month)->endOfMonth()->format('Y-m-d');
-
         // create date range
-        $dateRange = [];
-        $date = Carbon::parse($this->month)->startOfMonth();
-        while ($date->lte($lastDateOfMonth)) {
-            $dateRange[] = $date->format('d');
-            $date->addDay();
-        }
+        $dateRange = $this->rangeOfDays($this->month);
 
         if ($store && $this->month) {
 
@@ -67,20 +46,16 @@ class ProductDailyReportComponent extends Component
                 $data[$value] = [];
             }
 
-            $semiCustom = OrderItem::with([
-                    'order',
-                    'product_sc',
-                    'order.payments',
-                    'order.customer'
-                ])
-                ->whereHas('order', function ($query) use ($store) {
-                    return $query->whereMonth('order_date', $this->month_string)
-                        ->whereYear('order_date', $this->year_string)
-                        ->where('store_id', $store)
-                        ->where('status', config('enums.order_status.completed'));
-                })
-                ->semiCustom()
-                ->get();
+            // prepare data with caching
+            // if the month is not older than the current month, don't cache the result
+            if(!is_older_month_year($this->month_string, $this->year_string)){
+                $semiCustom = $this->getSemicustom($store, $this->month_string, $this->year_string);
+            }else{
+                // cache the result for 1 day
+                $semiCustom = Cache::remember($this->cacheKey($store, $this->month_string, $this->year_string) . '-semi_custom', 60 * 24, function () use ($store) {
+                    return $this->getSemicustom($store, $this->month_string, $this->year_string);
+                });
+            }
 
             $semiCustom->each(function ($item) use (&$data) {
                 $date = Carbon::parse($item->order->order_date)->format('d');
@@ -112,15 +87,16 @@ class ProductDailyReportComponent extends Component
                 ];
             });
 
-            $readyToWear = OrderItem::with('order', 'product_rtw', 'order.payments', 'product_rtw.category', 'order.user')
-                ->whereHas('order', function ($query) use ($store) {
-                    return $query->whereMonth('order_date', $this->month_string)
-                        ->whereYear('order_date', $this->year_string)
-                        ->where('store_id', $store)
-                        ->where('status', config('enums.order_status.completed'));
-                })
-                ->readyToWear()
-                ->get();
+            // prepare data with caching
+            // if the month is not older than the current month, don't cache the result
+            if(!is_older_month_year($this->month_string, $this->year_string)){
+                $readyToWear = $this->getReadyToWear($store, $this->month_string, $this->year_string);
+            }else{
+                // cache the result for 1 day
+                $readyToWear = Cache::remember($this->cacheKey($store, $this->month_string, $this->year_string) . '-ready_to_wear', 60 * 24, function () use ($store) {
+                    return $this->getReadyToWear($store, $this->month_string, $this->year_string);
+                });
+            }
 
             $readyToWear->each(function ($item) use (&$data) {
                 $date = Carbon::parse($item->order->order_date)->format('d');
@@ -137,7 +113,6 @@ class ProductDailyReportComponent extends Component
             });
 
             // Generate array key for excel
-
             $keyBody = [
                 'no_rtw',
                 'sku',
