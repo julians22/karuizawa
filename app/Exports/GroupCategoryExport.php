@@ -4,8 +4,9 @@ namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class GroupCategoryExport implements FromCollection
+class GroupCategoryExport implements WithMultipleSheets
 {
 
     use Exportable;
@@ -16,14 +17,6 @@ class GroupCategoryExport implements FromCollection
     public function __construct($groupCategories, $configures) {
         $this->groupCategories = $groupCategories;
         $this->configures = $configures;
-    }
-
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
-    {
-        return $this->groupCategories;
     }
 
     /**

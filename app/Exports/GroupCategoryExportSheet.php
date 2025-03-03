@@ -5,9 +5,10 @@ namespace App\Exports;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class GroupCategoryExportSheet implements FromCollection, ShouldAutoSize, WithStyles
+class GroupCategoryExportSheet implements FromCollection, ShouldAutoSize, WithStyles, WithTitle
 {
     protected $groupCategories;
     protected $configures;
