@@ -55,11 +55,6 @@
 
                             <div class="card-body">
 
-                                <div class="alert alert-info" role="alert">
-                                    <p><strong>Under Development</strong></p>
-                                    <small>You can see Ready to Wear Report Only</small>
-                                </div>
-
                                 <livewire:backend.report.category-value-report-component :$month :$stores />
 
                             </div>
