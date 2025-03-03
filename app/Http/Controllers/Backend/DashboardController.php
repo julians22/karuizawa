@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Models\Customer;
 use App\Models\Order;
+use App\Models\SemiCustomProduct;
 use App\Models\Store;
 use DB;
 
@@ -30,6 +31,13 @@ class DashboardController
         $newCustomer = cache()->remember('newCustomer', 60 * 60, function () use ($customersQuery) {
             return $customersQuery->where('created_at', '>=', now()->subDays(30))->count();
         });
+
+
+        /** @var int $repeatCustomer Get Repeat Order Customer */
+        $repeatCustomer = cache()->remember('repeatCustomer', 60 * 60, function () {
+            return $this->repeatCustomer();
+        });
+
 
         /** @var Order $ordersQuery Get total price of orders today and last 30 days */
         Order::$withoutAppends = true;
@@ -95,6 +103,7 @@ class DashboardController
                 'totalTodayPrice' => $totalTodayPrice,
                 'totalLast30DaysPrice' => $totalLast30DaysPrice,
                 'sellingByStoreData' => $sellingByStoreData,
+                'repeatCustomer' => $repeatCustomer,
         ]);
     }
 
@@ -105,6 +114,23 @@ class DashboardController
     {
         return view('backend.report.index');
     }
+
+    /**
+     * Get "Repeat Customer" report
+     */
+    public function repeatCustomer()
+    {
+
+        $repeatCustomer = SemiCustomProduct::select('customer_id', 'created_at')
+            ->where('created_at', '>=', now()->subDays(30))
+            ->where('size->order', '2. REPEAT ORDER')
+            ->get()
+            ->groupBy('customer_id')
+            ->count();
+
+        return $repeatCustomer;
+    }
+
 
     /**
      * Get selling by store
