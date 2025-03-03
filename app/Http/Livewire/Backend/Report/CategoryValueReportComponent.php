@@ -135,7 +135,7 @@ class CategoryValueReportComponent extends Component
             $fileName = 'Daily Achievement_' . $store->name . '_' . $this->month_string . '_' . $this->year_string . '.xlsx';
 
             // export to excel
-            return (new GroupCategoryExport(collect($rows)->values(), $configures))->download($fileName);
+            return (new GroupCategoryExport(collect($rows)->values(), $configures, $data))->download($fileName);
         }
     }
 }

@@ -13,10 +13,13 @@ class GroupCategoryExport implements WithMultipleSheets
 
     protected $groupCategories;
     protected $configures;
+    protected $dataRaw;
 
-    public function __construct($groupCategories, $configures) {
+    public function __construct($groupCategories, $configures, $data) {
         $this->groupCategories = $groupCategories;
         $this->configures = $configures;
+
+        $this->dataRaw = $data;
     }
 
     /**
@@ -25,6 +28,17 @@ class GroupCategoryExport implements WithMultipleSheets
     public function sheets(): array
     {
         $sheets = [];
+
+        foreach ($this->dataRaw as $key => $data) {
+
+            $type = 'RTW';
+
+            if ($key == 'Semi Custom') {
+                $type = 'SEMI CUSTOM';
+            }
+
+            $sheets[] = new SummaryGroupCategoryExportSheet(collect($data), $key, $type);
+        }
 
         $sheets[] = new GroupCategoryExportSheet(collect($this->groupCategories), $this->configures);
 
