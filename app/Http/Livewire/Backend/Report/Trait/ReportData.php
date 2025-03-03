@@ -41,7 +41,10 @@ trait ReportData
             'order',
             'product_sc',
             'order.payments',
-            'order.customer'
+            'order.customer',
+            'order.user' => function ($query) {
+                $query->withTrashed();
+            }
         ])
         ->whereHas('order', function ($query) use ($store, $month, $year) {
             return $query->whereMonth('order_date', $month)
@@ -64,7 +67,15 @@ trait ReportData
      */
     protected function getReadyToWear($store, $month, $year)
     {
-        $readyToWear = OrderItem::with('order', 'product_rtw', 'order.payments', 'product_rtw.category', 'order.user')
+        $readyToWear = OrderItem::with([
+            'order',
+            'product_rtw',
+            'order.payments',
+            'product_rtw.category',
+            'order.user' => function ($query) {
+                $query->withTrashed();
+            }
+            ])
             ->whereHas('order', function ($query) use ($store, $month, $year) {
                 return $query->whereMonth('order_date', $month)
                     ->whereYear('order_date', $year)

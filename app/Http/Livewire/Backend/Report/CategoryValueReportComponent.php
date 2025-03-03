@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Backend\Report;
 
 use App\Exports\GroupCategoryExport;
 use App\Http\Livewire\Backend\Report\Trait\ReportData;
+use App\Models\Store;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
@@ -60,6 +61,16 @@ class CategoryValueReportComponent extends Component
                 }
             }
 
+            $data['Semi Custom'] = [];
+
+            foreach ($crews as $crew) {
+                $data['Semi Custom'][$crew] = [];
+
+                foreach ($this->rangeOfDays($this->month) as $key => $value) {
+                    $data['Semi Custom'][$crew][$value] = 0;
+                }
+            }
+
             $readyToWear->each(function ($item) use (&$data) {
 
                 $date = $item->order->created_at->format('d');
@@ -70,6 +81,14 @@ class CategoryValueReportComponent extends Component
             });
 
             $semiCustom = $this->getSemiCustom($store, $this->month_string, $this->year_string);
+
+            $semiCustom->each(function ($item) use (&$data) {
+
+                $date = $item->order->created_at->format('d');
+                $crew = $item->order->user->name;
+
+                $data['Semi Custom'][$crew][$date] += $item->price;
+            });
 
             $rows = [];
 
@@ -112,8 +131,11 @@ class CategoryValueReportComponent extends Component
                 $rows[] = [' '];
             }
 
+            $store = Store::find($store);
+            $fileName = 'Daily Achievement_' . $store->name . '_' . $this->month_string . '_' . $this->year_string . '.xlsx';
+
             // export to excel
-            return (new GroupCategoryExport(collect($rows)->values(), $configures))->download('group_category.xlsx');
+            return (new GroupCategoryExport(collect($rows)->values(), $configures))->download($fileName);
         }
     }
 }

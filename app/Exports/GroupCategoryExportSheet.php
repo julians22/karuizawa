@@ -2,14 +2,13 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
+use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class GroupCategoryExport implements FromCollection
+class GroupCategoryExportSheet implements FromCollection, ShouldAutoSize, WithStyles
 {
-
-    use Exportable;
-
     protected $groupCategories;
     protected $configures;
 
@@ -26,15 +25,15 @@ class GroupCategoryExport implements FromCollection
         return $this->groupCategories;
     }
 
-    /**
-     * @return array
-     */
-    public function sheets(): array
+    public function styles(Worksheet $sheet)
     {
-        $sheets = [];
+        $headers = $this->configures['headers'];
 
-        $sheets[] = new GroupCategoryExportSheet(collect($this->groupCategories), $this->configures);
+        return $headers;
+    }
 
-        return $sheets;
+    public function title(): string
+    {
+        return 'Daily Report';
     }
 }
