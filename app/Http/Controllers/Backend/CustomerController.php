@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\CustomerData;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Http\Request;
@@ -22,6 +23,10 @@ class CustomerController extends Controller
         });
 
         return view('backend.customer.index', compact('totalCustomer', 'newCustomer'));
+    }
+
+    public function export() {
+        return (new CustomerData)->download('all_customer.xlsx');
     }
 
     public function show() {

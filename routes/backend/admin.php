@@ -29,6 +29,9 @@ Route::group(['prefix' => 'customer', 'as' => 'customer.'], function() {
             $trail->push(__('Customer'), route('admin.customer.index'));
         });
 
+    Route::get('export', [CustomerController::class, 'export'])
+        ->name('export');
+
     Route::group(['prefix' => '{customer}'], function() {
         Route::get('/', [CustomerController::class, 'show'])
             ->name('show')

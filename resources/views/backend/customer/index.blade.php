@@ -11,6 +11,11 @@
                     <div class="callout callout-primary">
                         <div class="small text-body-secondary text-truncate" data-coreui-i18n="totalCustomer">Total Customer</div>
                         <div class="fs-5 fw-semibold">{{ $totalCustomer }}</div>
+
+                        {{-- Download Excel Link --}}
+                        <a href="{{ route('admin.customer.export') }}" class="btn btn-sm btn-primary mt-2">
+                            <i class="cil-file-excel"></i> Export Excel
+                        </a>
                     </div>
                 </div>
 

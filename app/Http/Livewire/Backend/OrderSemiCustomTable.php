@@ -86,6 +86,9 @@ class OrderSemiCustomTable extends DataTableComponent
             Column::make("Order Date", "order.order_date")
                 ->sortable()
                 ->format(fn($value) => $value),
+            Column::make("Handling Date", "product_sc.handling_date")
+                ->sortable()
+                ->format(fn($value) => $value),
             Column::make("Created at", "created_at")
                 ->sortable()
                 ->format(fn($value) => $value->diffForHumans()),
