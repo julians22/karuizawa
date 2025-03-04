@@ -120,6 +120,9 @@ class RefreshTokenCommand extends Command
         // put cache 14 days from now
         cache()->put('accurate_token', $response, 1295999);
 
+        $this->call('app:clear-cache accurate_db');
+        $this->call('app:clear-cache accurate_db_list');
+
         activity()
             ->withProperties($response)
             ->log('Token has been refreshed.');
