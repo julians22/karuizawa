@@ -46,7 +46,7 @@
                 </div>
                 <div>
                     <div class="text-right uppercase print:scale-150">
-                        <div class="text-sm">Order No : {{ props.data_semi_custom.order_item.order.order_number }}</div>
+                        <div class="text-sm">Order No : {{ props.data_semi_custom.order_number }}</div>
                         <div class="text-sm">
                             <span>Order Date : {{ moment(props.data_semi_custom.order_item.order.created_at).format('DD/MM/YYYY') }}</span>
                             <span> | </span>
@@ -79,7 +79,7 @@
                 </div>
                 <div>
                     <div class="text-right uppercase print-props print:scale-150">
-                        <div class="text-sm">Order No : {{ props.data_semi_custom.order_item.order.order_number }}</div>
+                        <div class="text-sm">Order No : {{ props.data_semi_custom.order_number }}</div>
                         <div class="text-sm">
                             <span>
                                 fabric code:

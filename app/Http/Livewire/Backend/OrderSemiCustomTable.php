@@ -64,7 +64,8 @@ class OrderSemiCustomTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make("Order id", "order.order_number")
+            Column::make("Order id")
+                ->label(fn($row) => $row->product_sc->order_number)
                 ->sortable(),
             Column::make("Store", "order.store.name")
                 ->sortable()

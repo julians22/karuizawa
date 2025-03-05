@@ -35,7 +35,13 @@ class DashboardController
 
     public function print_sc($id)
     {
-        $semiCustom = SemiCustomProduct::with(['customer', 'orderItem', 'orderItem.order.user'])->findOrFail($id);
+        $semiCustom = SemiCustomProduct::with([
+                'customer',
+                'orderItem',
+                'orderItem.order.user' => function ($query) {
+                    $query->withTrashed();
+                }
+            ])->findOrFail($id);
         $dataConfig = config('karuizawa-master');
 
         $semiCustom = $semiCustom->toArray();
@@ -55,7 +61,13 @@ class DashboardController
 
     public function print_sc_per_day(Request $request)
     {
-        $semiCustom = SemiCustomProduct::with(['customer', 'orderItem', 'orderItem.order.user'])->whereDate('created_at', '=', $request->date)->orderBy('created_at', 'desc')->get();
+        $semiCustom = SemiCustomProduct::with([
+            'customer',
+            'orderItem',
+            'orderItem.order.user' => function ($query) {
+                $query->withTrashed();
+            }
+        ])->whereDate('created_at', '=', $request->date)->orderBy('created_at', 'desc')->get();
         $dataConfig = config('karuizawa-master');
 
         return view('frontend.print.sc-per-day', ['dataSemiCustom' => $semiCustom, 'dataConfig' => collect($dataConfig), 'date' => $request->date]);

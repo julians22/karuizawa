@@ -36,3 +36,4 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], f
 Route::group(['prefix' => 'crew', 'as' => 'crew.', 'middleware' => 'crew'], function () {
     includeRouteFiles(__DIR__.'/crew/');
 });
+

@@ -32,7 +32,7 @@ class SemiCustomProduct extends Model
      *
      * @var array
      */
-    protected $appends = ['fabric_code', 'fabric_name', 'collar', 'cuff', 'front_body', 'pocket', 'back_body', 'button', 'order_type_customer', 'body_type', 'sleeve'];
+    protected $appends = ['fabric_code', 'fabric_name', 'collar', 'cuff', 'front_body', 'pocket', 'back_body', 'button', 'order_type_customer', 'body_type', 'sleeve', 'order_number'];
 
     public function customer()
     {
@@ -50,6 +50,19 @@ class SemiCustomProduct extends Model
     }
 
     // todo: add more accessor
+
+    public function getOrderNumberAttribute()
+    {
+        $orderItem = $this->orderItem;
+        if($orderItem != null) {
+            $orderNumber = explode('-', $orderItem->order->order_number);
+            $newOrderNumber = $orderNumber[0].'-'.str_pad($this->id, 5, '0', STR_PAD_LEFT);;
+            // $newOrderNumber = $orderItem->order->order_number.'-'. $this->id;
+
+            return $newOrderNumber;
+        }
+        return 'N/A';
+    }
 
     public function getFabricCodeAttribute()
     {

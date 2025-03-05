@@ -22,10 +22,13 @@ class CustomerTable extends DataTableComponent
                 ->deselected()
                 ->sortable(),
             Column::make("Full name", "full_name")
+                ->searchable()
                 ->sortable(),
             Column::make("Phone", "phone")
+                ->searchable()
                 ->sortable(),
             Column::make("Email", "email")
+                ->searchable()
                 ->sortable(),
             Column::make("Created at", "created_at")
                 ->sortable(),
