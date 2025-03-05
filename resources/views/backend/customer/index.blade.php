@@ -31,6 +31,20 @@
                         <div class="fs-5 fw-semibold">{{ $newCustomer }}</div>
                     </div>
                 </div>
+
+                {{-- repeat Customer --}}
+                <div class="col-sm-3">
+                    <div class="callout callout-secondary">
+                        <div class="small text-body-secondary text-truncate" data-coreui-i18n="repeatCustomer">
+                            Repeat Order Customer
+                            {{-- tooltips --}}
+                            <a href="#" class="badge rounded-pill text-bg-light" data-coreui-toggle="tooltip" title="Repeat Order Customer, repeating order in last 30 days">
+                                <i class="cil-info"></i>
+                            </a>
+                        </div>
+                        <div class="fs-5 fw-semibold">{{ $repeatCustomer }}</div>
+                    </div>
+                </div>
             </div>
         </x-slot>
     </x-backend.card>

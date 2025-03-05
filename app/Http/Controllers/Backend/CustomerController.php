@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Exports\CustomerData;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\SemiCustomProduct;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -22,7 +23,16 @@ class CustomerController extends Controller
             return $customersQuery->where('created_at', '>=', now()->subDays(30))->count();
         });
 
-        return view('backend.customer.index', compact('totalCustomer', 'newCustomer'));
+        $repeatCustomer = cache()->remember('repeatCustomer', 60 * 60, function () {
+            return SemiCustomProduct::select('customer_id', 'created_at')
+                ->where('created_at', '>=', now()->subDays(30))
+                ->where('size->order', '2. REPEAT ORDER')
+                ->get()
+                ->groupBy('customer_id')
+                ->count();
+        });
+
+        return view('backend.customer.index', compact('totalCustomer', 'newCustomer', 'repeatCustomer'));
     }
 
     public function export() {
