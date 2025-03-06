@@ -90,7 +90,7 @@
             <div v-else-if="!isRetrieving && bookings" v-for="booking in bookings.data">
                 <div class="grid grid-cols-10 gap-2">
                     <div class="col-span-7 space-y-2 font-roboto">
-                        <div class="text-xl font-bold">Booking Number: {{ booking.order.order_number}}</div>
+                        <div class="text-xl font-bold">Booking Number: {{ booking.product.order_number}}</div>
                         <div>
                             {{ booking.product.customer.full_name }}
                         </div>
