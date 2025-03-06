@@ -41,7 +41,7 @@
 
                         <div class="bg-primary-50 my-5 w-full h-[1px]"></div>
 
-                        <div class="text-lg font-bold text-center capitalize">Order number: {{ booking.order.order_number }}</div>
+                        <div class="text-lg font-bold text-center capitalize">Order number: {{ booking.product.order_number }}</div>
 
                         <div class="bg-primary-50 my-5 w-full h-[1px]"></div>
 
