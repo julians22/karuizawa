@@ -119,8 +119,9 @@
 
 
 
+            <li class="nav-title">@lang('System')</li>
+
             @if ($logged_in_user->hasAllAccess())
-                <li class="nav-title">@lang('System')</li>
 
                 <li class="nav-item">
                     <x-utils.link
@@ -131,7 +132,6 @@
                         :text="__('System Information')" />
                 </li>
             @endif
-
 
             <li
                 aria-expanded="false"
