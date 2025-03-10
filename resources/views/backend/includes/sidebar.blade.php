@@ -119,16 +119,19 @@
 
 
 
-            <li class="nav-title">@lang('System')</li>
+            @if ($logged_in_user->hasAllAccess())
+                <li class="nav-title">@lang('System')</li>
 
-            <li class="nav-item">
-                <x-utils.link
-                    class="nav-link"
-                    :href="route('admin.system-information.index')"
-                    :active="activeClass(Route::is('admin.system-information.*'), 'active')"
-                    icon="nav-icon cil-info"
-                    :text="__('System Information')" />
-            </li>
+                <li class="nav-item">
+                    <x-utils.link
+                        class="nav-link"
+                        :href="route('admin.system-information.index')"
+                        :active="activeClass(Route::is('admin.system-information.*'), 'active')"
+                        icon="nav-icon cil-info"
+                        :text="__('System Information')" />
+                </li>
+            @endif
+
 
             <li
                 aria-expanded="false"
@@ -161,7 +164,7 @@
                         </li>
                     @endif
 
-                    {{-- @if ($logged_in_user->hasAllAccess())
+                    @if ($logged_in_user->hasAllAccess())
                         <li class="nav-item">
                             <x-utils.link
                                 :href="route('admin.auth.role.index')"
@@ -169,7 +172,7 @@
                                 :text="__('Role Management')"
                                 :active="activeClass(Route::is('admin.auth.role.*'), 'active')" />
                         </li>
-                    @endif --}}
+                    @endif
                 </ul>
             </li>
         @endif

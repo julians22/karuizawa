@@ -15,7 +15,9 @@
     </x-slot>
 
     <x-slot name="body">
-        @livewire('backend.order-table')
+        @livewire('backend.order-table', [
+            'allowBulkActions' => $logged_in_user->can('admin.access.accurate') ? true : false
+            ])
     </x-slot>
 
 </x-backend.card>

@@ -148,9 +148,11 @@ Route::group(['prefix' => 'product', 'as' => 'product.'], function() {
     Route::post('/', [ProductController::class, 'store'])->name('store');
 
     Route::get('fetch-stock', [ProductController::class, 'fetchStock'])
+        ->middleware('permission:admin.access.accurate')
         ->name('fetch-stock');
 
     Route::get('fetch-price', [ProductController::class, 'fetchPrice'])
+        ->middleware('permission:admin.access.accurate')
         ->name('fetch-price');
 
     Route::group(['prefix' => '{product}'], function() {

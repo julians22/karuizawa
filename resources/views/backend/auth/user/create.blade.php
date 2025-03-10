@@ -23,6 +23,7 @@
                         <div class="col-md-10">
                             <select name="type" class="form-control" required x-on:change="userType = $event.target.value">
                                 <option value="{{ $model::TYPE_CREW }}">@lang('Crew')</option>
+                                <option value="{{ $model::TYPE_ADMIN }}">@lang('Admin')</option>
                             </select>
                         </div>
                     </div><!--form-group-->
@@ -120,11 +121,11 @@
                         </div>
                     </div><!--form-group-->
 
-                    {{-- @include('backend.auth.includes.roles')
+                    @include('backend.auth.includes.roles')
 
                     @if (!config('boilerplate.access.user.only_roles'))
                         @include('backend.auth.includes.permissions')
-                    @endif --}}
+                    @endif
                 </div>
             </x-slot>
 

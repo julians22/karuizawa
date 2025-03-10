@@ -22,12 +22,18 @@ class OrderTable extends DataTableComponent
         '' => 'All',
     ];
 
-    function mount(){
+    public $allowBulkActions = true;
+
+    function mount($allowBulkActions = true){
+
+        $this->allowBulkActions = $allowBulkActions;
+
         $stores = Store::all();
 
         foreach ($stores as $store) {
             $this->stores[$store->id] = $store->code;
         }
+
     }
 
     public function configure(): void
@@ -42,6 +48,9 @@ class OrderTable extends DataTableComponent
             'syncAccurate',
         ]);
         $this->setBulkActionConfirmMessage('syncAccurate', 'Are you sure you want to sync the selected orders to Accurate?');
+
+        $this->setBulkActionsStatus($this->allowBulkActions);
+
         $this->setClearSelectedOnSearch(true);
 
         $this->setSingleSortingDisabled();
