@@ -619,52 +619,52 @@ return [
                     [
                         'slug' => 'white',
                         'name' => 'white',
-                        'price' => 30000
+                        'price' => 50000
                     ],
                     [
                         'slug' => 'saxe',
                         'name' => 'saxe',
-                        'price' => 30000
+                        'price' => 50000
                     ],
                     [
                         'slug' => 'navy',
                         'name' => 'navy',
-                        'price' => 30000
+                        'price' => 50000
                     ],
                     [
                         'slug' => 'lavender',
                         'name' => 'lavender',
-                        'price' => 30000
+                        'price' => 50000
                     ],
                     [
                         'slug' => 'brown',
                         'name' => 'brown',
-                        'price' => 30000
+                        'price' => 50000
                     ],
                     [
                         'slug' => 'pink',
                         'name' => 'pink',
-                        'price' => 30000
+                        'price' => 50000
                     ],
                     [
                         'slug' => 'wine-red',
                         'name' => 'wine red',
-                        'price' => 30000
+                        'price' => 50000
                     ],
                     [
                         'slug' => 'purple',
                         'name' => 'purple',
-                        'price' => 30000
+                        'price' => 50000
                     ],
                     [
                         'slug' => 'grey',
                         'name' => 'grey',
-                        'price' => 30000
+                        'price' => 50000
                     ],
                     [
                         'slug' => 'black',
                         'name' => 'black',
-                        'price' => 30000
+                        'price' => 50000
                     ],
                 ],
             ]
