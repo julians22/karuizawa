@@ -76,4 +76,14 @@ trait UserScope
     {
         return $query->where('type', $this::TYPE_USER);
     }
+
+    /**
+     * @param $query
+     * @return mixed
+     */
+    public function scopeTargetCrews($query)
+    {
+        return $query->whereHas('targetSettings');
+    }
+
 }

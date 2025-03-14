@@ -4,6 +4,7 @@ namespace App\Domains\Auth\Models\Traits\Relationship;
 
 use App\Domains\Auth\Models\PasswordHistory;
 use App\Models\Store;
+use App\Models\TargetSetting;
 use App\Models\UserPersonalData;
 
 /**
@@ -33,5 +34,13 @@ trait UserRelationship
     public function personalData()
     {
         return $this->hasOne(UserPersonalData::class, 'user_id');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function targetSettings()
+    {
+        return $this->hasMany(TargetSetting::class, 'user_id');
     }
 }

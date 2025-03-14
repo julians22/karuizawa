@@ -1,10 +1,9 @@
 <?php
 
-namespace App\Http\Livewire\Backend\Report;
+namespace App\Http\Livewire\Backend\Report\Performance;
 
 use App\Models\Order;
 use App\Models\Store;
-use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -17,6 +16,10 @@ class IndexComponent extends Component
     public $endMonth;
 
     public $stores;
+
+    public $store = '';
+
+    public $crewGroups = [];
 
     public function mount()
     {
@@ -39,14 +42,34 @@ class IndexComponent extends Component
         }
     }
 
-    #[Computed()]
-    public function reportIsReady()
+    public function submitFilter()
     {
-        return $this->month != '' && $this->stores->count() > 0;
+        $this->validate([
+            'month' => ['required', 'date_format:Y-m'],
+            'store' => ['required', 'exists:stores,id']
+        ]);
+
+        $months = explode('-', $this->month);
+        $month = $months[1];
+        $year = $months[0];
+
+        $transctionGroupByUser = Order::where('store_id', $this->store)
+            ->where('status', config('enums.order_status.completed'))
+            ->whereMonth('order_date', $month)
+            ->whereYear('order_date', $year)
+            ->get();
+
+        $crewIds = [];
+
+        $transctionGroupByUser->groupBy('user_id')->each(function ($item, $key) use (&$crewIds) {
+            $crewIds[] = $key;
+        });
+
+        $this->crewGroups = $crewIds;
     }
 
     public function render()
     {
-        return view('livewire.backend.report.index-component');
+        return view('livewire.backend.report.performance.index-component');
     }
 }

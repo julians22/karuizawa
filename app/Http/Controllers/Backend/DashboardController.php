@@ -115,6 +115,11 @@ class DashboardController
         return view('backend.report.index');
     }
 
+    public function performance()
+    {
+        return view('backend.report.performance');
+    }
+
     /**
      * Get "Repeat Customer" report
      */
