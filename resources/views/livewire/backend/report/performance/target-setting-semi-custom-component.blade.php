@@ -7,7 +7,7 @@
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th colspan="5" class="text-center h6">{{ $this->storeName }} ({{ $month }}) | {{ $category->name }}</th>
+                                <th colspan="5" class="text-center h6">{{ $this->storeName }} ({{ $month }}) | Semi Custom</th>
                             </tr>
                             <tr>
                                 <th class="text-center" width="20%">Crew</th>
@@ -26,7 +26,7 @@
                             @else
                                 @foreach ($crews as $crew)
                                     <tr
-                                        wire:key="table-{{ $category->id }}-{{ $crew['target_id'] }}-{{ $store }}-{{ $month }}">
+                                        wire:key="table-semi-custom-{{ $crew['target_id'] }}-{{ $store }}-{{ $month }}">
                                         <td>{{ $crew['name'] }}</td>
                                         <td class="text-center">
                                             {{ price_format($crew['target']) }}

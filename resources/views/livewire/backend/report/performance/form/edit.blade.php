@@ -1,7 +1,6 @@
 <div>
     {{-- Knowing others is intelligence; knowing yourself is true wisdom. --}}
 
-    {{-- Make Form Edit For Target --}}
     <form wire:submit.prevent="submit">
         <div class="form-group">
             <label for="target" class="fw-bolder">{{ $this->targetModel->user->name }}</label>

@@ -7,25 +7,22 @@ use App\Models\OrderItem;
 use App\Models\TargetSetting;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
-class TargetSettingComponent extends Component
+class TargetSettingSemiCustomComponent extends Component
 {
     public $month;
     public $store;
-    public $category;
 
     public $isEdit = false;
     public $isCreate = false;
 
     public $editTargetId = null;
 
-    public function mount($category, $month, $store)
+    public function mount($month, $store)
     {
         $this->month = $month;
         $this->store = $store;
-        $this->category = $category;
     }
 
     #[Computed()]
@@ -86,71 +83,66 @@ class TargetSettingComponent extends Component
 
     public function render()
     {
+
         $crews = [];
         $targetsQuery = TargetSetting::where('month', $this->month)
             ->where('store_id', $this->store)
-            ->where('category_id', $this->category->id)
+            ->semiCustom()
             ->get();
 
-        if (!$targetsQuery->isEmpty()) {
-            $targetsQuery->each(function ($target) use (&$crews) {
-                $user = User::withTrashed()->find($target->user_id);
+        foreach ($targetsQuery as $target) {
+            $user = User::withTrashed()->find($target->user_id);
 
-                $actualSell = $this->getActualSell($user->id);
+            $actualSell = $this->getActualSell($target->user_id);
 
-                $total = 0;
+            $total = 0;
 
-                if ($actualSell) {
-                    $total = $actualSell->sum('total_price');
-                }
+            if ($actualSell) {
+                $total = $actualSell->sum('price');
+            }
 
-                $indexPercent = ($total / $target->target) * 100;
+            $indexPercent = ($total / $target->target) * 100;
 
-                $crews[] = [
-                    'id' => $user->id,
-                    'name' => $user->name,
-                    'target' => $target->target,
-                    'actual' => $total,
-                    'percent' => number_format($indexPercent, 0),
-                    'target_id' => $target->id
-                ];
-            });
+            $crews[] = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'target' => $target->target,
+                'actual' => $total,
+                'percent' => number_format($indexPercent, 0),
+                'target_id' => $target->id
+            ];
         }
 
-        return view('livewire.backend.report.performance.target-setting-component', [
+        return view('livewire.backend.report.performance.target-setting-semi-custom-component', [
             'crews' => $crews
         ]);
     }
 
     public function getActualSell($crewId)
     {
-
         $month = explode('-', $this->month)[1];
         $year = explode('-', $this->month)[0];
         $store = $this->store;
 
         $userId = $crewId;
 
-        $readyToWear = OrderItem::with([
+        $semiCustom = OrderItem::with([
             'order',
-            'product_rtw',
+            'product_sc',
             'order.user' => function ($query) {
                 $query->withTrashed();
             }
-            ])
-            ->whereHas('order', function ($query) use ($store, $month, $year, $userId) {
-                return $query->whereMonth('order_date', $month)
-                    ->whereYear('order_date', $year)
-                    ->where('store_id', $store)
-                    ->where('status', config('enums.order_status.completed'))
-                    ->where('user_id', $userId);
-            })
-            ->whereHas('product_rtw', function ($query) {
-                return $query->where('category_id', $this->category->id);
-            })
-            ->readyToWear()
-            ->get();
+        ])
+        ->whereHas('order', function ($query) use ($store, $month, $year, $userId) {
+            return $query->whereMonth('order_date', $month)
+                ->whereYear('order_date', $year)
+                ->where('store_id', $store)
+                ->where('status', config('enums.order_status.completed'))
+                ->where('user_id', $userId);
+        })
+        ->semiCustom()
+        ->get();
 
-        return $readyToWear ?? null;
+        return $semiCustom ?? null;
     }
 }

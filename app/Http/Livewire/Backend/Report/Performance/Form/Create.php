@@ -21,9 +21,13 @@ class Create extends Component
 
     public $crew;
     public $target;
+    public $category;
 
-    public function mount($crewData)
+    public $categories;
+
+    public function mount($categories, $crewData = [])
     {
+        $this->categories = $categories;
         $this->crewData = $crewData;
     }
 
@@ -42,6 +46,7 @@ class Create extends Component
 
             $users = User::whereNotIn('id', $usersId)
                 ->where('type', User::TYPE_CREW)
+                ->withTrashed()
                 ->get();
 
             return $users;
@@ -53,20 +58,26 @@ class Create extends Component
     {
         $this->validate([
             'crew' => ['required'],
-            'target' => ['required', 'numeric']
+            'target' => ['required']
         ]);
+
+        $target = str_replace(',', '', $this->target);
 
 
         TargetSetting::create([
             'user_id' => $this->crew,
             'store_id' => $this->store,
             'month' => $this->month,
-            'target' => $this->target
+            'target' => $target,
+            'category_id' => $this->category !== 'semicustom' ? $this->category : null,
+            'is_semicustom' => $this->category === 'semicustom' ? true : false
         ]);
+
+        $user = User::withTrashed()->find($this->crew);
 
         $this->crewData[] = [
             'id' => $this->crew,
-            'name' => User::find($this->crew)->name,
+            'name' => $user->name,
             'target' => $this->target
         ];
 

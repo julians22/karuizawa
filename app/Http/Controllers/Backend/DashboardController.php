@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\SemiCustomProduct;
@@ -117,7 +118,10 @@ class DashboardController
 
     public function performance()
     {
-        return view('backend.report.performance');
+        $categories = Category::select('id', 'name')
+            ->where('id', '!=', 1)
+            ->get();
+        return view('backend.report.performance', compact('categories'));
     }
 
     /**

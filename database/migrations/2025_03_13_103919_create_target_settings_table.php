@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('target_settings', function (Blueprint $table) {
             $table->id();
+            $table->boolean('is_semicustom')->default(false);
+            $table->bigInteger('category_id')->nullable();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('store_id')->constrained('stores')->cascadeOnDelete();
             $table->string('month', 7);

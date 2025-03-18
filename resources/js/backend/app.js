@@ -13,5 +13,3 @@ window.Swal = require('sweetalert2');
 
 require('./livewire-plugins');
 require('../plugins');
-
-require('./alpine');

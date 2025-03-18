@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Backend\Report\Performance;
 
 use App\Models\Order;
 use App\Models\Store;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 
@@ -20,10 +21,17 @@ class IndexComponent extends Component
     #[Url(keep: true)]
     public $store = '';
 
-    public $crewGroups = [];
+    public $categories = [];
 
-    public function mount()
+    public $isEdit = false;
+    public $isCreate = false;
+
+    public $editTargetId = null;
+
+    public function mount($categories = [])
     {
+        $this->categories = $categories;
+
         $this->stores = Store::all();
 
         // get first and last transaction date in database
@@ -46,33 +54,49 @@ class IndexComponent extends Component
     public function submitFilter()
     {
         $this->dispatch('submitFilter');
-
-        $this->validate([
-            'month' => ['required', 'date_format:Y-m'],
-            'store' => ['required', 'exists:stores,id']
-        ]);
-
-        $months = explode('-', $this->month);
-        $month = $months[1];
-        $year = $months[0];
-
-        $transctionGroupByUser = Order::where('store_id', $this->store)
-            ->where('status', config('enums.order_status.completed'))
-            ->whereMonth('order_date', $month)
-            ->whereYear('order_date', $year)
-            ->get();
-
-        $crewIds = [];
-
-        $transctionGroupByUser->groupBy('user_id')->each(function ($item, $key) use (&$crewIds) {
-            $crewIds[] = $key;
-        });
-
-        $this->crewGroups = $crewIds;
     }
 
     public function render()
     {
         return view('livewire.backend.report.performance.index-component');
+    }
+
+    public function createTarget()
+    {
+        $this->isCreate = true;
+        $this->isEdit = false;
+        $this->editTargetId = null;
+    }
+
+    #[On('editTarget')]
+    public function editTarget($editTargetId)
+    {
+        $this->editTargetId = $editTargetId;
+        $this->isEdit = true;
+        $this->isCreate = false;
+    }
+
+    #[On('targetCreated')]
+    public function targetCreated()
+    {
+        $this->isEdit = false;
+        $this->isCreate = false;
+        $this->editTargetId = null;
+    }
+
+    #[On('targetUpdated')]
+    public function targetUpdated()
+    {
+        $this->isEdit = false;
+        $this->isCreate = false;
+        $this->editTargetId = null;
+    }
+
+    #[On('cancelCreate')]
+    public function cancelCreate()
+    {
+        $this->isEdit = false;
+        $this->isCreate = false;
+        $this->editTargetId = null;
     }
 }

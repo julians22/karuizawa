@@ -15,7 +15,9 @@ class TargetSetting extends Model
         'user_id',
         'store_id',
         'month',
-        'target'
+        'target',
+        'category_id',
+        'is_semicustom',
     ];
 
     // disable timestamps
@@ -29,5 +31,16 @@ class TargetSetting extends Model
     public function user(): HasOne
     {
         return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function isSemiCustom(): bool
+    {
+        return $this->is_semicustom;
+    }
+
+    // scope to get target setting semi custom
+    public function scopeSemiCustom($query)
+    {
+        return $query->where('is_semicustom', true);
     }
 }

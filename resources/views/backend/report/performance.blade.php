@@ -23,7 +23,7 @@
 
         <div class="row">
             <div class="col-12">
-                <livewire:backend.report.performance.index-component/>
+                <livewire:backend.report.performance.index-component :$categories/>
             </div>
         </div>
 
