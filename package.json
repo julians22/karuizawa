@@ -39,6 +39,7 @@
         "vue3-select-component": "^0.7.0"
     },
     "dependencies": {
+        "@alpinejs/mask": "^3.14.9",
         "@coders-tm/vue-number-format": "^3.35.2",
         "@radix-icons/vue": "^1.0.0",
         "@splidejs/splide": "^4.1.4",

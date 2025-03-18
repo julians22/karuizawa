@@ -17,6 +17,7 @@ class IndexComponent extends Component
 
     public $stores;
 
+    #[Url(keep: true)]
     public $store = '';
 
     public $crewGroups = [];
@@ -44,6 +45,8 @@ class IndexComponent extends Component
 
     public function submitFilter()
     {
+        $this->dispatch('submitFilter');
+
         $this->validate([
             'month' => ['required', 'date_format:Y-m'],
             'store' => ['required', 'exists:stores,id']

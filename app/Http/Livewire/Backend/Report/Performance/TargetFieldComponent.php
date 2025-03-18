@@ -3,33 +3,26 @@
 namespace App\Http\Livewire\Backend\Report\Performance;
 
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
+use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
 class TargetFieldComponent extends Component
 {
-    public $crew;
-    public $month;
-    public $store;
 
-    public function mount($crew, $month, $store)
-    {
-        $this->crew = $crew;
-        $this->month = $month;
-        $this->store = $store;
-    }
+    #[Reactive]
+    public $crew;
+
+    #[Reactive]
+    public $month;
+
+    #[Reactive]
+    public $store;
 
     #[Computed()]
     public function crewTarget()
     {
-        $target = \App\Models\TargetSetting::firstOrCreate([
-            'user_id' => $this->crew->id,
-            'store_id' => $this->store,
-            'month' => $this->month
-        ], [
-            'target' => 0
-        ]);
-
-        return $target;
+        return \App\Models\TargetSetting::find($this->crew['target_id']);
     }
 
     public function render()

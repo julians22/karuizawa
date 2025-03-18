@@ -40,19 +40,12 @@
         </div>
     </div>
 
-    <div class="row">
+    <div>
 
-        <div class="col-md-4">
-
-        </div>
-
-        <div class="col-md-6">
-            <h6 class="card-subtitle mb-2">Target Setting</h6>
-            <livewire:backend.report.performance.target-setting-component
-                :targetCrews="$crewGroups"
-                :$month
-                :$store/>
-        </div>
+        <livewire:backend.report.performance.target-setting-component
+            :targetCrews="$crewGroups"
+            :$month
+            :$store/>
     </div>
 
 </div>
