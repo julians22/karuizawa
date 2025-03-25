@@ -1,6 +1,6 @@
 @extends('backend.layouts.app')
 
-@section('title', __('Report'))
+@section('title', __('Performance Report'))
 
 @section('content')
 
@@ -16,14 +16,16 @@
 
 <x-backend.card>
     <x-slot name="header">
-        @lang('Welcome :Name', ['name' => $logged_in_user->name])
+        @lang('Performance Report')
     </x-slot>
 
     <x-slot name="body">
 
         <div class="row">
             <div class="col-12">
-                <livewire:backend.report.index-component/>
+                <livewire:backend.report.performance.index-component
+                    :$categories
+                    :$crews/>
             </div>
         </div>
 
@@ -32,13 +34,3 @@
 </x-backend.card>
 
 @endsection
-
-@push('before-scripts')
-    <script>
-        var chartReport = null;
-    </script>
-@endpush
-
-@push('after-styles')
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-@endpush

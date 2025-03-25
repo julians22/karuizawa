@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Livewire\Backend\Report;
+namespace App\Http\Livewire\Backend\Report\Performance;
 
 use App\Models\Order;
 use App\Models\Store;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class IndexComponent extends Component
@@ -13,13 +14,34 @@ class IndexComponent extends Component
     #[Url(keep: true)]
     public $month = '';
 
+    #[Url(keep: true)]
+    public $store = '';
+
+    #[Url(keep: true)]
+    public $selectedCrew = null;
+
+
     public $startMonth;
     public $endMonth;
 
     public $stores;
 
-    public function mount()
+
+    #[Validate('required|string|min:3')]
+    public $crewName = null;
+
+    public $crewList;
+
+    public $categories;
+    public $crews;
+
+    public function mount($categories = [], $crews)
     {
+        $this->categories = $categories;
+        $this->crews = $crews;
+
+        $this->crewList = $this->crews->pluck('name', 'id');
+
         $this->stores = Store::all();
 
         // get first and last transaction date in database
@@ -40,13 +62,18 @@ class IndexComponent extends Component
     }
 
     #[Computed()]
-    public function reportIsReady()
+    public function isReady()
     {
-        return $this->month != '' && $this->stores->count() > 0;
+        return $this->month != '' && $this->store != '';
+    }
+
+    public function submitFilter()
+    {
+        $this->dispatch('filterSubmit');
     }
 
     public function render()
     {
-        return view('livewire.backend.report.index-component');
+        return view('livewire.backend.report.performance.index-component');
     }
 }

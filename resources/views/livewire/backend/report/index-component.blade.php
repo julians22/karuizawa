@@ -72,11 +72,50 @@
 
                             <div class="card-body">
 
-                                {{-- /backend\chart\store-transaction-chart-component --}}
-                                <livewire:backend.chart.store-transaction-chart-component :$month />
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        {{-- /backend\chart\store-transaction-chart-component --}}
+                                        <livewire:backend.chart.store-transaction-chart-component :$month />
+                                    </div>
+
+                                    <div class="col-md-4">
+
+                                    </div>
+                                </div>
 
                             </div>
                         </div>
+                    </div>
+
+                    <div class="col-xl-6">
+
+                        @foreach ($stores as $store)
+                            <div
+                                class="card {{$loop->last ? 'mt-3' : ''}}">
+                                <div class="card-header">
+                                    <strong>
+                                        {{$store->name}}
+                                    </strong>
+                                    <small>Breakdown each Product Category</small>
+                                </div>
+
+                                <div class="card-body">
+
+                                    @if (!$this->reportIsReady)
+                                        <div class="alert alert-info" role="alert">
+                                            <p><strong>You need to select month to see the report</strong></p>
+                                        </div>
+                                    @else
+                                        <livewire:backend.report.store-monthly-component :$month :$store
+                                            key="{{$month}}-{{$store->id}}-store-monthly-component"
+                                            />
+                                    @endif
+
+
+                                </div>
+                            </div>
+
+                        @endforeach
                     </div>
 
 

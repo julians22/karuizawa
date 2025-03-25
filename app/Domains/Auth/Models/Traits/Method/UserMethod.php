@@ -116,4 +116,12 @@ trait UserMethod
     {
         return 'https://gravatar.com/avatar/'.md5(strtolower(trim($this->email))).'?s='.config('boilerplate.avatar.size', $size).'&d=mp';
     }
+
+    /**
+     * @return boolean
+     */
+    public function haveTargetSettings(): bool
+    {
+        return $this->targetSettings->count() > 0;
+    }
 }
