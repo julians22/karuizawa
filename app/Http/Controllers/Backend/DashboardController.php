@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Domains\Auth\Models\User;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Order;
@@ -119,9 +120,14 @@ class DashboardController
     public function performance()
     {
         $categories = Category::select('id', 'name')
-            ->where('id', '!=', 1)
             ->get();
-        return view('backend.report.performance', compact('categories'));
+
+        $crews = User::select('id', 'name')
+            ->withTrashed()
+            ->where('type', User::TYPE_CREW)
+            ->orderBy('name', 'asc')
+            ->get();
+        return view('backend.report.performance', compact('categories', 'crews'));
     }
 
     /**

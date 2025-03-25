@@ -33,6 +33,22 @@ class TargetSetting extends Model
         return $this->hasOne(User::class, 'id', 'user_id');
     }
 
+    /**
+     * Get the store associated with the TargetSetting
+     */
+    public function store()
+    {
+        return $this->belongsTo(Store::class, 'store_id');
+    }
+
+    /**
+     * Get the category associated with the TargetSetting
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
     public function isSemiCustom(): bool
     {
         return $this->is_semicustom;

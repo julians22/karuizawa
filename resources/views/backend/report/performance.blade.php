@@ -23,7 +23,9 @@
 
         <div class="row">
             <div class="col-12">
-                <livewire:backend.report.performance.index-component :$categories/>
+                <livewire:backend.report.performance.index-component
+                    :$categories
+                    :$crews/>
             </div>
         </div>
 

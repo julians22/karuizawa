@@ -4,8 +4,9 @@ namespace App\Http\Livewire\Backend\Report\Performance;
 
 use App\Models\Order;
 use App\Models\Store;
-use Livewire\Attributes\On;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\Url;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class IndexComponent extends Component
@@ -13,24 +14,33 @@ class IndexComponent extends Component
     #[Url(keep: true)]
     public $month = '';
 
+    #[Url(keep: true)]
+    public $store = '';
+
+    #[Url(keep: true)]
+    public $selectedCrew = null;
+
+
     public $startMonth;
     public $endMonth;
 
     public $stores;
 
-    #[Url(keep: true)]
-    public $store = '';
 
-    public $categories = [];
+    #[Validate('required|string|min:3')]
+    public $crewName = null;
 
-    public $isEdit = false;
-    public $isCreate = false;
+    public $crewList;
 
-    public $editTargetId = null;
+    public $categories;
+    public $crews;
 
-    public function mount($categories = [])
+    public function mount($categories = [], $crews)
     {
         $this->categories = $categories;
+        $this->crews = $crews;
+
+        $this->crewList = $this->crews->pluck('name', 'id');
 
         $this->stores = Store::all();
 
@@ -51,52 +61,19 @@ class IndexComponent extends Component
         }
     }
 
+    #[Computed()]
+    public function isReady()
+    {
+        return $this->month != '' && $this->store != '';
+    }
+
     public function submitFilter()
     {
-        $this->dispatch('submitFilter');
+        $this->dispatch('filterSubmit');
     }
 
     public function render()
     {
         return view('livewire.backend.report.performance.index-component');
-    }
-
-    public function createTarget()
-    {
-        $this->isCreate = true;
-        $this->isEdit = false;
-        $this->editTargetId = null;
-    }
-
-    #[On('editTarget')]
-    public function editTarget($editTargetId)
-    {
-        $this->editTargetId = $editTargetId;
-        $this->isEdit = true;
-        $this->isCreate = false;
-    }
-
-    #[On('targetCreated')]
-    public function targetCreated()
-    {
-        $this->isEdit = false;
-        $this->isCreate = false;
-        $this->editTargetId = null;
-    }
-
-    #[On('targetUpdated')]
-    public function targetUpdated()
-    {
-        $this->isEdit = false;
-        $this->isCreate = false;
-        $this->editTargetId = null;
-    }
-
-    #[On('cancelCreate')]
-    public function cancelCreate()
-    {
-        $this->isEdit = false;
-        $this->isCreate = false;
-        $this->editTargetId = null;
     }
 }
