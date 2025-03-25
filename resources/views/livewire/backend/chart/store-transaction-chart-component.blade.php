@@ -4,6 +4,13 @@
     <div class="mb-3">
         <h4 class="text-center">
             Total Selling : <strong>{{ price_format($totalSelling) }}</strong>
+            <small>
+                @if ($daily)
+                    <span class="badge bg-warning">@lang('Showing Daily Result') {{ $daily }}</span>
+                @else
+                    <span class="badge bg-warning">@lang('Showing Monthly Result')</span>
+                @endif
+            </small>
         </h4>
     </div>
 
@@ -11,6 +18,10 @@
         id="chart"
         wire:ignore
     ></div>
+
+    <div>
+
+    </div>
 </div>
 
 @assets

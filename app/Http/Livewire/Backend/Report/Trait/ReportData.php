@@ -35,22 +35,28 @@ trait ReportData
      * @param $year
      * @return mixed
      */
-    protected function getSemicustom($store, $month, $year)
+    protected function getSemicustom($store, $month, $year, $daily = null)
     {
         $semiCustom = OrderItem::with([
             'order',
             'product_sc',
-            'order.payments',
             'order.customer',
             'order.user' => function ($query) {
                 $query->withTrashed();
             }
         ])
-        ->whereHas('order', function ($query) use ($store, $month, $year) {
-            return $query->whereMonth('order_date', $month)
-                ->whereYear('order_date', $year)
-                ->where('store_id', $store)
-                ->where('status', config('enums.order_status.completed'));
+        ->when($daily, function ($query) use ($store, $daily) {
+            return $query->whereHas('order', function ($query) use ($store, $daily) {
+                return $query->whereDate('order_date', $daily)
+                    ->where('store_id', $store);
+            });
+        }, function ($query) use ($store, $month, $year) {
+            return $query->whereHas('order', function ($query) use ($store, $month, $year) {
+                return $query->whereMonth('order_date', $month)
+                    ->whereYear('order_date', $year)
+                    ->where('store_id', $store)
+                    ->where('status', config('enums.order_status.completed'));
+            });
         })
         ->semiCustom()
         ->get();
@@ -65,22 +71,28 @@ trait ReportData
      * @param $year
      * @return mixed
      */
-    protected function getReadyToWear($store, $month, $year)
+    protected function getReadyToWear($store, $month, $year, $daily = null)
     {
         $readyToWear = OrderItem::with([
             'order',
             'product_rtw',
-            'order.payments',
             'product_rtw.category',
             'order.user' => function ($query) {
                 $query->withTrashed();
             }
             ])
-            ->whereHas('order', function ($query) use ($store, $month, $year) {
-                return $query->whereMonth('order_date', $month)
-                    ->whereYear('order_date', $year)
-                    ->where('store_id', $store)
-                    ->where('status', config('enums.order_status.completed'));
+            ->when($daily, function ($query) use ($store, $daily) {
+                return $query->whereHas('order', function ($query) use ($store, $daily) {
+                    return $query->whereDate('order_date', $daily)
+                        ->where('store_id', $store);
+                });
+            }, function ($query) use ($store, $month, $year) {
+                return $query->whereHas('order', function ($query) use ($store, $month, $year) {
+                    return $query->whereMonth('order_date', $month)
+                        ->whereYear('order_date', $year)
+                        ->where('store_id', $store)
+                        ->where('status', config('enums.order_status.completed'));
+                });
             })
             ->readyToWear()
             ->get();

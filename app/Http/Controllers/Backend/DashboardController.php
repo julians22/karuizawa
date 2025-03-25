@@ -114,7 +114,9 @@ class DashboardController
      */
     public function report()
     {
-        return view('backend.report.index');
+        $categories = Category::select('id', 'name')
+            ->get();
+        return view('backend.report.index', compact('categories'));
     }
 
     public function performance()

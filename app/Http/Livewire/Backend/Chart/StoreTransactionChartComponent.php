@@ -13,77 +13,62 @@ class StoreTransactionChartComponent extends Component
     #[Reactive]
     public $month = ""; // month in format Y-m
 
+    #[Reactive]
+    public $daily = null;
+
     public $chartData = [];
     public $totalSelling = 0;
+
+    public $reportData;
+    public $stores;
 
     public function render()
     {
         return view('livewire.backend.chart.store-transaction-chart-component');
     }
 
-    public function mount()
+    public function mount($reportData, $stores)
     {
-        $this->generateReportData();
-        $this->dispatch('chartDataFilled');
-    }
+        $this->reportData = $reportData;
+        $this->stores = $stores;
 
-    public function validateReactiveProp()
-    {
         $this->generateReportData();
+
         $this->dispatch('chartDataFilled');
     }
 
     public function generateReportData()
     {
-
         $this->chartData = [];
         $this->totalSelling = 0;
 
-        // {
-        //     series: [44, 55, 13, 43, 22],
-        //     chart: {
-        //     width: 380,
-        //     type: 'pie',
-        //   },
-        //   labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
-        //   responsive: [{
-        //     breakpoint: 480,
-        //     options: {
-        //       chart: {
-        //         width: 200
-        //       },
-        //       legend: {
-        //         position: 'bottom'
-        //       }
-        //     }
-        //   }]
-        // };
-
-        $store = Store::select('id', 'name')
-            ->with(['orders' => function ($query) {
-                Order::$withoutAppends = true;
-                $query->select('id', 'store_id', 'total_price', 'created_at')
-                    ->without('payments')
-                    ->where('status', 'completed')
-                    ->whereMonth('order_date', Carbon::parse($this->month)->format('m'))
-                    ->whereYear('order_date', Carbon::parse($this->month)->format('Y'));
-            }])
-            ->get();
-
-        $labels = [];
         $series = [];
+        $labels = [];
 
-        foreach ($store as $store) {
-            $labels[] = $store->name;
-            $series[] = $store->orders->sum('total_price');
+        $this->stores->each(function ($store, $key) use (&$series, &$labels) {
 
-            $this->totalSelling += $store->orders->sum('total_price');
+            $labels[$store->id] = $store->name;
+            $series[$store->id] = 0;
+        });
+
+        collect($this->reportData)->each(function ($data, $key) use (&$series) {
+            collect($data)->each(function ($item) use (&$series, $key) {
+                $series[$key] += $item['value'];
+            });
+        });
+
+        // simplify the key of series and labels
+        $series = array_values($series);
+        $labels = array_values($labels);
+
+        foreach ($series as $key => $value) {
+            $this->totalSelling += $value;
         }
 
         $this->chartData = [
             'series' => $series,
             'chart' => [
-                'width' => 500,
+                'width' => 350,
                 'type' => 'pie',
             ],
             'labels' => $labels,
