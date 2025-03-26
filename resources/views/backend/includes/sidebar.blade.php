@@ -111,19 +111,19 @@
             <li class="nav-item">
                 <x-utils.link
                     class="nav-link"
-                    :href="route('admin.report.index')"
-                    :active="activeClass(Route::is('admin.report.index.*'), 'active')"
+                    :href="route('admin.report.performance')"
+                    :active="activeClass(Route::is('admin.report.performance.*'), 'active')"
                     icon="nav-icon fas fa-chart-line"
-                    :text="__('Report')" />
+                    :text="__('Perf. Setting & Report')" />
             </li>
 
             <li class="nav-item">
                 <x-utils.link
                     class="nav-link"
-                    :href="route('admin.report.performance')"
-                    :active="activeClass(Route::is('admin.report.performance.*'), 'active')"
+                    :href="route('admin.report.index')"
+                    :active="activeClass(Route::is('admin.report.index.*'), 'active')"
                     icon="nav-icon fas fa-chart-line"
-                    :text="__('Performance Report')" />
+                    :text="__('Report')" />
             </li>
 
             <li class="nav-title">@lang('System')</li>
