@@ -1,14 +1,14 @@
-<tr>
+<tr class="border border-light-subtle">
     {{-- Stop trying to control. --}}
-    <td>{{ $this->storeModel->name }}</td>
+    <th class="text-center align-middle">{{ $this->storeModel->name }}</th>
     <td>
 
-        <table class="table-sm table table-bordered">
+        <table class="table-sm table table-bordered mb-0">
 
             <thead>
                 <tr>
-                    <th>Target</th>
-                    <th>Actual</th>
+                    <th width="150">Target</th>
+                    <th width="150">Actual</th>
                     <th>Remaining</th>
                 </tr>
             </thead>

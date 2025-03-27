@@ -63,5 +63,8 @@ Route::group(['prefix' => 'order', 'as' => 'order.'], function() {
 
         Route::patch('/', [OrderController::class, 'update'])->name('update');
         Route::delete('/', [OrderController::class, 'destroy'])->name('destroy');
+
+        Route::patch('approve', [OrderController::class, 'approve'])->name('approve');
+        Route::patch('cancel', [OrderController::class, 'cancel'])->name('cancel');
     });
 });

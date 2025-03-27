@@ -107,4 +107,24 @@ class Order extends Model
     {
         return ($this->accurate_order_id != null && $this->accurate_order_number != null) && $this->accurate_sync_date != null;
     }
+
+    public function isPending()
+    {
+        return $this->status == config('enums.order_status.pending');
+    }
+
+    public function isProcessing()
+    {
+        return $this->status == config('enums.order_status.processing');
+    }
+
+    public function isCompleted()
+    {
+        return $this->status == config('enums.order_status.completed');
+    }
+
+    public function isCancelled()
+    {
+        return $this->status == config('enums.order_status.cancelled');
+    }
 }

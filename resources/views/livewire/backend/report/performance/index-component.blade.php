@@ -11,7 +11,7 @@
                             <div class="col-md-12">
                                 {{-- Select Month --}}
                                 <label for="month" class="mb-2 fw-bolder">@lang('Select Month')</label>
-                                <input type="month" class="form-control form-control-sm" id="month" wire:model="month" min="{{$startMonth}}" max="{{$endMonth}}">
+                                <input type="month" class="form-control form-control-sm" id="month" wire:model="month" min="{{$startMonth}}">
                                 @error('month')
                                     <small class="text-danger d-inline-block">{{ $message }}</small>
                                 @enderror

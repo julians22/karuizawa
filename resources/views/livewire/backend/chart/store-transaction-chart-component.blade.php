@@ -17,6 +17,7 @@
     <div
         id="chart"
         wire:ignore
+        class="d-flex justify-content-center"
     ></div>
 
     <div>

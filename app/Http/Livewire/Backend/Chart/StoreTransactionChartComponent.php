@@ -68,7 +68,7 @@ class StoreTransactionChartComponent extends Component
         $this->chartData = [
             'series' => $series,
             'chart' => [
-                'width' => 350,
+                'width' => 400,
                 'type' => 'pie',
             ],
             'labels' => $labels,

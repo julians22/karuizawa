@@ -130,4 +130,20 @@ class OrderController extends Controller
 
     }
 
+    public function approve(Request $request, Order $order)
+    {
+        $order->update([
+            'status' => config('enums.order_status.completed')
+        ]);
+
+        return redirect()->back()->withFlashSuccess(__('The order was successfully approved.'));
+    }
+
+    public function cancel(Request $request, Order $order)
+    {
+        $order->update([
+            'status' => config('enums.order_status.cancelled')
+        ]);
+        return redirect()->back()->withFlashSuccess(__('The order was successfully approved.'));
+    }
 }

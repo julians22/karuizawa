@@ -16,7 +16,7 @@
             <div class="col-md-3" x-show="filtertype === 'monthly'">
                 {{-- Select Month --}}
                 <label for="month" class="mb-2 fw-bolder">Select Month</label>
-                <input type="month" class="form-control form-control-sm" id="month" wire:model.live="month" min="{{$startMonth}}" max="{{$endMonth}}">
+                <input type="month" class="form-control form-control-sm" id="month" wire:model.live="month" min="{{$startMonth}}">
                 @error('month')
                     <small class="text-danger d-inline-block">{{ $message }}</small>
                 @enderror
@@ -90,7 +90,7 @@
                             <div class="card-body">
 
                                 <div class="row">
-                                    <div class="col-md-5">
+                                    <div class="col-md-12">
                                         <livewire:backend.chart.store-transaction-chart-component
                                             :$month
                                             key="{{$this->isDaily ? $date : $month}}-store-transaction-chart-component"
@@ -100,13 +100,16 @@
                                             />
                                     </div>
 
-                                    <div class="col-md-7">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
                                         <div class="card">
                                             <div class="card-body">
                                                 <table class="table table-borderless">
                                                     <tr>
-                                                        <th>Days to Go</th>
-                                                        <td><strong>{{$this->remaining_days}}</strong></td>
+                                                        <th><span class="h4">Days to Go</span></th>
+                                                        <td><strong><span class="h3">{{$this->remaining_days}}</span></strong></td>
                                                     </tr>
 
                                                     @foreach ($reportData as $store_id => $store)

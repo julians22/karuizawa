@@ -55,6 +55,8 @@ class OrderTable extends DataTableComponent
 
         $this->setSingleSortingDisabled();
         $this->setDefaultSort('created_at', 'desc');
+
+        $this->addAdditionalSelects('status');
     }
 
     public function filters(): array
@@ -64,9 +66,8 @@ class OrderTable extends DataTableComponent
                 ->options([
                     '' => 'All',
                     'pending' => 'Pending',
-                    // 'processing' => 'Processing',
                     'completed' => 'Completed',
-                    // 'cancelled' => 'Cancelled',
+                    'cancel' => 'Cancel',
                 ])
                 ->filter(fn($builder, $value) => $builder->where('status', $value)),
             SelectFilter::make('Store')
@@ -131,7 +132,22 @@ class OrderTable extends DataTableComponent
                 ->sortable()
                 ->format(fn($value) => price_format($value)),
             Column::make("Status", "status")
-                ->sortable(),
+                ->sortable()
+                ->label(
+                    function($row, Column $column){
+                        switch ($row->status) {
+                            case 'pending':
+                                return '<span class="bg-warning badge">Pending</span>';
+                            case 'completed':
+                                return '<span class="bg-success badge">Completed</span>';
+                            case 'cancelled':
+                                return '<span class="bg-danger badge">Canceled</span>';
+                            default:
+                                return '<span class="bg-secondary badge">Unknown</span>';
+                        }
+                    }
+                )
+                ->html(),
             BooleanColumn::make("Semi Custom?", "id")
                 ->setCallback(function(string $value, $row) {
                     return $row->hasSemiCustom();
