@@ -14,16 +14,19 @@
             })
         },
         user: Object,
-        api_set_handling: String
+        api_set_handling: String,
+        api_set_status: String
     });
 
     const isRetrieving = ref(false);
 
     const DetailOrder = defineAsyncComponent(() => import('../utils/DetailFitting.vue'));
     const SetHandlingDate = defineAsyncComponent(() => import('../utils/HandlingDate.vue'));
+    const SetStatusDialog = defineAsyncComponent(() => import('../utils/StatusDialog.vue'));
 
     const orderDetail = ref(false);
     const handlingDate = ref(false);
+    const statusDialog = ref(null);
 
 
     const bookings = ref(null);
@@ -71,6 +74,11 @@
         handlingDate.value.order_item = await booking
     }
 
+    const onClickConfirmStatus = async (booking) => {
+        statusDialog.value.dialog = true
+        statusDialog.value.product = await booking.product
+    }
+
     const handlingDateUpdated = (booking_item) => {
         getBookings();
     }
@@ -84,13 +92,18 @@
     <div>
         <DetailOrder ref="orderDetail"/>
         <SetHandlingDate ref="handlingDate" :api_set_handling="api_set_handling" @handling-date-updated="handlingDateUpdated"/>
+        <SetStatusDialog ref="statusDialog" :api_set_status="props.api_set_status" @get-bookings="getBookings"/>
 
         <div class="container pt-10 pb-28">
             <div v-if="isRetrieving">Loading Orders ...</div>
             <div v-else-if="!isRetrieving && bookings" v-for="booking in bookings.data">
                 <div class="grid grid-cols-10 gap-2">
                     <div class="col-span-7 space-y-2 font-roboto">
-                        <div class="text-xl font-bold">Booking Number: {{ booking.product.order_number}}</div>
+                        <div class="flex items-center gap-2 text-xl font-bold">
+                            <span>Booking Number: {{ booking.product.order_number}}</span>
+                            <span v-if="booking.product.status === 'processing'" class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300">Processing</span>
+                            <span v-else-if="booking.product.status === 'finish'" class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-green-400 border border-green-400">Finish</span>
+                        </div>
                         <div>
                             {{ booking.product.customer.full_name }}
                         </div>
@@ -114,6 +127,15 @@
                             <span class="mt-1 text-xs">SEE DETAIL</span>
                             <img class="inline-block size-4" src="img/icons/arrw-ck-right.png" alt="">
                         </button>
+                        <div class="text-xl font-bold">Status</div>
+                        <div v-if="booking.product.finish_at">{{ moment(booking.product.finish_at).format("YYYY-MM-DD | H:m") }}</div>
+                        <div v-else>
+                            <button @click="onClickConfirmStatus(booking)"
+                                class="flex items-center gap-3 px-4 py-2 tracking-widest text-white bg-primary-50 lg:px-3 lg:py-2 font-josefin">
+                                <span class="mt-1 text-xs">SET FINISH</span>
+                                <img class="inline-block size-4" src="img/icons/arrw-ck-right.png" alt="">
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="bg-black my-6 w-full h-0.5"></div>

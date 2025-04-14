@@ -1,4 +1,3 @@
-
 <script setup>
 
 import { ref, defineExpose } from 'vue';
@@ -65,10 +64,10 @@ defineExpose({
 
 <dialog :open="dialog" style="z-index: 999;">
 
-    <div class="flex justify-center items-center w-full h-full overflow-auto">
+    <div class="flex items-center justify-center w-full h-full overflow-auto">
         <div class="relative flex-1 md:m-auto max-md:mx-10 rounded-2xl md:max-w-lg lg:max-w-xl xl:max-w-3xl 2xl:max-w-4xl">
-            <div class="flex max-md:flex-col bg-white shadow-2xl p-10 rounded-2xl w-full h-full">
-                <div class="top-3 right-5 absolute">
+            <div class="flex w-full h-full p-10 bg-white shadow-2xl max-md:flex-col rounded-2xl">
+                <div class="absolute top-3 right-5">
                     <button @click="closeDialog"><img src="/img/icons/close.png" alt=""></button>
                 </div>
                 <div class="w-full font-roboto" v-if="order_item">
@@ -81,7 +80,7 @@ defineExpose({
                     <VueDatePicker v-model="date" :format="format" :min-date="new Date()" ignore-time-validation :enableTimePicker="false" />
 
                     <div class="flex justify-center mt-5">
-                        <button @click="setFittingDate" class="bg-primary-50 px-4 lg:px-3 py-2 lg:py-2 font-josefin text-white tracking-widest">Set Fitting Date</button>
+                        <button @click="setFittingDate" class="px-4 py-2 tracking-widest text-white bg-primary-50 lg:px-3 lg:py-2 font-josefin">Set Fitting Date</button>
                     </div>
 
                 </div>
