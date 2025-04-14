@@ -90,6 +90,10 @@ class OrderSemiCustomTable extends DataTableComponent
             Column::make("Handling Date", "product_sc.handling_date")
                 ->sortable()
                 ->format(fn($value) => $value),
+            Column::make("Status", "product_sc.status")
+                ->sortable()
+                ->format(fn($value) => $value == 'processing' ? '<span class="badge text-bg-info">Processing</span>' : '<span class="badge text-bg-success">Finish</span>')
+                ->html(),
             Column::make("Created at", "created_at")
                 ->sortable()
                 ->format(fn($value) => $value->diffForHumans()),

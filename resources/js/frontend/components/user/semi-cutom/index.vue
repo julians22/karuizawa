@@ -16,8 +16,6 @@
         user: Object,
         route_edit_profile: String,
         route_logout: String,
-        data_custom_shirt: Object,
-        data_custom_request: Object,
         data_semi_custom: Object,
         api_store_order: String,
         api_customer_size: String,
