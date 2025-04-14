@@ -48,7 +48,8 @@ trait ReportData
         ->when($daily, function ($query) use ($store, $daily) {
             return $query->whereHas('order', function ($query) use ($store, $daily) {
                 return $query->whereDate('order_date', $daily)
-                    ->where('store_id', $store);
+                    ->where('store_id', $store)
+                    ->where('status', config('enums.order_status.completed'));
             });
         }, function ($query) use ($store, $month, $year) {
             return $query->whereHas('order', function ($query) use ($store, $month, $year) {
@@ -84,7 +85,8 @@ trait ReportData
             ->when($daily, function ($query) use ($store, $daily) {
                 return $query->whereHas('order', function ($query) use ($store, $daily) {
                     return $query->whereDate('order_date', $daily)
-                        ->where('store_id', $store);
+                        ->where('store_id', $store)
+                        ->where('status', config('enums.order_status.completed'));
                 });
             }, function ($query) use ($store, $month, $year) {
                 return $query->whereHas('order', function ($query) use ($store, $month, $year) {
