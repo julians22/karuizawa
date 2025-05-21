@@ -54,12 +54,24 @@
 
 @layer components {
 
+    .table-target-breakdown {
+        @apply w-full min-w-max text-left table-auto;
+    }
+
+    .table-target-breakdown th {
+        @apply bg-primary-100 p-4 border-primary-200 border-b text-white;
+    }
+
+    .table-target-breakdown td {
+        @apply p-4 border-primary-200 border-b text-gray-900;
+    }
+
     .box-input-wrapper{
         @apply flex font-roboto;
     }
 
     .box-input-wrapper .box-input {
-        @apply block border-primary-50 p-2 border text-center text-gray-900 text-sm size-8;
+        @apply block p-2 border border-primary-50 size-8 text-gray-900 text-sm text-center;
     }
 
     .box-input-wrapper .box-input:not(:first-child) {
@@ -112,7 +124,7 @@
     // Styling for print page form
     // Buttons
     .buttons-wrapper{
-        @apply border-pink-ka mt-2 p-2 border;
+        @apply mt-2 p-2 border border-pink-ka;
 
         .buttons-layout{
             @apply gap-2 grid grid-cols-2 grid-rows-5 grid-flow-col;

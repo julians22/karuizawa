@@ -401,4 +401,23 @@ class OrderController extends Controller
 
     }
 
+    function set_status(Request $request, $semiCustomId)
+    {
+        $request->validate([
+            'status' => 'required',
+        ]);
+
+        $semiCustom = SemiCustomProduct::findOrFail($semiCustomId);
+
+        $semiCustom->update([
+            'status' => $request->status,
+            'finish_at' => now(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Status updated',
+        ], 200);
+    }
+
 }

@@ -49,6 +49,10 @@ class SemiCustomProduct extends Model
         return $this->morphOne(OrderItem::class, 'product');
     }
 
+    public function isFinish() {
+        return $this->status == 'finish' ? true : false;
+    }
+
     // todo: add more accessor
 
     public function getOrderNumberAttribute()
