@@ -49,7 +49,7 @@ class InvoiceCreateDownPayment implements ShouldQueue
             DownPaymentResponse::create([
                 'order_id' => $this->order_id,
                 'response' => json_encode($response),
-                'down_payment_number' => $response['orderDownPayment'] ?? '',
+                'down_payment_number' => $response['orderDownPayment'] ? json_encode($response['orderDownPayment']) : null,
                 'down_payment_amount' => number_format($this->params['dpAmount'], 0, '.', ''),
             ]);
 
