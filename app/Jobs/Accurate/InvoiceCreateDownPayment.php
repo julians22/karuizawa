@@ -3,6 +3,7 @@
 namespace App\Jobs\Accurate;
 
 use App\Jobs\Accurate\Traits\AccurateAccess;
+use App\Models\DownPaymentResponse;
 use App\Models\Order;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
@@ -44,13 +45,15 @@ class InvoiceCreateDownPayment implements ShouldQueue
             $response = json_decode($response->body(), true);
             $response = $response['r'];
 
-            $order = Order::find($this->order_id);
 
-            $order->downPaymentResponse->create([
+            DownPaymentResponse::create([
+                'order_id' => $this->order_id,
                 'response' => $response,
                 'down_payment_number' => $response['orderDownPayment'],
                 'down_payment_amount' => number_format($this->params['dpAmount'], 0, '.', ''),
             ]);
+
+            $order = Order::find($this->order_id);
 
             // create activity log
             activity()
