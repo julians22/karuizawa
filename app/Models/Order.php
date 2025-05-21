@@ -65,6 +65,11 @@ class Order extends Model
         return $this->hasMany(Payment::class);
     }
 
+    public function downPaymentResponse()
+    {
+        return $this->hasOne(DownPaymentResponse::class);
+    }
+
     public function hasSemiCustom()
     {
         return $this->orderItems()->whereHas('product', function ($query) {
@@ -126,5 +131,12 @@ class Order extends Model
     public function isCancelled()
     {
         return $this->status == config('enums.order_status.cancelled');
+    }
+
+    public function getSemiCustomProductsAttribute()
+    {
+        return $this->orderItems()->whereHas('product', function ($query) {
+            $query->where('product_type', 'App\Models\SemiCustomProduct');
+        })->get();
     }
 }

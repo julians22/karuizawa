@@ -405,14 +405,13 @@ class OrderController extends Controller
     {
         $request->validate([
             'status' => 'required',
-            'finish_at' => 'required'
         ]);
 
         $semiCustom = SemiCustomProduct::findOrFail($semiCustomId);
 
         $semiCustom->update([
             'status' => $request->status,
-            'finish_at' => $request->finish_at,
+            'finish_at' => now(),
         ]);
 
         return response()->json([

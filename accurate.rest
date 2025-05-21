@@ -1,0 +1,16 @@
+POST http://vxsbd3.pvt1.accurate.id/accurate/api/sales-invoice/create-down-payment.do
+X-Session-ID: 5865e69c-6681-437c-91d2-6470ac12cc9d
+Content-Type: application/json
+Authorization: Bearer cf1316e7-8a1e-4822-9317-c114412efede
+
+{
+    "customerNo": "C.00651",
+    "dpAmount": 5000000,
+    "currencyCode": "IDR",
+    "description": "Test DP Penjualan dari Toko",
+    "documentCode": "DIGUNGGUNG",
+    "inclusiveTax": true,
+    "isTaxable": true,
+    "typeAutoNumber": 1801,
+    "transDate": "21/05/2025"
+}

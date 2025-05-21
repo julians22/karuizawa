@@ -56,6 +56,13 @@ class OrderSemiCustomTable extends DataTableComponent
                     $this->stores
                 )
                 ->filter(fn($builder, $value) => $builder->where('order.store_id', $value)),
+            SelectFilter::make('Status')
+                ->options([
+                    '' => 'All',
+                    'processing' => 'Processing',
+                    'finish' => 'Finish',
+                ])
+                ->filter(fn($builder, $value) => $builder->where('product_sc.status', $value)),
             DateFilter::make('Order Date')
                 ->filter(fn($builder, $value) => $builder->whereDate('order.order_date', $value)),
         ];
@@ -64,7 +71,10 @@ class OrderSemiCustomTable extends DataTableComponent
     public function columns(): array
     {
         return [
-            Column::make("Order id")
+            Column::make('Transaction No', 'order.order_number')
+                ->sortable()
+                ->searchable(),
+            Column::make("SC Order id")
                 ->label(fn($row) => $row->product_sc->order_number)
                 ->sortable(),
             Column::make("Store", "order.store.name")
@@ -92,7 +102,7 @@ class OrderSemiCustomTable extends DataTableComponent
                 ->format(fn($value) => $value),
             Column::make("Status", "product_sc.status")
                 ->sortable()
-                ->format(fn($value) => $value == 'processing' ? '<span class="badge text-bg-info">Processing</span>' : '<span class="badge text-bg-success">Finish</span>')
+                ->format(fn($value) => $value == 'processing' ? '<span class="text-bg-info badge">Processing</span>' : '<span class="text-bg-success badge">Finish</span>')
                 ->html(),
             Column::make("Created at", "created_at")
                 ->sortable()
