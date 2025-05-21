@@ -46,7 +46,7 @@ class InvoiceCreateDownPayment implements ShouldQueue
 
             $order = Order::find($this->order_id);
 
-            $order->downPaymentResponse()->create([
+            $order->downPaymentResponse->create([
                 'response' => $response,
                 'down_payment_number' => $response['orderDownPayment'],
                 'down_payment_amount' => number_format($this->params['dpAmount'], 0, '.', ''),
