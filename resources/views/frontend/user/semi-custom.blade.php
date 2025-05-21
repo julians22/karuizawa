@@ -10,6 +10,7 @@
         api_customer_size="{{ secure_url('api/semi-custom/customer-size') }}"
         :user="{{ $logged_in_user }}"
         route_edit_profile="{{ route('frontend.user.edit-profile') }}"
+        route_my_target="{{ route('crew.target') }}"
         route_logout="{{ route('frontend.auth.logout') }}">
     </semi-custom>
 @endsection

@@ -15,6 +15,7 @@
         csrf: String,
         user: Object,
         route_edit_profile: String,
+        route_my_target: String,
         route_logout: String,
         data_semi_custom: Object,
         api_store_order: String,
@@ -234,18 +235,18 @@
 </script>
 
 <template>
-    <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" :extends="extend">
+    <Layout :route_edit_profile="route_edit_profile" :route_my_target="route_my_target" :route_logout="route_logout" :user="user" :csrf="csrf" :extends="extend">
         <template #sidebar>
-            <div :class="{'hidden': !extend}" class="sticky top-0 h-screen overflow-y-auto bg-green scroll-box">
-                <div class="py-20 bg-primary-50">
-                    <div class="mx-[5%] xl:mx-[10%] 2xl:mx-[20%] font-roboto text-white">
+            <div :class="{'hidden': !extend}" class="top-0 sticky bg-green h-screen overflow-y-auto scroll-box">
+                <div class="bg-primary-50 py-20">
+                    <div class="mx-[5%] 2xl:mx-[20%] xl:mx-[10%] font-roboto text-white">
                         <div>
-                            <div class="text-2xl tracking-widest text-center uppercase font-josefin xl:text-4xl">ORDER SUMMARY</div>
+                            <div class="font-josefin text-2xl xl:text-4xl text-center uppercase tracking-widest">ORDER SUMMARY</div>
                             <div class="bg-white opacity-70 mx-auto my-10 w-4/6 h-0.5"></div>
                             <div>
                                 <table>
                                     <tbody class="*:space-y-4">
-                                        <tr class="*:align-top max-xl:text-sm lg:whitespace-pre-wrap"
+                                        <tr class="max-xl:text-sm *:align-top lg:whitespace-pre-wrap"
                                             v-for="(summaryBasic, key) in formBasic" :key="key">
                                             <td class="capitalize">{{ stingConvert(key) }}</td>
                                             <td class="w-4 text-center">:</td>
@@ -263,7 +264,7 @@
                                         <tr>
                                             <td class="font-bold uppercase">Option:</td>
                                         </tr>
-                                        <tr class="*:align-top max-xl:text-sm lg:whitespace-pre-wrap"
+                                        <tr class="max-xl:text-sm *:align-top lg:whitespace-pre-wrap"
                                             v-for="(summaryOption, key) in formOptions" :key="key">
                                             <td class="capitalize">{{ stingConvert(key) }} </td>
                                             <td class="w-4 text-center">:</td>
@@ -306,7 +307,7 @@
                             </div>
                         </div>
                         <div class="mt-20">
-                            <div class="text-2xl tracking-widest text-center uppercase font-josefin xl:text-4xl">ACTUAL</div>
+                            <div class="font-josefin text-2xl xl:text-4xl text-center uppercase tracking-widest">ACTUAL</div>
                             <div class="bg-white opacity-70 mx-auto my-10 w-4/6 h-0.5"></div>
                             <div>
                                 <table>
@@ -407,8 +408,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="text-white font-roboto">
-                    <div class="bg-secondary-50 px-[5%] xl:px-[10%] 2xl:px-[20%] py-8">
+                <div class="font-roboto text-white">
+                    <div class="bg-secondary-50 px-[5%] 2xl:px-[20%] xl:px-[10%] py-8">
                         <div>
                             <table>
                                 <tbody class="*:space-y-4 font-bold">
@@ -441,7 +442,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="pt-3 pb-2 font-bold tracking-widest text-center uppercase bg-black font-josefin lg:text-lg xl:text-xl 2xl:text-3xl">
+                    <div class="bg-black pt-3 pb-2 font-josefin font-bold lg:text-lg xl:text-xl 2xl:text-3xl text-center uppercase tracking-widest">
                         IDR {{ currencyFormat(totalPrice) ?? '0' }},-
                     </div>
                 </div>
@@ -458,25 +459,25 @@
 
             <CustomOptions @additionalOption="additionalOption" :dataOptions="props.data_semi_custom" ref="childOption"/>
 
-            <div class="absolute bottom-0 right-0">
+            <div class="right-0 bottom-0 absolute">
                 <div class="flex items-end">
-                    <button v-if="hasSemiCustom" @click="goToCart" class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50 h-fit">
+                    <button v-if="hasSemiCustom" @click="goToCart" class="flex items-center gap-2 bg-secondary-50 p-6 h-fit text-white tracking-widest">
                         <span>CANCEL & SUBMIT</span>
                         <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                     </button>
 
                     <div>
-                        <button v-if="hasDuplicate" @click="duplicateSemiCustom()" class="flex items-center justify-between w-full gap-2 p-6 tracking-widest text-white bg-primary-50">
+                        <button v-if="hasDuplicate" @click="duplicateSemiCustom()" class="flex justify-between items-center gap-2 bg-primary-50 p-6 w-full text-white tracking-widest">
                             <span>DUPLICATE</span>
                             <img class="inline-block rotate-90" src="img/icons/arrw-ck-right.png" alt="">
                         </button>
-                        <button @click="addCustomRequest()" class="flex items-center gap-2 p-6 tracking-widest text-white bg-primary-300 h-fit">
+                        <button @click="addCustomRequest()" class="flex items-center gap-2 bg-primary-300 p-6 h-fit text-white tracking-widest">
                             <span>ADD NEW CUSTOM REQUEST </span>
                             <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                         </button>
                     </div>
 
-                    <button @click="btnSubmit()" class="flex items-center gap-2 p-6 tracking-widest text-white bg-secondary-50 h-fit">
+                    <button @click="btnSubmit()" class="flex items-center gap-2 bg-secondary-50 p-6 h-fit text-white tracking-widest">
                         <span>SUBMIT</span>
                         <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                     </button>

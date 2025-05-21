@@ -5,6 +5,7 @@
         csrf: String,
         user: Object,
         route_edit_profile: String,
+        route_my_target: String,
         route_logout: String,
         api_booking_url: String,
         api_incoming_url: String,
@@ -105,27 +106,27 @@
         @reset:dialog="resetFilter"
         ref="childFilter" />
 
-    <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" >
-        <div class="flex items-center justify-between p-6 bg-primary-50 xl:px-14 lg:py-7">
-            <div class="text-lg font-bold tracking-widest text-white uppercase lg:text-xl">CUSTOMER BOOKING</div>
+    <Layout :route_edit_profile="route_edit_profile" :route_my_target="route_my_target" :route_logout="route_logout" :user="user" :csrf="csrf" >
+        <div class="flex justify-between items-center bg-primary-50 p-6 xl:px-14 lg:py-7">
+            <div class="font-bold text-white text-lg lg:text-xl uppercase tracking-widest">CUSTOMER BOOKING</div>
             <div class="w-2/5">
-                <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                <label for="default-search" class="sr-only mb-2 font-medium text-gray-900 dark:text-white text-sm">Search</label>
                 <div class="relative">
                     <input
                         v-model="keyword"
-                        type="search" id="default-search" class="block w-full px-4 py-2 text-sm text-gray-900 bg-white rounded-full pe-10"/>
+                        type="search" id="default-search" class="block bg-white px-4 py-2 pe-10 rounded-full w-full text-gray-900 text-sm"/>
                     <button @click="applyKeyword"
-                        type="submit" class="absolute inset-y-0 flex items-center end-0 pe-4">
-                        <svg class="text-primary-50 size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        type="submit" class="absolute inset-y-0 flex items-center pe-4 end-0">
+                        <svg class="size-5 text-primary-50" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
-        <div class="flex items-center justify-between p-6 py-4 bg-primary-100 xl:px-14">
+        <div class="flex justify-between items-center bg-primary-100 p-6 xl:px-14 py-4">
             <div class="flex justify-between w-full">
-                <div class="flex flex-wrap gap-5 tracking-wider text-white max-lg:text-sm">
+                <div class="flex flex-wrap gap-5 text-white max-lg:text-sm tracking-wider">
                     <!-- <button :class="{ active: currentPage === 'incoming-order' }" @click="currentPage = 'incoming-order'">INCOMING ORDER</button> -->
                     <button :class="{ active: currentPage === 'order-history' }" @click="currentPage = 'order-history'">ORDER HISTORY</button>
                     <button :class="{ active: currentPage === 'fitting-history'}" @click="currentPage = 'fitting-history'">FITTING HISTORY</button>
@@ -136,17 +137,17 @@
                     <div v-if="filterData.date || filterData.status || filterData.keyword">
                         <ul class="flex flex-wrap items-center gap-2">
                             <strong class="text-white">Filter Applied:</strong>
-                            <li v-if="filterData.date"><small class="font-serif text-sm text-primary-50"><span class="px-2 py-2 bg-secondary">Date: {{ filterData.date }}</span></small></li>
-                            <li v-if="filterData.status"><small class="font-serif text-sm text-primary-50"><span class="px-2 py-2 bg-secondary">Status: {{ filterData.status }}</span></small></li>
-                            <li v-if="filterData.keyword"><small class="font-serif text-sm text-primary-50"><span class="px-2 py-2 bg-secondary">Keyword: {{ filterData.keyword }}</span></small></li>
+                            <li v-if="filterData.date"><small class="font-serif text-primary-50 text-sm"><span class="bg-secondary px-2 py-2">Date: {{ filterData.date }}</span></small></li>
+                            <li v-if="filterData.status"><small class="font-serif text-primary-50 text-sm"><span class="bg-secondary px-2 py-2">Status: {{ filterData.status }}</span></small></li>
+                            <li v-if="filterData.keyword"><small class="font-serif text-primary-50 text-sm"><span class="bg-secondary px-2 py-2">Keyword: {{ filterData.keyword }}</span></small></li>
 
-                            <li @click="resetFilter" class="cursor-pointer"><small class="font-serif text-sm text-red-950"><span class="px-2 py-2 bg-secondary">Reset Filter</span></small></li>
+                            <li @click="resetFilter" class="cursor-pointer"><small class="font-serif text-red-950 text-sm"><span class="bg-secondary px-2 py-2">Reset Filter</span></small></li>
                         </ul>
                     </div>
 
                     <div @click="onClikFilter()">
                         <span>
-                            <i class="text-white fa fa-filter fill-white" aria-hidden="true"></i>
+                            <i class="fill-white text-white fa fa-filter" aria-hidden="true"></i>
                         </span>
                     </div>
                 </div>

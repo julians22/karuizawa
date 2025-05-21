@@ -8,6 +8,7 @@ const props = defineProps({
     csrf: String,
     user: Object,
     route_edit_profile: String,
+    route_my_target: String,
     route_logout: String,
     order: Object,
     route_payment: String,
@@ -18,7 +19,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <Layout :route_edit_profile="route_edit_profile" :route_logout="route_logout" :user="user" :csrf="csrf" >
+    <Layout :route_edit_profile="route_edit_profile" :route_my_target="route_my_target" :route_logout="route_logout" :user="user" :csrf="csrf" >
         <Payment
             :route_payment="route_payment"
             :order="order"
