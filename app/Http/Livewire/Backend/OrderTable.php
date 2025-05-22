@@ -329,7 +329,7 @@ class OrderTable extends DataTableComponent
 
         foreach ($rows as $id) {
 
-            $order = Order::where('accurate_sync_date', null)->find($id);
+            $order = Order::find($id);
 
             // should be semi custom
             // if (!$order || !$order->hasSemiCustom()) {
