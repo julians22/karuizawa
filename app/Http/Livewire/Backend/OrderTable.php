@@ -367,19 +367,19 @@ class OrderTable extends DataTableComponent
                 $customerNo = config('accurate.customer_list.' . $order->store->code);
             }
 
+            $invoiceNo = $order->downPaymentResponse->down_payment_number;
+            $paymentAmount = $order->downPaymentResponse->down_payment_amount;
+
             $target[$id] = [
                 'customerNo' => $customerNo,
                 'transDate' => $order->order_date ? $order->order_date->format('d/m/Y') : $order->created_at->format('d/m/Y'),
                 'bankNo' => $bankNo,
-                'paymentMethod' => $paymentType,
                 'typeAutoNumber' => $autoNumber,
-                'currencyCode' => 'IDR',
+                'chequeAmount' => $paymentAmount,
                 'description' => 'Finish Down Payment for Order ' . $order->order_number . ' - ' . $order->customer->full_name,
                 'detailInvoice' => [],
             ];
 
-            $invoiceNo = $order->downPaymentResponse->down_payment_number;
-            $paymentAmount = $order->downPaymentResponse->down_payment_amount;
 
             $target[$id]['detailInvoice'][] = [
                 'invoiceNo' => $invoiceNo,
@@ -398,10 +398,9 @@ class OrderTable extends DataTableComponent
                 'customerNo' => $order['customerNo'],
                 'transDate' => $order['transDate'],
                 'bankNo' => $order['bankNo'],
-                'paymentMethod' => $order['paymentMethod'],
                 'typeAutoNumber' => $order['typeAutoNumber'],
-                'currencyCode' => $order['currencyCode'],
                 'description' => $order['description'],
+                'chequeAmount' => $order['chequeAmount'],
             ];
 
             foreach ($order['detailInvoice'] as $item) {

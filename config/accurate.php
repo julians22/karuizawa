@@ -52,7 +52,7 @@ return [
         'AST' => '1801',
         'BANK' => '96'
     ],
-    'bank_no' => '11010201',
+    'bank_no' => '1101020119',
     'bank_account_type' => 'CASH_BANK'
 ]
 
