@@ -62,6 +62,8 @@ class OrderTable extends DataTableComponent
         $this->setDefaultSort('created_at', 'desc');
 
         $this->addAdditionalSelects('status');
+
+        $this->setSearchPlaceholder('Search by Order ID, Customer Name, Store Code, Crew Name');
     }
 
     public function filters(): array
