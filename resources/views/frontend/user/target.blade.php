@@ -10,6 +10,19 @@
             </div>
 
             <div class="py-10 container">
+                <div class="mb-10">
+                    @php $currentDate = date('Y-m-d'); @endphp
+                    Showing your target and actual selling for the month of: &nbsp;&nbsp;
+                    <strong
+                        style="
+                            font-size: 2rem;
+                            text-transform: uppercase;
+                            font-weight: 700;
+                            letter-spacing: 0.1rem;"
+                        >
+                        {{ date('F Y', strtotime($currentDate)) }}
+                    </strong>
+                </div>
                 <table class="text-2xl text-primary-50 font-bold">
                     <tr>
                         <td>
