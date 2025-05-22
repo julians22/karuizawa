@@ -129,10 +129,12 @@ class OrderTable extends DataTableComponent
                 ->searchable()
                 ->sortable(),
             Column::make("Customer", "customer.full_name")
+                ->searchable()
                 ->sortable(),
             Column::make("Store", "store.code")
                 ->sortable(),
             Column::make('Crew', 'user.name')
+                ->searchable()
                 ->sortable(),
             Column::make("Total price", "total_price")
                 ->sortable()
@@ -390,6 +392,8 @@ class OrderTable extends DataTableComponent
 
         $collection->each(function($order, $id) use (&$finishDownPaymentJob) {
 
+            $orderData = Order::find($id);
+
             $dataPass = [
                 'customerNo' => $order['customerNo'],
                 'transDate' => $order['transDate'],
@@ -407,7 +411,7 @@ class OrderTable extends DataTableComponent
                 ];
             }
 
-            $finishDownPaymentJob[] = new InvoiceFinishDownPayment($dataPass, $id);
+            $finishDownPaymentJob[] = new InvoiceFinishDownPayment($dataPass, $orderData);
         });
 
 

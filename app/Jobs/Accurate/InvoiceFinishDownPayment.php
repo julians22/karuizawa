@@ -17,16 +17,16 @@ class InvoiceFinishDownPayment implements ShouldQueue
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels, AccurateAccess;
 
     protected $params;
-    protected $order_id;
+    protected $order;
 
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct($params, Order $order)
     {
-        //
+        $this->params = $params;
+        $this->order = $order;
     }
-
     /**
      * Execute the job.
      */
@@ -38,17 +38,15 @@ class InvoiceFinishDownPayment implements ShouldQueue
         $response = Http::withHeaders($headers)
             ->post($endpoint, $this->params);
 
-        $order = Order::find($this->order_id);
-
         if ($response->status() == 200) {
             $response = json_decode($response->body(), true);
             $response = $response['r'];
 
             // create activity log
             activity()
-                ->performedOn($order)
+                ->performedOn($this->order)
                 ->withProperties(['response' => $response])
-                ->log('Order Down Payment created in Accurate');
+                ->log('Order Down Payment Receipt created in Accurate');
         } else {
 
             $response = json_decode($response->body(), true);
@@ -56,7 +54,7 @@ class InvoiceFinishDownPayment implements ShouldQueue
 
             // create activity log
             activity()
-                ->performedOn($order)
+                ->performedOn($this->order)
                 ->withProperties(['response' => $response])
                 ->log('Order Down Payment failed in Accurate');
         }
