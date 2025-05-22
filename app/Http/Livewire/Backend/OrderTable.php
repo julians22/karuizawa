@@ -332,14 +332,14 @@ class OrderTable extends DataTableComponent
             $order = Order::where('accurate_sync_date', null)->find($id);
 
             // should be semi custom
-            if (!$order || !$order->hasSemiCustom()) {
-                continue;
-            }
+            // if (!$order || !$order->hasSemiCustom()) {
+            //     continue;
+            // }
 
             // check if order is has down payment response
-            if (!$order->hasDownPayment()) {
-                continue;
-            }
+            // if (!$order->hasDownPayment()) {
+            //     continue;
+            // }
 
             // check if order.orderItems.product is all finished
             // $orderItems = $order->orderItems;
