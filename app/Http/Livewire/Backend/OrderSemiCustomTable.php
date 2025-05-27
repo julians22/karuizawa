@@ -107,6 +107,8 @@ class OrderSemiCustomTable extends DataTableComponent
             Column::make("Created at", "created_at")
                 ->sortable()
                 ->format(fn($value) => $value->diffForHumans()),
+            Column::make('Actions')
+                ->label(fn($row) => view('backend.order.semi-custom.includes.actions', ['orderitem' => $row]))
         ];
     }
 }

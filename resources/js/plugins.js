@@ -72,8 +72,10 @@ $(function () {
         .on('submit', 'form[name=confirm-item]', function (e) {
             e.preventDefault();
 
+            let title = $(this).data('title') || 'Are you sure you want to do this?';
+
             Swal.fire({
-                title: 'Are you sure you want to do this?',
+                title: title,
                 showCancelButton: true,
                 confirmButtonText: 'Continue',
                 cancelButtonText: 'Cancel',

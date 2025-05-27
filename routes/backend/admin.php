@@ -117,6 +117,15 @@ Route::group(['prefix' => 'product-category', 'as' => 'product-category.'], func
             $trail->push(__('Product Category'), route('admin.product-category.index'));
         });
 
+    Route::get('create', [ProductCategoryController::class, 'create'])
+        ->name('create')
+        ->breadcrumbs(function (Trail $trail) {
+            $trail->parent('admin.product-category.index');
+            $trail->push(__('Create'), route('admin.product-category.create'));
+        });
+
+    Route::post('/', [ProductCategoryController::class, 'store'])->name('store');
+
     Route::group(['prefix' => '{category}'], function() {
         Route::get('edit', [ProductCategoryController::class, 'edit'])
             ->name('edit')

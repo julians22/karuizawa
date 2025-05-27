@@ -10,7 +10,7 @@
             </div>
 
             <div class="py-10 container">
-                <div class="mb-10">
+                <div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">
                     @php $currentDate = date('Y-m-d'); @endphp
                     Showing your target and actual selling for the month of: &nbsp;&nbsp;
                     <strong
@@ -23,28 +23,40 @@
                         {{ date('F Y', strtotime($currentDate)) }}
                     </strong>
                 </div>
-                <table class="text-2xl text-primary-50 font-bold">
+                <table class="text-primary-50 font-bold" style="font-size: 1rem;">
                     <tr>
-                        <td>
-                            <i class="fa-solid fa-bullseye"></i>
-                        </td>
-                        <td>
+                        <td style="padding: 0 1rem;">
                             Target
                         </td>
-                        <td>
+                        <td style="padding: 0 1rem;">
                             : {{ price_format($totalTargetAmount) }}
                         </td>
                     </tr>
 
                     <tr>
-                        <td>
-                            <i class="fa-solid fa-bullseye"></i>
-                        </td>
-                        <td>
+                        <td style="padding: 0 1rem;">
                             Actual Selling
                         </td>
-                        <td>
+                        <td style="padding: 0 1rem;">
                             : {{ price_format($totalActualSellingValue) }}
+                        </td>
+                        <td style="padding: 0 1rem;">|</td>
+                        <td>
+                            Actual Selling Qty
+                        </td>
+                        <td style="padding: 0 1rem;">
+                            : {{ $totalActualSellingQty }}
+                        </td>
+                        <td style="padding: 0 1rem;">|</td>
+                        <td style="padding: 0 1rem;">
+                            Index
+                        </td>
+                        <td style="padding: 0 1rem;">
+                            : @if ($totalTargetAmount > 0)
+                                {{ number_format(($totalActualSellingValue / $totalTargetAmount) * 100, 2) }}%
+                            @else
+                                0%
+                            @endif
                         </td>
                     </tr>
                 </table>
@@ -62,6 +74,7 @@
                         <th>Target</th>
                         <th>Actual Selling</th>
                         <th>Actual Selling Qty</th>
+                        <th>Index</th>
                     </tr>
 
                     @foreach ($actualSellingValue as $key => $value)
@@ -80,6 +93,13 @@
                             </td>
                             <td>
                                 {{ $actualSellingQty[$key] }}
+                            </td>
+                            <td>
+                                @if ($targetsValue[$key] > 0)
+                                    {{ number_format(($actualSellingValue[$key] / $targetsValue[$key]) * 100, 2) }}%
+                                @else
+                                    0%
+                                @endif
                             </td>
                         </tr>
 

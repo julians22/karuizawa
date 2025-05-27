@@ -15,4 +15,24 @@ class DownPaymentResponse extends Model
      * @var array
      */
     protected $guarded = ['id'];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'down_payment_created_date' => 'datetime',
+        'response' => 'array',
+    ];
+
+    public function isInvoiced()
+    {
+        return $this->invoice_number !== null;
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

@@ -16,8 +16,10 @@ return new class extends Migration
             $table->foreignId('order_id')->constrained()->cascadeOnDelete();
             $table->text('response');
             $table->string('down_payment_number')->nullable();
-            $table->string('down_payment_id')->nullable();
             $table->float('down_payment_amount', 10, 2)->nullable();
+            $table->date('down_payment_created_date')->nullable();
+            $table->string('invoice_number')->nullable();
+            $table->date('invoice_created_date')->nullable();
             $table->timestamps();
         });
     }

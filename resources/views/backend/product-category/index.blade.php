@@ -15,9 +15,10 @@
             <x-utils.link
                 icon="c-icon cil-plus"
                 class="card-header-action"
-                :href="route('admin.product.create')"
-                :text="__('Create Product')"
+                :href="route('admin.product-category.create')"
+                :text="__('Create New Category')"
             />
+        </x-slot>
     @endif
 
     <x-slot name="body">

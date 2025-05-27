@@ -329,96 +329,99 @@ class OrderTable extends DataTableComponent
 
         $target = [];
 
+        $target['PIK'] = [];
+        $target['AST'] = [];
+
         foreach ($rows as $id) {
 
             $order = Order::find($id);
 
             // should be semi custom
-            // if (!$order || !$order->hasSemiCustom()) {
-            //     continue;
-            // }
-
-            // check if order is has down payment response
-            // if (!$order->hasDownPayment()) {
-            //     continue;
-            // }
-
-            // check if order.orderItems.product is all finished
-            // $orderItems = $order->orderItems;
-            // $allFinished = true;
-
-            // foreach ($orderItems as $orderItem) {
-            //     if ($orderItem->product_sc->isFinish() === false) {
-            //         $allFinished = false;
-            //         break;
-            //     }
-            // }
-
-            // if ($allFinished === false) {
-            //     continue;
-            // }
-
-            $order->load('orderItems.product', 'store', 'customer');
-
-            $bankNo = config('accurate.bank_no');
-            $paymentType = config('accurate.bank_account_type');
-            $autoNumber = config('accurate.trans_no.BANK');
-            $customerNo = config('accurate.customer_list.AST');
-
-            if ($order->store->code !== null) {
-                $customerNo = config('accurate.customer_list.' . $order->store->code);
+            if (!$order || !$order->hasSemiCustom()) {
+                continue;
             }
 
-            $invoiceNo = $order->downPaymentResponse->down_payment_number;
-            $paymentAmount = $order->downPaymentResponse->down_payment_amount;
+            $order->load('orderItems.product', 'store', 'customer', 'downPaymentResponse');
 
-            $target[$id] = [
-                'customerNo' => $customerNo,
-                'transDate' => $order->order_date ? $order->order_date->format('d/m/Y') : $order->created_at->format('d/m/Y'),
-                'bankNo' => $bankNo,
-                'typeAutoNumber' => $autoNumber,
-                'chequeAmount' => $paymentAmount,
-                'description' => 'Finish Down Payment for Order ' . $order->order_number . ' - ' . $order->customer->full_name,
-                'detailInvoice' => [],
+            // check if order is has down payment response
+            if (!$order->has('downPaymentResponse')) {
+                continue;
+            }
+
+            // check if order.orderItems.product is all finished
+            $orderItems = $order->orderItems;
+            $allFinished = true;
+
+            foreach ($orderItems as $orderItem) {
+                if ($orderItem->product_sc->isFinish() === false) {
+                    $allFinished = false;
+                    break;
+                }
+            }
+
+            if ($allFinished === false) {
+                continue;
+            }
+
+            $orderItems = $order->orderItems;
+
+            foreach ($orderItems as $orderItem) {
+
+                if ($orderItem->isSemiCustom()) {
+                    $target[$order->store->code]['detailItem'][] = [
+                        'itemNo' => $orderItem->product_sc->code,
+                        'detailName' => $orderItem->product_sc->name,
+                        'unitPrice' => $orderItem->price,
+                        'quantity' => $orderItem->quantity,
+                        'departmentName' => 'Apparel',
+                        'warehouseName' => $order->store->code === 'PIK' ? config('accurate.warehouse_list.PIK') : config('accurate.warehouse_list.AST'),
+                    ];
+                }
+            }
+            $target[$order->store->code]['detailDownPayment'][] = [
+                'invoiceNumber' => $order->downPaymentResponse->down_payment_number,
+                'paymentAmount' => $order->downPaymentResponse->down_payment_amount,
             ];
 
+            $target[$order->store->code]['orderId'][] = $id;
+        }
 
-            $target[$id]['detailInvoice'][] = [
-                'invoiceNo' => $invoiceNo,
-                'paymentAmount' => $paymentAmount,
+
+        $dataPass = [];
+
+        $collection = collect($target);
+        foreach ($collection as $key => $orderValue) {
+
+            $autoNumber = 55;
+            if ($key === 'PIK') {
+                $autoNumber = config('accurate.trans_no.PIK');
+            } elseif ($key === 'AST') {
+                $autoNumber = config('accurate.trans_no.AST');
+            }
+
+            $dataPass[$key] = [
+                'customerNo' => config('accurate.customer_list.' . $key),
+                'detailItem' => $orderValue['detailItem'] ?? [],
+                'detailDownPayment' => $orderValue['detailDownPayment'] ?? [],
+                'transDate' => now()->format('d/m/Y'),
+                'currencyCode' => 'IDR',
+                'documentCode' => 'DIGUNGGUNG',
+                'taxable' => true,
+                'inclusiveTax' => true,
+                'typeAutoNumber' => $autoNumber,
+                'description' => 'Finish Down Payment for ' . $key . ' Orders',
             ];
         }
 
         $finishDownPaymentJob = [];
-        $collection = collect($target);
 
-        $collection->each(function($order, $id) use (&$finishDownPaymentJob) {
-
-            $orderData = Order::find($id);
-
-            $dataPass = [
-                'customerNo' => $order['customerNo'],
-                'transDate' => $order['transDate'],
-                'bankNo' => $order['bankNo'],
-                'typeAutoNumber' => $order['typeAutoNumber'],
-                'description' => $order['description'],
-                'chequeAmount' => $order['chequeAmount'],
-            ];
-
-            foreach ($order['detailInvoice'] as $item) {
-                $dataPass['detailInvoice'][] = [
-                    'invoiceNo' => $item['invoiceNo'],
-                    'paymentAmount' => number_format($item['paymentAmount'], 2, '.', ''),
-                ];
+        foreach ($dataPass as $key => $params) {
+            if (count($params['detailItem']) > 0) {
+                $finishDownPaymentJob[] = new InvoiceSave($params);
             }
-
-            $finishDownPaymentJob[] = new InvoiceFinishDownPayment($dataPass, $orderData);
-        });
-
-
-        if (count($finishDownPaymentJob) > 0) {
-            $this->batchTheJob($finishDownPaymentJob, 'Finish Down Payment');
         }
+
+        $this->batchTheJob($finishDownPaymentJob, 'Finish Down Payment');
 
         $this->dispatch('destroy-alert'); // hide loading spinner
         $this->dispatch('alert', message: 'Finish Down Payment is being synced to Accurate, please wait for the process to complete', useSwal: true, type: 'success');

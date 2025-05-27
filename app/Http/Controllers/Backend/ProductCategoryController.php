@@ -13,6 +13,26 @@ class ProductCategoryController extends Controller
         return view('backend.product-category.index');
     }
 
+    public function create()
+    {
+        return view('backend.product-category.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'category_name' => 'required|string|max:255',
+        ]);
+
+        $name = $request->category_name;
+
+        Category::create([
+            'name' => $name,
+        ]);
+
+        return redirect()->route('admin.product-category.index')->withFlashSuccess(__('Category successfully created.'));
+    }
+
     public function edit(Request $request, Category $category)
     {
         // if category id is 1, then return back to the previous page with a message

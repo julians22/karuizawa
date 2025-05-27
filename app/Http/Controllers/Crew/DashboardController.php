@@ -21,7 +21,6 @@ class DashboardController extends Controller
 
         $actualSellingValue = [];
         $actualSellingQty = [];
-
         $targetsValue = [];
 
         foreach ($categories as $value) {
@@ -36,7 +35,6 @@ class DashboardController extends Controller
 
         $totalActualSellingValue = 0;
         $totalActualSellingQty = 0;
-
         $totalTargetAmount = 0;
 
 
@@ -47,8 +45,10 @@ class DashboardController extends Controller
             ->get();
 
         if ($targets->count() > 0) {
+
+            $totalTargetAmount = $targets->sum('target');
+
             foreach ($targets as $target) {
-                $totalTargetAmount += $target->target;
 
                 if (!$target->isSemiCustom()) {
                     $targetsValue[$target->category->name] = $target->target;
@@ -67,7 +67,6 @@ class DashboardController extends Controller
             }
             $totalActualSellingQty = collect($actualSellingQty)->sum();
             $totalActualSellingValue = collect($actualSellingValue)->sum();
-            $totalTargetAmount += $totalActualSellingValue;
         }
 
         $semiCustom = $this->getSemiCustom($crew->id, $crew->store_id, date('m'), date('Y'));
@@ -78,9 +77,7 @@ class DashboardController extends Controller
             }
             $totalActualSellingQty = collect($actualSellingQty)->sum();
             $totalActualSellingValue = collect($actualSellingValue)->sum();
-            $totalTargetAmount += $totalActualSellingValue;
         }
-
 
         return view('frontend.user.target', compact('targets', 'totalTargetAmount', 'totalActualSellingValue', 'totalActualSellingQty', 'actualSellingValue', 'actualSellingQty', 'targetsValue'));
     }

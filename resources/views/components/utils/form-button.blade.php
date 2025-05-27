@@ -6,11 +6,12 @@
     'buttonClass' => '',
     'icon' => false,
     'permission' => false,
+    'dataTitle' => __('Are you sure you want to do this?')
 ])
 
 @if ($permission)
     @if ($logged_in_user->can($permission))
-        <form method="POST" action="{{ $action }}" name="{{ $name }}" class="{{ $formClass }}">
+        <form method="POST" data-title="{{ $dataTitle }}" action="{{ $action }}" name="{{ $name }}" class="{{ $formClass }}">
             @csrf
             @method($method)
 
@@ -20,7 +21,7 @@
         </form>
     @endif
 @else
-    <form method="POST" action="{{ $action }}" name="{{ $name }}" class="{{ $formClass }}">
+    <form method="POST" data-title="{{ $dataTitle }}" action="{{ $action }}" name="{{ $name }}" class="{{ $formClass }}">
         @csrf
         @method($method)
 

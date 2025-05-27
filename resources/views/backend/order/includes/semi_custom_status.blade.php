@@ -19,6 +19,10 @@
 
         {{ $scSuccessCount }} finished / {{ $scCount }} items
 
+        @if ($scCount == $scSuccessCount)
+            <label for="" class="badge bg-success">All finished</label>
+        @endif
+
     @endif
 
 </div>

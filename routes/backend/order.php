@@ -4,6 +4,7 @@ use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\OrderReadyToWearController;
 use App\Http\Controllers\OrderSemiCustomController;
 use App\Models\Order;
+use App\Models\OrderItem;
 use Tabuna\Breadcrumbs\Trail;
 
 Route::group(['prefix' => 'order', 'as' => 'order.'], function() {
@@ -21,6 +22,14 @@ Route::group(['prefix' => 'order', 'as' => 'order.'], function() {
                 $trail->parent('admin.order.index');
                 $trail->push(__('Semi Custom'), route('admin.order.semi-custom.index'));
             });
+
+        Route::group(['prefix' => '{semiCustomProduct}'], function() {
+            Route::patch('approve', [OrderSemiCustomController::class, 'approve'])
+                ->name('approve');
+
+            Route::patch('cancel', [OrderSemiCustomController::class, 'cancel'])
+                ->name('cancel');
+        });
     });
 
 
@@ -66,5 +75,7 @@ Route::group(['prefix' => 'order', 'as' => 'order.'], function() {
 
         Route::patch('approve', [OrderController::class, 'approve'])->name('approve');
         Route::patch('cancel', [OrderController::class, 'cancel'])->name('cancel');
+
+        Route::patch('unsync', [OrderController::class, 'unsync'])->name('unsync');
     });
 });

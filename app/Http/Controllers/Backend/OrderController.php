@@ -146,4 +146,15 @@ class OrderController extends Controller
         ]);
         return redirect()->back()->withFlashSuccess(__('The order was successfully approved.'));
     }
+
+    public function unsync(Request $request, Order $order)
+    {
+        $order->update([
+            'accurate_order_id' => null,
+            'accurate_order_number' => null,
+            'accurate_sync_date' => null
+        ]);
+
+        return redirect()->back()->withFlashSuccess(__('The order was successfully unsynced.'));
+    }
 }
