@@ -16,6 +16,24 @@ class OrderController extends Controller
         return view('backend.order.index');
     }
 
+    public function edit(Order $order)
+    {
+        return view('backend.order.edit', compact('order'));
+    }
+
+    public function update(Request $request, Order $order)
+    {
+        $request->validate([
+            'order_date' => 'required'
+        ]);
+
+        $order->update([
+            'order_date' => $request->order_date
+        ]);
+
+        return redirect()->route('admin.order.index')->withFlashSuccess(__('The order was successfully updated.'));
+    }
+
     public function show(Order $order)
     {
         return view('backend.order.show', compact('order'));

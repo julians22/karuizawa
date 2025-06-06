@@ -1,4 +1,5 @@
 <x-utils.view-button :href="route('admin.order.show', ['order' => $order])" />
+<x-utils.edit-button :href="route('admin.order.edit', ['order' => $order])" />
 
 <div class="d-inline-block">
     <a class="btn btn-sm btn-secondary dropdown-toggle" id="moreMenuLink" href="#" role="button" data-coreui-toggle="dropdown" data-boundary="window" aria-haspopup="true" aria-expanded="false">
