@@ -399,7 +399,7 @@
                     </div>
                     <div class="grid grid-cols-5 gap-3 px-2 my-4">
                         <div class="col-span-6">
-                            <textarea v-model="additionalNote" class="w-full h-full p-2 border-2 border-primary-50 font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" id="" placeholder="NOTE"></textarea>
+                            <textarea v-model="additionalNote" class="w-full h-full p-2 border-2 border-primary-50 font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50 print:text-2xl" id="" placeholder="NOTE"></textarea>
                         </div>
                         <div class="w-full col-span-5 p-2 bg-secondary">
                             <div class="w-full">
