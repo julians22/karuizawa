@@ -350,18 +350,16 @@ class OrderTable extends DataTableComponent
 
             // check if order.orderItems.product is all finished
             $orderItems = $order->orderItems;
-            $allFinished = true;
+            // $allFinished = true;
 
-            foreach ($orderItems as $orderItem) {
-                if ($orderItem->product_sc->isFinish() === false) {
-                    $allFinished = false;
-                    break;
-                }
-            }
+            // foreach ($orderItems as $orderItem) {
+            //     if ($orderItem->product_sc->isFinish() === false) {
+            //         $allFinished = false;
+            //         break;
+            //     }
+            // }
 
-            if ($allFinished === false) {
-                continue;
-            }
+            // if ($allFinished ===
 
             $orderItems = $order->orderItems;
 
