@@ -165,6 +165,22 @@
                                 </table>
                             </div>
 
+                            {{-- if has downPaymentResponse --}}
+                            @if ($order->downPaymentResponse)
+                                <div class="alert alert-info">
+                                    @lang('Down Payment Response') <br>
+                                    <small>{{ $order->downPaymentResponse->response_message }}</small>
+                                </div>
+
+                                {{-- downpayment number --}}
+                                @if ($order->downPaymentResponse->payment_number)
+                                    <div class="alert alert-info">
+                                        @lang('Down Payment Number') <br>
+                                        <span class="badge bg-info">{{ $order->downPaymentResponse->payment_number }}</span>
+                                    </div>
+                                @endif
+                            @endif
+
                             {{-- If synced to accurate --}}
                             {{-- @if ($order->isSyncedToAccurate()) --}}
                                 {{-- <div class="alert alert-success">
