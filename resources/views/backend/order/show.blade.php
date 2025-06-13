@@ -176,7 +176,7 @@
                                 @if ($order->downPaymentResponse->payment_number)
                                     <div class="alert alert-info">
                                         @lang('Down Payment Number') <br>
-                                        <span class="badge bg-info">{{ $order->downPaymentResponse->payment_number }}</span>
+                                        <span class="badge bg-info">{{ $order->downPaymentResponse->down_payment_number }}</span>
                                     </div>
                                 @endif
                             @endif
