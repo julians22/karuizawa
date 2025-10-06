@@ -83,7 +83,7 @@ class ProductDailyReportComponent extends Component
                     'option_plus_sc' => $item->product_sc->option_additional_price,
                     'gift_card_sc' => $item->product_sc->option_discount,
                     'total_sc' => $item->price,
-                    'payment_method_sc' => $item->order->payments->first()->payment
+                    'payment_method_sc' => $item->order->payments->first() ? $item->order->payments->first()->payment : ''
                 ];
             });
 
