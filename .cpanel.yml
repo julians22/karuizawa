@@ -1,7 +1,7 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/wargadjaja/projects/karuizawa/karuizawa-phase1.1
+    - export DEPLOYPATH=/home/wargadjaja/projects/karuizawa-lts/karuizawa-phase1.1
     - export COMPOSER_PATH=/home/choco/composer.phar
     - /bin/cp -R * $DEPLOYPATH
     - /bin/rm -rf $DEPLOYPATH/vendor
