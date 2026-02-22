@@ -20,14 +20,16 @@
         "laravel/socialite": "^5.0",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^4.0",
-        "livewire/livewire": "^3.0",
+        "livewire/livewire": "^3.7",
         "maatwebsite/excel": "^3.1",
         "ramsey/uuid": "^4.7",
         "rappasoft/laravel-livewire-tables": "3.5.10",
         "rappasoft/lockout": "^5.0",
         "spatie/laravel-activitylog": "^4.0",
+        "spatie/laravel-medialibrary": "^11.20",
         "spatie/laravel-permission": "^5.0",
         "spatie/laravel-sluggable": "^3.7",
+        "spatie/livewire-filepond": "1.6.0",
         "tabuna/breadcrumbs": "^4.1"
     },
     "require-dev": {

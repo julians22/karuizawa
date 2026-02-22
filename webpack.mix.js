@@ -36,7 +36,8 @@ mix.setPublicPath('public')
         'bootstrap',
         'axios',
         'sweetalert2',
-        'lodash'
+        'lodash',
+        'quill'
     ])
     .sourceMaps()
     .alias({

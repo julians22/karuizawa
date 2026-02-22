@@ -10,6 +10,7 @@ use App\Models\Product;
 use App\Services\Products\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -32,8 +33,10 @@ class ProductController extends Controller
 
     public function fetchPrice()
     {
+        // $itemCategory = [350, 500];
+        // 350 for Apparel, 500 for Parfume, we can add more category if needed, chack the category id in accurate to get the correct category id
         $productApi = new ProductApi();
-        $products = $productApi->productJobs(500, 1, 350, 'id,name,no,unitPrice');
+        $products = $productApi->productJobs(500, 1, [350, 500], 'id,name,no,unitPrice');
 
         if ($products) {
             return redirect()->route('admin.product.index')->withFlashSuccess(__('The price was successfully fetched.'));
@@ -94,6 +97,8 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
+        $imageFile = $request->filepond ?? null;
+
         $request->validate([
             'product_name' => 'required',
             'description' => 'sometimes',
@@ -101,6 +106,7 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'sku' => 'required',
         ]);
+
 
         DB::beginTransaction();
 
@@ -111,6 +117,9 @@ class ProductController extends Controller
                 'description' => $request->description,
                 'price' => $request->price,
                 'category_id' => $request->category_id,
+                'commerce_title' => $request->commerce_title,
+                'commerce_description' => $request->commerce_description,
+                'commerce_price' => $request->commerce_price,
             ]);
 
         } catch (\Exception $e) {
@@ -119,6 +128,24 @@ class ProductController extends Controller
         }
 
         DB::commit();
+
+
+        if ($imageFile) {
+            // prepare the deleted old image if exists
+            if ($product->getFirstMedia('featured_image')) {
+                $product->getFirstMedia('featured_image')->delete();
+            }
+
+            $fileTemp = Storage::disk('karuizawa-temp-file')->path($imageFile);
+
+            $product
+                ->addMedia($fileTemp)
+                ->toMediaCollection('featured_image');
+
+            // delete the temporary file after adding to media library
+            Storage::disk('karuizawa-temp-file')->delete($imageFile);
+        }
+
         return redirect()->route('admin.product.index')->withFlashSuccess(__('The product was successfully updated.'));
 
     }

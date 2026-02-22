@@ -4,16 +4,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
  * Product Model
  *
  * @description Model to represent products (Ready To Wear)
  */
-class Product extends Model
+class Product extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $fillable = [
         'sku',
@@ -22,6 +23,18 @@ class Product extends Model
         'price',
         'category_id',
         'daily_stock',
+        'commerce_title',
+        'commerce_description',
+        'commerce_price',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'commerce_description' => 'array',
     ];
 
     public function stockMovements()
@@ -93,5 +106,15 @@ class Product extends Model
         }
 
         $query->where('price', '>', 0);
+    }
+
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('featured_image')
+            ->withResponsiveImages();
+            // ->useFallbackUrl('/images/anonymous-user.jpg')
+            // ->useFallbackPath(public_path('/images/anonymous-user.jpg'));
     }
 }
