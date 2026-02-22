@@ -29,22 +29,37 @@ class ProductApi
         $this->cachedDb = cache()->get('accurate_db');
     }
 
-    public function productJobs($pageSize = 20, $page = 1, $itemCategory = 1009, $fields = 'id,name,no,unitPrice') {
+    private function generateItemCategoryFilter($itemCategory) {
+
+        $params = [];
+
+        // filter.itemCategoryId.val[1] = $item
+        // filter.itemCategoryId.val[2] = $item
+        foreach ($itemCategory as $index => $item) {
+            $params["filter.itemCategoryId.val[" . ($index + 1) . "]"] = $item;
+        }
+
+        return $params;
+    }
+
+    public function productJobs($pageSize = 20, $page = 1, $itemCategory = [350], $fields = 'id,name,no,unitPrice') {
         $endpoint = $this->appUrl . '/accurate/api/item/list.do';
 
         $headers = [
             'Authorization' => 'Bearer ' . $this->cachedAuth['access_token'],
             'X-Session-ID' => $this->cachedDb['session'],
         ];
+
         $params = [
             'filter.itemCategoryId.op' => 'EQUAL',
-            'filter.itemCategoryId.val' => $itemCategory,
             'filter.itemType.op' => 'EQUAL',
             'filter.itemType.val' => 'INVENTORY',
             'sp.pageSize' => $pageSize,
             'sp.page' => $page,
             'fields' => $fields,
         ];
+
+        $params = array_merge($params, $this->generateItemCategoryFilter($itemCategory));
 
         $response = Http::withHeaders($headers)
             ->get($endpoint, $params);
