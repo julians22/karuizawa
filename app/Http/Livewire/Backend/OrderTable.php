@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Backend;
 use App\Jobs\Accurate\InvoiceCreateDownPayment;
 use App\Jobs\Accurate\InvoiceFinishDownPayment;
 use App\Jobs\Accurate\InvoiceSave;
+use App\Models\Brand;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Order;
@@ -23,6 +24,10 @@ class OrderTable extends DataTableComponent
         '' => 'All',
     ];
 
+    public $brands = [
+        '' => 'All',
+    ];
+
     public $allowBulkActions = true;
 
     function mount($allowBulkActions = true){
@@ -33,6 +38,12 @@ class OrderTable extends DataTableComponent
 
         foreach ($stores as $store) {
             $this->stores[$store->id] = $store->code;
+        }
+
+        $brands = Brand::all();
+
+        foreach ($brands as $brand) {
+            $this->brands[$brand->id] = $brand->name;
         }
 
     }
@@ -118,6 +129,22 @@ class OrderTable extends DataTableComponent
                         return $builder->whereDoesntHave('orderItems', function($query){
                             $query->where('product_type', 'App\Models\SemiCustomProduct');
                         });
+                    }
+                }),
+
+            SelectFilter::make('Product Brand')
+                ->options(
+                    $this->brands
+                )
+                ->filter(function($builder, $value){
+                    if (!empty($value)) {
+
+                        $builder->whereHas('orderItems', function($query) use ($value) {
+                            $query->whereHas('product_rtw', function($query) use ($value) {
+                                $query->where('brand_id', $value);
+                            });
+                        });
+
                     }
                 }),
         ];

@@ -2,7 +2,9 @@
 
 namespace App\Http\Livewire\Backend;
 
+use App\Http\Livewire\Backend\Product\UpdateBrand;
 use App\Http\Livewire\Backend\Product\UpdateCategory;
+use App\Models\Brand;
 use App\Models\Category;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
@@ -15,12 +17,16 @@ class ProductTable extends DataTableComponent
 {
     public $categories = [];
 
+    public $brands = [];
+
     public function mount()
     {
         $categories = Category::pluck('name', 'id')->toArray();
+        $brands = Brand::pluck('name', 'id')->toArray();
 
         // push the first option
         $this->categories = ['' => 'All Categories'] + $categories;
+        $this->brands = ['' => 'All Brands'] + $brands;
     }
 
     public function configure(): void
@@ -29,6 +35,7 @@ class ProductTable extends DataTableComponent
 
         $this->setBulkActions([
             'updateCategory' => 'Update Category',
+            'updateBrand' => 'Update Brand',
         ]);
 
         $this->setDefaultSort('updated_at', 'desc');
@@ -48,6 +55,9 @@ class ProductTable extends DataTableComponent
         return [
             Column::make("ID", "id")
                 ->deselected()
+                ->sortable(),
+            Column::make("Brand", "brand.name")
+                ->searchable()
                 ->sortable(),
             Column::make("Category", "category.name")
                 ->searchable()
@@ -117,7 +127,6 @@ class ProductTable extends DataTableComponent
 
     public function updateCategory()
     {
-
         $keys = [];
 
         foreach($this->getSelected() as $item)
@@ -129,6 +138,18 @@ class ProductTable extends DataTableComponent
             ->to(UpdateCategory::class);
     }
 
+    public function updateBrand()
+    {
+        $keys = [];
+
+        foreach ($this->getSelected() as $item) {
+            $keys[] = $item;
+        }
+
+        $this->dispatch('bulkActionProduct', data: $keys)
+            ->to(UpdateBrand::class);
+    }
+
     #[On('updatedProductCategory')]
     public function updatedProductCategory()
     {
@@ -137,5 +158,15 @@ class ProductTable extends DataTableComponent
         $this->dispatch('refreshDatatable');
 
         $this->dispatch('sendNotification', type: 'success', message: 'Category updated successfully');
+    }
+
+    #[On('updatedProductBrand')]
+    public function updatedProductBrand()
+    {
+        $this->clearSelected();
+
+        $this->dispatch('refreshDatatable');
+
+        $this->dispatch('sendNotification', type: 'success', message: 'Brand updated successfully');
     }
 }

@@ -65,6 +65,22 @@
     </div>
 </div>
 
+{{-- Modal for update brqnd product --}}
+<div class="modal fade" id="updateProductBrand" tabindex="-1" aria-labelledby="updateProductBrandLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateProductBrandLabel">Update Product Brand</h5>
+                <button type="button" class="btn-close" data-coreui-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @livewire('backend.product.update-brand')
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @endpush
 
 @push('after-scripts')
@@ -73,11 +89,18 @@
 <script>
 
     document.addEventListener('livewire:init', () => {
-        let modalElement = document.getElementById('updateProductCategory')
-        const updateProductCategory = new coreui.Modal(modalElement);
+        let categoryModalElement = document.getElementById('updateProductCategory')
+        const updateProductCategory = new coreui.Modal(categoryModalElement);
+
+        let brandModalElement = document.getElementById('updateProductBrand')
+        const updateProductBrand = new coreui.Modal(brandModalElement);
 
         Livewire.on('updateProductCategory', ({data}) => {
             updateProductCategory.show();
+        });
+
+        Livewire.on('updateProductBrand', ({data}) => {
+            updateProductBrand.show();
         });
 
         Livewire.on('sendNotification', ({type = 'success', message}) => {
