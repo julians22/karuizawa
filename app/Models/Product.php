@@ -66,6 +66,11 @@ class Product extends Model implements HasMedia
         return $this->belongsTo(Category::class);
     }
 
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
     public function colors()
     {
         return $this->belongsToMany(Color::class);

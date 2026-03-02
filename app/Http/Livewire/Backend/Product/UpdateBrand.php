@@ -3,60 +3,60 @@
 namespace App\Http\Livewire\Backend\Product;
 
 use App\Http\Livewire\Backend\ProductTable;
-use App\Models\Category;
+use App\Models\Brand;
 use App\Models\Product;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class UpdateCategory extends Component
+class UpdateBrand extends Component
 {
     public $products = [];
-    public $category = 1;
+    public $brand = 1;
 
     #[On('bulkActionProduct')]
     public function handleBulkActionProduct($data = [])
     {
         $this->products = $data;
-        $this->dispatch('updateProductCategory', data: $this->products);
+        $this->dispatch('updateProductBrand', data: $this->products);
     }
 
     public function render()
     {
-        $categories = Category::all();
+        $brands = Brand::all();
 
-        return view('livewire.backend.product.update-category', compact('categories'));
+        return view('livewire.backend.product.update-brand', compact('brands'));
     }
 
-    public function updateCategory(){
+    public function updateBrand(){
 
-        // validate the category
+        // validate the brand
         $this->validate([
-            'category' => 'required|exists:categories,id',
+            'brand' => 'required|exists:brands,id',
             'products' => 'required|array',
             'products.*' => 'exists:products,id',
         ]);
 
         DB::beginTransaction();
 
-        // update the category
+        // update the brand
         $products = Product::whereIn('id', $this->products)->get();
 
         foreach ($products as $product) {
 
             try {
-                $product->category_id = $this->category;
+                $product->brand_id = $this->brand;
                 $product->save();
             } catch (\Exception $e) {
                 DB::rollBack();
-                $this->dispacth('sendNotification', type: 'error', message: 'Failed to update category');
+                $this->dispacth('sendNotification', type: 'error', message: 'Failed to update brand');
                 return;
             }
         }
 
         DB::commit();
 
-        $this->dispatch('updatedProductCategory')
+        $this->dispatch('updatedProductBrand')
             ->to(ProductTable::class);
     }
 }
