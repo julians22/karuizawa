@@ -51,7 +51,11 @@ class DashboardController extends Controller
             foreach ($targets as $target) {
 
                 if (!$target->isSemiCustom()) {
-                    $targetsValue[$target->category->name] = $target->target;
+                    if ($target->has('category')) {
+                        $targetsValue[$target->category->name] = $target->target;
+                    }else{
+                        $targetsValue['UNDEFINED_CATEGORY'] = $target->target;
+                    }
                 }else {
                     $targetsValue['Semi Custom'] = $target->target;
                 }
