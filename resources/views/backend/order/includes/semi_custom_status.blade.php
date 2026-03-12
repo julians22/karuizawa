@@ -1,7 +1,7 @@
 <div>
 
     @if (!$order->hasSemiCustom())
-        <label for="" class="badge bg-danger">Not found</label>
+        <label for="" class="bg-danger badge">Not found</label>
 
     @else
 
@@ -20,7 +20,7 @@
         {{ $scSuccessCount }} finished / {{ $scCount }} items
 
         @if ($scCount == $scSuccessCount)
-            <label for="" class="badge bg-success">All finished</label>
+            <label for="" class="bg-success badge">All finished</label>
         @endif
 
     @endif

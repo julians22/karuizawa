@@ -18,7 +18,7 @@
                 <label for="month" class="mb-2 fw-bolder">Select Month</label>
                 <input type="month" class="form-control form-control-sm" id="month" wire:model.live="month" min="{{$startMonth}}">
                 @error('month')
-                    <small class="text-danger d-inline-block">{{ $message }}</small>
+                    <small class="d-inline-block text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <div class="row mt-4" >
+    <div class="mt-4 row" >
 
         <div class="col-md-12">
 
@@ -44,7 +44,7 @@
                 {{-- Show Report --}}
                 <div class="row g-3">
 
-                    {{-- Daily Report CarD --}}
+                    {{-- Daily Report Card --}}
                     <div class="col-xl-4">
                         <div class="card">
                             <div class="card-header">
@@ -83,7 +83,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <strong>
-                                    Total Selling by Store
+                                    Total Sellings Store
                                 </strong>
                             </div>
 
@@ -101,36 +101,40 @@
                                     </div>
 
                                 </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <table class="table table-borderless">
-                                                    <tr>
-                                                        <th><span class="h4">Days to Go</span></th>
-                                                        <td><strong><span class="h3">{{$this->remaining_days}}</span></strong></td>
-                                                    </tr>
-
-                                                    @foreach ($reportData as $store_id => $store)
-                                                        <livewire:backend.report.target-calculation-component
-                                                            :store="$store_id"
-                                                            :month="$month"
-                                                            :date="$this->isDaily ? $date : null"
-                                                            :remainingDays="$this->remaining_days"
-                                                            key="{{$store_id}}-target-calculation-component-{{$month}}-{{$this->remaining_days}}"
-                                                            :reportData="$store"
-                                                            />
-                                                    @endforeach
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>
+
+                    {{-- Brand Transaction Chart --}}
+                    <div class="col-xl-7">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>
+                                    Total Sellings Brand
+                                </strong>
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="row">
+                                    @foreach ($brands as $brand)
+                                        <div class="col-md-6">
+                                            <livewire:backend.chart.brand-transaction-chart-component
+                                                :$month
+                                                key="{{$this->isDaily ? $date : $month}}-brand-transaction-chart-component-{{$brand->id}}"
+                                                :daily="!$this->isDaily ? null : $date"
+                                                :stores="$stores"
+                                                :brand="$brand"
+                                                />
+                                        </div>
+                                    @endforeach
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
 
                     <div class="col-xl-5">
 
@@ -167,8 +171,29 @@
 
                                 </div>
                             </div>
-
                         @endforeach
+
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-borderless">
+                                    <tr>
+                                        <th><span class="h4">Days to Go</span></th>
+                                        <td><strong><span class="h3">{{$this->remaining_days}}</span></strong></td>
+                                    </tr>
+
+                                    @foreach ($reportData as $store_id => $store)
+                                        <livewire:backend.report.target-calculation-component
+                                            :store="$store_id"
+                                            :month="$month"
+                                            :date="$this->isDaily ? $date : null"
+                                            :remainingDays="$this->remaining_days"
+                                            key="{{$store_id}}-target-calculation-component-{{$month}}-{{$this->remaining_days}}"
+                                            :reportData="$store"
+                                            />
+                                    @endforeach
+                                </table>
+                            </div>
+                        </div>
                     </div>
 
 

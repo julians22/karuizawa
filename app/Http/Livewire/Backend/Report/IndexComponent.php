@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Backend\Report;
 
 use App\Http\Livewire\Backend\Report\Trait\ReportData;
+use App\Models\Brand;
 use App\Models\Order;
 use App\Models\Store;
 use Carbon\Carbon;
@@ -31,9 +32,12 @@ class IndexComponent extends Component
 
     public $reportData = [];
 
+    public $brands;
+
     public function mount($categories)
     {
         $this->stores = Store::all();
+        $this->brands = Brand::all();
 
         // get first and last transaction date in database
         $firstTransaction = Order::orderBy('created_at', 'asc')->first();

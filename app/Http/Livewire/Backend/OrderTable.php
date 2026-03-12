@@ -11,6 +11,7 @@ use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Order;
 use App\Models\Store;
 use Illuminate\Bus\Batch;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Bus;
 use Rappasoft\LaravelLivewireTables\Views\Columns\BooleanColumn;
 use Rappasoft\LaravelLivewireTables\Views\Filters\DateFilter;
@@ -143,11 +144,19 @@ class OrderTable extends DataTableComponent
                             $query->whereHas('product_rtw', function($query) use ($value) {
                                 $query->where('brand_id', $value);
                             });
+                        })->whereDoesntHave('orderItems', function($query) use ($value) {
+                            $query->where('product_type', 'App\Models\SemiCustomProduct');
                         });
-
+                        return $builder;
                     }
                 }),
         ];
+    }
+
+    public function builder(): Builder
+    {
+        return Order::query()
+            ->without('payments'); // Eager load anything
     }
 
     public function columns(): array
