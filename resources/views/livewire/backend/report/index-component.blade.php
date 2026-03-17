@@ -55,8 +55,13 @@
 
                             <div class="card-body">
 
-                                <livewire:backend.report.product-daily-report-component :$month :$stores />
-
+                                @foreach ($brands as $brand)
+                                    <div class="mt-4 row">
+                                        <div class="col-md-12">
+                                            <livewire:backend.report.product-daily-report-component :$brand :$month :$stores />
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>

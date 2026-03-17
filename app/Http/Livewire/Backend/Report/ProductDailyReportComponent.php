@@ -22,10 +22,13 @@ class ProductDailyReportComponent extends Component
 
     public $stores;
 
-    public function mount($month, $stores)
+    public $brand;
+
+    public function mount($month, $stores, $brand)
     {
         $this->month = $month;
         $this->stores = $stores;
+        $this->brand = $brand;
     }
 
     public function render()
@@ -46,55 +49,60 @@ class ProductDailyReportComponent extends Component
                 $data[$value] = [];
             }
 
-            // prepare data with caching
-            // if the month is not older than the current month, don't cache the result
-            if(!is_older_month_year($this->month_string, $this->year_string)){
-                $semiCustom = $this->getSemicustom($store, $this->month_string, $this->year_string);
-            }else{
-                // cache the result for 1 day
-                $semiCustom = Cache::remember($this->cacheKey($store, $this->month_string, $this->year_string) . '-semi_custom', 60 * 24, function () use ($store) {
-                    return $this->getSemicustom($store, $this->month_string, $this->year_string);
+            // Check brand
+            // Dont include semi custom data
+            if ($this->brand->name == 'Karuizawa') {
+                // prepare data with caching
+                // if the month is not older than the current month, don't cache the result
+                if(!is_older_month_year($this->month_string, $this->year_string)){
+                    $semiCustom = $this->getSemicustom($store, $this->month_string, $this->year_string);
+                }else{
+                    // cache the result for 1 day
+                    $semiCustom = Cache::remember($this->cacheKey($store, $this->month_string, $this->year_string) . '-semi_custom', 60 * 24, function () use ($store) {
+                        return $this->getSemicustom($store, $this->month_string, $this->year_string);
+                    });
+                }
+
+                $semiCustom->each(function ($item) use (&$data) {
+                    $date = Carbon::parse($item->order->order_date)->format('d');
+
+                    $data[$date]['sc'][] = [
+                        'order_no_sc' => $item->order->order_number,
+                        'customer_name_sc' => $item->order->customer->full_name,
+                        'customer_phone_sc' => $item->order->customer->phone,
+                        'handling_date_sc' => $item->product_sc->handling_date,
+                        'fabric_code_sc' => $item->product_sc->fabric_code,
+                        'fabric_name_sc' => $item->product_sc->fabric_name,
+                        'collar_sc' => $item->product_sc->collar,
+                        'cuff_sc' => $item->product_sc->cuff,
+                        'front_body_sc' => $item->product_sc->front_body,
+                        'pocket_sc' => $item->product_sc->pocket,
+                        'back_body_sc' => $item->product_sc->back_body,
+                        'button_sc' => $item->product_sc->button,
+                        'customer_type_sc' => $item->product_sc->order_type_customer,
+                        'body_type_sc' => $item->product_sc->body_type,
+                        'sleeve_sc' => $item->product_sc->sleeve,
+                        'quantity_sc' => $item->quantity,
+                        'price_sc' => $item->product_sc->base_price,
+                        'discount_sc' => $item->product_sc->base_discount . '%',
+                        'option_sc' => $item->product_sc->option_total,
+                        'option_plus_sc' => $item->product_sc->option_additional_price,
+                        'gift_card_sc' => $item->product_sc->option_discount,
+                        'total_sc' => $item->price,
+                        'payment_method_sc' => $item->order->payments->first() ? $item->order->payments->first()->payment : 'qris'
+                    ];
                 });
             }
 
-            $semiCustom->each(function ($item) use (&$data) {
-                $date = Carbon::parse($item->order->order_date)->format('d');
-
-                $data[$date]['sc'][] = [
-                    'order_no_sc' => $item->order->order_number,
-                    'customer_name_sc' => $item->order->customer->full_name,
-                    'customer_phone_sc' => $item->order->customer->phone,
-                    'handling_date_sc' => $item->product_sc->handling_date,
-                    'fabric_code_sc' => $item->product_sc->fabric_code,
-                    'fabric_name_sc' => $item->product_sc->fabric_name,
-                    'collar_sc' => $item->product_sc->collar,
-                    'cuff_sc' => $item->product_sc->cuff,
-                    'front_body_sc' => $item->product_sc->front_body,
-                    'pocket_sc' => $item->product_sc->pocket,
-                    'back_body_sc' => $item->product_sc->back_body,
-                    'button_sc' => $item->product_sc->button,
-                    'customer_type_sc' => $item->product_sc->order_type_customer,
-                    'body_type_sc' => $item->product_sc->body_type,
-                    'sleeve_sc' => $item->product_sc->sleeve,
-                    'quantity_sc' => $item->quantity,
-                    'price_sc' => $item->product_sc->base_price,
-                    'discount_sc' => $item->product_sc->base_discount . '%',
-                    'option_sc' => $item->product_sc->option_total,
-                    'option_plus_sc' => $item->product_sc->option_additional_price,
-                    'gift_card_sc' => $item->product_sc->option_discount,
-                    'total_sc' => $item->price,
-                    'payment_method_sc' => $item->order->payments->first() ? $item->order->payments->first()->payment : 'qris'
-                ];
-            });
 
             // prepare data with caching
             // if the month is not older than the current month, don't cache the result
             if(!is_older_month_year($this->month_string, $this->year_string)){
-                $readyToWear = $this->getReadyToWear($store, $this->month_string, $this->year_string);
+                $readyToWear = $this->getReadyToWear($store, $this->month_string, $this->year_string, $this->brand->id);
             }else{
                 // cache the result for 1 day
-                $readyToWear = Cache::remember($this->cacheKey($store, $this->month_string, $this->year_string) . '-ready_to_wear', 60 * 24, function () use ($store) {
-                    return $this->getReadyToWear($store, $this->month_string, $this->year_string);
+                $readyToWear = Cache::remember($this->cacheKey($store, $this->month_string, $this->year_string, $this->brand->id) . '-ready_to_wear', 60 * 24, function () use ($store) {
+                    return $this->getReadyToWear($store, $this->month_string, $this->year_string, $this->brand->id);
                 });
             }
 
