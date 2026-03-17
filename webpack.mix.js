@@ -41,7 +41,7 @@ mix.setPublicPath('public')
     ])
     .sourceMaps()
     .alias({
-        '@frontend': path.resolve('resources/js/frontend'),
+        '@frontend' : path.resolve('resources/js/frontend'),
         '@' :  path.resolve('resources/js')
     });
 

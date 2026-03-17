@@ -1,46 +1,50 @@
-<nav class="relative z-50 bg-secondary">
-    <div class="container py-7">
-        <div class="grid items-end grid-cols-7 gap-10">
-            <div class="col-span-7 md:col-span-2 max-md:self-center">
+<nav class="z-50 relative bg-secondary">
+    <div class="py-7 container">
+        <div class="items-end gap-10 grid grid-cols-7">
+            <div class="max-md:self-center col-span-7 md:col-span-2">
                 <a href="{{ route('frontend.index') }}">
                     <img class="max-md:mx-auto max-md:w-1/2" src="{{ asset('img/brand/logo-01.png') }}" alt="">
                 </a>
             </div>
-            <div class="col-span-7 -mb-4 md:col-span-5">
+            <div class="col-span-7 md:col-span-5 -mb-4">
                 @if ($logged_in_user && Route::is('frontend.user.*'))
-                    <ul class="flex gap-[5%] text-primary-50 font-medium uppercase w-full tracking-widest">
+                    <ul class="flex gap-[5%] w-full font-medium text-primary-50 uppercase tracking-widest">
                         <li>
-                            <div class="relative inline-block dropdown group">
+                            <div class="group inline-block relative dropdown">
                                 <button class="font-medium uppercase text-primary-50 group-hover:before:bg-transparent {{ Route::is('frontend.user.rtw') || Route::is('frontend.user.semi-custom')  ? 'active' : '' }}">
                                     Shop
                                 </button>
-                                <div class="absolute z-10 hidden group-hover:block top-[1.3rem] inset-x-0">
-                                    <div class="w-0 h-0 border-l-[1rem] border-y-8 border-y-transparent border-l-primary-50"></div>
+                                <div class="hidden group-hover:block top-[1.3rem] z-10 absolute inset-x-0">
+                                    <div class="border-y-8 border-y-transparent border-l-[1rem] border-l-primary-50 w-0 h-0"></div>
                                 </div>
-                                <ul class="absolute z-10 hidden shadow-xl dropdown-menu group-hover:block bg-primary-50 top-7">
-                                  <li class=""><a class="block px-4 py-2 text-white whitespace-no-wrap hover:text-primary-200" href="{{ route('frontend.user.rtw') }}">RTW</a></li>
-                                  <li><div class="h-[1px] w-[88%] bg-white opacity-75 mx-auto"></div></li>
-                                  <li class=""><a class="block px-4 py-2 text-white whitespace-pre hover:text-primary-200" href="{{ route('frontend.user.semi-custom') }}">semi custom</a></li>
+                                <ul style="width: 220px;" class="hidden group-hover:block top-7 left-0 z-10 absolute bg-primary-50 shadow-xl dropdown-menu">
+                                  <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-no-wrap" href="{{ route('frontend.user.rtw') }}">RTW</a></li>
+                                  <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
+                                  <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-pre" href="{{ route('frontend.user.semi-custom') }}">semi custom</a></li>
+                                  <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
+                                  <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-no-wrap" href="{{ route('frontend.user.rtw') }}?brand=kizoku">Kizoku Parfume</a></li>
                                 </ul>
                             </div>
                         </li>
                         <li class="{{ Route::is('frontend.user.booking') ? 'active' : '' }}"><a href="{{ route('frontend.user.booking') }}" class="py-1">CUSTOMER BOOKING</a></li>
                     </ul>
                 @else
-                    <ul class="flex gap-3 md:gap-4 lg:gap-[5%] text-primary-50 font-medium uppercase w-full justify-center tracking-normal md:tracking-wider text-xs md:text-sm lg:text-base">
+                    <ul class="flex justify-center gap-3 md:gap-4 lg:gap-[5%] w-full font-medium text-primary-50 text-xs md:text-sm lg:text-base uppercase tracking-normal md:tracking-wider">
                         <li>
                             <li>
-                                <div class="relative inline-block dropdown group">
+                                <div class="group inline-block relative dropdown">
                                     <button class="font-medium uppercase text-primary-50 group-hover:before:bg-transparent {{ Route::is('frontend.user.rtw') || Route::is('frontend.user.semi-custom')  ? 'active' : '' }}">
                                         Shop
                                     </button>
-                                    <div class="absolute z-10 hidden group-hover:block top-[1.3rem] inset-x-0">
-                                        <div class="w-0 h-0 border-l-[1rem] border-y-8 border-y-transparent border-l-primary-50"></div>
+                                    <div class="hidden group-hover:block top-[1.3rem] z-10 absolute inset-x-0">
+                                        <div class="border-y-8 border-y-transparent border-l-[1rem] border-l-primary-50 w-0 h-0"></div>
                                     </div>
-                                    <ul class="absolute z-10 hidden shadow-xl dropdown-menu group-hover:block bg-primary-50 top-7">
-                                      <li class=""><a class="block px-4 py-2 text-white whitespace-no-wrap hover:text-primary-200" href="{{ route('frontend.user.rtw') }}">RTW</a></li>
-                                      <li><div class="h-[1px] w-[88%] bg-white opacity-75 mx-auto"></div></li>
-                                      <li class=""><a class="block px-4 py-2 text-white whitespace-pre hover:text-primary-200" href="{{ route('frontend.user.semi-custom') }}">semi custom</a></li>
+                                    <ul class="hidden group-hover:block top-7 z-10 absolute bg-primary-50 shadow-xl dropdown-menu">
+                                        <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-no-wrap" href="{{ route('frontend.user.rtw') }}">RTW</a></li>
+                                        <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
+                                        <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-pre" href="{{ route('frontend.user.semi-custom') }}">semi custom</a></li>
+                                        <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
+                                        <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-no-wrap" href="{{ route('frontend.user.rtw') }}?brand=kizoku">Kizoku Parfume</a></li>
                                     </ul>
                                 </div>
                             </li>
@@ -49,27 +53,27 @@
                             <li class="{{ Route::is('frontend.user.booking') ? 'active' : '' }}"><a href="{{ route('frontend.user.booking') }}" class="py-1">CUSTOMER BOOKING</a></li>
                         @endauth
                         <li><a href="{{ route('frontend.about-us') }}">About Us</a></li>
-                        <li class="self-center"><div class="h-[1px] w-10 md:w-20 lg:w-40 bg-primary-50"></div></li>
+                        <li class="self-center"><div class="bg-primary-50 w-10 md:w-20 lg:w-40 h-[1px]"></div></li>
                         @if ($logged_in_user)
                         <li>
-                            <div class="relative inline-block dropdown group">
-                                <button class="font-medium uppercase text-primary-50">
+                            <div class="group inline-block relative dropdown">
+                                <button class="font-medium text-primary-50 uppercase">
                                     {{ $logged_in_user->name }}
                                 </button>
-                                <div class="absolute inset-x-0 z-10 hidden group-hover:block top-[1.3rem]">
-                                    <div class="w-0 h-0 border-l-[1rem] border-y-8 border-y-transparent border-l-primary-50"></div>
+                                <div class="hidden group-hover:block top-[1.3rem] z-10 absolute inset-x-0">
+                                    <div class="border-y-8 border-y-transparent border-l-[1rem] border-l-primary-50 w-0 h-0"></div>
                                 </div>
-                                <ul class="absolute hidden dropdown-menu group-hover:block bg-primary-50 top-7">
+                                <ul class="hidden group-hover:block top-7 absolute bg-primary-50 dropdown-menu">
                                 @if ($logged_in_user->type == 'crew')
-                                    <li class=""><a class="block px-4 py-2 text-white whitespace-no-wrap hover:text-primary-200" href="{{ route('crew.dashboard') }}">Profile</a></li>
+                                    <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-no-wrap" href="{{ route('crew.dashboard') }}">Profile</a></li>
                                     @else
-                                    <li class=""><a class="block px-4 py-2 text-white whitespace-no-wrap hover:text-primary-200" href="{{ route('frontend.user.dashboard') }}">Profile</a></li>
+                                    <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-no-wrap" href="{{ route('frontend.user.dashboard') }}">Profile</a></li>
                                 @endif
-                                  <li><div class="h-[1px] md:w-[88%] bg-white opacity-75 mx-auto"></div></li>
+                                  <li><div class="bg-white opacity-75 mx-auto md:w-[88%] h-[1px]"></div></li>
                                   <li class="">
                                     <form method="POST" action="{{ route('frontend.auth.logout') }}">
                                         @csrf
-                                        <button type="submit" class="block px-4 py-2 text-white uppercase whitespace-pre hover:text-primary-200">Log out</button>
+                                        <button type="submit" class="block px-4 py-2 text-white hover:text-primary-200 uppercase whitespace-pre">Log out</button>
                                     </form>
                                   </li>
                                 </ul>

@@ -1,16 +1,20 @@
+
 <script setup>
     import { defineEmits, onMounted, ref, watch, nextTick, reactive } from 'vue';
     import { TailwindPagination } from 'laravel-vue-pagination';
+
     import { useProducts } from '../../../../store/product';
     import { priceFormat } from '../../../../helpers/currency';
     import { useCustomer } from '../../../../store/customer';
     import { useUser } from '../../../../store/user';
 
-
     const isLoading = ref(true);
 
     const props = defineProps({
         api_product_url: String,
+        brands_collections: {
+            type: Array,
+        }
     });
 
     const products = ref({});
@@ -39,6 +43,7 @@
         size: '0',
         color: '0',
         sort: '0',
+        brand: '0',
     });
 
     const selectedProducts = ref([]);
@@ -49,6 +54,23 @@
 
     watch(filters, () => {
         fetchProducts(1);
+
+        if (filters.brand !== '0') {
+            setQueryParamsByKey('brand', props.brands_collections.find(b => b.id === filters.brand)?.name || '');
+        }
+        if (filters.size !== '0') {
+            setQueryParamsByKey('size', filters.size);
+        }
+        if (filters.color !== '0') {
+            setQueryParamsByKey('color', filters.color);
+        }
+        if (filters.sort !== '0') {
+            setQueryParamsByKey('sort', filters.sort);
+        }
+        if (keywords.value) {
+            setQueryParamsByKey('search', keywords.value);
+        }
+
     });
 
     const selectProducts = async () => {
@@ -68,7 +90,31 @@
             return;
     }
 
+
+
     onMounted(() => {
+
+        let searchQueryParam = getQueryParamsByKey('search');
+        if (searchQueryParam) {
+            keywords.value = searchQueryParam;
+        }
+
+        let brandQueryParam = getQueryParamsByKey('brand');
+        if (brandQueryParam) {
+            // convert to small case
+            let smallBrandQueryParam = brandQueryParam.toLowerCase();
+
+            props.brands_collections.forEach(brand => {
+                let brandName = brand.name.toLowerCase();
+
+                if (brandName === smallBrandQueryParam) {
+                    filters.brand = brand.id;
+                }
+
+            });
+
+        }
+
         nextTick(() => {
             if (storeProducts.setSlug.length) {
                 form.value.shirtsSelected = storeProducts.getSlug;
@@ -79,11 +125,23 @@
         fetchProducts(1);
     });
 
+    const getQueryParamsByKey = (key) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(key);
+    }
+
+    const setQueryParamsByKey = (key, value) => {
+        const url = new URL(window.location.href);
+        url.searchParams.set(key, value);
+        window.history.pushState({}, '', url);
+    }
+
     const getResults = async (page = 1) => {
         fetchProducts(page);
     }
 
     const searchProduct = () => {
+        setQueryParamsByKey('search', keywords.value);
         fetchProducts(1);
     }
 
@@ -110,6 +168,10 @@
 
         if (store_id) {
             url = `${url}&store_id=${store_id}`;
+        }
+
+        if (filters.brand !== '0') {
+            url = `${url}&brand=${filters.brand}`;
         }
 
         url = `${url}${keywordString}`;
@@ -169,10 +231,10 @@
 
 <template>
     <section class="pb-20">
-        <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-            <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">Ready to wear</div>
+        <div class="flex justify-between items-center bg-primary-50 p-6 lg:px-14 lg:py-7">
+            <div class="font-bold text-white text-lg lg:text-xl uppercase tracking-widest">Ready to wear</div>
             <div class="w-2/5">
-                <label for="default-search" class="mb-2 font-medium text-gray-900 text-sm dark:text-white sr-only">Search</label>
+                <label for="default-search" class="sr-only mb-2 font-medium text-gray-900 dark:text-white text-sm">Search</label>
                 <div class="relative">
                     <input
                         type="text"
@@ -180,16 +242,31 @@
                         v-model="keywords"
                         placeholder="Search for products"
                         @blur="searchProduct"
-                        class="block bg-white px-4 py-2 rounded-full w-full text-gray-900 text-sm pe-10" />
-                    <button @click="searchProduct" class="absolute inset-y-0 flex items-center end-0 pe-4">
-                        <svg class="text-primary-50 size-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        class="block bg-white px-4 py-2 pe-10 rounded-full w-full text-gray-900 text-sm" />
+                    <button @click="searchProduct" class="absolute inset-y-0 flex items-center pe-4 end-0">
+                        <svg class="size-5 text-primary-50" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                         </svg>
                     </button>
                 </div>
             </div>
         </div>
-        <div class="flex justify-between items-center gap-2 bg-secondary-50 lg:px-14 lg:py-7 p-6">
+        <div class="flex justify-between items-center gap-2 bg-secondary-50 p-6 lg:px-14 lg:py-7">
+            <div class="flex max-lg:flex-col items-center gap-2 lg:gap-4 w-full">
+                <div class="text-white uppercase tracking-widest whitespace-pre">Brand</div>
+                <div class="relative w-full">
+                    <span class="top-0 right-0 bottom-0 absolute flex justify-center items-center bg-secondary pt-2 pr-3 pl-2.5 rounded-r-full w-10 text-primary-50 pointer-events-none">
+                        ▼
+                    </span>
+                    <select id="brand" class="block bg-white before:bg-blue-400 p-2.5 focus:border-blue-500 rounded-full focus:ring-blue-500 w-full"
+                        v-model="filters.brand"
+                        :disabled="isLoading"
+                        >
+                        <option selected value="0">All</option>
+                        <option v-for="(brand, index) in brands_collections" :key="index" :value="brand.id">{{ brand.name }}</option>
+                    </select>
+                </div>
+            </div>
             <div class="flex max-lg:flex-col items-center gap-2 lg:gap-4 w-full">
                 <div class="text-white uppercase tracking-widest whitespace-pre">Sort by</div>
                 <div class="relative w-full">
@@ -242,14 +319,14 @@
                         <div class="text-[#606060] text-center">{{ product.product_name }}</div>
                         <template v-if="product.product_actual_stocks">
                             <template v-if="product.product_actual_stocks.length">
-                                <div class="my-1 text-center text-primary-300 text-xs" v-for="(stock, index) in product.product_actual_stocks" :key="index">
+                                <div class="my-1 text-primary-300 text-xs text-center" v-for="(stock, index) in product.product_actual_stocks" :key="index">
                                     <span v-if="stock.stock_quantity">{{ stock.store.code }}: {{ stock.stock_quantity }} in stock</span>
                                 </div>
                             </template>
                         </template>
-                        <div class="text-[#A3A3A3] text-center text-sm">{{ product.sku }}</div>
-                        <div class="text-center text-lg text-secondary-50">{{ priceFormat(product.price) }}</div>
-                        <span class="flex justify-center items-center border-4 border-primary-50 rounded-full text-transparent checkbox-inner size-10"></span>
+                        <div class="text-[#A3A3A3] text-sm text-center">{{ product.sku }}</div>
+                        <div class="text-secondary-50 text-lg text-center">{{ priceFormat(product.price) }}</div>
+                        <span class="flex justify-center items-center border-4 border-primary-50 rounded-full size-10 text-transparent checkbox-inner"></span>
                     </label>
                 </div>
                 <div v-else-if="isLoading" v-for="i in 8">
@@ -260,10 +337,10 @@
                     </div>
                 </div>
                 <div v-else-if="!isLoading && !products.data?.length">
-                    <div class="flex justify-center items-center text-[#606060] text-center text-lg">No products found</div>
+                    <div class="flex justify-center items-center text-[#606060] text-lg text-center">No products found</div>
                 </div>
                 <div v-else>
-                    <div class="flex justify-center items-center text-[#606060] text-center text-lg">No products found</div>
+                    <div class="flex justify-center items-center text-[#606060] text-lg text-center">No products found</div>
                 </div>
             </div>
         </div>
@@ -297,7 +374,7 @@
         @apply border-primary-50;
     }
     input[type="checkbox"]:checked + label span.checkbox-inner {
-        @apply border-primary-50 bg-primary-50;
+        @apply bg-primary-50 border-primary-50;
         color: #fff;
         background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='14px' height='10px' viewBox='0 0 14 10' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 59.1 (86144) - https://sketch.com --%3E%3Ctitle%3Echeck%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='ios_modification' transform='translate(-27.000000, -191.000000)' fill='%23FFFFFF' fill-rule='nonzero'%3E%3Cg id='Group-Copy' transform='translate(0.000000, 164.000000)'%3E%3Cg id='ic-check-18px' transform='translate(25.000000, 23.000000)'%3E%3Cpolygon id='check' points='6.61 11.89 3.5 8.78 2.44 9.84 6.61 14 15.56 5.05 14.5 4'%3E%3C/polygon%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         background-size: 14px 10px;
