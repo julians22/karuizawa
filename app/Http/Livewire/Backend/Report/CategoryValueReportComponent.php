@@ -17,10 +17,13 @@ class CategoryValueReportComponent extends Component
 
     public $stores;
 
-    public function mount($month, $stores)
+    public $brand;
+
+    public function mount($month, $stores, $brand)
     {
         $this->month = $month;
         $this->stores = $stores;
+        $this->brand = $brand;
     }
 
     public function render()
@@ -39,7 +42,7 @@ class CategoryValueReportComponent extends Component
 
             $data = [];
 
-            $readyToWear = $this->getReadyToWear($store, $this->month_string, $this->year_string);
+            $readyToWear = $this->getReadyToWear($store, $this->month_string, $this->year_string, $this->brand->id);
 
             $productCategoies = $readyToWear->map(function ($item) {
                 return $item->product->category->name;
@@ -61,16 +64,6 @@ class CategoryValueReportComponent extends Component
                 }
             }
 
-            $data['Semi Custom'] = [];
-
-            foreach ($crews as $crew) {
-                $data['Semi Custom'][$crew] = [];
-
-                foreach ($this->rangeOfDays($this->month) as $key => $value) {
-                    $data['Semi Custom'][$crew][$value] = 0;
-                }
-            }
-
             $readyToWear->each(function ($item) use (&$data) {
 
                 $date = $item->order->created_at->format('d');
@@ -80,15 +73,30 @@ class CategoryValueReportComponent extends Component
                 $data[$category][$crew][$date] += $item->total_price;
             });
 
-            $semiCustom = $this->getSemiCustom($store, $this->month_string, $this->year_string);
+            if ($this->brand->name == 'Karuizawa') {
+                $data['Semi Custom'] = [];
 
-            $semiCustom->each(function ($item) use (&$data) {
+                foreach ($crews as $crew) {
+                    $data['Semi Custom'][$crew] = [];
 
-                $date = $item->order->created_at->format('d');
-                $crew = $item->order->user->name;
+                    foreach ($this->rangeOfDays($this->month) as $key => $value) {
+                        $data['Semi Custom'][$crew][$value] = 0;
+                    }
+                }
 
-                $data['Semi Custom'][$crew][$date] += $item->price;
-            });
+                $semiCustom = $this->getSemiCustom($store, $this->month_string, $this->year_string);
+
+                $semiCustom->each(function ($item) use (&$data) {
+
+                    $date = $item->order->created_at->format('d');
+                    $crew = $item->order->user->name;
+
+                    $data['Semi Custom'][$crew][$date] += $item->price;
+                });
+            }
+
+
+
 
             $rows = [];
 
