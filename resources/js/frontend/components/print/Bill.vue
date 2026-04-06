@@ -92,7 +92,7 @@ const { handlePrint } = useVueToPrint({
                 <div class="py-2">
                     <strong>Terms & Conditions:</strong>
                     <div class="mb-2">
-                        <strong class="mb-1">Semi-Respoke</strong>
+                        <strong class="mb-1">Semi-Bespoke</strong>
                         <ol class="list-decimal list-inside">
                             <li>The production process will require 14 working days, excluding holidays and weekends.</li>
                             <li>Karuizawa will charge a revision fee for any changes or modifications depending on the nature and complexity.</li>
@@ -109,7 +109,7 @@ const { handlePrint } = useVueToPrint({
                 </div>
 
                 <!-- border dot -->
-                <div class="border-t border-black border-dotted w-full h-px"></div>
+                <div class="border-black border-t border-dotted w-full h-px"></div>
           </div>
         </div>
 
