@@ -88,7 +88,7 @@ class BrandTransactionChartComponent extends Component
             'labels' => array_keys($storeData),
             'chart' => [
                 'type' => 'donut',
-                'width' => 400,
+                'width' => 500,
             ],
             'responsive' => [
                 [
