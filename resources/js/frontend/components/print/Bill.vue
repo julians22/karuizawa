@@ -94,14 +94,15 @@ const { handlePrint } = useVueToPrint({
                     <div class="mb-2">
                         <strong class="mb-1">Semi-Bespoke</strong>
                         <ol class="list-decimal list-inside">
+                            <li>No refund policy.</li>
                             <li>The production process will require 14 working days, excluding holidays and weekends.</li>
                             <li>Karuizawa will charge a revision fee for any changes or modifications depending on the nature and complexity.</li>
-                            <li>No refund policy.</li>
                         </ol>
                     </div>
                     <div class="mb-2">
                         <strong class="mb-1">Ready to Wear</strong>
                         <ol class="list-decimal list-inside">
+                            <li>No refund policy.</li>
                             <li>Karuizawa allows any product exchange only for the cause of production's mishaps.</li>
                             <li>Karuizawa needs to receive the receipt, product with tag and label intact during the exchange process within 3 days after purchase.</li>
                         </ol>
