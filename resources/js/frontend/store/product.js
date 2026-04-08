@@ -70,6 +70,10 @@ export const useProducts = defineStore('products', {
         resetDuplicateSm() {
             this.duplicate_semi_custom = [];
         },
+
+        removeSemiCustom(index) {
+            this.semi_custom.splice(index, 1);
+        },
     },
 
     persist: {
