@@ -9,7 +9,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.0|^8.1",
+        "php": "^8.3",
         "arcanedev/log-viewer": "10.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "jamesmills/laravel-timezone": "^1.13",
