@@ -297,15 +297,15 @@
                                         </span>
 
                                         <button
-                                            class="bg-blue-400 px-2 py-1 text-black"
+                                            class="bg-primary-300 px-2 py-1 rounded-lg text-black"
                                           @click="editSemuCustom(index)"
                                         >Edit</button>
 
-                                        <!-- delet -->
-                                        <button
+                                        <!-- delete -->
+                                        <!-- <button
                                             class="bg-red-500 px-2 py-1 text-white"
                                             @click="storeProducts.removeSemiCustom(index)"
-                                        >Delete</button>
+                                        >Delete</button> -->
 
                                     </div>
                                     <div class="text-[#A3A3A3] text-sm">{{ semiCustom.basic.form.fabric.fabricCode }}</div>

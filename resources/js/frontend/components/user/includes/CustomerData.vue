@@ -87,7 +87,14 @@
             })
             .catch(error => {
                 console.error('There was an error!', error.response.data.message);
-                alert(error.response.data.message);
+
+                let message = error.response.data.message;
+
+                // if code 422, validation error
+                if (error.response.status === 422) {
+                    message = "Email already exists, please use another email or select the existing customer.";
+                }
+                alert(message);
             });
     }
 
@@ -108,49 +115,49 @@
     <div>
         <addCustumer ref="childAddCustomer" />
         <section>
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">Customer data</div>
+            <div class="flex justify-between items-center bg-primary-50 p-6 lg:px-14 lg:py-7">
+                <div class="font-bold text-white text-lg lg:text-xl uppercase tracking-widest">Customer data</div>
                 <button @click="childAddCustomer.open = true" class="text-white max-lg:text-sm uppercase tracking-widest">Add Customer <span class="font-roboto text-2xl">+</span></button>
             </div>
 
             <div class="py-10 container">
                 <div class="items-center grid grid-cols-6 mb-4">
                     <label for="first_name" class="block col-span-2 lg:col-span-1 mb-2 font-medium text-primary-50 uppercase tracking-widest">First name</label>
-                    <input type="text" v-model="form.first_name" id="first_name" class="block border-primary-50 col-span-4 lg:col-span-5 bg-transparent p-2.5 border rounded-full w-full text-primary-50"/>
+                    <input type="text" v-model="form.first_name" id="first_name" class="block col-span-4 lg:col-span-5 bg-transparent p-2.5 border border-primary-50 rounded-full w-full text-primary-50"/>
                 </div>
                 <div class="items-center grid grid-cols-6 mb-4">
                     <label for="phone" class="block col-span-2 lg:col-span-1 mb-2 font-medium text-primary-50 uppercase tracking-widest">Phone No</label>
-                    <input type="text" v-model="form.phone" id="phone" class="block border-primary-50 col-span-4 lg:col-span-5 bg-transparent p-2.5 border rounded-full w-full text-primary-50"/>
+                    <input type="text" v-model="form.phone" id="phone" class="block col-span-4 lg:col-span-5 bg-transparent p-2.5 border border-primary-50 rounded-full w-full text-primary-50"/>
                 </div>
                 <div class="items-center grid grid-cols-6 mb-4">
                     <label for="email" class="block col-span-2 lg:col-span-1 mb-2 font-medium text-primary-50 uppercase tracking-widest">email</label>
-                    <input type="email" id="email" v-model="form.email" class="block border-primary-50 col-span-4 lg:col-span-5 bg-transparent p-2.5 border rounded-full w-full text-primary-50"/>
+                    <input type="email" id="email" v-model="form.email" class="block col-span-4 lg:col-span-5 bg-transparent p-2.5 border border-primary-50 rounded-full w-full text-primary-50"/>
                 </div>
                 <div class="items-center grid grid-cols-6">
                     <label class="block col-span-2 lg:col-span-1 mb-2 font-medium text-primary-50 uppercase tracking-widest">gender</label>
                     <div class="flex gap-4 col-span-4 lg:col-span-5">
                         <div class="flex items-center">
-                            <input :checked="form.is_male && form.is_male !== null" v-model="form.is_male" :value="true" id="default-radio-1" type="radio" name="default-radio" class="border-gray-300 bg-secondary focus:ring-secondary w-4 h-4 text-secondary-50">
-                            <label for="default-radio-1" class="mt-1 text-primary-50 uppercase ms-1">Male</label>
+                            <input :checked="form.is_male && form.is_male !== null" v-model="form.is_male" :value="true" id="default-radio-1" type="radio" name="default-radio" class="bg-secondary border-gray-300 focus:ring-secondary w-4 h-4 text-secondary-50">
+                            <label for="default-radio-1" class="ms-1 mt-1 text-primary-50 uppercase">Male</label>
                         </div>
                         <div class="flex items-center">
-                            <input :checked="!form.is_male && form.is_male !== null" id="default-radio-2" type="radio" v-model="form.is_male" :value="false" name="default-radio" class="border-gray-300 bg-secondary focus:ring-secondary w-4 h-4 text-secondary-50">
-                            <label for="default-radio-2" class="mt-1 text-primary-50 uppercase ms-1">Female</label>
+                            <input :checked="!form.is_male && form.is_male !== null" id="default-radio-2" type="radio" v-model="form.is_male" :value="false" name="default-radio" class="bg-secondary border-gray-300 focus:ring-secondary w-4 h-4 text-secondary-50">
+                            <label for="default-radio-2" class="ms-1 mt-1 text-primary-50 uppercase">Female</label>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
         <section class="pb-40">
-            <div class="flex justify-between items-center bg-primary-50 lg:px-14 lg:py-7 p-6">
-                <div class="font-bold text-lg text-white lg:text-xl uppercase tracking-widest">CONFIRM DATE & TIME</div>
+            <div class="flex justify-between items-center bg-primary-50 p-6 lg:px-14 lg:py-7">
+                <div class="font-bold text-white text-lg lg:text-xl uppercase tracking-widest">CONFIRM DATE & TIME</div>
             </div>
             <div class="flex gap-10 py-10 container">
                 <div class="flex items-center gap-6">
                     <label for="date" class="block text-primary-50 uppercase">set date</label>
                     <div class="flex">
                         <VueDatePicker v-model="date" :format="format" :min-date="new Date()" ignore-time-validation :enableTimePicker="false" />
-                        <!-- <input type="date" id="date" class="block before:block relative before:right-0 before:-z-10 before:absolute before:inset-y-0 flex-1 before:content-[''] border-primary-50 bg-transparent before:bg-primary-50 p-2.5 border rounded-full w-full before:w-10 text-primary-50 leading-none" required > -->
+                        <!-- <input type="date" id="date" class="block before:block before:right-0 before:-z-10 before:absolute relative before:inset-y-0 flex-1 bg-transparent before:bg-primary-50 p-2.5 border border-primary-50 rounded-full w-full before:w-10 text-primary-50 before:content-[''] leading-none" required > -->
                     </div>
                 </div>
                 <div class="flex items-center gap-6">
@@ -158,7 +165,7 @@
                     <div class="flex">
                         <VueDatePicker v-model="time" :min-time="{ hours: 10 }" :max-time="{ hours: 21, minutes: 10 }" time-picker>
                             <template #input-icon>
-                                <img class="ml-2 input-slot-image size-5" src="/img/icons/time.png"/>
+                                <img class="ml-2 size-5 input-slot-image" src="/img/icons/time.png"/>
                             </template>
                         </VueDatePicker>
                     </div>
