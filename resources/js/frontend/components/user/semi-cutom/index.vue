@@ -110,7 +110,10 @@
 
         if (urlParams.get('page') != null) {
             storePage.currentPage = urlParams.get('page');
-            if (urlParams.get('edit_on_index') == null) {
+            const hasEditIndex = urlParams.get('edit_on_index') != null;
+            const hasDuplicateIndex = urlParams.get('index') != null;
+
+            if (!hasEditIndex && !hasDuplicateIndex) {
                 storeProducts.resetDuplicateSm();
                 storeProducts.setIndexSemiCustom(null);
             }
@@ -121,7 +124,7 @@
         }
     });
 
-    watch(amount.value, (items) => {
+    watch(amount, (items) => {
         let basic = parseInt(items.basic?.total ?? 0);
         let option = parseInt(items.option?.total ?? 0);
         let giftCard = parseInt(items.option?.giftCard ?? 0);
@@ -129,10 +132,18 @@
         // totalPrice.value = basic + option;
         totalPrice.value = basic + option - giftCard;
 
-        childBasic.value.amount = amount.value.basic;
-        childOption.value.amount = amount.value.option;
-        bindForm.value.totalPrice = totalPrice.value;
-    });
+        if (childBasic.value) {
+            childBasic.value.amount = amount.value.basic;
+        }
+
+        if (childOption.value) {
+            childOption.value.amount = amount.value.option;
+        }
+
+        if (bindForm.value) {
+            bindForm.value.totalPrice = totalPrice.value;
+        }
+    }, { deep: true });
 
     const additionalBasic = (price) => {
         amount.value.basic = price;

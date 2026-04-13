@@ -1,6 +1,6 @@
 <script setup>
     import { isNull } from 'lodash';
-    import { ref, defineProps, watch, defineExpose, computed, onMounted, nextTick } from 'vue';
+    import { ref, defineProps, watch, defineExpose, onMounted } from 'vue';
     import  InputBox  from '@frontend/components/utils/fields/InputBox.vue';
     import { useProducts } from '../../../../store/product';
 
@@ -36,7 +36,11 @@
             form.value = data.form;
 
             if (!_.isEmpty(data.form.embroidery)) {
-                embroidery.value = data.form.embroidery;
+                embroidery.value.color = data.form.embroidery.color;
+                embroidery.value.fontType = data.form.embroidery.fontType;
+                embroidery.value.position = data.form.embroidery.position;
+                embroidery.value.initialName = data.form.embroidery.initialName;
+                embroidery.value.longName = data.form.embroidery.longName;
             }
 
             if (!_.isEmpty(data.form.tape)) {
@@ -63,14 +67,6 @@
             dataPrice.value = groupAndCountByPrice(form.value);
         }
     }
-
-    const formDuplicate = computed(() => {
-        if (useProducts().getDuplicateSm.length == 0) {
-            return form.value;
-        }else {
-            return useProducts().getDuplicateSm.option.form;
-        }
-    });
 
     const form = ref({
         collar: {},
@@ -152,41 +148,48 @@
             z: ''
         },
         longName: null,
-        price: 0
+        price: 0,
+        isHasPrice: function (){
+            // the position, color, fontType, initialName, longName must be filled to have price
+            if (
+                (
+                    isNull(this.longName) ||
+                    this.longName == ''
+                ) &&
+                (
+                    this.initialName.x == '' &&
+                    this.initialName.y == '' &&
+                    this.initialName.dot == '' &&
+                    this.initialName.z == ''
+                ) &&
+                (
+                    isNull(this.position) ||
+                    this.position == ''
+                ) &&
+                (
+                    isNull(this.color) ||
+                    this.color == ''
+                ) &&
+                (
+                    isNull(this.fontType) ||
+                    this.fontType == ''
+                )
+            ) {
+                return false;
+            }else {
+                return true;
+            }
+        }
     });
 
-    watch(embroidery.value, (items) => {
-        if (
-            (
-                isNull(items.longName) ||
-                items.longName == ''
-            ) &&
-            (
-                items.initialName.x == '' &&
-                items.initialName.y == '' &&
-                items.initialName.dot == '' &&
-                items.initialName.z == ''
-            ) &&
-            (
-                isNull(items.position) ||
-                items.position == ''
-            ) &&
-            (
-                isNull(items.color) ||
-                items.color == ''
-            ) &&
-            (
-                isNull(items.fontType) ||
-                items.fontType == ''
-            )
-        ) {
+    watch(embroidery, (items) => {
+        if (!items.isHasPrice()) {
             items.price = 0;
-        }else {
+        } else {
             items.price = 50000;
         }
-
         form.value.embroidery = items;
-    });
+    }, { deep: true });
 
     const tape = ref({
         slug: 'tape',
@@ -195,29 +198,15 @@
         price: 200000,
     });
 
-    watch(tape.value, (items) => {
+    watch(tape, (items) => {
         if (isNull(tape.value.collar) || tape.value.collar == '' && isNull(tape.value.lower) || tape.value.lower == '') {
             form.value.tape = null;
             return;
         }
         form.value.tape = tape.value;
-    });
+    }, { deep: true });
 
-    watch(form.value, (items) => {
-        if (useProducts().getDuplicateSm.length == 0) {
-            const groupedData = groupAndCountByPrice(items);
-            dataPrice.value = groupedData;
-        }
-    });
-
-    watch(formDuplicate.value, (items) => {
-        // if (useProducts().getDuplicateSm.length > 0) {
-            const groupedData = groupAndCountByPrice(items);
-            dataPrice.value = groupedData;
-        // }
-    });
-
-    const groupAndCountByPrice = (data) => {
+    function groupAndCountByPrice(data) {
         const result = {
             grouped: {},
             optionTotal: 0,
@@ -246,7 +235,12 @@
             ...result.grouped,
             optionTotal: result.optionTotal,
         };
-    };
+    }
+
+    watch(form, (items) => {
+        const groupedData = groupAndCountByPrice(items);
+        dataPrice.value = groupedData;
+    }, { deep: true, immediate: true });
 
 
     const currencyFormat = (value) => {
