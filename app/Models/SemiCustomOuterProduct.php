@@ -44,6 +44,11 @@ class SemiCustomOuterProduct extends Model
         return $this->morphMany(OrderItem::class, 'product');
     }
 
+    public function orderItem()
+    {
+        return $this->morphOne(OrderItem::class, 'product');
+    }
+
     public function isFinish() {
         return $this->status == 'finish' ? true : false;
     }
