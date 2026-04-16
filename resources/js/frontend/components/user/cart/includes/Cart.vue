@@ -142,9 +142,6 @@
         return storeProducts.getSemiCustomOuter;
     })
 
-    // const fabricText = semiCustom.value?.basic?.form?.fabric?.fabricCode + ' - ' + semiCustom.value?.basic?.form?.fabric?.text;
-
-
     const coupon = ref(storeProducts.getCouponRtw);
 
     const plusQty = (index) => {

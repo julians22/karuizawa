@@ -28,8 +28,6 @@
     const CustomOptions = defineAsyncComponent(() => import('./includes/CustomOptions.vue'));
 
     const Customer = defineAsyncComponent(() => import('../includes/CustomerData.vue'));
-    const TotalShop = defineAsyncComponent(() => import('../includes/TotalShop.vue'));
-    const Payment = defineAsyncComponent(() => import('../includes/Payment.vue'));
 
     const currentSection = ref(null);
 

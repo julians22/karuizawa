@@ -60,4 +60,74 @@ class SemiCustomOuterProduct extends Model
         }
         return 'N/A';
     }
+
+    public function getFabricCodeAttribute()
+    {
+        $basic = $this->basic_form;
+        if(isset($basic['fabric']) && count($basic['fabric']) > 0) {
+            return $basic['fabric']['fabricCode'] ?? 'N/A';
+        }
+    }
+
+    public function getFabricNameAttribute()
+    {
+        $basic = $this->basic_form;
+
+        if(isset($basic['fabric']) && count($basic['fabric']) > 0) {
+            return $basic['fabric']['text'] ?? 'N/A';
+        }
+
+    }
+
+    public function getCollarAttribute()
+    {
+        $options = $this->option_form;
+        if(isset($options['collar']) && count($options['collar']) > 0) {
+            return $options['collar']['name'] ?? 'N/A';
+        }else{
+            $basic = $this->basic_form;
+
+            if(isset($basic['collar']) && count($basic['collar']) > 0) {
+                return $basic['collar']['name'] ?? 'N/A';
+            }
+        }
+        return 'N/A';
+    }
+
+    public function getCuffAttribute()
+    {
+        $options = $this->option_form;
+        if(isset($options['cuffs']) && count($options['cuffs']) > 0) {
+            return $options['cuffs']['name'] ?? 'N/A';
+        }else{
+            $basic = $this->basic_form;
+
+            if(isset($basic['cuff']) && count($basic['cuff']) > 0) {
+                return $basic['cuff']['name'] ?? 'N/A';
+            }
+        }
+        return 'N/A';
+    }
+
+    public function getButtonAttribute()
+    {
+        $basic = $this->basic_form;
+
+        if(isset($basic['button']) && count($basic['button']) > 0) {
+            return $basic['button']['name'] ?? 'N/A';
+        }
+
+        return 'N/A';
+    }
+
+    public function getOrderTypeCustomerAttribute()
+    {
+        $size = $this->size;
+
+        if(isset($size['order']) && $size['order'] != null) {
+            return $size['order'] ?? 'N/A';
+        }
+
+        return 'N/A';
+    }
 }

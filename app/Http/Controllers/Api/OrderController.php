@@ -361,6 +361,10 @@ class OrderController extends Controller
                 if ($item->isSemiCustom()) {
                     $totalPrice += $item->price;
                 }
+
+                if ($item->isSemiCustomOuter()) {
+                    $totalPrice += $item->price;
+                }
             }
 
             $orderCoupon = $order->discount_details['coupon'] ?? 0;

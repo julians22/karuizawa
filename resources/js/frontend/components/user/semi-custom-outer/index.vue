@@ -12,6 +12,9 @@ const storePage = usePage();
 const storeCustomer = useCustomer();
 const storeProducts = useProducts();
 
+const urlParams = new URLSearchParams(window.location.search);
+const url = new URL(window.location.href);
+
 const isEditMOde = ref(false);
 const editIndex = ref(null);
 
@@ -93,9 +96,20 @@ onMounted(async () => {
         basic: basic
     }
 
-    storePage.currentPage = currentSection.value;
-    storeCustomer.customer = null;
-    storeProducts.resetSemiCustomOuter();
+    if (urlParams.get('page') != null) {
+        storePage.currentPage = urlParams.get('page');
+        const hasEditIndex = urlParams.get('edit_on_index') != null;
+        const hasDuplicateIndex = urlParams.get('index') != null;
+
+        if (!hasEditIndex && !hasDuplicateIndex) {
+            storeProducts.resetDuplicateSm();
+            storeProducts.setIndexSemiCustom(null);
+        }
+    }else{
+        storePage.currentPage = currentSection.value;
+        storeCustomer.customer = null;
+        storeProducts.resetSemiCustom();
+    }
 })
 
 watch(amount, () => {
