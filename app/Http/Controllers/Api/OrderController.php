@@ -10,6 +10,7 @@ use App\Models\OrderItem;
 use App\Models\Payment;
 use App\Models\Product;
 use App\Models\ProductActualStock;
+use App\Models\SemiCustomOuterProduct;
 use App\Models\SemiCustomProduct;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -198,6 +199,7 @@ class OrderController extends Controller
             'customer' => 'sometimes|required_if:semi_custom,!=,null',
             'coupon' => 'sometimes',
             'semi_custom' => 'sometimes',
+            'semi_custom_outer' => 'sometimes',
             'user' => 'sometimes',
         ]);
 
@@ -279,7 +281,6 @@ class OrderController extends Controller
                 $order->orderItems()->save($orderItem);
             }
 
-
             // insert order items type semi custom
             if ($request->semi_custom) {
                 $semiCustom = $request->semi_custom;
@@ -314,6 +315,36 @@ class OrderController extends Controller
                     ]);
 
                     $orderItem->product()->associate($semiCustomProuduct);
+                    $order->orderItems()->save($orderItem);
+                }
+            }
+
+            // insert order items type semi custom outer
+            if ($request->semi_custom_outer) {
+                $semiCustomOuter = $request->semi_custom_outer;
+
+                $customer = Customer::findOrFail($request->customer);
+
+                foreach ($semiCustomOuter as $sco) {
+                    $semiCustomOuterProduct = SemiCustomOuterProduct::create([
+                        'name' => 'Semi Custom Outer MTM' . "(" . $customer->full_name . ")",
+                        'code' => config('enums.semi_custom_outer_name'),
+                        'customer_id' => $customer->id,
+                        'basic_form' => $sco['basic_form'],
+                        'base_price' => $sco['base_price'],
+                        'base_discount' => $sco['base_discount'],
+                        'basic_note' => $sco['basic_note'] ?? null,
+                        'size' => $sco['size']
+                    ]);
+
+                    $totalPrice = $semiCustomOuterProduct->base_price - ($semiCustomOuterProduct->base_price * $semiCustomOuterProduct->base_discount / 100);
+
+                    $orderItem = new OrderItem([
+                        'quantity' => 1,
+                        'price' => $totalPrice,
+                    ]);
+
+                    $orderItem->product()->associate($semiCustomOuterProduct);
                     $order->orderItems()->save($orderItem);
                 }
             }

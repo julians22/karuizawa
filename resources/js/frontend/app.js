@@ -37,7 +37,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 Vue.component('rtw-component', require('./components/user/rtw/index.vue').default);
 
-Vue.component('semi-custom', require('./components/user/semi-cutom/index.vue').default);
+Vue.component('semi-custom', require('./components/user/semi-custom/index.vue').default);
+
+Vue.component('semi-custom-outer', require('./components/user/semi-custom-outer/index.vue').default);
 
 Vue.component('cart-component', require('./components/user/cart/index.vue').default);
 

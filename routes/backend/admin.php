@@ -22,36 +22,6 @@ Route::get('dashboard', [DashboardController::class, 'index'])
         $trail->push(__('Home'), route('admin.dashboard'));
     });
 
-Route::group(['prefix' => 'customer', 'as' => 'customer.'], function() {
-    Route::get('/', [CustomerController::class, 'index'])
-        ->name('index')
-        ->breadcrumbs(function (Trail $trail) {
-            $trail->push(__('Customer'), route('admin.customer.index'));
-        });
-
-    Route::get('export', [CustomerController::class, 'export'])
-        ->name('export');
-
-    Route::group(['prefix' => '{customer}'], function() {
-        Route::get('/', [CustomerController::class, 'show'])
-            ->name('show')
-            ->breadcrumbs(function (Trail $trail, Customer $customer) {
-                $trail->parent('admin.customer.index');
-                $trail->push(__('Show'), route('admin.customer.show', $customer));
-            });
-
-        Route::get('edit', [CustomerController::class, 'edit'])
-            ->name('edit')
-            ->breadcrumbs(function (Trail $trail, Customer $customer) {
-                $trail->parent('admin.customer.index');
-                $trail->push(__('Edit'), route('admin.customer.edit', $customer));
-            });
-
-        Route::patch('/', [CustomerController::class, 'update'])->name('update');
-
-    });
-});
-
 Route::group(['prefix' => 'store', 'as' => 'store.'], function() {
     Route::get('/', [StoreController::class, 'index'])
         ->name('index')

@@ -38,4 +38,9 @@ class Customer extends Model
     {
         return $this->is_male ? self::MALE_LABEL : self::FEMLAE_LABEL;
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

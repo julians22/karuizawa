@@ -55,6 +55,11 @@ class OrderItem extends Model
         return $this->belongsTo(SemiCustomProduct::class, 'product_id');
     }
 
+    public function product_sco()
+    {
+        return $this->belongsTo(SemiCustomOuterProduct::class, 'product_id');
+    }
+
     public function getTotalPriceAttribute()
     {
         if ($this->isReadyToWear()) {
@@ -67,7 +72,13 @@ class OrderItem extends Model
 
     public function getTypeAttribute()
     {
-        return $this->isSemiCustom() ? 'SC' : 'RTW';
+        // return $this->isSemiCustom() ? 'SC' : 'RTW';
+        // Type must be SC or RTW, if product type is SemiCustomProduct or SemiCustomOuterProduct then return SC, else return RTW
+        if ($this->isSemiCustom() || $this->isSemiCustomOuter()) {
+            return 'SC';
+        } else {
+            return 'RTW';
+        }
     }
 
     public function getDiscountPercentageAttribute()
@@ -84,6 +95,11 @@ class OrderItem extends Model
     public function isSemiCustom()
     {
         return $this->product_type == 'App\Models\SemiCustomProduct';
+    }
+
+    public function isSemiCustomOuter()
+    {
+        return $this->product_type == 'App\Models\SemiCustomOuterProduct';
     }
 
     public function isReadyToWear()
@@ -105,5 +121,13 @@ class OrderItem extends Model
     public function scopeSemiCustom($query)
     {
         return $query->where('product_type', 'App\Models\SemiCustomProduct');
+    }
+
+    /**
+     * Scope a query to only include semi custom outer products.
+     */
+    public function scopeSemiCustomOuter($query)
+    {
+        return $query->where('product_type', 'App\Models\SemiCustomOuterProduct');
     }
 }

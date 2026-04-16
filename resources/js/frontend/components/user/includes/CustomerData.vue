@@ -103,6 +103,8 @@
             $emit('btn-next', 'products');
         }else if (props.onPage == 'semi-custom') {
             $emit('btn-next', 'semi-custom');
+        }else if (props.onPage == 'semi-custom-outer') {
+            $emit('btn-next', 'semi-custom-outer');
         }
     }
 

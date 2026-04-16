@@ -42,7 +42,7 @@ class DashboardController
                     $query->withTrashed();
                 }
             ])->findOrFail($id);
-        $dataConfig = config('karuizawa-master');
+        $dataConfig = config('karuizawa-default-master');
 
         $semiCustom = $semiCustom->toArray();
 
@@ -68,7 +68,7 @@ class DashboardController
                 $query->withTrashed();
             }
         ])->whereDate('created_at', '=', $request->date)->orderBy('created_at', 'desc')->get();
-        $dataConfig = config('karuizawa-master');
+        $dataConfig = config('karuizawa-default-master');
 
         return view('frontend.print.sc-per-day', ['dataSemiCustom' => $semiCustom, 'dataConfig' => collect($dataConfig), 'date' => $request->date]);
     }
