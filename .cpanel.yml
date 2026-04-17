@@ -7,8 +7,13 @@ deployment:
     - /bin/cp -R * $DEPLOYPATH
     - php $COMPOSER_PATH update --working-dir=$DEPLOYPATH --no-dev
     - /bin/cp -rf public/vendor/* $DEPLOYPATH/public/vendor
+    - /bin/cp -rf public/vendor/* $PUBLICPATH/vendor
     - /bin/rm -rf $DEPLOYPATH/.git
     - /bin/rm -rf $DEPLOYPATH/.cpanel.yml
     - /bin/rm -rf $DEPLOYPATH/.gitignore
+    - /bin/cd $DEPLOYPATH
     - php artisan storage:link
+    - php artisan config:cache
+    - php artisan route:cache
+    - php artisan view:cache
     - php -v
