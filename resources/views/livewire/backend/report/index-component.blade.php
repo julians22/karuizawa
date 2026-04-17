@@ -58,7 +58,9 @@
                                 @foreach ($brands as $brand)
                                     <div class="mt-4 row">
                                         <div class="col-md-12">
-                                            <livewire:backend.report.product-daily-report-component :$brand :$month :$stores />
+                                            <livewire:backend.report.product-daily-report-component 
+                                                key="{{$this->isDaily ? $date : $month}}-product-daily-report-component-{{$brand->id}}"
+                                                :$brand :$month :$stores />
                                         </div>
                                     </div>
                                 @endforeach
@@ -79,7 +81,7 @@
                                 @foreach ($brands as $brand)
                                     <div class="mt-4 row">
                                         <div class="col-md-12">
-                                            <livewire:backend.report.category-value-report-component :$brand :$month :$stores />
+                                            <livewire:backend.report.category-value-report-component :key= :$brand :$month :$stores />
                                         </div>
                                     </div>
                                 @endforeach
