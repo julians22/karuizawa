@@ -192,21 +192,23 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <table class="table table-borderless">
-                                            <tr>
-                                                <th><span class="h4">Days to Go</span></th>
-                                                <td><strong><span class="h3">{{$this->remaining_days}}</span></strong></td>
-                                            </tr>
+                                            <tbody>
+                                                <tr>
+                                                    <th><span class="h4">Days to Go</span></th>
+                                                    <td><strong><span class="h3">{{$this->remaining_days}}</span></strong></td>
+                                                </tr>
 
-                                            @foreach ($reportData as $store_id => $store)
-                                                <livewire:backend.report.target-calculation-component
-                                                    :store="$store_id"
-                                                    :month="$month"
-                                                    :date="$this->isDaily ? $date : null"
-                                                    :remainingDays="$this->remaining_days"
-                                                    key="{{$store_id}}-target-calculation-component-{{$month}}-{{$this->remaining_days}}"
-                                                    :reportData="$store"
-                                                    />
-                                            @endforeach
+                                                @foreach ($reportData as $store_id => $store)
+                                                    <livewire:backend.report.target-calculation-component
+                                                        :store="$store_id"
+                                                        :month="$month"
+                                                        :date="$this->isDaily ? $date : null"
+                                                        :remainingDays="$this->remaining_days"
+                                                        key="{{$store_id}}-target-calculation-component-{{$month}}-{{$this->remaining_days}}"
+                                                        :reportData="$store"
+                                                        />
+                                                @endforeach
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>

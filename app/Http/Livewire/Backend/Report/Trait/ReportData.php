@@ -85,21 +85,22 @@ trait ReportData
             ->when($daily, function ($query) use ($store, $daily) {
                 return $query->whereHas('order', function ($query) use ($store, $daily) {
                     return $query->whereDate('order_date', $daily)
-                        ->where('store_id', $store)
-                        ->where('status', config('enums.order_status.completed'));
+                        ->where('store_id', $store);
                 });
             }, function ($query) use ($store, $month, $year) {
                 return $query->whereHas('order', function ($query) use ($store, $month, $year) {
                     return $query->whereMonth('order_date', $month)
                         ->whereYear('order_date', $year)
-                        ->where('store_id', $store)
-                        ->where('status', config('enums.order_status.completed'));
+                        ->where('store_id', $store);
                 });
             })
             ->when($brand, function ($query) use ($brand) {
                 return $query->whereHas('product_rtw', function ($query) use ($brand) {
                     return $query->where('brand_id', $brand);
                 });
+            })
+            ->whereHas('order', function ($query) {
+                return $query->where('status', config('enums.order_status.completed'));
             })
             ->readyToWear()
             ->get();

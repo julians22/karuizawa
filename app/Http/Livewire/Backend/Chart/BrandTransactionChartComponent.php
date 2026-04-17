@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Backend\Chart;
 
 use App\Models\Brand;
 use App\Models\Order;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
@@ -55,12 +56,12 @@ class BrandTransactionChartComponent extends Component
             });
 
         if ($this->daily) {
-            $query->whereDate('created_at', $this->daily);
+            $query->whereDate('order_date', $this->daily);
         } elseif ($this->month) {
-            $query->whereMonth('created_at', date('m', strtotime($this->month)))
-                  ->whereYear('created_at', date('Y', strtotime($this->month)));
+            $query->whereMonth('order_date', date('m', strtotime($this->month)))
+                  ->whereYear('order_date', date('Y', strtotime($this->month)));
         } else {
-            $query->where('created_at', '>=', now()->subDays(30));
+            $query->where('order_date', '>=', now()->subDays(30));
         }
 
         $orders = $query->with(['orderItems.product_rtw', 'store'])->get();

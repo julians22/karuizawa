@@ -76,7 +76,7 @@ class IndexComponent extends Component
 
         $this->generateReportData();
 
-        $this->generateReportDataWithBrands();
+        // $this->generateReportDataWithBrands();
     }
 
     #[Computed()]
@@ -183,6 +183,7 @@ class IndexComponent extends Component
                 store: $store->id,
                 month: $this->month_string,
                 year: $this->year_string,
+                brand: null,
                 daily: $daily);
             $readyToWear->each(function ($item) use (&$orderData, $store) {
                 $categoryName = $item->product_rtw->category->name;
@@ -194,10 +195,10 @@ class IndexComponent extends Component
 
         $this->stores->each(function ($store) use (&$orderData, $daily) {
             $semiCustom = $this->getSemicustom(
-                $store->id,
-                $this->month_string,
-                $this->year_string,
-                $daily);
+                store: $store->id,
+                month: $this->month_string,
+                year: $this->year_string,
+                daily: $daily);
             $semiCustom->each(function ($item) use (&$orderData, $store) {
                 $orderData[$store->id]['Semi Custom']['value'] += $item->price;
                 $orderData[$store->id]['Semi Custom']['qty'] += $item->quantity;
@@ -261,13 +262,6 @@ class IndexComponent extends Component
         }
 
         $this->reportDataWithBrands = $orderData;
-    }
-
-    public function dehydrate()
-    {
-        // dump($this->reportData);
-        Log::info('Report Data: ' . json_encode($this->reportData));
-        Log::info('Report Data With Brands: ' . json_encode($this->reportDataWithBrands));
     }
 
     public function render()
