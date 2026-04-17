@@ -1,7 +1,7 @@
-<div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
+<div class="sidebar-fixed border-end sidebar sidebar-dark" id="sidebar">
     <div class="sidebar-brand">
-        <img class="sidebar-brand-full d-none d-md-block" width="160" height="46" alt="Brand Logo" src="{{ asset('img/brand/logo-01.png') }}" style="filter: invert(1);">
-        <i,g class="sidebar-brand-minimized d-block d-md-none" width="30" height="46" alt="Brand Logo" src="{{ asset('img/brand/logo-02.png') }}"/>
+        <img class="d-md-block sidebar-brand-full d-none" width="160" height="46" alt="Brand Logo" src="{{ asset('img/brand/logo-01.png') }}" style="filter: invert(1);">
+        <i,g class="d-block sidebar-brand-minimized d-md-none" width="30" height="46" alt="Brand Logo" src="{{ asset('img/brand/logo-02.png') }}"/>
     </div><!--sidebar-brand-->
 
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="init">
@@ -123,7 +123,15 @@
                     :href="route('admin.report.index')"
                     :active="activeClass(Route::is('admin.report.index.*'), 'active')"
                     icon="nav-icon fas fa-chart-line"
-                    :text="__('Report')" />
+                    :text="__('Offline selling Report')" />
+            </li>
+            <li class="nav-item">
+                <x-utils.link
+                    class="nav-link"
+                    href="#"
+                    :active="false"
+                    icon="nav-icon fas fa-chart-line"
+                    :text="__('Online selling Report')" />
             </li>
 
             <li class="nav-title">@lang('System')</li>
@@ -146,7 +154,7 @@
                 <x-utils.link
                     href="#"
                     icon="nav-icon cil-user"
-                    class="nav-link nav-group-toggle"
+                    class="nav-group-toggle nav-link"
                     data-coreui-toggle="dropdown"
                     :text="__('Access')" />
 
@@ -191,7 +199,7 @@
                 <x-utils.link
                     href="#"
                     icon="nav-icon cil-list"
-                    class="nav-link nav-group-toggle"
+                    class="nav-group-toggle nav-link"
                     :text="__('Logs')" />
 
                 <ul class="nav-group-items">

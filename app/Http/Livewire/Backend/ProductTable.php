@@ -26,7 +26,7 @@ class ProductTable extends DataTableComponent
 
         // push the first option
         $this->categories = ['' => 'All Categories'] + $categories;
-        $this->brands = ['' => 'All Brands'] + $brands;
+        $this->brands = ['' => 'All Brands', 'unbranded' => 'Unbranded'] + $brands;
     }
 
     public function configure(): void
@@ -58,6 +58,7 @@ class ProductTable extends DataTableComponent
                 ->sortable(),
             Column::make("Brand", "brand.name")
                 ->searchable()
+                ->format(fn($value) => $value ?? 'Unbranded')
                 ->sortable(),
             Column::make("Category", "category.name")
                 ->searchable()
@@ -110,7 +111,16 @@ class ProductTable extends DataTableComponent
                 ->filter(function(Builder $builder, $value) {
                     $builder->where('category_id', $value);
                 }),
-
+            SelectFilter::make('Brand')
+                ->options($this->brands)
+                ->setFirstOption('All Brands')
+                ->filter(function(Builder $builder, $value) {
+                    if ($value === 'unbranded') {
+                        $builder->whereNull('brand_id');
+                    } else {
+                        $builder->where('brand_id', $value);
+                    }
+                }),
             SelectFilter::make('Stock Warehouse')
                 ->options([
                     '' => 'All Warehouse',

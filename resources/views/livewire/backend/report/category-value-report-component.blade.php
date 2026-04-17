@@ -5,9 +5,11 @@
         <strong>Offline!</strong> Please check your internet connection.
     </div>
 
-    <span class="badge bg-info" wire:loading.class="bg-secondary" wire:loading.class.remove="bg-info">Selected Date {{ $month }}</span>
+    <h5 class="mb-4">Report Data for <span class="bg-success badge">{{ $brand->name }}</span></h5>
 
-    <div class="row g-2 mt-2">
+    <span class="bg-info badge" wire:loading.class="bg-secondary" wire:loading.class.remove="bg-info">Selected Date {{ $month }}</span>
+
+    <div class="mt-2 row g-2">
         @foreach ($stores as $item)
         <div class="col">
             <button

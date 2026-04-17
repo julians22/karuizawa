@@ -204,6 +204,12 @@
         window.location.href = '/ready-to-wear?page=products';
     }
 
+    const editSemuCustom = (key) => {
+        setTimeout(() => {
+            window.location.href = `/semi-custom?page=semi-custom&edit_on_index=${key}`;
+        });
+    }
+
     const btnBack = () => {
         // if (props.onPage == 'products') {
             // $emit('btn-next', 'products');
@@ -224,7 +230,7 @@
                 <table class="w-full" v-if="products.length !== 0">
                     <thead>
                         <tr>
-                            <th class="name-col py-3 pr-6 text-primary-50 text-left uppercase">Product</th>
+                            <th class="py-3 pr-6 text-primary-50 text-left uppercase name-col">Product</th>
                             <th class="px-6 py-3 text-primary-50 text-center uppercase price-col">Price</th>
                             <th class="px-6 py-3 text-primary-50 text-center uppercase">qty</th>
                             <th style="width: 10%;" class="px-6 py-3 text-primary-50 text-center uppercase">Coupon (%)</th>
@@ -276,7 +282,7 @@
                     <table class="w-full">
                         <thead>
                             <tr>
-                                <th class="name-col py-3 pr-6 text-primary-50 text-left uppercase">Semi Custom </th>
+                                <th class="py-3 pr-6 text-primary-50 text-left uppercase name-col">Semi Custom </th>
                                 <th class="px-6 py-3 text-primary-50 text-center uppercase price-col">Price</th>
                                 <th class="px-6 py-3 text-primary-50 text-center uppercase">qty</th>
                                 <th class="px-6 py-3 text-primary-50 text-center uppercase total-col">Total</th>
@@ -285,7 +291,23 @@
                         <tbody>
                             <tr class="border-b" v-for="(semiCustom, index) in semiCustom" >
                                 <td class="py-3 pr-6 text-primary-50 text-left">
-                                    <div class="text-[#606060]">SEMI-CUSTOM MTM</div>
+                                    <div class="flex items-center gap-2 text-[#606060]">
+                                        <span>
+                                            SEMI-CUSTOM MTM
+                                        </span>
+
+                                        <button
+                                            class="bg-primary-300 px-2 py-1 rounded-lg text-black"
+                                          @click="editSemuCustom(index)"
+                                        >Edit</button>
+
+                                        <!-- delete -->
+                                        <!-- <button
+                                            class="bg-red-500 px-2 py-1 text-white"
+                                            @click="storeProducts.removeSemiCustom(index)"
+                                        >Delete</button> -->
+
+                                    </div>
                                     <div class="text-[#A3A3A3] text-sm">{{ semiCustom.basic.form.fabric.fabricCode }}</div>
                                 </td>
                                 <td class="px-6 py-3 text-primary-50 text-center">

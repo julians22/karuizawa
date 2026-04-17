@@ -13,6 +13,7 @@
         route_logout: String,
         api_store_order: String,
         api_product_url: String,
+        brands_collections: Array,
     });
 
     const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
@@ -73,7 +74,7 @@
             </template>
 
             <template v-if="storePage.get == 'products'">
-                <Rtw @btn-next="btnNext" :api_product_url="api_product_url" ref="pageRtw"/>
+                <Rtw @btn-next="btnNext" :brands_collections="brands_collections" :api_product_url="api_product_url" ref="pageRtw"/>
             </template>
     </Layout>
 </template>

@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use App\Libraries\Api\Accurate\Oauth;
 use App\Libraries\Api\Accurate\ProductApi;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductActualStock;
+use App\Models\Store;
 use App\Services\Products\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -94,6 +97,53 @@ class ProductController extends Controller
 
         return view('backend.product.edit', compact('product', 'categories'));
     }
+
+    public function editStock(Product $product)
+    {
+        $product->load('productActualStocks');
+        $stores = Store::all();
+
+        $actualStocks = [];
+
+        foreach ($stores as $store) {
+            $actualStocks[$store->id] = $product->productActualStocks->where('store_id', $store->id)->first()->stock_quantity ?? 0;
+        }
+
+        return view('backend.product.edit-stock', compact('product', 'stores', 'actualStocks'));
+    }
+
+    public function updateStock(Request $request, Product $product)
+    {
+        $request->validate([
+            'stocks' => 'required',
+        ]);
+
+        $stocks = $request->stocks;
+
+        DB::beginTransaction();
+
+        try {
+            foreach ($stocks as $key => $stock) {
+                $actualStock = ProductActualStock::where('product_id', $product->id)->where('store_id', $key)->firstOrCreate([
+                    'product_id' => $product->id,
+                    'store_id' => $key,
+                ], [
+                    'stock_quantity' => 0
+                ]);
+
+                $actualStock->stock_quantity = $stock;
+                $actualStock->save();
+            }
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withFlashDanger(__('An error occurred while updating the product stock.'));
+        }
+
+        DB::commit();
+        return redirect()->route('admin.product.index')->withFlashSuccess(__('The product stock was successfully updated.'));
+    }
+
 
     public function update(Request $request, Product $product)
     {

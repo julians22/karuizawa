@@ -57,18 +57,35 @@ Route::group(['prefix' => 'customer'], function () {
 
     Route::post('store', function (Request $request) {
         $request->validate([
+            'id' => 'nullable|exists:customers,id',
             'first_name' => 'required',
             'phone' => 'required|min:10',
             'email' => 'required|email',
             'is_male' => 'required|boolean',
         ]);
 
+        if ($request->id) {
+            $customer = Customer::find($request->id);
+
+            return response()->json([
+                'success' => true,
+                'data' => $customer,
+            ], 200);
+        }
+
+        $emailUnique = \App\Models\Customer::where('email', $request->email)->first();
+        if ($emailUnique) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Email already exists',
+            ], 422);
+        }
+
         try {
-            $customer = Customer::firstOrCreate([
-                'email' => $request->email
-            ], [
+            $customer = Customer::create([
                 'full_name' => $request->first_name,
                 'phone' => $request->phone,
+                'email' => $request->email,
                 'is_male' => (Boolean) $request->is_male
             ]);
 

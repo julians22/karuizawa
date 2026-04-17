@@ -1,28 +1,25 @@
 <div>
     {{-- Nothing in the world is as soft and yielding as water. --}}
+    {{-- resources\views\livewire\backend\chart\store-transaction-chart-component.blade.php --}}
 
     <div class="mb-3">
         <h4 class="text-center">
             Total Selling : <strong>{{ price_format($totalSelling) }}</strong>
             <small>
                 @if ($daily)
-                    <span class="badge bg-warning">@lang('Showing Daily Result') {{ $daily }}</span>
+                    <span class="bg-warning badge">@lang('Showing Daily Result') {{ $daily }}</span>
                 @else
-                    <span class="badge bg-warning">@lang('Showing Monthly Result')</span>
+                    <span class="bg-warning badge">@lang('Showing Monthly Result')</span>
                 @endif
             </small>
         </h4>
     </div>
 
     <div
-        id="chart"
+        id="chart-store"
         wire:ignore
         class="d-flex justify-content-center"
     ></div>
-
-    <div>
-
-    </div>
 </div>
 
 @assets
@@ -48,7 +45,7 @@ $wire.on('chartDataFilled', () => {
         }
     };
 
-    chartReport = new ApexCharts($wire.$el.querySelector("#chart"), options);
+    chartReport = new ApexCharts($wire.$el.querySelector("#chart-store"), options);
     chartReport.render();
 });
 
@@ -57,7 +54,6 @@ $wire.$watch('month', () => {
     if (chartReport) {
         chartReport.destroy();
     }
-
 
    $wire.validateReactiveProp();
 });

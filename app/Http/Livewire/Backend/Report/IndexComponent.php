@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Backend\Report;
 
 use App\Http\Livewire\Backend\Report\Trait\ReportData;
+use App\Models\Brand;
 use App\Models\Order;
 use App\Models\Store;
 use Carbon\Carbon;
@@ -30,10 +31,14 @@ class IndexComponent extends Component
     public $stores;
 
     public $reportData = [];
+    public $reportDataWithBrands = [];
+
+    public $brands;
 
     public function mount($categories)
     {
         $this->stores = Store::all();
+        $this->brands = Brand::all();
 
         // get first and last transaction date in database
         $firstTransaction = Order::orderBy('created_at', 'asc')->first();
@@ -63,6 +68,8 @@ class IndexComponent extends Component
         $this->categories = $categories;
 
         $this->generateReportData();
+
+        $this->generateReportDataWithBrands();
     }
 
     #[Computed()]
@@ -174,6 +181,62 @@ class IndexComponent extends Component
         });
 
         $this->reportData = $orderData;
+    }
+
+    // the same method like "generateReportData", but we need "brand_id" before the "store_id" of the report data
+    public function generateReportDataWithBrands()
+    {
+        $this->reportDataWithBrands = [];
+        $orderData = [];
+        $daily = $this->isDaily() ? $this->date : null;
+
+        $this->brands->each(function ($brand) use (&$orderData) {
+            $orderData[$brand->id] = [];
+            $this->stores->each(function ($store) use (&$orderData, $brand) {
+                $orderData[$brand->id][$store->id] = [];
+
+                // Initialize categories for RTW
+                foreach ($this->categories as $category) {
+                    $orderData[$brand->id][$store->id][$category->name] = [
+                        'value' => 0,
+                        'qty' => 0
+                    ];
+                }
+
+                // Initialize Semi Custom if brand is Karuizawa (ID 2)
+                if ($brand->id == 2) {
+                    $orderData[$brand->id][$store->id]['Semi Custom'] = [
+                        'value' => 0,
+                        'qty' => 0
+                    ];
+                }
+            });
+        });
+
+        // Fill RTW Data
+        foreach ($this->brands as $brand) {
+            foreach ($this->stores as $store) {
+                $readyToWear = $this->getReadyToWear($store->id, $this->month_string, $this->year_string, $brand->id, $daily);
+                $readyToWear->each(function ($item) use (&$orderData, $brand, $store) {
+                    $categoryName = $item->product_rtw->category->name;
+                    $orderData[$brand->id][$store->id][$categoryName]['value'] += $item->total_price;
+                    $orderData[$brand->id][$store->id][$categoryName]['qty'] += $item->quantity;
+                });
+            }
+        }
+
+        // Fill Semi Custom Data (Only for Karuizawa brand ID 2)
+        if ($this->brands->contains('id', 2)) {
+            foreach ($this->stores as $store) {
+                $semiCustom = $this->getSemicustom($store->id, $this->month_string, $this->year_string, $daily);
+                $semiCustom->each(function ($item) use (&$orderData, $store) {
+                    $orderData[2][$store->id]['Semi Custom']['value'] += $item->price;
+                    $orderData[2][$store->id]['Semi Custom']['qty'] += $item->quantity;
+                });
+            }
+        }
+
+        $this->reportDataWithBrands = $orderData;
     }
 
     public function render()

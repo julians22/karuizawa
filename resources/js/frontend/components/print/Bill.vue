@@ -94,16 +94,26 @@ const { handlePrint } = useVueToPrint({
                     <div class="mb-2">
                         <strong class="mb-1">Semi-Bespoke</strong>
                         <ol class="list-decimal list-inside">
+                            <li>No refund policy.</li>
                             <li>The production process will require 14 working days, excluding holidays and weekends.</li>
                             <li>Karuizawa will charge a revision fee for any changes or modifications depending on the nature and complexity.</li>
+                        </ol>
+                    </div>
+                    <div class="mb-2">
+                        <strong class="mb-1">Ready to Wear</strong>
+                        <ol class="list-decimal list-inside">
                             <li>No refund policy.</li>
+                            <li>Karuizawa allows any product exchange only for the cause of production's mishaps.</li>
+                            <li>Karuizawa needs to receive the receipt, product with tag and label intact during the exchange process within 3 days after purchase.</li>
                         </ol>
                     </div>
                     <div class="">
-                        <strong class="mb-1">Ready to Wear</strong>
+                        <strong class="mb-1">Kizoku Parfume</strong>
                         <ol class="list-decimal list-inside">
-                            <li>Karuizawa allows any product exchange only for the cause of production's mishaps.</li>
-                            <li>Karuizawa needs to receive the receipt, product with tag and label intact during the exchange process within 3 days after purchase.</li>
+                            <li>No refund policy.</li>
+                            <li>Product exchanges are only accepted with a valid receipt at the store where you ordered (ASHTA / PIK Avenue)</li>
+                            <li>The packaging must be unopened and unused, sealed in the plastic wrapper.</li>
+                            <li>Exchanges must be initiated within 3 days after purchase.</li>
                         </ol>
                     </div>
                 </div>

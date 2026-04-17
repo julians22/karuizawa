@@ -1,9 +1,8 @@
 <script setup>
-    import { defineAsyncComponent, ref, watch, computed, onMounted } from 'vue';
+    import { defineAsyncComponent, ref, watch, computed, onMounted, nextTick } from 'vue';
     import { usePage } from '../../../store/page';
     import { useCustomer } from '../../../store/customer';
     import { useProducts } from '../../../store/product';
-    import axios from 'axios';
     import { isEmpty } from 'lodash';
 
 
@@ -34,8 +33,26 @@
 
     const currentSection = ref(null);
 
+    // define is edit_mode
+    const isEditMOde = ref(false);
+    const editIndex = ref(null);
+    const target = ref(null);
+
     const urlParams = new URLSearchParams(window.location.search);
     const url = new URL(window.location.href);
+
+    const rawEditIndex = urlParams.get('edit_on_index');
+    if (rawEditIndex !== null) {
+        const parsedEditIndex = parseInt(rawEditIndex, 10);
+        const existingData = storeProducts.getSemiCustom?.[parsedEditIndex];
+
+        if (!Number.isNaN(parsedEditIndex) && existingData) {
+            isEditMOde.value = true;
+            editIndex.value = parsedEditIndex;
+            storeProducts.setIndexSemiCustom(parsedEditIndex);
+            storeProducts.setDuplicateSm(existingData);
+        }
+    }
 
     const extend = computed(() => {
         return storePage.get == 'semi-custom' ? true : false
@@ -85,7 +102,7 @@
     // form for send to backend
     const bindForm = ref(null);
 
-    onMounted(() => {
+    onMounted(async() => {
         bindForm.value = {
             basic: basic,
             option: option,
@@ -93,6 +110,13 @@
 
         if (urlParams.get('page') != null) {
             storePage.currentPage = urlParams.get('page');
+            const hasEditIndex = urlParams.get('edit_on_index') != null;
+            const hasDuplicateIndex = urlParams.get('index') != null;
+
+            if (!hasEditIndex && !hasDuplicateIndex) {
+                storeProducts.resetDuplicateSm();
+                storeProducts.setIndexSemiCustom(null);
+            }
         }else{
             storePage.currentPage = currentSection.value;
             storeCustomer.customer = null;
@@ -100,7 +124,7 @@
         }
     });
 
-    watch(amount.value, (items) => {
+    watch(amount, (items) => {
         let basic = parseInt(items.basic?.total ?? 0);
         let option = parseInt(items.option?.total ?? 0);
         let giftCard = parseInt(items.option?.giftCard ?? 0);
@@ -108,10 +132,18 @@
         // totalPrice.value = basic + option;
         totalPrice.value = basic + option - giftCard;
 
-        childBasic.value.amount = amount.value.basic;
-        childOption.value.amount = amount.value.option;
-        bindForm.value.totalPrice = totalPrice.value;
-    });
+        if (childBasic.value) {
+            childBasic.value.amount = amount.value.basic;
+        }
+
+        if (childOption.value) {
+            childOption.value.amount = amount.value.option;
+        }
+
+        if (bindForm.value) {
+            bindForm.value.totalPrice = totalPrice.value;
+        }
+    }, { deep: true });
 
     const additionalBasic = (price) => {
         amount.value.basic = price;
@@ -156,7 +188,12 @@
                 alert('Please fill the form OR apply the price first');
             }else {
                 useProducts().resetDuplicateSm();
-                useProducts().setCustom(bindForm.value);
+                if (isEditMOde.value && editIndex.value !== null) {
+                    useProducts().setCustomWithKey(bindForm.value, editIndex.value);
+                    useProducts().setIndexSemiCustom(null);
+                } else {
+                    useProducts().setCustom(bindForm.value);
+                }
                 window.location.href = "/cart";
             }
         }
@@ -467,11 +504,11 @@
                     </button>
 
                     <div>
-                        <button v-if="hasDuplicate" @click="duplicateSemiCustom()" class="flex justify-between items-center gap-2 bg-primary-50 p-6 w-full text-white tracking-widest">
+                        <button v-if="hasDuplicate && !isEditMOde" @click="duplicateSemiCustom()" class="flex justify-between items-center gap-2 bg-primary-50 p-6 w-full text-white tracking-widest">
                             <span>DUPLICATE</span>
                             <img class="inline-block rotate-90" src="img/icons/arrw-ck-right.png" alt="">
                         </button>
-                        <button @click="addCustomRequest()" class="flex items-center gap-2 bg-primary-300 p-6 h-fit text-white tracking-widest">
+                        <button v-if="!isEditMOde" @click="addCustomRequest()" class="flex items-center gap-2 bg-primary-300 p-6 h-fit text-white tracking-widest">
                             <span>ADD NEW CUSTOM REQUEST </span>
                             <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                         </button>

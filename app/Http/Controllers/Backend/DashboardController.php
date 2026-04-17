@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Domains\Auth\Models\User;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Customer;
 use App\Models\Order;
@@ -20,6 +21,9 @@ class DashboardController
      */
     public function index()
     {
+
+        /** @var Brand $brands Get available brands */
+        $brands = Brand::select('id', 'name')->get();
 
         /** @var Customer $customersQuery Get total customer and new customer in last 30 days */
         $customersQuery = Customer::select('id', 'created_at');
@@ -97,8 +101,6 @@ class DashboardController
             ];
         }
 
-
-
         return view('backend.dashboard')->with([
                 'totalCustomer' => $totalCustomer,
                 'newCustomer' => $newCustomer,
@@ -106,6 +108,7 @@ class DashboardController
                 'totalLast30DaysPrice' => $totalLast30DaysPrice,
                 'sellingByStoreData' => $sellingByStoreData,
                 'repeatCustomer' => $repeatCustomer,
+                'brands' => $brands
         ]);
     }
 
@@ -163,8 +166,6 @@ class DashboardController
             $dateRange[] = now()->subDays($counter)->format('M-d');
             $counter--;
         }
-
-
 
         $store = Store::select('id', 'name')
             ->with(['orders' => function ($query) {

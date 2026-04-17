@@ -72,7 +72,7 @@ trait ReportData
      * @param $year
      * @return mixed
      */
-    protected function getReadyToWear($store, $month, $year, $daily = null)
+    protected function getReadyToWear($store, $month, $year, $brand = null, $daily = null)
     {
         $readyToWear = OrderItem::with([
             'order',
@@ -94,6 +94,11 @@ trait ReportData
                         ->whereYear('order_date', $year)
                         ->where('store_id', $store)
                         ->where('status', config('enums.order_status.completed'));
+                });
+            })
+            ->when($brand, function ($query) use ($brand) {
+                return $query->whereHas('product_rtw', function ($query) use ($brand) {
+                    return $query->where('brand_id', $brand);
                 });
             })
             ->readyToWear()

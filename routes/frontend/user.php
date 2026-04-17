@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\ShopPageController;
 use App\Http\Controllers\Frontend\User\AccountController;
 use App\Http\Controllers\Frontend\User\DashboardController;
 use App\Http\Controllers\Frontend\User\ProfileController;
@@ -37,9 +38,7 @@ Route::group(['as' => 'user.', 'middleware' => ['auth', 'password.expires', conf
        return view('frontend.user.edit-profile');
     })->name('edit-profile');
 
-    Route::get('ready-to-wear', function () {
-        return view('frontend.user.rtw');
-    })->name('rtw');
+    Route::get('ready-to-wear', [ShopPageController::class, 'index'])->name('rtw');
 
     Route::get('semi-custom', [SemiCustomConteroller::class, 'index'])->name('semi-custom');
 

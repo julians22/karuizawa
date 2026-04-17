@@ -18,7 +18,7 @@
                 <label for="month" class="mb-2 fw-bolder">Select Month</label>
                 <input type="month" class="form-control form-control-sm" id="month" wire:model.live="month" min="{{$startMonth}}">
                 @error('month')
-                    <small class="text-danger d-inline-block">{{ $message }}</small>
+                    <small class="d-inline-block text-danger">{{ $message }}</small>
                 @enderror
             </div>
 
@@ -32,7 +32,7 @@
         </div>
     </div>
 
-    <div class="row mt-4" >
+    <div class="mt-4 row" >
 
         <div class="col-md-12">
 
@@ -44,7 +44,7 @@
                 {{-- Show Report --}}
                 <div class="row g-3">
 
-                    {{-- Daily Report CarD --}}
+                    {{-- Daily Report Card --}}
                     <div class="col-xl-4">
                         <div class="card">
                             <div class="card-header">
@@ -55,8 +55,13 @@
 
                             <div class="card-body">
 
-                                <livewire:backend.report.product-daily-report-component :$month :$stores />
-
+                                @foreach ($brands as $brand)
+                                    <div class="mt-4 row">
+                                        <div class="col-md-12">
+                                            <livewire:backend.report.product-daily-report-component :$brand :$month :$stores />
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -71,19 +76,23 @@
                             </div>
 
                             <div class="card-body">
-
-                                <livewire:backend.report.category-value-report-component :$month :$stores />
-
+                                @foreach ($brands as $brand)
+                                    <div class="mt-4 row">
+                                        <div class="col-md-12">
+                                            <livewire:backend.report.category-value-report-component :$brand :$month :$stores />
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
 
                     {{-- Store Transaction Chart --}}
-                    <div class="col-xl-7">
+                    <div class="col-xl-4">
                         <div class="card">
                             <div class="card-header">
                                 <strong>
-                                    Total Selling by Store
+                                    Total Sellings Store
                                 </strong>
                             </div>
 
@@ -101,74 +110,103 @@
                                     </div>
 
                                 </div>
-
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <table class="table table-borderless">
-                                                    <tr>
-                                                        <th><span class="h4">Days to Go</span></th>
-                                                        <td><strong><span class="h3">{{$this->remaining_days}}</span></strong></td>
-                                                    </tr>
-
-                                                    @foreach ($reportData as $store_id => $store)
-                                                        <livewire:backend.report.target-calculation-component
-                                                            :store="$store_id"
-                                                            :month="$month"
-                                                            :date="$this->isDaily ? $date : null"
-                                                            :remainingDays="$this->remaining_days"
-                                                            key="{{$store_id}}-target-calculation-component-{{$month}}-{{$this->remaining_days}}"
-                                                            :reportData="$store"
-                                                            />
-                                                    @endforeach
-                                                </table>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-xl-5">
+                    {{-- Brand Transaction Chart --}}
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <strong>
+                                    Total Sellings Brand
+                                </strong>
+                            </div>
 
-                        @foreach ($stores as $store)
-                            <div
-                                class="card {{$loop->last ? 'mt-3' : ''}}">
-                                <div class="card-header">
-                                    <strong>
-                                        {{$store->name}}
-                                    </strong>
-                                    <small>Breakdown each Product Category</small>
-                                </div>
+                            <div class="card-body">
 
-                                <div class="card-body">
-
-                                    @if (!$this->reportIsReady)
-                                        <div class="alert alert-info" role="alert">
-                                            <p><strong>You need to select month to see the report</strong></p>
+                                <div class="row">
+                                    @foreach ($brands as $brand)
+                                        <div class="col-md-6">
+                                            <livewire:backend.chart.brand-transaction-chart-component
+                                                :$month
+                                                key="{{$this->isDaily ? $date : $month}}-brand-transaction-chart-component-{{$brand->id}}"
+                                                :daily="!$this->isDaily ? null : $date"
+                                                :stores="$stores"
+                                                :brand="$brand"
+                                                />
                                         </div>
-                                    @else
-                                        @php
-                                            $prefix = $this->isDaily ? $date : $month;
-                                            $key = "{$prefix}-{$store->id}-store-monthly-component";
-                                        @endphp
-
-                                        <livewire:backend.report.store-monthly-component
-                                            :$month
-                                            :store="$store->id"
-                                            :key="$key"
-                                            :reportData="$reportData[$store->id] ?? []"
-                                            />
-                                    @endif
-
+                                    @endforeach
 
                                 </div>
                             </div>
+                        </div>
+                    </div>
 
-                        @endforeach
+
+
+                    <div class="col-xl-12">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                @foreach ($brands as $brand)
+                                    <div
+                                        class="card {{$loop->last ? 'mt-3' : ''}}">
+                                        <div class="card-header">
+                                            <strong>
+                                                {{$brand->name}}
+                                            </strong>
+                                            <p>Breakdown each Product Category</p>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <div class="row">
+                                                @foreach ($stores as $store)
+                                                    @php
+                                                        $prefix = $this->isDaily ? $date : $month;
+                                                        $key = "{$prefix}-{$brand->id}-{$store->id}-store-monthly-component";
+                                                    @endphp
+                                                    <div class="col-md-6">
+                                                        <livewire:backend.report.store-monthly-component
+                                                            :brand="$brand->id"
+                                                            :store="$store"
+                                                            :month="$month"
+                                                            :key="$key"
+                                                            :date="$this->isDaily ? $date : null"
+                                                            />
+                                                    </div>
+                                                @endforeach
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <table class="table table-borderless">
+                                            <tr>
+                                                <th><span class="h4">Days to Go</span></th>
+                                                <td><strong><span class="h3">{{$this->remaining_days}}</span></strong></td>
+                                            </tr>
+
+                                            @foreach ($reportData as $store_id => $store)
+                                                <livewire:backend.report.target-calculation-component
+                                                    :store="$store_id"
+                                                    :month="$month"
+                                                    :date="$this->isDaily ? $date : null"
+                                                    :remainingDays="$this->remaining_days"
+                                                    key="{{$store_id}}-target-calculation-component-{{$month}}-{{$this->remaining_days}}"
+                                                    :reportData="$store"
+                                                    />
+                                            @endforeach
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
 

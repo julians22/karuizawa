@@ -59,6 +59,12 @@ class ProductController extends Controller
                     $query->orderBy('price', 'desc');
                 }
             })
+            ->when($request->has('brand'), function ($query) use ($request) {
+                if (empty($request->brand)) {
+                    return $query;
+                }
+                $query->where('brand_id', $request->brand);
+            })
             ->paginate(8);
 
         return response()->json($products);

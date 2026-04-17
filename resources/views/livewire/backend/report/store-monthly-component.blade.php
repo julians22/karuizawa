@@ -1,6 +1,7 @@
-<div>
+<div class="p-3 border rounded">
+    <h5><strong>{{ $store->name }}</strong></h5>
     {{-- The whole world belongs to you. --}}
-    <table class="table table-striped-columns table-sm" wire:loading.remove wire:target="generateReportData">
+    <table class="table table-sm table-striped-columns" wire:loading.remove wire:target="generateReportData">
         <thead>
             <tr>
                 <th class="text-center" width="19%">Category</th>

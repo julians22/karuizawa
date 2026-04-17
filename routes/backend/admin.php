@@ -181,7 +181,15 @@ Route::group(['prefix' => 'product', 'as' => 'product.'], function() {
                 $trail->push(__('Edit'), route('admin.product.edit', $product));
             });
 
+        Route::get('edit-stock', [ProductController::class, 'editStock'])
+            ->name('edit-stock')
+            ->breadcrumbs(function (Trail $trail, Product $product) {
+                $trail->parent('admin.product.index');
+                $trail->push(__('Edit Stock'), route('admin.product.edit', $product));
+            });
+
         Route::patch('/', [ProductController::class, 'update'])->name('update');
+        Route::patch('update-stock', [ProductController::class, 'updateStock'])->name('update-stock');
         Route::delete('/', [ProductController::class, 'destroy'])->name('destroy');
     });
 });
