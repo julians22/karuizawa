@@ -58,7 +58,9 @@
                                 @foreach ($brands as $brand)
                                     <div class="mt-4 row">
                                         <div class="col-md-12">
-                                            <livewire:backend.report.product-daily-report-component :$brand :$month :$stores />
+                                            <livewire:backend.report.product-daily-report-component
+                                                key="{{$this->isDaily ? $date : $month}}-product-daily-report-component-{{$brand->id}}"
+                                                :$brand :$month :$stores />
                                         </div>
                                     </div>
                                 @endforeach
@@ -79,7 +81,10 @@
                                 @foreach ($brands as $brand)
                                     <div class="mt-4 row">
                                         <div class="col-md-12">
-                                            <livewire:backend.report.category-value-report-component :$brand :$month :$stores />
+                                            <livewire:backend.report.category-value-report-component
+                                                key="{{$this->isDaily ? $date : $month}}-category-value-report-component-{{$brand->id}}"
+                                                :$brand
+                                                :$month :$stores />
                                         </div>
                                     </div>
                                 @endforeach
@@ -187,21 +192,23 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <table class="table table-borderless">
-                                            <tr>
-                                                <th><span class="h4">Days to Go</span></th>
-                                                <td><strong><span class="h3">{{$this->remaining_days}}</span></strong></td>
-                                            </tr>
+                                            <tbody>
+                                                <tr>
+                                                    <th><span class="h4">Days to Go</span></th>
+                                                    <td><strong><span class="h3">{{$this->remaining_days}}</span></strong></td>
+                                                </tr>
 
-                                            @foreach ($reportData as $store_id => $store)
-                                                <livewire:backend.report.target-calculation-component
-                                                    :store="$store_id"
-                                                    :month="$month"
-                                                    :date="$this->isDaily ? $date : null"
-                                                    :remainingDays="$this->remaining_days"
-                                                    key="{{$store_id}}-target-calculation-component-{{$month}}-{{$this->remaining_days}}"
-                                                    :reportData="$store"
-                                                    />
-                                            @endforeach
+                                                @foreach ($reportData as $store_id => $store)
+                                                    <livewire:backend.report.target-calculation-component
+                                                        :store="$store_id"
+                                                        :month="$month"
+                                                        :date="$this->isDaily ? $date : null"
+                                                        :remainingDays="$this->remaining_days"
+                                                        key="{{$store_id}}-target-calculation-component-{{$month}}-{{$this->remaining_days}}"
+                                                        :reportData="$store"
+                                                        />
+                                                @endforeach
+                                            </tbody>
                                         </table>
                                     </div>
                                 </div>
