@@ -66,6 +66,10 @@ Route::group(['prefix' => 'customer'], function () {
 
         if ($request->id) {
             $customer = Customer::find($request->id);
+            $customer->full_name = $request->first_name;
+            $customer->phone = $request->phone;
+            $customer->is_male = (bool) $request->is_male;
+            $customer->save();
 
             return response()->json([
                 'success' => true,
@@ -86,7 +90,7 @@ Route::group(['prefix' => 'customer'], function () {
                 'full_name' => $request->first_name,
                 'phone' => $request->phone,
                 'email' => $request->email,
-                'is_male' => (Boolean) $request->is_male
+                'is_male' => (bool) $request->is_male
             ]);
 
             return response()->json([

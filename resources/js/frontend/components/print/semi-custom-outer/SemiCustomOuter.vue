@@ -129,7 +129,7 @@
                             <div class="cat-name">01. FABRIC</div>
                         </div>
                         <div class="flex items-center gap-4 my-3 px-2 fabric-code print-props">
-                            <label class="text-primary-outer text-sm uppercase tracking-widest whitespace-nowrap">fabric code</label>
+                            <label class="text-primary-outer uppercase tracking-widest whitespace-nowrap">fabric code</label>
                             <div class="flex box-input-wrapper">
                                 <input
                                     v-for="(digit, index) in split(baseForm.fabric?.fabricCode)"
@@ -151,8 +151,8 @@
                             <div v-for="collar in collarOptions" :key="'print-collar-' + collar.slug">
                                 <input :checked="isSelected(baseForm.collar, collar)" class="hidden" type="radio" :id="'print-collar-' + collar.slug">
                                 <label class="flex flex-col justify-between items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'print-collar-' + collar.slug">
-                                    <img class="max-w-28 h-auto" :src="`/${collar.image}`" alt="">
-                                    <div class="font-bold text-primary-outer text-xs 2xl:text-lg text-center uppercase tracking-widest">{{ collar.name }}</div>
+                                    <img class="w-full max-w-40 h-auto" :src="`/${collar.image}`" alt="">
+                                    <div class="font-bold text-primary-outer text-center uppercase tracking-widest">{{ collar.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
                             </div>
@@ -167,8 +167,8 @@
                             <div v-for="cuff in cuffOptions" :key="'print-cuff-' + cuff.slug">
                                 <input :checked="isSelected(baseForm.cuff, cuff)" class="hidden" type="radio" :id="'print-cuff-' + cuff.slug">
                                 <label class="flex flex-col justify-between items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'print-cuff-' + cuff.slug">
-                                    <img class="max-w-28 h-auto" :src="`/${cuff.image}`" alt="">
-                                    <div class="font-bold text-primary-outer text-xs 2xl:text-lg text-center uppercase tracking-widest">{{ cuff.name }}</div>
+                                    <img class="max-w-32 h-auto" :src="`/${cuff.image}`" alt="">
+                                    <div class="font-bold text-primary-outer text-center uppercase tracking-widest">{{ cuff.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
                             </div>
@@ -182,8 +182,8 @@
                             <div v-for="button in buttonOptions" :key="'print-button-' + button.slug">
                                 <input :checked="isSelected(baseForm.button, button)" class="hidden" type="radio" :id="'print-button-' + button.slug">
                                 <label class="flex flex-col justify-between items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'print-button-' + button.slug">
-                                    <img class="max-w-28 h-auto" :src="`/${button.image}`" alt="">
-                                    <div class="font-bold text-primary-outer text-xs 2xl:text-lg text-center uppercase tracking-widest">{{ button.name }}</div>
+                                    <img class="w-full max-w-32 h-auto" :src="`/${button.image}`" alt="">
+                                    <div class="font-bold text-primary-outer text-center uppercase tracking-widest">{{ button.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
                             </div>
@@ -194,9 +194,9 @@
                 <div>
                     <div>
                         <div class="wrap-cat">
-                            <div class="cat-name">05. SIZE</div>
+                            <div class="cat-name">SIZE</div>
                         </div>
-                        <div class="my-4 px-2 overflow-x-auto print-props">
+                        <div class="my-4 px-1 overflow-x-auto print-props">
                             <table class="border border-primary-outer min-w-full border-collapse table-fixed">
                                 <thead>
                                     <tr class="bg-white">
@@ -204,7 +204,7 @@
                                         <th
                                             v-for="size in sizes"
                                             :key="'size-option-' + size.slug"
-                                            class="px-2 py-2 border border-primary-outer text-center whitespace-nowrap"
+                                            class="px-1 py-1 border border-primary-outer w-24 text-center whitespace-nowrap"
                                         >
                                             <div class="flex justify-center">
                                                 <input :checked="sizeForm.measurement === size.slug" type="radio" class="hidden" :id="'print-size-option-' + size.slug">
@@ -213,13 +213,29 @@
                                                 </label>
                                             </div>
                                         </th>
+                                        <th rowspan="2" class="px-1 py-1 border border-primary-outer text-center uppercase tracking-widest whitespace-nowrap">
+                                            <div class="flex flex-col">
+                                                <span>
+                                                    AM
+                                                </span>
+                                                <span style="font-size: 6px;">
+                                                    ( Actual Measurement )
+                                                </span>
+                                            </div>
+                                        </th>
+                                        <th rowspan="2" class="px-1 py-1 border border-primary-outer text-xs text-center uppercase tracking-widest whitespace-nowrap">
+                                            Adjustment
+                                        </th>
+                                        <th rowspan="2" class="px-1 py-1 border border-primary-outer text-xs text-center uppercase tracking-widest whitespace-nowrap">
+                                            Max Rage
+                                        </th>
                                     </tr>
                                     <tr class="bg-primary-outer text-white">
-                                        <th class="px-2 py-2 border border-primary-outer w-36 text-xs text-left uppercase tracking-widest whitespace-nowrap">Measurement</th>
+                                        <th class="px-1 py-1 border border-primary-outer w-32 text-xs text-left uppercase tracking-widest whitespace-nowrap">Measurement</th>
                                         <th
                                             v-for="size in sizes"
                                             :key="'size-head-' + size.slug"
-                                            class="px-2 py-2 border border-primary-outer text-xs text-center uppercase tracking-widest whitespace-nowrap"
+                                            class="px-1 py-1 border border-primary-outer w-8 text-center uppercase tracking-widest whitespace-nowrap"
                                         >
                                             {{ size.name }}
                                         </th>
@@ -231,42 +247,65 @@
                                         :key="'measurement-' + measurement"
                                         class="even:bg-primary-outer-100/30 odd:bg-white"
                                     >
-                                        <td class="px-2 py-2 border border-primary-outer font-bold text-primary-outer text-xs whitespace-nowrap">
+                                        <td class="px-1 py-1 border border-primary-outer font-bold text-primary-outer text-base whitespace-nowrap">
                                             {{ measurement }}
                                         </td>
                                         <td
                                             v-for="size in sizes"
                                             :key="'size-value-' + size.slug + '-' + measurement"
-                                            class="px-2 py-2 border border-primary-outer text-primary-outer text-xs text-center whitespace-nowrap"
+                                            class="px-1 py-1 border border-primary-outer text-primary-outer text-center whitespace-nowrap"
                                         >
-                                            {{ size.values?.[measurement] ?? '-' }}
+                                            <span v-if="sizeForm.measurement === size.slug" class="font-roboto font-bold">
+                                                {{ sizeForm.measurement_values?.[measurement] ?? '-' }}
+                                            </span>
+                                            <span v-else>
+                                                {{ size.values?.[measurement] ?? '-' }}
+                                            </span>
+                                        </td>
+                                        <td class="px-1 py-1 border border-primary-outer text-center uppercase tracking-widest whitespace-nowrap">
+                                            {{ sizeForm.actualMeasurement?.values?.[measurement] ?? '-' }}
+                                        </td>
+                                        <td class="px-1 py-1 border border-primary-outer text-center uppercase tracking-widest whitespace-nowrap">
+                                            {{  measurement === 'Shoulder' ? sizeForm.sa?.shoulder :
+                                                measurement === 'Back Length' ? sizeForm.sa?.backLength :
+                                                measurement === 'Sleeve Length' ? sizeForm.sa?.sleeveLength : '-' }}
+                                        </td>
+                                        <td class="px-1 py-1 border border-primary-outer text-center uppercase tracking-widest whitespace-nowrap">
+                                            {{  measurement === 'Shoulder' ? '± 2 cm'  :
+                                                measurement === 'Back Length' ? '± 6 cm' :
+                                                measurement === 'Sleeve Length' ? '± 10 cm' : '-' }}
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
 
-                            <div class="grid grid-cols-2 xl:grid-cols-4 mt-4 mb-4 *:px-2 *:pt-1 *:pb-1 text-primary-outer text-xs tracking-widest whitespace-pre">
-                                <div class="border-2 border-primary-outer">SPECIAL ADJUSTMENT</div>
-                                <div class="flex border-primary-outer border-y-2 border-r-2">
-                                    <div>SHOULDER :</div>
-                                    <div>
-                                        <input :value="sizeForm.sa?.shoulder ?? ''" type="text" class="bg-transparent w-full font-roboto text-xs text-center">
-                                    </div>
-                                </div>
-                                <div class="flex border-primary-outer border-y-2 border-r-2 max-xl:border-l-2">
-                                    <div>BACK LENGTH :</div>
-                                    <div>
-                                        <input :value="sizeForm.sa?.backLength ?? ''" type="text" class="bg-transparent w-full font-roboto text-xs text-center">
-                                    </div>
-                                </div>
-                                <div class="flex border-primary-outer border-y-2 border-r-2">
-                                    <div>SLEEVE LENGTH :</div>
-                                    <div>
-                                        <input :value="sizeForm.sa?.sleeveLength ?? ''" type="text" class="bg-transparent w-full font-roboto text-xs text-center">
-                                    </div>
-                                </div>
+                        <div class="gap-2 grid grid-cols-3 mb-2 px-2">
+                            <div>
+                                <input v-model="sizeForm.order" class="hidden" value="1. NEW ORDER" type="radio" :id="`new-order`">
+                                <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`new-order`">
+                                    <div class="label-name">1. NEW ORDER</div>
+                                    <span class="checkbox-inner"></span>
+                                </label>
+                            </div>
+                            <div class="">
+                                <input v-model="sizeForm.order" class="hidden" type="radio" value="2. REPEAT ORDER" :id="`repeat-order`">
+                                <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`repeat-order`">
+                                    <div class="label-name">2. REPEAT ORDER</div>
+                                    <span class="checkbox-inner"></span>
+                                </label>
+                            </div>
+                            <div>
+                                <input v-model="sizeForm.order" class="hidden" type="radio" value="3. GARMENT SAMPLE" :id="`garment-sample`">
+                                <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`garment-sample`">
+                                    <div class="label-name">3. GARMENT SAMPLE</div>
+                                    <span class="checkbox-inner"></span>
+                                </label>
                             </div>
                         </div>
+
+
+
                     </div>
 
                     <div>
@@ -395,7 +434,7 @@
 	}
 
     .checkbox-inner {
-        @apply flex justify-center items-center border border-primary-outer size-5 text-transparent;
+        @apply flex justify-center items-center border border-primary-outer size-9 text-transparent;
 		background: transparent no-repeat center;
 	}
 
@@ -404,7 +443,7 @@
 	}
 
     .box-input-wrapper .box-input {
-        @apply block bg-white p-1 border border-primary-outer size-7 font-roboto text-gray-900 text-xs text-center;
+        @apply block bg-white p-1 border border-primary-outer size-9 font-roboto text-gray-900 text-center;
 	}
 
 	.box-input-wrapper .box-input:not(:first-child) {
@@ -440,7 +479,7 @@
         background-size: 14px 10px;
     }
     .checkbox-inner {
-        @apply flex justify-center items-center border border-primary-outer size-5 text-transparent;
+        @apply flex justify-center items-center border border-primary-outer size-9 text-transparent;
         background: transparent no-repeat center;
     }
 </style>

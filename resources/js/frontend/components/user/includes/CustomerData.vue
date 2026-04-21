@@ -91,8 +91,8 @@
                 let message = error.response.data.message;
 
                 // if code 422, validation error
-                if (error.response.status === 422) {
-                    message = "Email already exists, please use another email or select the existing customer.";
+                if (error.response.status !== 422) {
+                    message = "Something went wrong, please try again later.";
                 }
                 alert(message);
             });

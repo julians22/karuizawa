@@ -3,7 +3,6 @@
 import { computed, defineAsyncComponent, onMounted, reactive, ref, watch } from 'vue';
 import  InputBox  from '@frontend/components/utils/fields/InputBox.vue';
 import { component as VueNumber } from '@coders-tm/vue-number-format';
-import { measure } from '@splidejs/splide/src/js/utils';
 import { usePage } from '@/frontend/store/page';
 import { useCustomer } from '@/frontend/store/customer';
 import { useProducts } from '@/frontend/store/product';
@@ -50,16 +49,25 @@ const form = reactive({
 
 const formSize = reactive({
     measurement: '',
+    measurement_values: {},
     sa: {
         shoulder: '',
         backLength: '',
         sleeveLength: '',
-    }
+    },
+    actualMeasurement: {
+        values: props.data_semi_custom_outer.sizes.measurement_key.reduce((acc, key) => {
+            acc[key] = '';
+            return acc;
+        }, {})
+    },
+    order: '',
 });
+
 
 const selectedSize = computed(() => {
     return props.data_semi_custom_outer.sizes.data.basic.find(size => size.slug === formSize.measurement);
-})
+});
 
 const additionalNote = ref('');
 const discount = ref();
@@ -88,8 +96,24 @@ const totalPrice = computed(() => {
 });
 
 const bindForm = ref(null);
-
 const currentSection = ref(null);
+
+const editableSizeField = reactive({});
+
+watch(editableSizeField, (newValue) => {
+
+    // filter key
+    const key = Object.keys(newValue)[0];
+    const measurementKey = key.split('-')[1];
+    const sizeSlug = key.split('-')[0];
+
+    // find size index
+    const sizeIndex = props.data_semi_custom_outer.sizes.data.basic.findIndex(size => size.slug === sizeSlug);
+    if (sizeIndex !== -1) {
+        props.data_semi_custom_outer.sizes.data.basic[sizeIndex].values[measurementKey] = newValue[key];
+    }
+
+})
 
 onMounted(async () => {
     bindForm.value = {
@@ -116,7 +140,11 @@ watch(amount, () => {
     if (bindForm.value !== null) {
         bindForm.value.totalPrice = totalPrice.value;
     }
-})
+});
+
+watch(formSize, () => {
+
+}, { deep: true });
 
 const applyPrice = () => {
     amount.price = price.value;
@@ -152,6 +180,9 @@ const Customer = defineAsyncComponent(() => import('../includes/CustomerData.vue
 
 const btnSubmit =  async () => {
     applyPrice();
+
+    const selectedSizeValue = props.data_semi_custom_outer.sizes.data.basic.find(size => size.slug === formSize.measurement);
+    formSize.measurement_values = selectedSizeValue ? selectedSizeValue.values : {};
 
     if (form.fabric.fabricCode == null || form.fabric.text == null ||
         form.fabric.fabricCode == '' || form.fabric.text == ''
@@ -250,6 +281,16 @@ const btnNext = (section, data) => {
                                             <td class="font-bold text-white uppercase tracking-widest">Special Adjustment - Back Length</td>
                                             <td class="w-4 text-center">:</td>
                                             <td class="text-white">{{ formSize.sa.backLength ?? '-' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-bold text-white uppercase tracking-widest">Special Adjustment - Sleeve Length</td>
+                                            <td class="w-4 text-center">:</td>
+                                            <td class="text-white">{{ formSize.sa.sleeveLength ?? '-' }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="font-bold text-white uppercase tracking-widest">Order Type</td>
+                                            <td class="w-4 text-center">:</td>
+                                            <td class="text-white">{{ formSize.order ?? '-' }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -370,6 +411,29 @@ const btnNext = (section, data) => {
                 <div class="flex justify-between items-center bg-primary-outer-300 px-4 lg:px-14 py-2">
                     <div class="font-bold text-white lg:text-xl uppercase tracking-widest">05. SIZE</div>
                 </div>
+                <div class="gap-2 grid grid-cols-3 xl:grid-cols-4 my-10 px-6 lg:px-10 xl:px-14">
+                    <div>
+                        <input v-model="formSize.order" class="hidden" value="1. NEW ORDER" type="radio" name="size" :id="`new-order`">
+                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`new-order`">
+                            <div class="font-bold text-primary-50 text-xs 2xl:text-lg text-center uppercase tracking-widest">1. NEW ORDER</div>
+                            <span class="checkbox-inner"></span>
+                        </label>
+                    </div>
+                    <div class="justify-self-center xl:col-span-2">
+                        <input v-model="formSize.order" class="hidden" type="radio" value="2. REPEAT ORDER" name="size" :id="`repeat-order`">
+                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`repeat-order`">
+                            <div class="font-bold text-primary-50 text-xs 2xl:text-lg text-center uppercase tracking-widest">2. REPEAT ORDER</div>
+                            <span class="checkbox-inner"></span>
+                        </label>
+                    </div>
+                    <div>
+                        <input v-model="formSize.order" class="hidden" type="radio" name="size" value="3. GARMENT SAMPLE" :id="`garment-sample`">
+                        <label class="flex items-center gap-4 px-2 rounded h-full cursor-pointer" :for="`garment-sample`">
+                            <div class="font-bold text-primary-50 text-xs 2xl:text-lg text-center uppercase tracking-widest">3. GARMENT SAMPLE</div>
+                            <span class="checkbox-inner"></span>
+                        </label>
+                    </div>
+                </div>
                 <div class="my-10 px-6 lg:px-10 xl:px-14 overflow-x-auto">
 
                     <table class="border border-primary-outer min-w-full border-collapse table-fixed">
@@ -421,32 +485,68 @@ const btnNext = (section, data) => {
                                 <td
                                     v-for="size in data_semi_custom_outer.sizes.data.basic"
                                     :key="'size-value-' + size.slug + '-' + measurement"
-                                    class="px-4 py-3 border border-primary-outer text-primary-50 text-center whitespace-nowrap"
+                                    class="px-4 py-3 border border-primary-outer w-48 text-primary-50 text-center whitespace-nowrap"
                                 >
-                                    {{ size.values?.[measurement] ?? '-' }}
+                                    <!-- Size value should editable if slug is == 5l & values key == 'Neck' -->
+                                    <div v-if="size.slug == '5l' && measurement == 'Neck'">
+                                        <input
+                                            v-model="editableSizeField[`${size.slug}-${measurement}`]"
+                                            type="text"
+                                            inputmode="numeric"
+                                            class="border border-primary-outer focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-outer w-full font-roboto text-center"
+                                        >
+                                    </div>
+                                    <div v-else>
+                                        {{ size.values[measurement] }}
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
+                    <!-- Actual Measurements -->
+                    <div class="mt-10 mb-10 text-primary-50 text-sm tracking-widest whitespace-pre">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="p-2 border-2 border-primary-50">MEASURE</th>
+                                    <th v-for="measurement in data_semi_custom_outer.sizes.measurement_key" :key="'actual-measurement-' + measurement" class="p-2 border-2 border-primary-50 text-center">
+                                        {{ measurement }}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="p-2 border-2 border-primary-50 font-bold">ACTUAL</td>
+                                    <td v-for="measurement in data_semi_custom_outer.sizes.measurement_key" :key="'actual-measurement-value-' + measurement" class="p-2 border-2 border-primary-50 text-center">
+                                        <input v-model="formSize.actualMeasurement.values[measurement]" type="text" inputmode="numeric" class="w-full font-roboto text-center">
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+
+
+                    <!-- Special Adjustments -->
                     <div class="grid grid-cols-2 xl:grid-cols-4 mt-10 mb-10 *:px-2 *:pt-2 *:pb-1 text-primary-50 text-sm tracking-widest whitespace-pre">
                         <div class="border-2 border-primary-50">SPECIAL ADJUSTMENT</div>
                         <div class="flex border-primary-50 border-y-2 border-r-2">
                             <div>SHOULDER :</div>
                             <div>
-                                <input v-model="formSize.sa.shoulder" type="text" class="w-full font-roboto text-center">
+                                <input v-model="formSize.sa.shoulder"  type="text" inputmode="numeric" class="w-full font-roboto text-center">
                             </div>
                         </div>
                         <div class="flex border-primary-50 border-y-2 border-r-2 max-xl:border-l-2">
                             <div>BACK LENGTH :</div>
                             <div>
-                                <input v-model="formSize.sa.backLength" type="text" class="w-full font-roboto text-center">
+                                <input v-model="formSize.sa.backLength"  type="text" inputmode="numeric" class="w-full font-roboto text-center">
                             </div>
                         </div>
                         <div class="flex border-primary-50 border-y-2 border-r-2">
                             <div>SLEEVE LENGTH :</div>
                             <div>
-                                <input v-model="formSize.sa.sleeveLength" type="text" class="w-full font-roboto text-center">
+                                <input v-model="formSize.sa.sleeveLength"  type="text" inputmode="numeric" class="w-full font-roboto text-center">
                             </div>
                         </div>
                     </div>

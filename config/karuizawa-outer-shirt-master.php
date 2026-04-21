@@ -91,6 +91,22 @@ return [
             'Sleeve Length',
             'Sleeve Opening'
         ],
+        'actual_measurement' => [
+            'name' => 'Actual Measurement',
+            'slug' => 'actual-measurement',
+            'price' => 0,
+            'values' => [
+                'Neck' => null,
+                'Shoulder' => null,
+                'Chest' => null,
+                'Waist' => null,
+                'Hem' => null,
+                'Arm Hole' => null,
+                'Back Length' => null,
+                'Sleeve Length' => null,
+                'Sleeve Opening' => null
+            ]
+        ],
         'data' => [
             'basic' => [
                 [
@@ -220,7 +236,7 @@ return [
                         'Sleeve Length' => 88.5,
                         'Sleeve Opening' => 30.5
                     ]
-                ],
+                ]
             ]
         ]
     ]
