@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 use App\Models\SemiCustomProduct;
 use App\Http\Controllers\Controller;
 
-class SemiCustomConteroller extends Controller
+class SemiCustomController extends Controller
 {
     public function index()
     {
         return view('frontend.user.semi-custom', [
-            'dataSemiCustom' => collect(config('karuizawa-master'))
+            'dataSemiCustom' => collect(config('karuizawa-default-master'))
         ]);
     }
 

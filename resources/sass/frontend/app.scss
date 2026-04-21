@@ -1,8 +1,16 @@
-@import "../global";
-@import "global";
+@use "../global";
 
 // Variables
-@import 'variables';
+@use 'variables';
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@use '~bootstrap/scss/bootstrap';
+
+#breadcrumbs {
+    background-color: #e9ecef;
+}
+
+.alert.header-message {
+    border-radius: 0 !important;
+}
+

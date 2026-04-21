@@ -22,7 +22,11 @@ class FittingController extends Controller
             'order',
             'order.store',
             'product.customer'
-        ])->where('product_type', 'App\Models\SemiCustomProduct')
+        ])
+        ->where(function ($query) {
+            $query->where('product_type', 'App\Models\SemiCustomProduct')
+                  ->orWhere('product_type', 'App\Models\SemiCustomOuterProduct');
+        })
         ->when($store_id, function ($query) use ($store_id) {
             return $query->whereHas('order', function ($query) use ($store_id) {
                 $query->where('store_id', $store_id);

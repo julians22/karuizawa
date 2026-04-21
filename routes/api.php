@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\FittingController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
-use App\Http\Controllers\Frontend\User\SemiCustomConteroller;
+use App\Http\Controllers\Frontend\User\SemiCustomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +66,10 @@ Route::group(['prefix' => 'customer'], function () {
 
         if ($request->id) {
             $customer = Customer::find($request->id);
+            $customer->full_name = $request->first_name;
+            $customer->phone = $request->phone;
+            $customer->is_male = (bool) $request->is_male;
+            $customer->save();
 
             return response()->json([
                 'success' => true,
@@ -86,7 +90,7 @@ Route::group(['prefix' => 'customer'], function () {
                 'full_name' => $request->first_name,
                 'phone' => $request->phone,
                 'email' => $request->email,
-                'is_male' => (Boolean) $request->is_male
+                'is_male' => (bool) $request->is_male
             ]);
 
             return response()->json([
@@ -116,9 +120,9 @@ Route::post('store-order', [OrderController::class, 'store']);
 
 Route::post('send-payment', [OrderController::class, 'store_payment']);
 
-Route::post('semi-custom/submit', [SemiCustomConteroller::class, 'submit']);
+Route::post('semi-custom/submit', [SemiCustomController::class, 'submit']);
 
-Route::post('semi-custom/customer-size/{id}', [SemiCustomConteroller::class, 'findCustomerSize']);
+Route::post('semi-custom/customer-size/{id}', [SemiCustomController::class, 'findCustomerSize']);
 
 Route::group(['prefix' => 'profile', 'as' => 'profile.'], function() {
     Route::post('update', [ProfileController::class, 'update'])->name('update');

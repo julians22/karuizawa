@@ -91,8 +91,8 @@
                 let message = error.response.data.message;
 
                 // if code 422, validation error
-                if (error.response.status === 422) {
-                    message = "Email already exists, please use another email or select the existing customer.";
+                if (error.response.status !== 422) {
+                    message = "Something went wrong, please try again later.";
                 }
                 alert(message);
             });
@@ -103,6 +103,8 @@
             $emit('btn-next', 'products');
         }else if (props.onPage == 'semi-custom') {
             $emit('btn-next', 'semi-custom');
+        }else if (props.onPage == 'semi-custom-outer') {
+            $emit('btn-next', 'semi-custom-outer');
         }
     }
 

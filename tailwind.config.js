@@ -47,6 +47,13 @@ module.exports = {
             },
             pink: {
                 ka: '#F2089E',
+            },
+            'primary-outer': {
+                DEFAULT: '#292945',
+                50: '#d0cdf1',
+                100: '#a3a0c3',
+                200: '#787697',
+                300: '#4f4e6c',
             }
         },
         fontFamily: {

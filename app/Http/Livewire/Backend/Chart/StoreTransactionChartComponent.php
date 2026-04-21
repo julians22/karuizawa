@@ -4,9 +4,6 @@
 
 namespace App\Http\Livewire\Backend\Chart;
 
-use App\Models\Order;
-use App\Models\Store;
-use Carbon\Carbon;
 use Livewire\Attributes\Reactive;
 use Livewire\Component;
 
@@ -70,16 +67,19 @@ class StoreTransactionChartComponent extends Component
         $this->chartData = [
             'series' => $series,
             'chart' => [
-                'width' => 400,
+                'width' => 300,
                 'type' => 'pie',
+            ],
+            'legend' => [
+                'position' => 'bottom'
             ],
             'labels' => $labels,
             'responsive' => [
                 [
-                    'breakpoint' => 480,
+                    'breakpoint' => 1000,
                     'options' => [
                         'chart' => [
-                            'width' => 200
+                            'width' => 400
                         ],
                         'legend' => [
                             'position' => 'bottom'
