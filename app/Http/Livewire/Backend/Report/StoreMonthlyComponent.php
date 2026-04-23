@@ -76,10 +76,21 @@ class StoreMonthlyComponent extends Component
                 'qty' => 0
             ];
 
+            $data['Semi Custom Outer'] = [
+                'value' => 0,
+                'qty' => 0
+            ];
+
             $semiCustom = $this->getSemicustom($this->store->id, $this->month_string, $this->year_string,$this->date ?? null);
             $semiCustom->each(function ($item) use (&$data) {
                 $data['Semi Custom']['value'] += $item->price;
                 $data['Semi Custom']['qty'] += $item->quantity;
+            });
+
+            $semiCustomOuter = $this->getSemicustomOuter($this->store->id, $this->month_string, $this->year_string,$this->date ?? null);
+            $semiCustomOuter->each(function ($item) use (&$data) {
+                $data['Semi Custom Outer']['value'] += $item->price;
+                $data['Semi Custom Outer']['qty'] += $item->quantity;
             });
         }
 

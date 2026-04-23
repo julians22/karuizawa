@@ -200,6 +200,8 @@ class OrderTable extends DataTableComponent
                 }),
             Column::make('Semi Custom Status')
                 ->label(fn($row) => view('backend.order.includes.semi_custom_status', ['order' => $row])),
+            Column::make('Semi Custom Outer Status')
+                ->label(fn($row) => view('backend.order.includes.semi_custom_outer_status', ['order' => $row])),
             Column::make('Accurate Sync', 'accurate_sync_date')
                 ->format(fn($value, $row) => $value ? $value : "Not Synced"),
             Column::make("Created at", "created_at")
@@ -270,7 +272,7 @@ class OrderTable extends DataTableComponent
 
             foreach ($orderItems as $orderItem) {
 
-                if ($orderItem->isSemiCustom()) {
+                if ($orderItem->isSemiCustom() || $orderItem->isSemiCustomOuter()) {
 
                     $target[$id]['types'][$orderItem->type][] = [
                         "price" => $orderItem->price,
@@ -325,6 +327,19 @@ class OrderTable extends DataTableComponent
                 if ($key === 'SC') {
                     $dataPass['dpAmount'] = 0;
                     $dataPass['description'] = 'DP Semi Custom MTM WEB ORDER: ' . $dataPass['description'];
+
+                    foreach ($type as $item) {
+                        $priceResult = $item['price'] * $item['quantity'];
+                        $dataPass['dpAmount'] += $priceResult;
+                    }
+                    $dataPass['dpAmount'] = number_format($dataPass['dpAmount'], 2, '.', '');
+
+                    $downPaymentJob[] = new InvoiceCreateDownPayment($dataPass, $id);
+                }
+
+                if ($key === 'SCO') {
+                    $dataPass['dpAmount'] = 0;
+                    $dataPass['description'] = 'DP Semi Custom Outer Shirt MTM WEB ORDER: ' . $dataPass['description'];
 
                     foreach ($type as $item) {
                         $priceResult = $item['price'] * $item['quantity'];

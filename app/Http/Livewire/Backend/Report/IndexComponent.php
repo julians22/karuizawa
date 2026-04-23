@@ -176,6 +176,11 @@ class IndexComponent extends Component
                 'value' => 0,
                 'qty' => 0
             ];
+
+            $orderData[$store->id]['Semi Custom Outer'] = [
+                'value' => 0,
+                'qty' => 0
+            ];
         });
 
         $this->stores->each(function ($store) use (&$orderData, $daily) {
@@ -202,6 +207,16 @@ class IndexComponent extends Component
             $semiCustom->each(function ($item) use (&$orderData, $store) {
                 $orderData[$store->id]['Semi Custom']['value'] += $item->price;
                 $orderData[$store->id]['Semi Custom']['qty'] += $item->quantity;
+            });
+
+            $semiCustomOuter = $this->getSemicustomOuter(
+                store: $store->id,
+                month: $this->month_string,
+                year: $this->year_string,
+                daily: $daily);
+            $semiCustomOuter->each(function ($item) use (&$orderData, $store) {
+                $orderData[$store->id]['Semi Custom Outer']['value'] += $item->price;
+                $orderData[$store->id]['Semi Custom Outer']['qty'] += $item->quantity;
             });
         });
 
@@ -234,6 +249,10 @@ class IndexComponent extends Component
                         'value' => 0,
                         'qty' => 0
                     ];
+                    $orderData[$brand->id][$store->id]['Semi Custom Outer'] = [
+                        'value' => 0,
+                        'qty' => 0
+                    ];
                 }
             });
         });
@@ -257,6 +276,12 @@ class IndexComponent extends Component
                 $semiCustom->each(function ($item) use (&$orderData, $store) {
                     $orderData[2][$store->id]['Semi Custom']['value'] += $item->price;
                     $orderData[2][$store->id]['Semi Custom']['qty'] += $item->quantity;
+                });
+
+                $semiCustomOuter = $this->getSemicustomOuter($store->id, $this->month_string, $this->year_string, $daily);
+                $semiCustomOuter->each(function ($item) use (&$orderData, $store) {
+                    $orderData[2][$store->id]['Semi Custom Outer']['value'] += $item->price;
+                    $orderData[2][$store->id]['Semi Custom Outer']['qty'] += $item->quantity;
                 });
             }
         }
