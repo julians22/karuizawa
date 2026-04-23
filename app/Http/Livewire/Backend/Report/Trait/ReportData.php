@@ -29,6 +29,45 @@ trait ReportData
     }
 
     /**
+     * Get all semi custom outer orders
+     * @param $store
+     * @param $month
+     * @param $year
+     * @return mixed
+     */
+    protected function getSemicustomOuter($store, $month, $year, $daily = null)
+    {
+        $semiCustomOuter = OrderItem::with([
+            'order',
+            'product_sco',
+            'order.customer',
+              'order.user' => function ($query) {
+                $query->withTrashed();
+            }
+        ])
+        ->when($daily, function ($query) use ($store, $daily) {
+            return $query->whereHas('order', function ($query) use ($store, $daily) {
+                return $query->whereDate('order_date', $daily)
+                    ->where('store_id', $store)
+                    ->where('status', config('enums.order_status.completed'));
+            });
+        }, function ($query) use ($store, $month, $year) {
+            return $query->whereHas('order', function ($query) use ($store, $month, $year) {
+                return $query->whereMonth('order_date', $month)
+                    ->whereYear('order_date', $year)
+                    ->where('store_id', $store)
+                    ->where('status', config('enums.order_status.completed'));
+            });
+        })
+        ->semiCustomOuter()
+        ->get();
+
+        return $semiCustomOuter;
+    }
+
+
+
+    /**
      * Get all semi custom orders
      * @param $store
      * @param $month

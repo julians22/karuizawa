@@ -74,8 +74,10 @@ class OrderItem extends Model
     {
         // return $this->isSemiCustom() ? 'SC' : 'RTW';
         // Type must be SC or RTW, if product type is SemiCustomProduct or SemiCustomOuterProduct then return SC, else return RTW
-        if ($this->isSemiCustom() || $this->isSemiCustomOuter()) {
+        if ($this->isSemiCustom()) {
             return 'SC';
+        } else if ($this->isSemiCustomOuter()) {
+            return 'SCO';
         } else {
             return 'RTW';
         }

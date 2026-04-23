@@ -209,9 +209,9 @@
             if (totalPrice.value <= 0 && bindForm.value !== null) {
                 alert('Please fill the form OR apply the price first');
             }else {
-                    let urlParams = new URLSearchParams(window.location.search);
-                    let index = urlParams.get('index');
-                    let nextIndex = parseInt(index);
+                    const indexParam = urlParams.get('index');
+                    const fallbackIndex = storeProducts.semi_custom.length;
+                    const nextIndex = Number.isNaN(parseInt(indexParam, 10)) ? fallbackIndex : parseInt(indexParam, 10);
 
                     storeProducts.setIndexSemiCustom(nextIndex);
                     useProducts().setCustom(bindForm.value);
@@ -502,7 +502,7 @@
                     </button>
 
                     <div>
-                        <button v-if="hasDuplicate && !isEditMOde" @click="duplicateSemiCustom()" class="flex justify-between items-center gap-2 bg-primary-50 p-6 w-full text-white tracking-widest">
+                        <button v-if="hasDuplicate" @click="duplicateSemiCustom()" class="flex justify-between items-center gap-2 bg-primary-50 p-6 w-full text-white tracking-widest">
                             <span>DUPLICATE</span>
                             <img class="inline-block rotate-90" src="img/icons/arrw-ck-right.png" alt="">
                         </button>

@@ -230,9 +230,23 @@
         window.location.href = '/ready-to-wear?page=products';
     }
 
+    const addSemiCustom = () => {
+        window.location.href = '/semi-custom?page=semi-custom';
+    }
+
+    const addSemiCustomOuter = () => {
+        window.location.href = '/semi-custom-outer?page=semi-custom-outer';
+    }
+
     const editSemuCustom = (key) => {
         setTimeout(() => {
             window.location.href = `/semi-custom?page=semi-custom&edit_on_index=${key}`;
+        });
+    }
+
+    const editSemiCustomOuter = (key) => {
+        setTimeout(() => {
+            window.location.href = `/semi-custom-outer?page=semi-custom-outer&edit_on_index=${key}`;
         });
     }
 
@@ -433,6 +447,14 @@
 
         <section class="bottom-0 absolute w-full">
             <div class="flex justify-end">
+
+                <button @click="addSemiCustom()" class="flex items-center gap-2 bg-primary-300 p-4 lg:p-6 text-white uppercase tracking-widest">
+                    <span>Add Semi Custom</span>
+                </button>
+
+                <button @click="addSemiCustomOuter()" class="flex items-center gap-2 bg-primary-300/80 p-4 lg:p-6 text-white uppercase tracking-widest">
+                    <span>Add Semi Custom Outer</span>
+                </button>
 
                 <button @click="addRtw()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white uppercase tracking-widest">
                     <span>Add Ready to Wear</span>

@@ -11,11 +11,25 @@ const storePage = usePage();
 const storeCustomer = useCustomer();
 const storeProducts = useProducts();
 
+const isEditMOde = ref(false);
+const editIndex = ref(null);
+
 const urlParams = new URLSearchParams(window.location.search);
 const url = new URL(window.location.href);
 
-const isEditMOde = ref(false);
-const editIndex = ref(null);
+const rawEditIndex = urlParams.get('edit_on_index');
+
+if (rawEditIndex !== null) {
+    const parsedEditIndex = parseInt(rawEditIndex, 10);
+    const existingData = storeProducts.semi_custom_outer?.[parsedEditIndex];
+
+    if (!Number.isNaN(parsedEditIndex) && existingData) {
+        isEditMOde.value = true;
+        editIndex.value = parsedEditIndex;
+        storeProducts.setIndexSemiCustomOuter(parsedEditIndex);
+        storeProducts.setDuplicateSmOuter(existingData);
+    }
+}
 
 const number_input = {
     separator: '.',
@@ -120,19 +134,56 @@ onMounted(async () => {
         basic: basic
     }
 
+    const hasEditIndex = urlParams.get('edit_on_index') != null;
+    const hasDuplicateIndex = urlParams.get('index') != null;
+
+    // Prefill form for edit mode and duplicate mode.
+    if (hasEditIndex || hasDuplicateIndex) {
+        const duplicateData = storeProducts.getDuplicateSmOuter;
+        const basicData = duplicateData?.basic ?? duplicateData;
+
+        if (basicData?.form) {
+            form.fabric.text = basicData.form.fabric?.text || '';
+            form.fabric.fabricCode = basicData.form.fabric?.fabricCode || '';
+            form.collar = basicData.form.collar || null;
+            form.cuff = basicData.form.cuff || null;
+            form.button = basicData.form.button || null;
+        }
+
+        if (basicData?.formSize) {
+            formSize.measurement = basicData.formSize.measurement || '';
+            formSize.measurement_values = basicData.formSize.measurement_values || {};
+            formSize.sa.shoulder = basicData.formSize.sa?.shoulder || '';
+            formSize.sa.backLength = basicData.formSize.sa?.backLength || '';
+            formSize.sa.sleeveLength = basicData.formSize.sa?.sleeveLength || '';
+            formSize.order = basicData.formSize.order || '';
+
+            if (basicData.formSize.actualMeasurement?.values) {
+                formSize.actualMeasurement.values = {
+                    ...formSize.actualMeasurement.values,
+                    ...basicData.formSize.actualMeasurement.values,
+                };
+            }
+        }
+
+        additionalNote.value = basicData?.additionalNote || '';
+        amount.price = basicData?.amount?.price || 0;
+        amount.discount = basicData?.amount?.discount || 0;
+        price.value = amount.price;
+        discount.value = amount.discount;
+    }
+
     if (urlParams.get('page') != null) {
         storePage.currentPage = urlParams.get('page');
-        const hasEditIndex = urlParams.get('edit_on_index') != null;
-        const hasDuplicateIndex = urlParams.get('index') != null;
 
         if (!hasEditIndex && !hasDuplicateIndex) {
-            storeProducts.resetDuplicateSm();
-            storeProducts.setIndexSemiCustom(null);
+            storeProducts.resetDuplicateSmOuter();
+            storeProducts.setIndexSemiCustomOuter(null);
         }
     }else{
         storePage.currentPage = currentSection.value;
         storeCustomer.customer = null;
-        storeProducts.resetSemiCustom();
+        storeProducts.resetSemiCustomOuter();
     }
 })
 
@@ -175,6 +226,68 @@ function onInputBox(val, key = 'fabric', key2 = 'fabricCode')
     }
 }
 
+const addCustomRequest = () => {
+    let urlParams = new URLSearchParams(window.location.search);
+    let index = urlParams.get('index');
+
+    applyPrice();
+
+    if (basic.value.form.fabric.fabricCode == null || basic.value.form.fabric.text == null ||
+        basic.value.form.fabric.fabricCode == '' || basic.value.form.fabric.text == ''
+    ) {
+        alert('Please fill the form Fabric Code');
+    }else {
+        if (totalPrice.value <= 0 && bindForm.value !== null) {
+            alert('Please fill the form OR apply the price first');
+        }else {
+            useProducts().resetDuplicateSmOuter();
+            if (isEditMOde.value && editIndex.value !== null) {
+                useProducts().setCustomOuterWithKey(bindForm.value, editIndex.value);
+                useProducts().setIndexSemiCustomOuter(null);
+            } else {
+                useProducts().setCustomOuter(bindForm.value);
+            }
+            window.location.href = `/semi-custom-outer?page=semi-custom-outer&index=${storeProducts.semi_custom_outer.length}`;
+        }
+    }
+}
+
+const duplicateSemiCustom = () => {
+    // childBasic.value.basicAmount();
+    // childOption.value.amountOption();
+    applyPrice();
+
+    const selectedSizeValue = props.data_semi_custom_outer.sizes.data.basic.find(size => size.slug === formSize.measurement);
+    formSize.measurement_values = selectedSizeValue ? selectedSizeValue.values : {};
+
+    if (form.fabric.fabricCode == null || form.fabric.text == null ||
+        form.fabric.fabricCode == '' || form.fabric.text == ''
+    ) {
+        alert('Please fill the form Fabric Code');
+    }else {
+
+        if (totalPrice.value <= 0 && bindForm.value !== null) {
+            alert('Please fill the form OR apply the price first');
+        }else {
+
+            const indexParam = urlParams.get('index');
+            const fallbackIndex = storeProducts.semi_custom_outer.length;
+            const nextIndex = Number.isNaN(parseInt(indexParam, 10)) ? fallbackIndex : parseInt(indexParam, 10);
+
+            storeProducts.setIndexSemiCustomOuter(nextIndex);
+            useProducts().setCustomOuter(bindForm.value);
+
+            //  set duplicate
+            useProducts().setDuplicateSmOuter(bindForm.value);
+
+            setTimeout(() => {
+                window.location.href = `/semi-custom-outer?page=semi-custom-outer&index=${nextIndex + 1}`;
+            });
+            alert('Success');
+        }
+    }
+}
+
 const Layout = defineAsyncComponent(() => import('../../includes/Layout.vue'));
 const Customer = defineAsyncComponent(() => import('../includes/CustomerData.vue'));
 
@@ -211,9 +324,27 @@ const btnNext = (section, data) => {
     storePage.currentPage = section;
 }
 
+const hasDuplicate = computed(() => {
+    return totalPrice.value > 0 ? true : false;
+});
+
+const hasSemiCustomOuter = computed(() => {
+    return storeProducts.semi_custom_outer.length > 0 ? true : false;
+});
+
+const goToCart = () => {
+    window.location.href = '/cart';
+}
+
+const cancelEdit = () => {
+    isEditMOde.value = false;
+    editIndex.value = null;
+    storeProducts.resetDuplicateSmOuter();
+    storeProducts.setIndexSemiCustomOuter(null);
+    window.location.href = '/cart';
+}
 
 </script>
-
 <template>
 
     <Layout :route_edit_profile="route_edit_profile" :route_my_target="route_my_target" :route_logout="route_logout" :user="user" :csrf="csrf" :extends="extend">
@@ -555,7 +686,7 @@ const btnNext = (section, data) => {
 
 
             <!-- Additional Notes-->
-            <div class="mb-32">
+            <div class="mb-48">
                 <div class="flex justify-between items-center bg-primary-outer-300 px-4 lg:px-14 py-2">
                     <div class="font-bold text-white lg:text-xl uppercase tracking-widest">ADDITIONAL NOTES</div>
                 </div>
@@ -576,13 +707,13 @@ const btnNext = (section, data) => {
 
             <div class="right-0 bottom-0 absolute">
                 <div class="flex items-end">
-                    <!-- <button v-if="hasSemiCustom" @click="goToCart" class="flex items-center gap-2 bg-secondary-50 p-6 h-fit text-white tracking-widest">
-                        <span>CANCEL & SUBMIT</span>
+                    <button v-if="hasSemiCustomOuter || isEditMOde" @click="isEditMOde ? cancelEdit() : goToCart()" class="flex items-center gap-2 bg-secondary-50 p-6 h-fit text-white tracking-widest">
+                        <span>{{ isEditMOde ? 'CANCEL' : 'CANCEL & SUBMIT' }}</span>
                         <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                     </button>
 
                     <div>
-                        <button v-if="hasDuplicate && !isEditMOde" @click="duplicateSemiCustom()" class="flex justify-between items-center gap-2 bg-primary-50 p-6 w-full text-white tracking-widest">
+                        <button v-if="hasDuplicate" @click="duplicateSemiCustom()" class="flex justify-between items-center gap-2 bg-primary-50 p-6 w-full text-white tracking-widest">
                             <span>DUPLICATE</span>
                             <img class="inline-block rotate-90" src="img/icons/arrw-ck-right.png" alt="">
                         </button>
@@ -590,10 +721,9 @@ const btnNext = (section, data) => {
                             <span>ADD NEW CUSTOM REQUEST </span>
                             <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                         </button>
-                    </div> -->
-
-                    <button @click="btnSubmit()" class="flex items-center gap-2 bg-secondary-50 p-6 h-fit text-white tracking-widest">
-                        <span>SUBMIT</span>
+                    </div>
+                    <button @click="btnSubmit()" class="flex items-center gap-2 p-6 h-fit text-white tracking-widest" :class="isEditMOde ? 'bg-primary-50' : 'bg-secondary-50'">
+                        <span>{{ isEditMOde ? 'UPDATE' : 'SUBMIT' }}</span>
                         <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
                     </button>
 

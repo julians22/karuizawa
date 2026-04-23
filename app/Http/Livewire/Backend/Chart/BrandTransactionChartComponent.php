@@ -50,7 +50,8 @@ class BrandTransactionChartComponent extends Component
                     });
 
                     if ($brandId == 2) {
-                        $q->orWhere('product_type', 'App\Models\SemiCustomProduct');
+                        $q->orWhere('product_type', 'App\Models\SemiCustomProduct')
+                            ->orWhere('product_type', 'App\Models\SemiCustomProductOuter');
                     }
                 });
             });
@@ -76,7 +77,7 @@ class BrandTransactionChartComponent extends Component
             foreach ($order->orderItems as $item) {
                 if ($item->isReadyToWear() && $item->product_rtw->brand_id == $brandId) {
                     $storeData[$storeName] += $item->total_price;
-                } elseif ($brandId == 2 && $item->isSemiCustom()) {
+                } elseif ($brandId == 2 && ($item->isSemiCustom() || $item->isSemiCustomOuter())) {
                     $storeData[$storeName] += $item->price;
                 }
             }

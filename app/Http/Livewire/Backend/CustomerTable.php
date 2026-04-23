@@ -18,7 +18,10 @@ class CustomerTable extends DataTableComponent
     {
         return Customer::query()->withCount(['orders' => function ($query) {
             $query->where('status', config('enums.order_status.completed'));
-        }]);
+        }])
+        ->withSum(['orders as total_spent' => function ($query) {
+            $query->where('status', config('enums.order_status.completed'));
+        }], 'total_price');
     }
 
     public function columns(): array
@@ -36,6 +39,9 @@ class CustomerTable extends DataTableComponent
             Column::make("Email", "email")
                 ->searchable()
                 ->sortable(),
+            Column::make("Total Spent")
+                ->label(fn ($row) => view('backend.customer.includes.total_spent', ['row' => $row]))
+                ->sortable(fn ($builder, $direction) => $builder->orderBy('total_spent', $direction)),
             Column::make("Total Orders")
                 ->label(fn ($row) => view('backend.customer.includes.total_orders', ['row' => $row]))
                 ->sortable(fn ($builder, $direction) => $builder->orderBy('orders_count', $direction)),
