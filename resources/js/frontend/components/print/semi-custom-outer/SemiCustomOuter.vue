@@ -3,6 +3,7 @@
 
     import { priceFormat } from "@frontend/helpers/currency";
     import { str_limit } from '@/frontend/helpers/strlimit';
+    import moment from 'moment';
 
 	const props = defineProps({
 		data_semi_custom_outer: Object,
@@ -105,8 +106,8 @@
                     <div class="text-right uppercase print:scale-150">
                         <div class="text-sm">Order No : {{ props.data_semi_custom_outer.order_number }}</div>
                         <div class="text-sm">
-                            <!-- <span>Order Date : {{ moment(props.data_semi_custom_outer.order_item.order.created_at).format('DD/MM/YYYY') }}</span>
-                            <span> | </span>
+                            <span>Order Date : {{ moment(props.data_semi_custom_outer.order_item.order.created_at).format('DD/MM/YYYY') }}</span>
+                            <!--<span> | </span>
                             <span>
                                 Option
                                 <div class="inline-block">
@@ -213,13 +214,10 @@
                                                 </label>
                                             </div>
                                         </th>
-                                        <th rowspan="2" class="px-1 py-1 border border-primary-outer text-center uppercase tracking-widest whitespace-nowrap">
+                                        <th rowspan="2" class="px-1 py-1 border border-primary-outer text-xs text-center uppercase tracking-widest whitespace-nowrap">
                                             <div class="flex flex-col">
                                                 <span>
-                                                    AM
-                                                </span>
-                                                <span style="font-size: 6px;">
-                                                    ( Actual Measurement )
+                                                    ACTUAL <br> MEASUREMENT
                                                 </span>
                                             </div>
                                         </th>
@@ -377,7 +375,7 @@
                                                         <th class="w-full print-props">{{ str_limit(props.data_semi_custom_outer.customer.address, 60) }}</th>
                                                     </tr>
                                                     <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-outer">
-                                                        <th>tel / hp</th>
+                                                        <th>telp / hp</th>
                                                         <th class="w-full print-props">{{ props.data_semi_custom_outer.customer.phone }}</th>
                                                     </tr>
                                                     <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-outer">

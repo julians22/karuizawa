@@ -47,6 +47,18 @@
         });
     });
 
+    const semiCustomOuter = computed(() => {
+        return orderItems.filter(item => item.type == "SCO").map(item => {
+            return {
+                name: item.product.name,
+                fabric_code: item.product.basic_form.fabric.fabricCode + ' - ' + item.product.basic_form.fabric.text,
+                qty: item.quantity,
+                price: item.price,
+                total: item.total_price
+            }
+        });
+    });
+
     const sendingPayment = ref(false);
     const doPayment = defineAsyncComponent(() => import('../../../utils/paymentModal.vue'));
 
@@ -303,6 +315,17 @@
                                 <td class="font-bold text-[#606060]">{{ product.qty }}</td>
                                 <td class="font-bold text-[#606060]" v-html="priceFormat(product.price)"></td>
                             </tr>
+
+                            <tr v-if="semiCustomOuter.length > 0"
+                                v-for="product in semiCustomOuter" :key="product.sku">
+                                <td class="font-roboto">
+                                    <div class="font-bold text-[#606060]">{{ product.name }}</div>
+                                    <div class="text-[#A3A3A3]">{{ product.fabric_code }}</div>
+                                </td>
+                                <td class="font-bold text-[#606060]">{{ product.qty }}</td>
+                                <td class="font-bold text-[#606060]" v-html="priceFormat(product.price)"></td>
+                            </tr>
+
                             <tr v-for="product in products" :key="product.sku" class="mt-2">
                                 <td class="font-roboto">
                                     <div class="font-bold text-[#606060]">{{ product.name }} <div class="inline text-[#A3A3A3]">@ {{ priceFormat(product.price) }}</div></div>

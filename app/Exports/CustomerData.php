@@ -22,7 +22,6 @@ class CustomerData implements FromCollection, WithHeadings, ShouldAutoSize, With
     public function collection()
     {
         return Customer::query()
-            ->where('email', '!=', 'user@user.com')
             ->withCount([
                 'orders as total_orders' => function (Builder $query) {
                     $query->where('status', 'completed');
