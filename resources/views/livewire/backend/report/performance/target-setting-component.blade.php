@@ -15,7 +15,7 @@
                             You can regenerate the target setting for this crew. this can be regenerated if you have update your product list, category list or any other settings.
                         </div>
                     </div>
-                    <button class="btn btn-warning btn-sm mb-2" wire:click="generateTargetSettings">Regenerate Target Setting</button>
+                    <button class="mb-2 btn btn-warning btn-sm" wire:click="generateTargetSettings">Regenerate Target Setting</button>
                 @else
                     <div class="alert alert-warning" role="alert">
                         <div>
@@ -28,7 +28,7 @@
                         </small>
                     </div>
 
-                    <button class="btn btn-primary btn-sm mb-2" wire:click="generateTargetSettings">Generate Target Setting</button>
+                    <button class="mb-2 btn btn-primary btn-sm" wire:click="generateTargetSettings">Generate Target Setting</button>
                 @endif
                 <table class="table">
 
@@ -44,8 +44,8 @@
                     </thead>
                     @foreach ($this->crew_target as $target)
                         <livewire:backend.report.performance.target-item-component
-                            :actualvalue="$target->isSemiCustom() ? $actualSellingVal['Semi Custom'] : $actualSellingVal[$target->category->name]"
-                            :actualqty="$target->isSemiCustom() ? $actualSellingQty['Semi Custom'] : $actualSellingQty[$target->category->name]"
+                            :actualvalue="$target->isSemiCustom() ? $actualSellingVal['Semi Custom'] : ($target->isSemiCustomOuterCategory() ? $actualSellingVal['Semi Custom Outer'] : $actualSellingVal[$target->category->name])"
+                            :actualqty="$target->isSemiCustom() ? $actualSellingQty['Semi Custom'] : ($target->isSemiCustomOuterCategory() ? $actualSellingQty['Semi Custom Outer'] : $actualSellingQty[$target->category->name])"
                             :target="$target"
                             :key="$target->id"/>
                     @endforeach
@@ -57,28 +57,28 @@
         <div class="row">
 
             <div class="col-12 col-md-3">
-                <div class="card overflow-hidden">
-                    <div class="card-body p-0 d-flex align-items-center">
-                        <div class="bg-primary text-white p-4 me-3">
+                <div class="overflow-hidden card">
+                    <div class="d-flex align-items-center p-0 card-body">
+                        <div class="bg-primary me-3 p-4 text-white">
                             <i class="cil cil-basket fs-2"></i>
                         </div>
                         <div>
-                            <div class="fs-6 fw-semibold text-primary">{{ $totalSellingQty }}</div>
-                            <div><small class="text-body-secondary text-uppercase fw-semibold font-monospace">Actual Selling
+                            <div class="text-primary fs-6 fw-semibold">{{ $totalSellingQty }}</div>
+                            <div><small class="font-monospace text-body-secondary text-uppercase fw-semibold">Actual Selling
                                     Qty</small></div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-12 col-md-3">
-                <div class="card overflow-hidden">
-                    <div class="card-body p-0 d-flex align-items-center">
-                        <div class="bg-primary text-white p-4 me-3">
+                <div class="overflow-hidden card">
+                    <div class="d-flex align-items-center p-0 card-body">
+                        <div class="bg-primary me-3 p-4 text-white">
                             <i class="fas fa-dollar-sign fs-2"></i>
                         </div>
                         <div>
-                            <div class="fs-6 fw-semibold text-primary">{{ price_format($totalSellingVal) }}</div>
-                            <div><small class="text-body-secondary text-uppercase fw-semibold font-monospace">Actual Selling
+                            <div class="text-primary fs-6 fw-semibold">{{ price_format($totalSellingVal) }}</div>
+                            <div><small class="font-monospace text-body-secondary text-uppercase fw-semibold">Actual Selling
                                     Value</small></div>
                         </div>
                     </div>
@@ -99,28 +99,28 @@
                 @endphp
 
                 <div class="col-12 col-md-3">
-                    <div class="card overflow-hidden">
-                        <div class="card-body p-0 d-flex align-items-center">
-                            <div class="bg-primary text-white p-4 me-3">
+                    <div class="overflow-hidden card">
+                        <div class="d-flex align-items-center p-0 card-body">
+                            <div class="bg-primary me-3 p-4 text-white">
                                 <i class="fas fa-dollar-sign fs-2"></i>
                             </div>
                             <div>
-                                <div class="fs-6 fw-semibold text-primary">{{ price_format($totalTarget) }}</div>
-                                <div><small class="text-body-secondary text-uppercase fw-semibold font-monospace">Total Target</small></div>
+                                <div class="text-primary fs-6 fw-semibold">{{ price_format($totalTarget) }}</div>
+                                <div><small class="font-monospace text-body-secondary text-uppercase fw-semibold">Total Target</small></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-12 col-md-3">
-                    <div class="card overflow-hidden">
-                        <div class="card-body p-0 d-flex align-items-center">
-                            <div class="bg-primary text-white p-4 me-3">
+                    <div class="overflow-hidden card">
+                        <div class="d-flex align-items-center p-0 card-body">
+                            <div class="bg-primary me-3 p-4 text-white">
                                 <i class="fas fa-percent fs-2"></i>
                             </div>
                             <div>
-                                <div class="fs-6 fw-semibold text-primary">{{ $totalIndex }} %</div>
-                                <div><small class="text-body-secondary text-uppercase fw-semibold font-monospace">Index total</small></div>
+                                <div class="text-primary fs-6 fw-semibold">{{ $totalIndex }} %</div>
+                                <div><small class="font-monospace text-body-secondary text-uppercase fw-semibold">Index total</small></div>
                             </div>
                         </div>
                     </div>

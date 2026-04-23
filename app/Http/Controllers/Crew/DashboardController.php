@@ -32,6 +32,9 @@ class DashboardController extends Controller
         $actualSellingValue['Semi Custom'] = 0;
         $actualSellingQty['Semi Custom'] = 0;
 
+        $actualSellingValue['Semi Custom Outer'] = 0;
+        $actualSellingQty['Semi Custom Outer'] = 0;
+
 
         $totalActualSellingValue = 0;
         $totalActualSellingQty = 0;
@@ -57,7 +60,11 @@ class DashboardController extends Controller
                         $targetsValue['UNDEFINED_CATEGORY'] = $target->target;
                     }
                 }else {
-                    $targetsValue['Semi Custom'] = $target->target;
+                    if ($target->isSemiCustomCategory()) {
+                        $targetsValue['Semi Custom'] = $target->target;
+                    } elseif ($target->isSemiCustomOuterCategory()) {
+                        $targetsValue['Semi Custom Outer'] = $target->target;
+                    }
                 }
 
             }
@@ -82,6 +89,17 @@ class DashboardController extends Controller
             $totalActualSellingQty = collect($actualSellingQty)->sum();
             $totalActualSellingValue = collect($actualSellingValue)->sum();
         }
+
+        $semiCustomOuter = $this->getSemiCustomOuter($crew->id, $crew->store_id, date('m'), date('Y'));
+        if ($semiCustomOuter->count() > 0) {
+            foreach ($semiCustomOuter as $item) {
+                $actualSellingQty['Semi Custom Outer'] += $item->quantity;
+                $actualSellingValue['Semi Custom Outer'] += $item->price;
+            }
+            $totalActualSellingQty = collect($actualSellingQty)->sum();
+            $totalActualSellingValue = collect($actualSellingValue)->sum();
+        }
+
 
         return view('frontend.user.target', compact('targets', 'totalTargetAmount', 'totalActualSellingValue', 'totalActualSellingQty', 'actualSellingValue', 'actualSellingQty', 'targetsValue'));
     }
@@ -127,6 +145,28 @@ class DashboardController extends Controller
                     ->where('user_id', $crewId);
             })
             ->semiCustom()
+            ->get();
+
+        return $trans;
+    }
+
+    protected function getSemiCustomOuter($crewId, $store, $month, $year)
+    {
+        $trans = OrderItem::with([
+            'order',
+            'product_sco',
+            'order.user' => function ($query) {
+                $query->withTrashed();
+            }
+            ])
+            ->whereHas('order', function ($query) use ($store, $month, $year, $crewId) {
+                return $query->whereMonth('order_date', $month)
+                    ->whereYear('order_date', $year)
+                    ->where('store_id', $store)
+                    ->where('status', config('enums.order_status.completed'))
+                    ->where('user_id', $crewId);
+            })
+            ->semiCustomOuter()
             ->get();
 
         return $trans;

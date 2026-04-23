@@ -17,10 +17,10 @@
 </head>
 <body>
     <div id="app" class="space-y-4">
-        @if ($dataSemiCustom == null || $dataSemiCustom->isEmpty())
-            <div class="flex flex-col items-center justify-center h-screen">
-                <h1 class="text-2xl font-bold text-center text-gray-500">Tidak ada data transaksi semi custom pada tanggal {{ Carbon\Carbon::parse($date)->format('d F Y') }}</h1>
-                <a href="{{ route('frontend.user.booking') }}" class="p-2 mt-10 text-xl font-bold text-white uppercase bg-primary-50">Kembali</a>
+        @if ($dataSemiCustom == null || $dataSemiCustom->isEmpty() || $dataSemiCustomOuter == null || $dataSemiCustomOuter->isEmpty())
+            <div class="flex flex-col justify-center items-center h-screen">
+                <h1 class="font-bold text-gray-500 text-2xl text-center">Tidak ada data transaksi semi custom pada tanggal {{ Carbon\Carbon::parse($date)->format('d F Y') }}</h1>
+                <a href="{{ route('frontend.user.booking') }}" class="bg-primary-50 mt-10 p-2 font-bold text-white text-xl uppercase">Kembali</a>
             </div>
         @endif
         @foreach ($dataSemiCustom as $key => $value )
@@ -31,6 +31,15 @@
             ></print-semi-custom>
         </div>
         @endforeach
+        @foreach ($dataSemiCustomOuter as $key => $value )
+        <div>
+            <print-semi-custom-outer
+            :data_config="{{ $dataConfigOuter }}"
+            :data_semi_custom_outer="{{ JSON_encode($value) }}"
+            ></print-semi-custom-outer>
+        </div>
+        @endforeach
+
     </div><!--app-->
 
     @stack('before-scripts')

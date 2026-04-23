@@ -41,6 +41,9 @@ class TargetSettingComponent extends Component
         $actualSellingQty['Semi Custom'] = 0;
         $actualSellingVal['Semi Custom'] = 0;
 
+        $actualSellingQty['Semi Custom Outer'] = 0;
+        $actualSellingVal['Semi Custom Outer'] = 0;
+
         collect($transactions['readyToWear'])->each(function ($item) use (&$actualSellingQty, &$actualSellingVal) {
             $actualSellingQty[$item->product_rtw->category->name] += $item->quantity;
             $actualSellingVal[$item->product_rtw->category->name] += $item->total_price;
@@ -49,6 +52,11 @@ class TargetSettingComponent extends Component
         collect($transactions['semiCustom'])->each(function ($item) use (&$actualSellingQty, &$actualSellingVal) {
             $actualSellingQty['Semi Custom'] += $item->quantity;
             $actualSellingVal['Semi Custom'] += $item->price;
+        });
+
+        collect($transactions['semiCustomOuter'])->each(function ($item) use (&$actualSellingQty, &$actualSellingVal) {
+            $actualSellingQty['Semi Custom Outer'] += $item->quantity;
+            $actualSellingVal['Semi Custom Outer'] += $item->price;
         });
 
         $totalSellingQty = collect($actualSellingQty)->sum();
@@ -101,16 +109,23 @@ class TargetSettingComponent extends Component
             $target->save();
         });
 
-        $target = new TargetSetting();
+        $targetSemiCustom = new TargetSetting();
+        $targetSemiCustom->month = $this->month;
+        $targetSemiCustom->store_id = $this->store;
+        $targetSemiCustom->is_semicustom = 1;
+        $targetSemiCustom->semicustom_name = TargetSetting::CATEGORY_SEMI_CUSTOM;
+        $targetSemiCustom->user_id = $this->selectedCrew;
+        $targetSemiCustom->target = 0;
+        $targetSemiCustom->save();
 
-        $target->month = $this->month;
-        $target->store_id = $this->store;
-        $target->is_semicustom = 1;
-        $target->category_id = null;
-        $target->user_id = $this->selectedCrew;
-        $target->target = 0;
-
-        $target->save();
+        $targetSemiCustomOuter = new TargetSetting();
+        $targetSemiCustomOuter->month = $this->month;
+        $targetSemiCustomOuter->store_id = $this->store;
+        $targetSemiCustomOuter->is_semicustom = 1;
+        $targetSemiCustomOuter->semicustom_name = TargetSetting::CATEGORY_SEMI_CUSTOM_OUTER;
+        $targetSemiCustomOuter->user_id = $this->selectedCrew;
+        $targetSemiCustomOuter->target = 0;
+        $targetSemiCustomOuter->save();
     }
 
     public function getCrewTransaction() : array
@@ -123,6 +138,8 @@ class TargetSettingComponent extends Component
 
         $data['readyToWear'] = $this->getReadtoWear($crewId, $this->store, $monthSplit[1], $monthSplit[0]);
         $data['semiCustom'] = $this->getSemiCustom($crewId, $this->store, $monthSplit[1], $monthSplit[0]);
+        $data['semiCustomOuter'] = $this->getSemiCustomOuter($crewId, $this->store, $monthSplit[1], $monthSplit[0]);
+
 
         return $data;
     }
@@ -173,6 +190,26 @@ class TargetSettingComponent extends Component
         return $trans;
     }
 
+    protected function getSemiCustomOuter($crewId, $store, $month, $year)
+    {
+        $trans = OrderItem::with([
+            'order',
+            'product_sco',
+            'order.user' => function ($query) {
+                $query->withTrashed();
+            }
+            ])
+            ->whereHas('order', function ($query) use ($store, $month, $year, $crewId) {
+                return $query->whereMonth('order_date', $month)
+                    ->whereYear('order_date', $year)
+                    ->where('store_id', $store)
+                    ->where('status', config('enums.order_status.completed'))
+                    ->where('user_id', $crewId);
+            })
+            ->semiCustomOuter()
+            ->get();
 
+        return $trans;
+    }
 
 }

@@ -83,6 +83,21 @@ class DashboardController
         ])->whereDate('created_at', '=', $request->date)->orderBy('created_at', 'desc')->get();
         $dataConfig = config('karuizawa-default-master');
 
-        return view('frontend.print.sc-per-day', ['dataSemiCustom' => $semiCustom, 'dataConfig' => collect($dataConfig), 'date' => $request->date]);
+
+        $semiCustomOuter = SemiCustomOuterProduct::with([
+            'customer',
+            'orderItem',
+            'orderItem.order.user' => function ($query) {
+                $query->withTrashed();
+            }
+        ])->whereDate('created_at', '=', $request->date)->orderBy('created_at', 'desc')->get();
+        $dataConfigOuter = config('karuizawa-outer-shirt-master');
+
+        return view('frontend.print.sc-per-day', [
+            'dataSemiCustom' => $semiCustom,
+            'dataConfig' => collect($dataConfig),
+            'dataSemiCustomOuter' => $semiCustomOuter,
+            'dataConfigOuter' => collect($dataConfigOuter),
+            'date' => $request->date]);
     }
 }
