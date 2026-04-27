@@ -276,6 +276,7 @@ class OrderTable extends DataTableComponent
 
                     $target[$id]['types'][$orderItem->type][] = [
                         "price" => $orderItem->price,
+                        'itemNo' => $orderItem->product_sc->code,
                         "quantity" => $orderItem->quantity,
                     ];
                 }
@@ -417,6 +418,17 @@ class OrderTable extends DataTableComponent
             foreach ($orderItems as $orderItem) {
 
                 if ($orderItem->isSemiCustom()) {
+                    $target[$order->store->code]['detailItem'][] = [
+                        'itemNo' => $orderItem->product_sc->code,
+                        'detailName' => $orderItem->product_sc->name,
+                        'unitPrice' => $orderItem->price,
+                        'quantity' => $orderItem->quantity,
+                        'departmentName' => 'Apparel',
+                        'warehouseName' => $order->store->code === 'PIK' ? config('accurate.warehouse_list.PIK') : config('accurate.warehouse_list.AST'),
+                    ];
+                }
+
+                if ($orderItem->isSemiCustomOuter()) {
                     $target[$order->store->code]['detailItem'][] = [
                         'itemNo' => $orderItem->product_sc->code,
                         'detailName' => $orderItem->product_sc->name,

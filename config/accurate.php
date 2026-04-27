@@ -39,6 +39,7 @@ return [
 
     ],
     'semi_custom_sku' => 'MTM-02CA',
+    'semi_custom_outer_sku' => 'MTM-OS-CA',
     'customer_list' => [
         'AST' => 'C.00359',
         'PIK' => 'C.00651',

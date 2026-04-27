@@ -20,5 +20,5 @@ return [
         'qris' => 'QR',
     ],
     'semi_custom_name' => 'MTM-02CA',
-    'semi_custom_outer_name' => 'MTM-02CB',
+    'semi_custom_outer_name' => 'MTM-OS-CA',
 ];

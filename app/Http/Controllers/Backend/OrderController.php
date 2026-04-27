@@ -78,6 +78,16 @@ class OrderController extends Controller
                     'departmentName' => 'Apparel',
                     'warehouseName' => $warehouseName
                 ];
+            } else if($orderItem->isSemiCustomOuter())
+            {
+                $detailItem[] = [
+                    'itemNo' => config('accurate.semi_custom_outer_sku'),
+                    'unitPrice' => $orderItem->price,
+                    'detailName' => $orderItem->product->name,
+                    'quantity' => $orderItem->quantity,
+                    'departmentName' => 'Apparel',
+                    'warehouseName' => $warehouseName
+                ];
             }
         }
 
