@@ -10,7 +10,11 @@ export const useProducts = defineStore('products', {
           coupon_rtw: 0,
           semi_custom: [],
           duplicate_semi_custom: [],
-          semi_custom_index: null
+          semi_custom_index: null,
+
+          semi_custom_outer: [],
+          duplicate_semi_custom_outer: [],
+          semi_custom_outer_index: null,
         }
     },
 
@@ -41,6 +45,21 @@ export const useProducts = defineStore('products', {
 
         getDuplicateSm: (state) => {
             return state.duplicate_semi_custom;
+        },
+
+        getSemiCustomOuter: (state) => {
+            return state.semi_custom_outer;
+        },
+
+        getSemiCustomOuterIndex: (state, index) => {
+            return state.semi_custom_outer[index];
+        },
+
+        hasDuplicateOuter: (state) => {
+            return state.semi_custom_outer_index !== null ? true : false;
+        },
+        getDuplicateSmOuter: (state) => {
+            return state.duplicate_semi_custom_outer;
         }
     },
 
@@ -73,6 +92,36 @@ export const useProducts = defineStore('products', {
 
         removeSemiCustom(index) {
             this.semi_custom.splice(index, 1);
+        },
+
+        setCustomOuter(custom) {
+            this.semi_custom_outer.push(custom)
+        },
+
+        setCustomOuterWithKey(custom, key) {
+            this.semi_custom_outer[key] = custom;
+        },
+
+        setDuplicateSmOuter(custom) {
+            this.duplicate_semi_custom_outer = custom;
+        },
+
+        setIndexSemiCustomOuter(index) {
+            this.semi_custom_outer_index = index
+        },
+
+        resetSemiCustomOuter() {
+            this.semi_custom_outer = []
+            this.semi_custom_outer_index = null
+            this.duplicate_semi_custom_outer = [];
+        },
+
+        resetDuplicateSmOuter() {
+            this.duplicate_semi_custom_outer = [];
+        },
+
+        removeSemiCustomOuter(index) {
+            this.semi_custom_outer.splice(index, 1);
         },
     },
 

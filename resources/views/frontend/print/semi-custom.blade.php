@@ -18,10 +18,17 @@
 </head>
 <body>
     <div id="app">
-        <print-semi-custom
-        :data_config="{{ $dataConfig }}"
-        :data_semi_custom="{{ JSON_encode($dataSemiCustom) }}"
-        ></print-semi-custom>
+        @if ($type == 'semi-custom-outer')
+            <print-semi-custom-outer
+            :data_config="{{ $dataConfig }}"
+            :data_semi_custom_outer="{{ JSON_encode($dataSemiCustom) }}"
+            ></print-semi-custom-outer>
+        @else
+            <print-semi-custom
+            :data_config="{{ $dataConfig }}"
+            :data_semi_custom="{{ JSON_encode($dataSemiCustom) }}"
+            ></print-semi-custom>
+        @endif
     </div><!--app-->
 
     @stack('before-scripts')

@@ -22,6 +22,8 @@
                                   <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
                                   <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-pre" href="{{ route('frontend.user.semi-custom') }}">semi custom</a></li>
                                   <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
+                                  <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-pre" href="{{ route('frontend.user.semi-custom-outer') }}">semi custom outer</a></li>
+                                  <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
                                   <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-no-wrap" href="{{ route('frontend.user.rtw') }}?brand=kizoku">Kizoku Parfume</a></li>
                                 </ul>
                             </div>
@@ -43,6 +45,8 @@
                                         <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-no-wrap" href="{{ route('frontend.user.rtw') }}">RTW</a></li>
                                         <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
                                         <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-pre" href="{{ route('frontend.user.semi-custom') }}">semi custom</a></li>
+                                        <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
+                                        <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-pre" href="{{ route('frontend.user.semi-custom-outer') }}">semi custom outer</a></li>
                                         <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
                                         <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-no-wrap" href="{{ route('frontend.user.rtw') }}?brand=kizoku">Kizoku Parfume</a></li>
                                     </ul>

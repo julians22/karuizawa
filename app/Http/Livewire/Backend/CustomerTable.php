@@ -5,14 +5,23 @@ namespace App\Http\Livewire\Backend;
 use Rappasoft\LaravelLivewireTables\DataTableComponent;
 use Rappasoft\LaravelLivewireTables\Views\Column;
 use App\Models\Customer;
+use Illuminate\Database\Eloquent\Builder;
 
 class CustomerTable extends DataTableComponent
 {
-    protected $model = Customer::class;
-
     public function configure(): void
     {
         $this->setPrimaryKey('id');
+    }
+
+    public function builder() : Builder
+    {
+        return Customer::query()->withCount(['orders' => function ($query) {
+            $query->where('status', config('enums.order_status.completed'));
+        }])
+        ->withSum(['orders as total_spent' => function ($query) {
+            $query->where('status', config('enums.order_status.completed'));
+        }], 'total_price');
     }
 
     public function columns(): array
@@ -30,9 +39,14 @@ class CustomerTable extends DataTableComponent
             Column::make("Email", "email")
                 ->searchable()
                 ->sortable(),
+            Column::make("Total Spent")
+                ->label(fn ($row) => view('backend.customer.includes.total_spent', ['row' => $row]))
+                ->sortable(fn ($builder, $direction) => $builder->orderBy('total_spent', $direction)),
+            Column::make("Total Orders")
+                ->label(fn ($row) => view('backend.customer.includes.total_orders', ['row' => $row]))
+                ->sortable(fn ($builder, $direction) => $builder->orderBy('orders_count', $direction)),
             Column::make("Created at", "created_at")
-                ->sortable(),
-            Column::make("Updated at", "updated_at")
+                ->format(fn ($value) => $value->format('Y-m-d H:i'))
                 ->sortable(),
         ];
     }

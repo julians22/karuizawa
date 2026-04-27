@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
-
     public function index() {
 
         $customersQuery = Customer::select('id', 'created_at');
@@ -41,6 +40,50 @@ class CustomerController extends Controller
 
     public function show() {
         return view('backend.customer.show');
+    }
+
+    public function orders(Request $request, Customer $customer) {
+
+        $ordersQuery = $customer->orders()->select('id', 'status', 'total_price', 'created_at');
+
+        $totalOrders = cache()->remember("customer_{$customer->id}_total_orders", 60 * 60, function () use ($ordersQuery) {
+            return $ordersQuery->count();
+        });
+
+        $completedOrders = cache()->remember("customer_{$customer->id}_completed_orders", 60 * 60, function () use ($ordersQuery) {
+            return $ordersQuery->where('status', 'completed')->count();
+        });
+
+        $totalSpending = cache()->remember("customer_{$customer->id}_total_spending", 60 * 60, function () use ($ordersQuery) {
+            return $ordersQuery->where('status', 'completed')->sum('total_price');
+        });
+
+        $currentMonthSpending = cache()->remember("customer_{$customer->id}_current_month_spending", 60 * 60, function () use ($ordersQuery) {
+            return $ordersQuery->where('status', 'completed')
+                ->where('created_at', '>=', now()->startOfMonth())
+                ->sum('total_price');
+        });
+
+        $stats = [
+            [
+                'label' => 'Total Orders',
+                'value' => $totalOrders,
+            ],
+            [
+                'label' => 'Completed Orders',
+                'value' => $completedOrders,
+            ],
+            [
+                'label' => 'Total Spending',
+                'value' => price_format($totalSpending),
+            ],
+            [
+                'label' => 'Current Month Spending',
+                'value' => price_format($currentMonthSpending),
+            ]
+        ];
+
+        return view('backend.customer.orders', compact('customer', 'stats'));
     }
 
     public function edit() {

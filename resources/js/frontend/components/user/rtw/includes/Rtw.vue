@@ -205,22 +205,31 @@
         }
     };
 
-    const goToSemiCustom = () => {
+    const goToSemiCustom = async () => {
         if (form.value.shirtsSelected.length) {
-            selectProducts();
-            setTimeout(() => {
-                if (useCustomer().getCustomer !== null) {
-                    window.location.href = "/semi-custom?page=semi-custom";
-                }else {
-                    window.location.href = "/semi-custom";
-                }
-            }, 300)
-
-        }else{
-            formError.value = ['Please select at least one item']
-            alert('Please select at least one item');
-            console.log(formError.value);
+            await selectProducts();
         }
+
+        setTimeout(() => {
+            if (useCustomer().getCustomer !== null) {
+                window.location.href = "/semi-custom?page=semi-custom";
+            }else {
+                window.location.href = "/semi-custom";
+            }
+        }, 300)
+    }
+
+    const goToSemiCustomOuter = async () => {
+        if (form.value.shirtsSelected.length) {
+            await selectProducts();
+        }
+        setTimeout(() => {
+            if (useCustomer().getCustomer !== null) {
+                window.location.href = "/semi-custom-outer?page=semi-custom-outer";
+            }else {
+                window.location.href = "/semi-custom-outer";
+            }
+        }, 300)
     }
 
     defineExpose({
@@ -358,6 +367,10 @@
         <div class="right-0 bottom-0 absolute flex">
             <button @click="goToSemiCustom()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white tracking-widest">
                 <span>ADD SEMI CUSTOM</span>
+                <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+            </button>
+            <button @click="goToSemiCustomOuter()" class="flex items-center gap-2 bg-primary-300 p-4 lg:p-6 text-white tracking-widest">
+                <span>ADD SEMI CUSTOM OUTER</span>
                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
             </button>
             <button @click="btnProcess()" class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">

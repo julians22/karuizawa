@@ -75,6 +75,7 @@ class CategoryValueReportComponent extends Component
 
             if ($this->brand->name == 'Karuizawa') {
                 $data['Semi Custom'] = [];
+                $data['Semi Custom Outer'] = [];
 
                 foreach ($crews as $crew) {
                     $data['Semi Custom'][$crew] = [];
@@ -82,9 +83,17 @@ class CategoryValueReportComponent extends Component
                     foreach ($this->rangeOfDays($this->month) as $key => $value) {
                         $data['Semi Custom'][$crew][$value] = 0;
                     }
+
+                    $data['Semi Custom Outer'][$crew] = [];
+
+                    foreach ($this->rangeOfDays($this->month) as $key => $value) {
+                        $data['Semi Custom Outer'][$crew][$value] = 0;
+                    }
                 }
 
                 $semiCustom = $this->getSemiCustom($store, $this->month_string, $this->year_string);
+
+                $semiCustomOuter = $this->getSemicustomOuter($store, $this->month_string, $this->year_string);
 
                 $semiCustom->each(function ($item) use (&$data) {
 
@@ -93,6 +102,16 @@ class CategoryValueReportComponent extends Component
 
                     $data['Semi Custom'][$crew][$date] += $item->price;
                 });
+
+                $semiCustomOuter->each(function ($item) use (&$data) {
+
+                    $date = $item->order->created_at->format('d');
+                    $crew = $item->order->user->name;
+
+                    $data['Semi Custom Outer'][$crew][$date] += $item->price;
+                });
+
+
             }
 
 

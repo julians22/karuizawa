@@ -29,13 +29,16 @@
             products: products.value,
             customer: customer.value ? customer.value.id : null,
             coupon: coupon.value ? coupon.value : 0,
-            semi_custom: semiCustom.value
+            semi_custom: semiCustom.value,
+            semi_custom_outer: semiCustomOuter.value
         }
     });
 
     const sendOrder = async () => {
 
         let semi_custom_data = [];
+
+        let semi_custom_outer_data = [];
 
         let product_data = [];
 
@@ -71,10 +74,25 @@
             });
         }
 
+        if (ordersData.value.semi_custom_outer.length !== 0) {
+            forEach(ordersData.value.semi_custom_outer, (semi_custom_outer, index) => {
+
+                semi_custom_outer_data.push({
+                    basic_form: semi_custom_outer.basic.form,
+                    base_price: semi_custom_outer.basic.amount.price ?? 0,
+                    base_discount: semi_custom_outer.basic.amount.discount ?? 0,
+                    base_note: semi_custom_outer.basic.additionalNote,
+                    size: semi_custom_outer.basic.formSize,
+                    total: semi_custom_outer.totalPrice
+                })
+            });
+        }
+
         let orders = {
             customer: ordersData.value.customer,
             products: product_data,
             semi_custom: semi_custom_data,
+            semi_custom_outer: semi_custom_outer_data,
             coupon: ordersData.value.coupon,
             user: props.user.id,
             store_id: props.user.store_id ?? 0,
@@ -89,8 +107,8 @@
                 storeProducts.setSlug = [];
                 storeProducts.setProducts = [];
                 storeProducts.semi_custom = [];
+                storeProducts.semi_custom_outer = [];
                 storeProducts.coupon_rtw = 0;
-                storeProducts.semi_custom = [];
                 useCustomer().resetCustomer();
                 window.location.href = response.data.redirect;
             }
@@ -120,8 +138,9 @@
         return storeProducts.getSemiCustom;
     })
 
-    // const fabricText = semiCustom.value?.basic?.form?.fabric?.fabricCode + ' - ' + semiCustom.value?.basic?.form?.fabric?.text;
-
+    const semiCustomOuter = computed(function () {
+        return storeProducts.getSemiCustomOuter;
+    })
 
     const coupon = ref(storeProducts.getCouponRtw);
 
@@ -148,6 +167,7 @@
     const totalAllPrice = computed(() => {
         let totalProducts = 0;
         let totalSemiCustom = 0;
+        let totalSemiCustomOuter = 0;
         let sumTotal = 0;
 
         if (products.value.length !== 0) {
@@ -164,7 +184,13 @@
             });
         }
 
-        sumTotal = totalProducts + totalSemiCustom;
+        if (semiCustomOuter.value.length !== 0) {
+            semiCustomOuter.value.map(semiCustomOuter => {
+                totalSemiCustomOuter += semiCustomOuter.totalPrice;
+            });
+        }
+
+        sumTotal = totalProducts + totalSemiCustom + totalSemiCustomOuter;
 
         return sumTotal;
     });
@@ -204,9 +230,23 @@
         window.location.href = '/ready-to-wear?page=products';
     }
 
+    const addSemiCustom = () => {
+        window.location.href = '/semi-custom?page=semi-custom';
+    }
+
+    const addSemiCustomOuter = () => {
+        window.location.href = '/semi-custom-outer?page=semi-custom-outer';
+    }
+
     const editSemuCustom = (key) => {
         setTimeout(() => {
             window.location.href = `/semi-custom?page=semi-custom&edit_on_index=${key}`;
+        });
+    }
+
+    const editSemiCustomOuter = (key) => {
+        setTimeout(() => {
+            window.location.href = `/semi-custom-outer?page=semi-custom-outer&edit_on_index=${key}`;
         });
     }
 
@@ -325,6 +365,55 @@
                     </table>
                 </div>
 
+                <div :class="{ 'mt-20': products.length !== 0 }" v-if="semiCustomOuter.length !== 0">
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th class="py-3 pr-6 text-primary-50 text-left uppercase name-col">Semi Custom Outer</th>
+                                <th class="px-6 py-3 text-primary-50 text-center uppercase price-col">Price</th>
+                                <th class="px-6 py-3 text-primary-50 text-center uppercase">qty</th>
+                                <th class="px-6 py-3 text-primary-50 text-center uppercase total-col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b" v-for="(semiCustomOuter, index) in semiCustomOuter" >
+                                <td class="py-3 pr-6 text-primary-50 text-left">
+                                    <div class="flex items-center gap-2 text-[#606060]">
+                                        <span>
+                                            SEMI-CUSTOM OUTER
+                                        </span>
+
+                                        <button
+                                            class="bg-primary-300 px-2 py-1 rounded-lg text-black"
+                                          @click="editSemiCustomOuter(index)"
+                                        >Edit</button>
+
+                                        <!-- delete -->
+                                        <!-- <button
+                                            class="bg-red-500 px-2 py-1 text-white"
+                                            @click="storeProducts.removeSemiCustomOuter(index)"
+                                        >Delete</button> -->
+
+                                    </div>
+                                    <div class="text-[#A3A3A3] text-sm">{{ semiCustomOuter.basic.form.fabric.fabricCode }}</div>
+                                </td>
+                                <td class="px-6 py-3 text-primary-50 text-center">
+                                    <div class="text-[#606060] lg:text-lg text-center"
+                                        v-html="priceFormat(semiCustomOuter.totalPrice)"></div>
+                                </td>
+                                <td class="px-6 py-3 text-primary-50 text-center">
+                                    1
+                                </td>
+                                <td class="px-6 py-3 text-primary-50 text-center">
+                                    <div class="text-secondary-50 lg:text-lg text-center">{{ priceFormat(semiCustomOuter.totalPrice) }}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
                 <div class="flex justify-between bg-secondary px-4 pt-4 pb-3 font-bold text-primary-50 text-lg lg:text-2xl">
                     <div class="col-span-2">TOTAL AMOUNT</div>
                     <div class="mr-10 text-center">{{ priceFormat(totalAllPrice) }}</div>
@@ -358,6 +447,14 @@
 
         <section class="bottom-0 absolute w-full">
             <div class="flex justify-end">
+
+                <button @click="addSemiCustom()" class="flex items-center gap-2 bg-primary-300 p-4 lg:p-6 text-white uppercase tracking-widest">
+                    <span>Add Semi Custom</span>
+                </button>
+
+                <button @click="addSemiCustomOuter()" class="flex items-center gap-2 bg-primary-300/80 p-4 lg:p-6 text-white uppercase tracking-widest">
+                    <span>Add Semi Custom Outer</span>
+                </button>
 
                 <button @click="addRtw()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white uppercase tracking-widest">
                     <span>Add Ready to Wear</span>

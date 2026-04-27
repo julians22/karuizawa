@@ -11,6 +11,9 @@ class TargetSetting extends Model
 {
     use HasFactory;
 
+    const CATEGORY_SEMI_CUSTOM = 'Semi Custom';
+    const CATEGORY_SEMI_CUSTOM_OUTER = 'Semi Custom Outer';
+
     protected $fillable = [
         'user_id',
         'store_id',
@@ -18,6 +21,7 @@ class TargetSetting extends Model
         'target',
         'category_id',
         'is_semicustom',
+        'semicustom_name',
     ];
 
     // disable timestamps
@@ -52,6 +56,16 @@ class TargetSetting extends Model
     public function isSemiCustom(): bool
     {
         return $this->is_semicustom;
+    }
+
+    public function isSemiCustomCategory(): bool
+    {
+        return $this->is_semicustom && $this->semicustom_name === self::CATEGORY_SEMI_CUSTOM;
+    }
+
+    public function isSemiCustomOuterCategory(): bool
+    {
+        return $this->is_semicustom && $this->semicustom_name === self::CATEGORY_SEMI_CUSTOM_OUTER;
     }
 
     // scope to get target setting semi custom

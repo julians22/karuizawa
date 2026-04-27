@@ -15,7 +15,7 @@
         <td colspan="2">
             <div class="form-group
                 @error('targetNew') has-error @enderror">
-                <label for="targetNew">Edit {{$target->isSemiCustom() ? 'Semi Custom' : $target->category->name}}</label>
+                <label for="targetNew">Edit {{$target->isSemiCustomCategory() ? 'Semi Custom' : ($target->isSemiCustomOuterCategory() ? 'Semi Custom Outer' : $target->category->name)}}</label>
                 <input
                     x-mask:dynamic="$money($input, ',', '.', 0)"
                     type="text" class="form-control form-control-sm" id="targetNew" wire:model="targetNew"  autocomplete="off">
@@ -29,7 +29,13 @@
         </td>
     @else
         <td>
-            {{$target->isSemiCustom() ? 'Semi Custom' : $target->category->name}}
+            @if ($target->isSemiCustomCategory())
+                Semi Custom
+            @elseif ($target->isSemiCustomOuterCategory())
+                Semi Custom Outer
+            @else
+                {{ $target->category->name }}
+            @endif
         </td>
         <td>{{price_format($target->target)}}</td>
     @endif

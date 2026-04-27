@@ -5,7 +5,9 @@ use App\Http\Controllers\Frontend\ShopPageController;
 use App\Http\Controllers\Frontend\User\AccountController;
 use App\Http\Controllers\Frontend\User\DashboardController;
 use App\Http\Controllers\Frontend\User\ProfileController;
-use App\Http\Controllers\Frontend\User\SemiCustomConteroller;
+use App\Http\Controllers\Frontend\User\SemiCustomController;
+use App\Http\Controllers\Frontend\User\SemiCustomOuter;
+use App\Http\Controllers\Frontend\User\SemiCustomOuterController;
 use App\Models\Order;
 use App\Models\SemiCustomProduct;
 use Tabuna\Breadcrumbs\Trail;
@@ -40,7 +42,9 @@ Route::group(['as' => 'user.', 'middleware' => ['auth', 'password.expires', conf
 
     Route::get('ready-to-wear', [ShopPageController::class, 'index'])->name('rtw');
 
-    Route::get('semi-custom', [SemiCustomConteroller::class, 'index'])->name('semi-custom');
+    Route::get('semi-custom', [SemiCustomController::class, 'index'])->name('semi-custom');
+
+    Route::get('semi-custom-outer', [SemiCustomOuterController::class, 'index'])->name('semi-custom-outer');
 
     Route::get('cart', function () {
         return view('frontend.user.cart');
@@ -54,6 +58,7 @@ Route::group(['as' => 'user.', 'middleware' => ['auth', 'password.expires', conf
     })->name('booking');
 
     Route::get('print-semi-custom/{id}', [DashboardController::class, 'print_sc'])->name('print-semi-custom');
+    Route::get('print-semi-custom-outer/{id}', [DashboardController::class, 'print_sc_outer'])->name('print-semi-custom-outer');
     Route::get('print-bill/{id}', [DashboardController::class, 'print_bill'])->name('print-bill');
     Route::get('print-sc-per-day', [DashboardController::class, 'print_sc_per_day'])->name('print-sd-per-day');
 
