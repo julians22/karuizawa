@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('semi_custom_outer_products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('code')->unique();
+            $table->string('code')->nullable();
             $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->json('basic_form');
             $table->float('base_price', 20, 2)->default(0);
