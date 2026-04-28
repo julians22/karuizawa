@@ -225,7 +225,7 @@
                                             Adjustment
                                         </th>
                                         <th rowspan="2" class="px-1 py-1 border border-primary-outer text-xs text-center uppercase tracking-widest whitespace-nowrap">
-                                            Max Rage
+                                            Max <br> Range
                                         </th>
                                     </tr>
                                     <tr class="bg-primary-outer text-white">

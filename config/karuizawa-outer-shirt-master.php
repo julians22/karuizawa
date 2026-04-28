@@ -91,6 +91,14 @@ return [
             'Sleeve Length',
             'Sleeve Opening'
         ],
+        'actual_measurement_key' => [
+            'Neck',
+            'Shoulder',
+            'Chest',
+            'Waist',
+            'Back Length',
+            'Sleeve Length'
+        ],
         'actual_measurement' => [
             'name' => 'Actual Measurement',
             'slug' => 'actual-measurement',

@@ -32,6 +32,16 @@ Route::group(['prefix' => 'order', 'as' => 'order.'], function() {
         });
     });
 
+    Route::group(['prefix' => 'semi-custom-outer', 'as' => 'semi-custom-outer.'], function() {
+        Route::group(['prefix' => '{semiCustomOuterProduct}'], function() {
+            Route::patch('approve', [OrderSemiCustomController::class, 'approveOuter'])
+                ->name('approve');
+
+            Route::patch('cancel', [OrderSemiCustomController::class, 'cancelOuter'])
+                ->name('cancel');
+        });
+    });
+
 
     Route::group(['prefix' => 'ready-to-wear', 'as' => 'ready-to-wear.'], function() {
 

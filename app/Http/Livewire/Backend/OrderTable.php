@@ -117,12 +117,19 @@ class OrderTable extends DataTableComponent
                 ->options([
                     '' => 'All',
                     'sc' => 'Semi Custom',
+                    'sco' => 'Semi Custom Outer',
                     'rtw' => 'Only Ready to Wear',
                 ])
                 ->filter(function($builder, $value){
                     if ($value === 'sc') {
                         return $builder->whereHas('orderItems', function($query){
                             $query->where('product_type', 'App\Models\SemiCustomProduct');
+                        });
+                    }
+
+                    if ($value === 'sco') {
+                        return $builder->whereHas('orderItems', function($query){
+                            $query->where('product_type', 'App\Models\SemiCustomOuterProduct');
                         });
                     }
 

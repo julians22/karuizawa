@@ -17,28 +17,34 @@
 </head>
 <body>
     <div id="app" class="space-y-4">
-        @if ($dataSemiCustom == null || $dataSemiCustom->isEmpty() || $dataSemiCustomOuter == null || $dataSemiCustomOuter->isEmpty())
+        @if ($totalAllSemiCustom == 0)
             <div class="flex flex-col justify-center items-center h-screen">
                 <h1 class="font-bold text-gray-500 text-2xl text-center">Tidak ada data transaksi semi custom pada tanggal {{ Carbon\Carbon::parse($date)->format('d F Y') }}</h1>
                 <a href="{{ route('frontend.user.booking') }}" class="bg-primary-50 mt-10 p-2 font-bold text-white text-xl uppercase">Kembali</a>
             </div>
+        @else
+            @if ($dataSemiCustom !== null || !$dataSemiCustom->isEmpty())
+                @foreach ($dataSemiCustom as $key => $value )
+                <div>
+                    <print-semi-custom
+                    :data_config="{{ $dataConfig }}"
+                    :data_semi_custom="{{ JSON_encode($value) }}"
+                    ></print-semi-custom>
+                </div>
+                @endforeach
+            @endif
+
+            @if ($dataSemiCustomOuter !== null && !$dataSemiCustomOuter->isEmpty())
+                @foreach ($dataSemiCustomOuter as $key => $value )
+                <div>
+                    <print-semi-custom-outer
+                    :data_config="{{ $dataConfigOuter }}"
+                    :data_semi_custom_outer="{{ JSON_encode($value) }}"
+                    ></print-semi-custom-outer>
+                </div>
+                @endforeach
+            @endif
         @endif
-        @foreach ($dataSemiCustom as $key => $value )
-        <div>
-            <print-semi-custom
-            :data_config="{{ $dataConfig }}"
-            :data_semi_custom="{{ JSON_encode($value) }}"
-            ></print-semi-custom>
-        </div>
-        @endforeach
-        @foreach ($dataSemiCustomOuter as $key => $value )
-        <div>
-            <print-semi-custom-outer
-            :data_config="{{ $dataConfigOuter }}"
-            :data_semi_custom_outer="{{ JSON_encode($value) }}"
-            ></print-semi-custom-outer>
-        </div>
-        @endforeach
 
     </div><!--app-->
 

@@ -44,7 +44,12 @@ class OrderSemiCustomTable extends DataTableComponent
             ->whereHas('order', function ($query) {
                 return $query->where('status', config('enums.order_status.completed'));
             })
-            ->semiCustom();
+            ->with([
+                'product_sc',
+                'product_sco',
+            ])
+            ->whereIn('product_type', [OrderItem::PRODUCT_TYPE_SC, OrderItem::PRODUCT_TYPE_SCO]);
+
         return $query;
     }
 
@@ -75,7 +80,15 @@ class OrderSemiCustomTable extends DataTableComponent
                 ->sortable()
                 ->searchable(),
             Column::make("SC Order id")
-                ->label(fn($row) => $row->product_sc->order_number)
+                ->label(function($row){
+                    if ($row->type == 'SC') {
+                        return $row->product_sc->order_number ?? '-';
+                    } else if ($row->type == 'SCO') {
+                        return $row->product_sco->order_number ?? '-';
+                    } else {
+                        return '-';
+                    }
+                })
                 ->sortable(),
             Column::make("Store", "order.store.name")
                 ->sortable()
@@ -86,9 +99,28 @@ class OrderSemiCustomTable extends DataTableComponent
             Column::make('Customer', 'order.customer.full_name')
                 ->sortable()
                 ->searchable(),
-            Column::make("Product", "product_sc.name")
-                ->sortable()
-                ->searchable(),
+            Column::make("Product Name")
+                ->label(function($row){
+                    if ($row->type == 'SC') {
+                        return $row->product_sc->name ?? '-';
+                    } else if ($row->type == 'SCO') {
+                        return $row->product_sco->name ?? '-';
+                    } else {
+                        return $row->product_rtw->name ?? '-';
+                    }
+                })
+                ->sortable(function($query, $direction) {
+                    $query->orderBy('product_sc.name', $direction)
+                        ->orderBy('product_sco.name', $direction);
+                })
+                ->searchable(function($query, $searchTerm) {
+                    $query->whereHas('product_sc', function($q) use ($searchTerm) {
+                        $q->where('name', 'like', "%$searchTerm%");
+                    })
+                    ->orWhereHas('product_sco', function($q) use ($searchTerm) {
+                        $q->where('name', 'like', "%$searchTerm%");
+                    });
+                }),
             Column::make("QTY", "quantity")
                 ->sortable(),
             Column::make("(@) Price", "price")
@@ -97,12 +129,29 @@ class OrderSemiCustomTable extends DataTableComponent
             Column::make("Order Date", "order.order_date")
                 ->sortable()
                 ->format(fn($value) => $value),
-            Column::make("Handling Date", "product_sc.handling_date")
+            Column::make("Handling Date")
+                ->label(function($row){
+                    if ($row->type == 'SC') {
+                        return $row->product_sc->handling_date ?? '-';
+                    } else if ($row->type == 'SCO') {
+                        return $row->product_sco->handling_date ?? '-';
+                    } else {
+                        return '-';
+                    }
+                })
                 ->sortable()
                 ->format(fn($value) => $value),
             Column::make("Status", "product_sc.status")
                 ->sortable()
-                ->format(fn($value) => $value == 'processing' ? '<span class="text-bg-info badge">Processing</span>' : '<span class="text-bg-success badge">Finish</span>')
+                ->format(function($value, $row) {
+                    if ($row->type == 'SC') {
+                        return $value == 'processing' ? '<span class="text-bg-info badge">Processing</span>' : '<span class="text-bg-success badge">Finish</span>';
+                    } else if ($row->type == 'SCO') {
+                        return $row->product_sco->status == 'processing' ? '<span class="text-bg-info badge">Processing</span>' : '<span class="text-bg-success badge">Finish</span>';
+                    } else {
+                        return '-';
+                    }
+                })
                 ->html(),
             Column::make("Created at", "created_at")
                 ->sortable()

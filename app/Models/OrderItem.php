@@ -9,6 +9,10 @@ class OrderItem extends Model
 {
     use HasFactory;
 
+    const PRODUCT_TYPE_RTW = 'App\Models\Product';
+    const PRODUCT_TYPE_SC = 'App\Models\SemiCustomProduct';
+    const PRODUCT_TYPE_SCO = 'App\Models\SemiCustomOuterProduct';
+
     protected $fillable = [
         'order_id',
         'product_type',

@@ -641,7 +641,7 @@ const cancelEdit = () => {
                             <thead>
                                 <tr>
                                     <th class="p-2 border-2 border-primary-50">MEASURE</th>
-                                    <th v-for="measurement in data_semi_custom_outer.sizes.measurement_key" :key="'actual-measurement-' + measurement" class="p-2 border-2 border-primary-50 text-center">
+                                    <th v-for="measurement in data_semi_custom_outer.sizes.actual_measurement_key" :key="'actual-measurement-' + measurement" class="p-2 border-2 border-primary-50 text-center">
                                         {{ measurement }}
                                     </th>
                                 </tr>
@@ -649,7 +649,7 @@ const cancelEdit = () => {
                             <tbody>
                                 <tr>
                                     <td class="p-2 border-2 border-primary-50 font-bold">ACTUAL</td>
-                                    <td v-for="measurement in data_semi_custom_outer.sizes.measurement_key" :key="'actual-measurement-value-' + measurement" class="p-2 border-2 border-primary-50 text-center">
+                                    <td v-for="measurement in data_semi_custom_outer.sizes.actual_measurement_key" :key="'actual-measurement-value-' + measurement" class="p-2 border-2 border-primary-50 text-center">
                                         <input v-model="formSize.actualMeasurement.values[measurement]" type="text" inputmode="numeric" class="w-full font-roboto text-center">
                                     </td>
                                 </tr>

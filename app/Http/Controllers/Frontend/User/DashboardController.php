@@ -74,30 +74,42 @@ class DashboardController
 
     public function print_sc_per_day(Request $request)
     {
+        $totalAllSemiCustom = 0;
+        $storeId = auth()->user()->store_id ?? null;
         $semiCustom = SemiCustomProduct::with([
             'customer',
             'orderItem',
+            'orderItem.order.store' => function ($query) use ($storeId) {
+                return $query->where('id', $storeId);
+            },
             'orderItem.order.user' => function ($query) {
                 $query->withTrashed();
             }
         ])->whereDate('created_at', '=', $request->date)->orderBy('created_at', 'desc')->get();
         $dataConfig = config('karuizawa-default-master');
 
+        $totalAllSemiCustom += $semiCustom->count();
+
 
         $semiCustomOuter = SemiCustomOuterProduct::with([
             'customer',
             'orderItem',
+            'orderItem.order.store' => function ($query) use ($storeId) {
+                $query->where('id', $storeId);
+            },
             'orderItem.order.user' => function ($query) {
                 $query->withTrashed();
             }
         ])->whereDate('created_at', '=', $request->date)->orderBy('created_at', 'desc')->get();
         $dataConfigOuter = config('karuizawa-outer-shirt-master');
+        $totalAllSemiCustom += $semiCustomOuter->count();
 
         return view('frontend.print.sc-per-day', [
             'dataSemiCustom' => $semiCustom,
             'dataConfig' => collect($dataConfig),
             'dataSemiCustomOuter' => $semiCustomOuter,
             'dataConfigOuter' => collect($dataConfigOuter),
+            'totalAllSemiCustom' => $totalAllSemiCustom,
             'date' => $request->date]);
     }
 }

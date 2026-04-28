@@ -58,13 +58,15 @@ class OrderController extends Controller
         foreach ($orderItems as $orderItem) {
             if ($orderItem->isReadyToWear())
             {
+                $departmentName = $orderItem->product->category->department_name ?? 'Apparel';
+
                 $detailItem[] = [
                     'itemNo' => $orderItem->product->sku,
                     'unitPrice' => $orderItem->price,
 					'itemCashDiscount' => $orderItem->discount,
                     'detailName' => $orderItem->product->product_name,
                     'quantity' => $orderItem->quantity,
-                    'departmentName' => 'Apparel',
+                    'departmentName' => $departmentName,
                     'warehouseName' => $warehouseName,
                 ];
             }

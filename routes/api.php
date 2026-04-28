@@ -111,8 +111,8 @@ Route::group(['prefix' => 'customer'], function () {
 Route::get('orders', [OrderController::class, 'index']);
 Route::get('incoming-orders', [OrderController::class, 'incoming_order']);
 Route::get('order/{id}', [OrderController::class, 'show']);
-Route::post('set-handling-date/{id}', [OrderController::class, 'set_handling_date']);
-Route::post('set-status/{id}', [OrderController::class, 'set_status']);
+Route::post('set-handling-date', [OrderController::class, 'set_handling_date']);
+Route::post('set-status', [OrderController::class, 'set_status']);
 
 Route::get('fitting-orders', [FittingController::class, 'index']);
 

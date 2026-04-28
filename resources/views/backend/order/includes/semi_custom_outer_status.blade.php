@@ -11,7 +11,7 @@
             $scSuccessCount = 0;
 
             foreach ($semiCustomOuterProducts as $scItem)
-            if ($scItem->product_sc->status == 'finish') {
+            if ($scItem->product_sco->status == 'finish') {
                 $scSuccessCount++;
             }
 

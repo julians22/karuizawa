@@ -412,10 +412,12 @@ class OrderController extends Controller
 
     }
 
-    function set_handling_date(Request $request, $semiCustomId) {
+    function set_handling_date(Request $request) {
 
         $request->validate([
             'date' => 'required',
+            'type' => 'required|in:SC,SCO',
+            'id' => 'required',
         ]);
 
         // format date from '30/1/2025'
@@ -423,11 +425,27 @@ class OrderController extends Controller
         $date = Carbon::createFromFormat('d/m/Y', "$day/$month/$year")->format('Y-m-d');
 
 
-        $semiCustom = SemiCustomProduct::findOrFail($semiCustomId);
+        $semiCustomId = $request->id;
 
-        $semiCustom->update([
-            'handling_date' => $date,
-        ]);
+        switch ($request->type) {
+            case 'SC':
+                $semiCustom = SemiCustomProduct::findOrFail($semiCustomId);
+                $semiCustom->update([
+                    'handling_date' => $date,
+                ]);
+                break;
+            case 'SCO':
+                $semiCustomOuter = SemiCustomOuterProduct::findOrFail($semiCustomId);
+                $semiCustomOuter->update([
+                    'handling_date' => $date,
+                ]);
+                break;
+            default:
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid type',
+                ], 422);
+        }
 
         return response()->json([
             'success' => true,
@@ -436,13 +454,29 @@ class OrderController extends Controller
 
     }
 
-    function set_status(Request $request, $semiCustomId)
+    function set_status(Request $request)
     {
         $request->validate([
             'status' => 'required',
+            'type' => 'required|in:SC,SCO',
+            'id' => 'required',
         ]);
 
-        $semiCustom = SemiCustomProduct::findOrFail($semiCustomId);
+        $semiCustomId = $request->id;
+
+        switch ($request->type) {
+            case 'SC':
+                $semiCustom = SemiCustomProduct::findOrFail($semiCustomId);
+                break;
+            case 'SCO':
+                $semiCustom = SemiCustomOuterProduct::findOrFail($semiCustomId);
+                break;
+            default:
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid type',
+                ], 422);
+        }
 
         $semiCustom->update([
             'status' => $request->status,
