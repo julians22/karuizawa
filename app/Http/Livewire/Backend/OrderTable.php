@@ -203,7 +203,7 @@ class OrderTable extends DataTableComponent
                 ->html(),
             BooleanColumn::make("Semi Custom?", "id")
                 ->setCallback(function(string $value, $row) {
-                    return $row->hasSemiCustom();
+                    return $row->hasSemiCustom() || $row->hasSemiCustomOuter();
                 }),
             Column::make('Semi Custom Status')
                 ->label(fn($row) => view('backend.order.includes.semi_custom_status', ['order' => $row])),

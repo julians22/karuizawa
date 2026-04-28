@@ -73,8 +73,14 @@ class Order extends Model
     public function hasSemiCustom()
     {
         return $this->orderItems()->whereHas('product', function ($query) {
-            $query->where('product_type', 'App\Models\SemiCustomProduct')
-                ->orWhere('product_type', 'App\Models\SemiCustomOuterProduct');
+            $query->where('product_type', 'App\Models\SemiCustomProduct');
+        })->exists();
+    }
+
+    public function hasSemiCustomOuter()
+    {
+        return $this->orderItems()->whereHas('product', function ($query) {
+            $query->where('product_type', 'App\Models\SemiCustomOuterProduct');
         })->exists();
     }
 

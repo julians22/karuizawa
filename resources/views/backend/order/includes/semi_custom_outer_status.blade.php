@@ -1,6 +1,6 @@
 <div>
 
-    @if (!$order->hasSemiCustom())
+    @if (!$order->hasSemiCustomOuter())
         <label for="" class="bg-danger badge">Not found</label>
 
     @else
