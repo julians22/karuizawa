@@ -619,15 +619,15 @@ const cancelEdit = () => {
                                     class="px-4 py-3 border border-primary-outer w-48 text-primary-50 text-center whitespace-nowrap"
                                 >
                                     <!-- Size value should editable if slug is == 5l & values key == 'Neck' -->
-                                    <div v-if="size.slug == '5l' && measurement == 'Neck'">
+                                    <!-- <div v-if="size.slug == '5l' && measurement == 'Neck'">
                                         <input
                                             v-model="editableSizeField[`${size.slug}-${measurement}`]"
                                             type="text"
                                             inputmode="numeric"
                                             class="border border-primary-outer focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary-outer w-full font-roboto text-center"
                                         >
-                                    </div>
-                                    <div v-else>
+                                    </div> -->
+                                    <div>
                                         {{ size.values[measurement] }}
                                     </div>
                                 </td>

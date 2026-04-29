@@ -234,7 +234,7 @@ return [
                     'slug' => '5l',
                     'price' => 0,
                     'values' => [
-                        'Neck' => null,
+                        'Neck' => 46,
                         'Shoulder' => 48.0,
                         'Chest' => 130.0,
                         'Waist' => 122.0,
