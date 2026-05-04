@@ -5,8 +5,8 @@
 @section('content')
     <x-frontend.sidebar>
         <div class="min-h-full">
-            <div class="flex items-center bg-primary-50 pl-14 py-4">
-                <div class="font-bold text-2xl text-white uppercase tracking-widest">TARGET & ACTUAL SELLING THIS MONTH</div>
+            <div class="flex items-center bg-primary-50 py-4 pl-14">
+                <div class="font-bold text-white text-2xl uppercase tracking-widest">TARGET & ACTUAL SELLING THIS MONTH</div>
             </div>
 
             <div class="py-10 container">
@@ -23,7 +23,7 @@
                         {{ date('F Y', strtotime($currentDate)) }}
                     </strong>
                 </div>
-                <table class="text-primary-50 font-bold" style="font-size: 1rem;">
+                <table class="font-bold text-primary-50" style="font-size: 1rem;">
                     <tr>
                         <td style="padding: 0 1rem;">
                             Target
@@ -63,8 +63,8 @@
             </div>
 
 
-            <div class="flex items-center bg-primary-50 pl-14 py-4">
-                <div class="font-bold text-2xl text-white uppercase tracking-widest">MONTHLY TARGET DETAIL (BREAKDOWN)</div>
+            <div class="flex items-center bg-primary-50 py-4 pl-14">
+                <div class="font-bold text-white text-2xl uppercase tracking-widest">MONTHLY TARGET DETAIL (BREAKDOWN)</div>
             </div>
 
             <div class="py-10 container">
@@ -86,16 +86,24 @@
 
                             </th>
                             <td>
+                                @if (array_key_exists($key, $targetsValue))
                                 {{ price_format($targetsValue[$key]) }}
+                                @else
+                                "-"
+                                @endif
                             </td>
                             <td>
+                                @if (array_key_exists($key, $actualSellingValue))
                                 {{ price_format($actualSellingValue[$key]) }}
+                                @else
+                                "-"
+                                @endif
                             </td>
                             <td>
                                 {{ $actualSellingQty[$key] }}
                             </td>
                             <td>
-                                @if ($targetsValue[$key] > 0)
+                                @if ((array_key_exists($key, $targetsValue) && $targetsValue[$key] > 0) && array_key_exists($key, $actualSellingValue))
                                     {{ number_format(($actualSellingValue[$key] / $targetsValue[$key]) * 100, 2) }}%
                                 @else
                                     0%

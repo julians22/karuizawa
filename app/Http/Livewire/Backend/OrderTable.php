@@ -239,7 +239,7 @@ class OrderTable extends DataTableComponent
             if (!$order || $order->status !== 'completed') {
                 continue;
             }
-            $order->load('orderItems.product', 'store', 'customer');
+            $order->load('orderItems.product', 'store', 'customer', 'orderItems.product_rtw.category');
 
             $autoNumber = 55;
 
@@ -290,12 +290,12 @@ class OrderTable extends DataTableComponent
 
                 if ($orderItem->isReadyToWear()) {
                     $target[$id]['types'][$orderItem->type][] = [
-                        'itemNo' => $orderItem->product->sku,
+                        'itemNo' => $orderItem->product_rtw->sku,
                         'unitPrice' => $orderItem->price,
                         'itemDiscPercent' => $orderItem->discount_percentage,
-                        'detailName' => $orderItem->product->product_name,
+                        'detailName' => $orderItem->product_rtw->product_name,
                         'quantity' => $orderItem->quantity,
-                        'departmentName' => 'Apparel',
+                        'departmentName' => $orderItem->product_rtw->category->department_name,
                         'warehouseName' => $warehouseName,
                     ];
                 }
