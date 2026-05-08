@@ -63,6 +63,7 @@
                     base_price: semi_custom.basic.amount.price ?? 0,
                     base_discount: semi_custom.basic.amount.discount ?? 0,
                     base_note: semi_custom.basic.additionalNote,
+                    address: semi_custom.basic.addressNote,
                     option_form: semi_custom.option.form,
                     option_total: semi_custom.option.amount.optionPrice ?? 0,
                     option_additional_price: semi_custom.option.amount.price ?? 0,
@@ -82,6 +83,7 @@
                     base_price: semi_custom_outer.basic.amount.price ?? 0,
                     base_discount: semi_custom_outer.basic.amount.discount ?? 0,
                     base_note: semi_custom_outer.basic.additionalNote,
+                    address: semi_custom_outer.basic.addressNote,
                     size: semi_custom_outer.basic.formSize,
                     total: semi_custom_outer.totalPrice
                 })

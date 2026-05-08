@@ -372,7 +372,7 @@
                                                     </tr>
                                                     <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-outer">
                                                         <th>address</th>
-                                                        <th class="w-full print-props">{{ str_limit(props.data_semi_custom_outer.customer.address, 60) }}</th>
+                                                        <th class="w-full print-props">{{ str_limit(props.data_semi_custom_outer.address, 60) }}</th>
                                                     </tr>
                                                     <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-outer">
                                                         <th>telp / hp</th>

@@ -84,6 +84,7 @@ const selectedSize = computed(() => {
 });
 
 const additionalNote = ref('');
+const addressNote = ref('');
 const discount = ref();
 const price = ref(0);
 
@@ -97,6 +98,7 @@ const basic = computed(() => {
         form: form,
         formSize: formSize,
         additionalNote: additionalNote.value,
+        addressNote: addressNote.value,
         amount: amount
     }
     return data;
@@ -167,6 +169,7 @@ onMounted(async () => {
         }
 
         additionalNote.value = basicData?.additionalNote || '';
+        addressNote.value = basicData?.addressNote || '';
         amount.price = basicData?.amount?.price || 0;
         amount.discount = basicData?.amount?.discount || 0;
         price.value = amount.price;
@@ -692,7 +695,8 @@ const cancelEdit = () => {
                 </div>
                 <div class="gap-3 grid grid-cols-5 my-10 px-6 lg:px-10 xl:px-14">
                     <div class="col-span-3">
-                        <textarea v-model="additionalNote" class="p-2 border-2 border-primary-outer w-full h-full font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" name="" id="" placeholder="NOTE"></textarea>
+                        <textarea v-model="addressNote" rows="2" class="p-2 border-2 border-primary-50 w-full font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" name="" id="" placeholder="ADDRESS"></textarea>
+                        <textarea v-model="additionalNote" class="p-2 border-2 border-primary-outer w-full h-[150px] font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" name="" id="" placeholder="NOTE"></textarea>
                     </div>
                     <div class="space-y-2 col-span-2">
                         <input v-model="discount" type="number"  class="px-4 pt-2 pb-1 border-2 border-primary-outer w-full text-primary-50 number-input" placeholder="DISCOUNT"/>

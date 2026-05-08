@@ -42,6 +42,7 @@
 
     const formSize = ref(props.dataSemiCustom.size);
     const additionalNote = ref(props.dataSemiCustom.base_note);
+    const address = ref(props.dataSemiCustom.address);
     const price = ref(props.dataSemiCustom.base_price);
     const discount = ref(props.dataSemiCustom.base_discount);
 
@@ -458,7 +459,7 @@
                                             </tr>
                                             <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50">
                                                 <th>address</th>
-                                                <th class="w-full print-props">{{ str_limit(props.dataSemiCustom.customer.address, 60) }}</th>
+                                                <th class="w-full print-props">{{ str_limit(address, 60) }}</th>
                                             </tr>
                                             <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50">
                                                 <th>telp / hp</th>

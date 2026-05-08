@@ -72,6 +72,7 @@
             form: childBasic.value?.form,
             amount: childBasic.value?.amount,
             additionalNote: childBasic.value?.additionalNote,
+            addressNote: childBasic.value?.addressNote,
             formSize: childBasic.value?.formSize
         };
         return data;

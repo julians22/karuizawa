@@ -81,6 +81,7 @@
             form.value = data.form;
             formSize.value = data.formSize;
             additionalNote.value = data.additionalNote;
+            addressNote.value = data.addressNote;
         }
     }
 
@@ -98,6 +99,7 @@
     }
 
     const additionalNote = ref(null);
+    const addressNote = ref(null);
 
     const price = ref(0);
     const discount = ref(null);
@@ -123,6 +125,7 @@
         form,
         formSize,
         additionalNote,
+        addressNote,
         amount,
         basicAmount,
     });
@@ -490,13 +493,14 @@
                 </div>
             </div>
 
-            <div class="mb-32">
+            <div>
                 <div class="flex justify-between items-center bg-primary-300 px-4 lg:px-14 py-2">
                     <div class="font-bold text-white lg:text-xl uppercase tracking-widest">ADDITIONAL NOTES</div>
                 </div>
                 <div class="gap-3 grid grid-cols-5 my-10 px-6 lg:px-10 xl:px-14">
-                    <div class="col-span-3">
-                        <textarea v-model="additionalNote" class="p-2 border-2 border-primary-50 w-full h-full font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" name="" id="" placeholder="NOTE"></textarea>
+                    <div class="space-y-2 col-span-3">
+                        <textarea v-model="addressNote" rows="2" class="p-2 border-2 border-primary-50 w-full font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" name="" id="" placeholder="ADDRESS"></textarea>
+                        <textarea v-model="additionalNote" class="p-2 border-2 border-primary-50 w-full h-[150px] font-roboto placeholder:font-josefin placeholder:tracking-widest placeholder-primary-50" name="" id="" placeholder="NOTE"></textarea>
                     </div>
                     <div class="space-y-2 col-span-2">
                         <input v-model="discount" type="number"  class="px-4 pt-2 pb-1 border-2 border-primary-50 w-full text-primary-50 number-input" placeholder="DISCOUNT"/>
