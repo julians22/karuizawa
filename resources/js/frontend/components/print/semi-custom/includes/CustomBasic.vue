@@ -459,7 +459,7 @@
                                             </tr>
                                             <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50">
                                                 <th>address</th>
-                                                <th class="w-full print-props">{{ str_limit(address, 60) }}</th>
+                                                <th class="w-full print-props">{{ str_limit(address, 500) }}</th>
                                             </tr>
                                             <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-50">
                                                 <th>telp / hp</th>
