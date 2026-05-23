@@ -336,7 +336,7 @@ class OrderController extends Controller
                         'base_discount' => $sco['base_discount'],
                         'basic_note' => $sco['basic_note'] ?? null,
                         'size' => $sco['size'],
-                        'address' => $sc['address']
+                        'address' => $sco['address'] ?? null,
                     ]);
 
                     $totalPrice = $semiCustomOuterProduct->base_price - ($semiCustomOuterProduct->base_price * $semiCustomOuterProduct->base_discount / 100);
