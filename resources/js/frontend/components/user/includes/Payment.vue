@@ -42,12 +42,6 @@
         sendingPayment.value = true;
         const doSend = await sendOrder();
 
-        console.log(doSend);
-
-        if (doSend) {
-            window.location.href = '/customer-booking';
-        }
-
     }
 
     const sendOrder = async () => {
@@ -64,6 +58,7 @@
                 childDoPayment.value.open = true;
                 childDoPayment.value.status = 'success';
                 childDoPayment.value.message = 'Payment Success';
+                childDoPayment.value.orderId = response.data.data.order_id;
             }
 
             return true;

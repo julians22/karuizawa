@@ -24,6 +24,11 @@
             urlTarget = `/print-semi-custom-outer/`;
         }
 
+        if(product_type == 'App\\Models\\SemiCustomLightJacketProduct')
+        {
+            urlTarget = `/print-semi-custom-light-jacket/`;
+        }
+
         window.open(
             `${urlTarget}${booking.value.product_id}`,
             '_blank' // <- This is what makes it open in a new window.

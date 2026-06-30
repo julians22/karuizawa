@@ -48,7 +48,7 @@ class OrderSemiCustomTable extends DataTableComponent
                 'product_sc',
                 'product_sco',
             ])
-            ->whereIn('product_type', [OrderItem::PRODUCT_TYPE_SC, OrderItem::PRODUCT_TYPE_SCO]);
+            ->whereIn('product_type', [OrderItem::PRODUCT_TYPE_SC, OrderItem::PRODUCT_TYPE_SCO, OrderItem::PRODUCT_TYPE_SCLJ]);
 
         return $query;
     }

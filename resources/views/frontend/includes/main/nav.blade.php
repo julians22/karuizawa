@@ -17,12 +17,14 @@
                                 <div class="hidden group-hover:block top-[1.3rem] z-10 absolute inset-x-0">
                                     <div class="border-y-8 border-y-transparent border-l-[1rem] border-l-primary-50 w-0 h-0"></div>
                                 </div>
-                                <ul style="width: 220px;" class="hidden group-hover:block top-7 left-0 z-10 absolute bg-primary-50 shadow-xl dropdown-menu">
+                                <ul class="hidden group-hover:block top-7 left-0 z-10 absolute bg-primary-50 shadow-xl min-w-[220px] dropdown-menu">
                                   <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-no-wrap" href="{{ route('frontend.user.rtw') }}">RTW</a></li>
                                   <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
                                   <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-pre" href="{{ route('frontend.user.semi-custom') }}">semi custom</a></li>
                                   <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
                                   <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-pre" href="{{ route('frontend.user.semi-custom-outer') }}">semi custom outer</a></li>
+                                  <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
+                                  <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-pre" href="{{ route('frontend.user.semi-custom-light-jacket') }}">semi custom light Jacket</a></li>
                                   <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
                                   <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-no-wrap" href="{{ route('frontend.user.rtw') }}?brand=kizoku">Kizoku Parfume</a></li>
                                 </ul>
@@ -47,6 +49,8 @@
                                         <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-pre" href="{{ route('frontend.user.semi-custom') }}">semi custom</a></li>
                                         <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
                                         <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-pre" href="{{ route('frontend.user.semi-custom-outer') }}">semi custom outer</a></li>
+                                        <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
+                                        <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-pre" href="{{ route('frontend.user.semi-custom-light-jacket') }}">semi custom light jacket</a></li>
                                         <li><div class="bg-white opacity-75 mx-auto w-[88%] h-[1px]"></div></li>
                                         <li class=""><a class="block px-4 py-2 text-white hover:text-primary-200 whitespace-no-wrap" href="{{ route('frontend.user.rtw') }}?brand=kizoku">Kizoku Parfume</a></li>
                                     </ul>

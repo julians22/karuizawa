@@ -29,6 +29,43 @@ trait ReportData
     }
 
     /**
+     * Get all semi custom light jacket orders
+     * @param $store
+     * @param $month
+     * @param $year
+     * @return mixed
+     */
+    protected function getSemicustomLightJacket($store, $month, $year, $daily = null)
+    {
+        $semiCustomLightJacket = OrderItem::with([
+            'order',
+            'product_sclj',
+            'order.customer',
+            'order.user' => function ($query) {
+                $query->withTrashed();
+            }
+        ])
+        ->when($daily, function ($query) use ($store, $daily) {
+            return $query->whereHas('order', function ($query) use ($store, $daily) {
+                return $query->whereDate('order_date', $daily)
+                    ->where('store_id', $store)
+                    ->where('status', config('enums.order_status.completed'));
+            });
+        }, function ($query) use ($store, $month, $year) {
+            return $query->whereHas('order', function ($query) use ($store, $month, $year) {
+                return $query->whereMonth('order_date', $month)
+                    ->whereYear('order_date', $year)
+                    ->where('store_id', $store)
+                    ->where('status', config('enums.order_status.completed'));
+            });
+        })
+        ->semiCustomLightJacket()
+        ->get();
+
+        return $semiCustomLightJacket;
+    }
+
+    /**
      * Get all semi custom outer orders
      * @param $store
      * @param $month

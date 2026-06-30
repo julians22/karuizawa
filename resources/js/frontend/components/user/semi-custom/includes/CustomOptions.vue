@@ -186,7 +186,7 @@
         if (!items.isHasPrice()) {
             items.price = 0;
         } else {
-            items.price = 50000;
+            items.price = 50000; //default price for embroidery if any of the fields are filled
         }
         form.value.embroidery = items;
     }, { deep: true });

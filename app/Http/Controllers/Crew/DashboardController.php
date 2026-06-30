@@ -100,6 +100,16 @@ class DashboardController extends Controller
             $totalActualSellingValue = collect($actualSellingValue)->sum();
         }
 
+        $semiCustomLightJacket = $this->getSemiCustomLightJacket($crew->id, $crew->store_id, date('m'), date('Y'));
+        if ($semiCustomLightJacket->count() > 0) {
+            foreach ($semiCustomLightJacket as $item) {
+                $actualSellingQty['Semi Custom Light Jacket'] += $item->quantity;
+                $actualSellingValue['Semi Custom Light Jacket'] += $item->price;
+            }
+            $totalActualSellingQty = collect($actualSellingQty)->sum();
+            $totalActualSellingValue = collect($actualSellingValue)->sum();
+        }
+
 
         return view('frontend.user.target', compact('targets', 'totalTargetAmount', 'totalActualSellingValue', 'totalActualSellingQty', 'actualSellingValue', 'actualSellingQty', 'targetsValue'));
     }

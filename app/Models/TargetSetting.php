@@ -13,6 +13,7 @@ class TargetSetting extends Model
 
     const CATEGORY_SEMI_CUSTOM = 'Semi Custom';
     const CATEGORY_SEMI_CUSTOM_OUTER = 'Semi Custom Outer';
+    const CATEGORY_SEMI_CUSTOM_LIGHT_JACKET = 'Semi Custom Light Jacket';
 
     protected $fillable = [
         'user_id',
@@ -66,6 +67,11 @@ class TargetSetting extends Model
     public function isSemiCustomOuterCategory(): bool
     {
         return $this->is_semicustom && $this->semicustom_name === self::CATEGORY_SEMI_CUSTOM_OUTER;
+    }
+
+    public function isSemiCustomLightJacketCategory(): bool
+    {
+        return $this->is_semicustom && $this->semicustom_name === self::CATEGORY_SEMI_CUSTOM_LIGHT_JACKET;
     }
 
     // scope to get target setting semi custom

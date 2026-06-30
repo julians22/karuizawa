@@ -21,4 +21,5 @@ return [
     ],
     'semi_custom_name' => 'MTM-02CA',
     'semi_custom_outer_name' => 'MTM-OS-CA',
+    'semi_custom_light_jacket_name' => 'MTM-LJ-CA',
 ];

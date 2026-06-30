@@ -59,6 +59,18 @@
         });
     });
 
+    const semiCustomLightJacket = computed(() => {
+        return orderItems.filter(item => item.type == "SCLJ").map(item => {
+            return {
+                name: item.product.name,
+                fabric_code: item.product.basic_form.fabric.fabricCode + ' - ' + item.product.basic_form.fabric.text,
+                qty: item.quantity,
+                price: item.price,
+                total: item.total_price
+            }
+        });
+    });
+
     const sendingPayment = ref(false);
     const doPayment = defineAsyncComponent(() => import('../../../utils/paymentModal.vue'));
 
@@ -125,11 +137,11 @@
         sendingPayment.value = true;
         const doSend = await sendOrder();
 
-        console.log(doSend);
+        // console.log(doSend);
 
-        if (doSend) {
-            window.location.href = '/customer-booking';
-        }
+        // if (doSend) {
+        //     window.location.href = '/customer-booking';
+        // }
     }
 
     const sendOrder = async () => {
@@ -151,10 +163,11 @@
                 childDoPayment.value.open = true;
                 childDoPayment.value.status = 'success';
                 childDoPayment.value.message = 'Payment Success';
+                childDoPayment.value.orderId = response.data.data.order_id;
 
-                setTimeout(() => {
-                    window.location.href = props.booking_route;
-                }, 2000);
+                // setTimeout(() => {
+                //     window.location.href = props.booking_route;
+                // }, 2000);
             }
 
             return true;
@@ -318,6 +331,16 @@
 
                             <tr v-if="semiCustomOuter.length > 0"
                                 v-for="product in semiCustomOuter" :key="product.sku">
+                                <td class="font-roboto">
+                                    <div class="font-bold text-[#606060]">{{ product.name }}</div>
+                                    <div class="text-[#A3A3A3]">{{ product.fabric_code }}</div>
+                                </td>
+                                <td class="font-bold text-[#606060]">{{ product.qty }}</td>
+                                <td class="font-bold text-[#606060]" v-html="priceFormat(product.price)"></td>
+                            </tr>
+
+                            <tr v-if="semiCustomLightJacket.length > 0"
+                                v-for="product in semiCustomLightJacket" :key="product.sku">
                                 <td class="font-roboto">
                                     <div class="font-bold text-[#606060]">{{ product.name }}</div>
                                     <div class="text-[#A3A3A3]">{{ product.fabric_code }}</div>
