@@ -171,13 +171,13 @@
                                         :key="'mkey-' + key"
                                         class="even:bg-primary-light-jacket-100/30 odd:bg-white"
                                     >
-                                        <td class="px-1 py-1 border border-primary-light-jacket font-bold text-primary-light-jacket text-sm whitespace-nowrap">
+                                        <td class="px-1 py-1 border border-primary-light-jacket font-bold text-primary-light-jacket text-base whitespace-nowrap">
                                             {{ key }}
                                         </td>
                                         <td
                                             v-for="size in sizes"
                                             :key="'sval-' + size.slug + '-' + key"
-                                            class="px-1 py-1 border border-primary-light-jacket text-primary-light-jacket text-sm text-center whitespace-nowrap"
+                                            class="px-1 py-1 border border-primary-light-jacket text-primary-light-jacket text-base text-center whitespace-nowrap"
                                         >
                                             <span v-if="sizeForm.measurement === size.slug" class="font-roboto font-bold">
                                                 {{ sizeForm.measurement_values?.[key] ?? size.values?.[key] ?? '-' }}
@@ -186,10 +186,10 @@
                                                 {{ size.values?.[key] ?? '-' }}
                                             </span>
                                         </td>
-                                        <td class="px-1 py-1 border border-primary-light-jacket text-sm text-center uppercase tracking-widest whitespace-nowrap">
+                                        <td class="px-1 py-1 border border-primary-light-jacket text-center uppercase tracking-widest whitespace-nowrap">
                                             {{ sizeForm.actualMeasurement?.values?.[key] ?? '-' }}
                                         </td>
-                                        <td class="px-1 py-1 border border-primary-light-jacket text-sm text-center whitespace-nowrap">
+                                        <td class="px-1 py-1 border border-primary-light-jacket text-center whitespace-nowrap">
                                             {{  key === 'Shoulder Width' ? sizeForm.sa?.shoulder      :
                                                 key === 'Back Length'    ? sizeForm.sa?.backLength     :
                                                 key === 'Sleeve Length'  ? sizeForm.sa?.sleeveLength   : '-' }}
@@ -352,7 +352,7 @@
                                     <template v-else>
                                         <div class="flex justify-center items-center bg-gray-100 border border-primary-light-jacket/40 size-8"></div>
                                     </template>
-                                    <div class="font-bold text-[10px] text-primary-light-jacket text-center uppercase leading-tight tracking-widest">{{ opt.name }}</div>
+                                    <div class="font-bold text-primary-light-jacket text-xs text-center uppercase leading-tight tracking-widest">{{ opt.name }}</div>
                                     <span class="checkbox-inner-sm"></span>
                                 </label>
                             </div>
@@ -381,7 +381,7 @@
                                     <template v-else>
                                         <div class="flex justify-center items-center bg-gray-100 border border-primary-light-jacket/40 size-8"></div>
                                     </template>
-                                    <div class="font-bold text-[10px] text-primary-light-jacket text-center uppercase leading-tight tracking-widest">{{ opt.name }}</div>
+                                    <div class="font-bold text-primary-light-jacket text-xs text-center uppercase leading-tight tracking-widest">{{ opt.name }}</div>
                                     <span class="checkbox-inner-sm"></span>
                                 </label>
                             </div>
@@ -412,7 +412,7 @@
                                         >
                                         <label class="flex flex-col items-center gap-1 cursor-pointer" :for="'lj-font-' + font.slug">
                                             <img class="w-full max-w-44 h-auto" :src="`/${font.image}`" alt="">
-                                            <div class="text-[10px] text-primary-light-jacket text-center uppercase tracking-widest">{{ font.name }}</div>
+                                            <div class="text-primary-light-jacket text-xs text-center uppercase tracking-widest">{{ font.name }}</div>
                                             <span class="checkbox-inner-sm"></span>
                                         </label>
                                     </div>
@@ -430,7 +430,7 @@
                                         >
                                         <label class="flex flex-col items-center gap-0.5 cursor-pointer" :for="'lj-color-' + color.slug">
                                             <img class="size-14 object-contain" :src="`/${color.image}`" alt="">
-                                            <div class="text-[10px] text-primary-light-jacket text-center uppercase leading-tight tracking-widest">{{ color.name }}</div>
+                                            <div class="text-primary-light-jacket text-xs text-center uppercase leading-tight tracking-widest">{{ color.name }}</div>
                                             <span class="checkbox-inner-sm"></span>
                                         </label>
                                     </div>
@@ -446,17 +446,17 @@
                                         <input
                                             :value="baseForm.embroidery?.initialName?.x ?? ''"
                                             type="text" maxlength="1"
-                                            class="block p-2 border border-primary-light-jacket size-10 text-gray-900 text-sm text-center"
+                                            class="block p-2 border border-primary-light-jacket size-10 text-gray-900 text-base text-center"
                                         >
                                         <input
                                             :value="baseForm.embroidery?.initialName?.dot ?? ''"
                                             type="text" maxlength="1"
-                                            class="block border-primary-light-jacket border-y w-8 h-6 text-gray-900 text-sm text-center"
+                                            class="block border-primary-light-jacket border-y w-8 h-6 text-gray-900 text-base text-center"
                                         >
                                         <input
                                             :value="baseForm.embroidery?.initialName?.y ?? ''"
                                             type="text" maxlength="1"
-                                            class="block p-2 border border-primary-light-jacket size-10 text-gray-900 text-sm text-center"
+                                            class="block p-2 border border-primary-light-jacket size-10 text-gray-900 text-base text-center"
                                         >
                                     </div>
                                     <!-- Long name / Z: individual boxes -->
