@@ -29,6 +29,11 @@
                 <div class="mt-10">
                     <a class="text-white text-sm uppercase tracking-widest" :href="route_edit_profile">Edit Profile</a>
                 </div>
+                <!-- Cart Menu -->
+                <div class="mt-3">
+                    <a class="text-white text-sm uppercase tracking-widest" href="/cart">Cart</a>
+                    <div class="bg-white opacity-40 mt-3 mb-4 w-full h-0.5"></div>
+                </div>
                 <div class="mt-3">
                     <a class="text-white text-sm uppercase tracking-widest" :href="route_my_target">My Target</a>
                     <div class="bg-white opacity-40 mt-3 mb-4 w-full h-0.5"></div>

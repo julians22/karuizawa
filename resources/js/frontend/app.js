@@ -41,6 +41,8 @@ Vue.component('semi-custom', require('./components/user/semi-custom/index.vue').
 
 Vue.component('semi-custom-outer', require('./components/user/semi-custom-outer/index.vue').default);
 
+Vue.component('semi-custom-light-jacket', require('./components/user/semi-custom-light-jacket/index.vue').default);
+
 Vue.component('cart-component', require('./components/user/cart/index.vue').default);
 
 Vue.component('payment-component', require('./components/user/payment/index.vue').default);
@@ -50,6 +52,7 @@ Vue.component('booking-component', require('./components/user/booking/index.vue'
 Vue.component('print-semi-custom', require('./components/print/semi-custom/SemiCustom.vue').default);
 
 Vue.component('print-semi-custom-outer', require('./components/print/semi-custom-outer/SemiCustomOuter.vue').default);
+Vue.component('print-semi-custom-light-jacket', require('./components/print/semi-custom-light-jacket/SemiCustomLightJacket.vue').default);
 
 Vue.component('print-bill', require('./components/print/Bill.vue').default);
 

@@ -23,6 +23,11 @@
             :data_config="{{ $dataConfig }}"
             :data_semi_custom_outer="{{ JSON_encode($dataSemiCustom) }}"
             ></print-semi-custom-outer>
+        @elseif ($type == 'semi-custom-light-jacket')
+            <print-semi-custom-light-jacket
+            :data_config="{{ $dataConfig }}"
+            :data_semi_custom_light_jacket="{{ JSON_encode($dataSemiCustom) }}"
+            ></print-semi-custom-light-jacket>
         @else
             <print-semi-custom
             :data_config="{{ $dataConfig }}"

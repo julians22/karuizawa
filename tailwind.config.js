@@ -54,7 +54,12 @@ module.exports = {
                 100: '#a3a0c3',
                 200: '#787697',
                 300: '#4f4e6c',
-            }
+            },
+            'primary-light-jacket': {
+                DEFAULT: '#2a2844',
+                50: '#413e6a',
+                100: '#0a0910'
+            },
         },
         fontFamily: {
             'myriad': ['"Myriad Pro"'],

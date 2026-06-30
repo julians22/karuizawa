@@ -84,6 +84,13 @@ class Order extends Model
         })->exists();
     }
 
+    public function hasSemiCustomLightJacket()
+    {
+        return $this->orderItems()->whereHas('product', function ($query) {
+            $query->where('product_type', 'App\Models\SemiCustomLightJacketProduct');
+        })->exists();
+    }
+
     public function getDownPaymentAmountAttribute()
     {
         return $this->payments()->where('is_downpayment', 1)->sum('amount');
@@ -151,6 +158,13 @@ class Order extends Model
     {
         return $this->orderItems()->whereHas('product', function ($query) {
             $query->where('product_type', 'App\Models\SemiCustomOuterProduct');
+        })->get();
+    }
+
+    public function getSemiCustomLightJacketProductsAttribute()
+    {
+        return $this->orderItems()->whereHas('product', function ($query) {
+            $query->where('product_type', 'App\Models\SemiCustomLightJacketProduct');
         })->get();
     }
 }

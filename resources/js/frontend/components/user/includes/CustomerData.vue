@@ -105,6 +105,8 @@
             $emit('btn-next', 'semi-custom');
         }else if (props.onPage == 'semi-custom-outer') {
             $emit('btn-next', 'semi-custom-outer');
+        }else if (props.onPage == 'semi-custom-light-jacket') {
+            $emit('btn-next', 'semi-custom-light-jacket');
         }
     }
 

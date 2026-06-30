@@ -61,6 +61,7 @@ Route::group(['prefix' => 'customer'], function () {
             'first_name' => 'required',
             'phone' => 'required|min:10',
             'email' => 'required|email',
+            'address' => 'nullable|string',
             'is_male' => 'required|boolean',
         ]);
 
@@ -68,6 +69,8 @@ Route::group(['prefix' => 'customer'], function () {
             $customer = Customer::find($request->id);
             $customer->full_name = $request->first_name;
             $customer->phone = $request->phone;
+            $customer->email = $request->email;
+            $customer->address = $request->address;
             $customer->is_male = (bool) $request->is_male;
             $customer->save();
 
@@ -90,6 +93,7 @@ Route::group(['prefix' => 'customer'], function () {
                 'full_name' => $request->first_name,
                 'phone' => $request->phone,
                 'email' => $request->email,
+                'address' => $request->address,
                 'is_male' => (bool) $request->is_male
             ]);
 

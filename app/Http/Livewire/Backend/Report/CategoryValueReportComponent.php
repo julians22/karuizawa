@@ -95,6 +95,8 @@ class CategoryValueReportComponent extends Component
 
                 $semiCustomOuter = $this->getSemicustomOuter($store, $this->month_string, $this->year_string);
 
+                $semiCustomLightJacket = $this->getSemiCustomLightJacket($store, $this->month_string, $this->year_string);
+
                 $semiCustom->each(function ($item) use (&$data) {
 
                     $date = $item->order->created_at->format('d');
@@ -109,6 +111,14 @@ class CategoryValueReportComponent extends Component
                     $crew = $item->order->user->name;
 
                     $data['Semi Custom Outer'][$crew][$date] += $item->price;
+                });
+
+                $semiCustomLightJacket->each(function ($item) use (&$data) {
+
+                    $date = $item->order->created_at->format('d');
+                    $crew = $item->order->user->name;
+
+                    $data['Semi Custom Light Jacket'][$crew][$date] += $item->price;
                 });
 
 

@@ -12,6 +12,7 @@ class OrderItem extends Model
     const PRODUCT_TYPE_RTW = 'App\Models\Product';
     const PRODUCT_TYPE_SC = 'App\Models\SemiCustomProduct';
     const PRODUCT_TYPE_SCO = 'App\Models\SemiCustomOuterProduct';
+    const PRODUCT_TYPE_SCLJ = 'App\Models\SemiCustomLightJacketProduct';
 
     protected $fillable = [
         'order_id',
@@ -64,6 +65,11 @@ class OrderItem extends Model
         return $this->belongsTo(SemiCustomOuterProduct::class, 'product_id');
     }
 
+    public function product_sclj()
+    {
+        return $this->belongsTo(SemiCustomLightJacketProduct::class, 'product_id');
+    }
+
     public function getTotalPriceAttribute()
     {
         if ($this->isReadyToWear()) {
@@ -82,6 +88,8 @@ class OrderItem extends Model
             return 'SC';
         } else if ($this->isSemiCustomOuter()) {
             return 'SCO';
+        } else if ($this->isSemiCustomLightJacket()) {
+            return 'SCLJ';
         } else {
             return 'RTW';
         }
@@ -106,6 +114,11 @@ class OrderItem extends Model
     public function isSemiCustomOuter()
     {
         return $this->product_type == 'App\Models\SemiCustomOuterProduct';
+    }
+
+    public function isSemiCustomLightJacket()
+    {
+        return $this->product_type == 'App\Models\SemiCustomLightJacketProduct';
     }
 
     public function isReadyToWear()
@@ -135,5 +148,13 @@ class OrderItem extends Model
     public function scopeSemiCustomOuter($query)
     {
         return $query->where('product_type', 'App\Models\SemiCustomOuterProduct');
+    }
+
+    /**
+     * Scope a query to only include semi custom light jacket products.
+     */
+    public function scopeSemiCustomLightJacket($query)
+    {
+        return $query->where('product_type', 'App\Models\SemiCustomLightJacketProduct');
     }
 }

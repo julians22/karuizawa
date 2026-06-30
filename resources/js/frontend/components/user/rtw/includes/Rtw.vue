@@ -232,6 +232,19 @@
         }, 300)
     }
 
+    const goToSemiCustomLightJacket = async () => {
+        if (form.value.shirtsSelected.length) {
+            await selectProducts();
+        }
+        setTimeout(() => {
+            if (useCustomer().getCustomer !== null) {
+                window.location.href = "/semi-custom-light-jacket?page=semi-custom-light-jacket";
+            }else {
+                window.location.href = "/semi-custom-light-jacket";
+            }
+        }, 300)
+    }
+
     defineExpose({
         form,
     })
@@ -371,6 +384,10 @@
             </button>
             <button @click="goToSemiCustomOuter()" class="flex items-center gap-2 bg-primary-300 p-4 lg:p-6 text-white tracking-widest">
                 <span>ADD SEMI CUSTOM OUTER</span>
+                <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
+            </button>
+            <button @click="goToSemiCustomLightJacket()" class="flex items-center gap-2 bg-primary-light-jacket-50 p-4 lg:p-6 text-white tracking-widest">
+                <span>ADD SEMI CUSTOM LIGHT JACKET</span>
                 <img class="inline-block" src="img/icons/arrw-ck-right.png" alt="">
             </button>
             <button @click="btnProcess()" class="flex items-center gap-2 bg-secondary-50 p-4 lg:p-6 text-white tracking-widest">

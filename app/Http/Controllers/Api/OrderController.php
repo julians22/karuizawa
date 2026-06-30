@@ -12,6 +12,7 @@ use App\Models\Product;
 use App\Models\ProductActualStock;
 use App\Models\SemiCustomOuterProduct;
 use App\Models\SemiCustomProduct;
+use App\Models\SemiCustomLightJacketProduct;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -138,6 +139,7 @@ class OrderController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Payment success',
+            'data' => $payment,
         ], 200);
     }
 
@@ -200,6 +202,7 @@ class OrderController extends Controller
             'coupon' => 'sometimes',
             'semi_custom' => 'sometimes',
             'semi_custom_outer' => 'sometimes',
+            'semi_custom_light_jacket' => 'sometimes',
             'user' => 'sometimes',
         ]);
 
@@ -302,6 +305,7 @@ class OrderController extends Controller
                         'size' => $sc['size'],
                         'base_note' => $sc['base_note'],
                         'option_note' => $sc['option_note'],
+                        'address' => $sc['address']
                     ]);
 
                     $basePrice = $semiCustomProuduct->base_price - ($semiCustomProuduct->base_price * $semiCustomProuduct->base_discount / 100);
@@ -334,7 +338,8 @@ class OrderController extends Controller
                         'base_price' => $sco['base_price'],
                         'base_discount' => $sco['base_discount'],
                         'basic_note' => $sco['basic_note'] ?? null,
-                        'size' => $sco['size']
+                        'size' => $sco['size'],
+                        'address' => $sco['address'] ?? null,
                     ]);
 
                     $totalPrice = $semiCustomOuterProduct->base_price - ($semiCustomOuterProduct->base_price * $semiCustomOuterProduct->base_discount / 100);
@@ -345,6 +350,45 @@ class OrderController extends Controller
                     ]);
 
                     $orderItem->product()->associate($semiCustomOuterProduct);
+                    $order->orderItems()->save($orderItem);
+                }
+            }
+
+            // insert order items type semi custom light jacket
+            if ($request->semi_custom_light_jacket) {
+                $semiCustomLightJacket = $request->semi_custom_light_jacket;
+
+                $customer = Customer::findOrFail($request->customer);
+
+                foreach ($semiCustomLightJacket as $sclj) {
+                    $semiCustomLightJacketProduct = SemiCustomLightJacketProduct::create([
+                        'name'         => 'Semi Custom Light Jacket (' . $customer->full_name . ')',
+                        'code'         => config('enums.semi_custom_light_jacket_name'),
+                        'customer_id'  => $customer->id,
+                        'basic_form'   => $sclj['basic_form'],
+                        'base_price'   => $sclj['base_price'],
+                        'base_discount'=> $sclj['base_discount'],
+                        'option_form'  => [
+                            'button_hole'   => $sclj['basic_form']['button_hole'] ?? null,
+                            'button_sewing' => $sclj['basic_form']['button_sewing'] ?? null,
+                            'embroidery'    => $sclj['basic_form']['embroidery'] ?? null,
+                        ],
+                        'option_total' => $sclj['option_price'] ?? 0,
+                        'size'         => $sclj['size'],
+                        'base_note'    => $sclj['base_note'] ?? null,
+                        'address'      => $sclj['address'] ?? null,
+                    ]);
+
+                    $baseAfterDiscount = $semiCustomLightJacketProduct->base_price
+                        - ($semiCustomLightJacketProduct->base_price * $semiCustomLightJacketProduct->base_discount / 100);
+                    $itemTotal = $baseAfterDiscount + $semiCustomLightJacketProduct->option_total;
+
+                    $orderItem = new OrderItem([
+                        'quantity' => 1,
+                        'price'    => $itemTotal,
+                    ]);
+
+                    $orderItem->product()->associate($semiCustomLightJacketProduct);
                     $order->orderItems()->save($orderItem);
                 }
             }
@@ -363,6 +407,10 @@ class OrderController extends Controller
                 }
 
                 if ($item->isSemiCustomOuter()) {
+                    $totalPrice += $item->price;
+                }
+
+                if ($item->isSemiCustomLightJacket()) {
                     $totalPrice += $item->price;
                 }
             }
@@ -416,7 +464,7 @@ class OrderController extends Controller
 
         $request->validate([
             'date' => 'required',
-            'type' => 'required|in:SC,SCO',
+            'type' => 'required|in:SC,SCO,SCLJ',
             'id' => 'required',
         ]);
 
@@ -437,6 +485,12 @@ class OrderController extends Controller
             case 'SCO':
                 $semiCustomOuter = SemiCustomOuterProduct::findOrFail($semiCustomId);
                 $semiCustomOuter->update([
+                    'handling_date' => $date,
+                ]);
+                break;
+            case 'SCLJ':
+                $semiCustomLightJacket = SemiCustomLightJacketProduct::findOrFail($semiCustomId);
+                $semiCustomLightJacket->update([
                     'handling_date' => $date,
                 ]);
                 break;

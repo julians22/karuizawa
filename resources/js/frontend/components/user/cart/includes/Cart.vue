@@ -1,5 +1,5 @@
 <script setup>
-    import { forEach } from 'lodash';
+    import { cloneDeep, forEach } from 'lodash';
     import { computed, defineEmits, onMounted, ref, nextTick, reactive, watch } from 'vue';
     import { useProducts } from "@frontend/store/product";
     import { priceFormat } from "@frontend/helpers/currency";
@@ -30,7 +30,8 @@
             customer: customer.value ? customer.value.id : null,
             coupon: coupon.value ? coupon.value : 0,
             semi_custom: semiCustom.value,
-            semi_custom_outer: semiCustomOuter.value
+            semi_custom_outer: semiCustomOuter.value,
+            semi_custom_light_jacket: semiCustomLightJacket.value
         }
     });
 
@@ -39,6 +40,8 @@
         let semi_custom_data = [];
 
         let semi_custom_outer_data = [];
+
+        let semi_custom_light_jacket_data = [];
 
         let product_data = [];
 
@@ -63,6 +66,7 @@
                     base_price: semi_custom.basic.amount.price ?? 0,
                     base_discount: semi_custom.basic.amount.discount ?? 0,
                     base_note: semi_custom.basic.additionalNote,
+                    address: semi_custom.basic.addressNote,
                     option_form: semi_custom.option.form,
                     option_total: semi_custom.option.amount.optionPrice ?? 0,
                     option_additional_price: semi_custom.option.amount.price ?? 0,
@@ -82,9 +86,25 @@
                     base_price: semi_custom_outer.basic.amount.price ?? 0,
                     base_discount: semi_custom_outer.basic.amount.discount ?? 0,
                     base_note: semi_custom_outer.basic.additionalNote,
+                    address: semi_custom_outer.basic.addressNote,
                     size: semi_custom_outer.basic.formSize,
                     total: semi_custom_outer.totalPrice
                 })
+            });
+        }
+
+        if (ordersData.value.semi_custom_light_jacket.length !== 0) {
+            forEach(ordersData.value.semi_custom_light_jacket, (item, index) => {
+                semi_custom_light_jacket_data.push({
+                    basic_form: item.basic.form,
+                    base_price: item.basic.amount.price ?? 0,
+                    base_discount: item.basic.amount.discount ?? 0,
+                    base_note: item.basic.additionalNote,
+                    address: item.basic.addressNote,
+                    size: item.basic.formSize,
+                    option_price: item.basic.optionPrice ?? 0,
+                    total: item.totalPrice
+                });
             });
         }
 
@@ -93,6 +113,7 @@
             products: product_data,
             semi_custom: semi_custom_data,
             semi_custom_outer: semi_custom_outer_data,
+            semi_custom_light_jacket: semi_custom_light_jacket_data,
             coupon: ordersData.value.coupon,
             user: props.user.id,
             store_id: props.user.store_id ?? 0,
@@ -108,6 +129,7 @@
                 storeProducts.setProducts = [];
                 storeProducts.semi_custom = [];
                 storeProducts.semi_custom_outer = [];
+                storeProducts.semi_custom_light_jacket = [];
                 storeProducts.coupon_rtw = 0;
                 useCustomer().resetCustomer();
                 window.location.href = response.data.redirect;
@@ -142,6 +164,10 @@
         return storeProducts.getSemiCustomOuter;
     })
 
+    const semiCustomLightJacket = computed(function () {
+        return storeProducts.getSemiCustomLightJacket;
+    })
+
     const coupon = ref(storeProducts.getCouponRtw);
 
     const plusQty = (index) => {
@@ -156,6 +182,10 @@
         // sum total of qty and price
         products.value[index].qty -= 1;
         products.value[index].total = (products.value[index].price * products.value[index].qty) - products.value[index].discount ?? 0;
+    }
+
+    const removeRtwItem = (index) => {
+        storeProducts.removeProduct(index);
     }
 
     onMounted(() => {
@@ -190,7 +220,14 @@
             });
         }
 
-        sumTotal = totalProducts + totalSemiCustom + totalSemiCustomOuter;
+        let totalSemiCustomLightJacket = 0;
+        if (semiCustomLightJacket.value.length !== 0) {
+            semiCustomLightJacket.value.map(item => {
+                totalSemiCustomLightJacket += item.totalPrice;
+            });
+        }
+
+        sumTotal = totalProducts + totalSemiCustom + totalSemiCustomOuter + totalSemiCustomLightJacket;
 
         return sumTotal;
     });
@@ -244,16 +281,53 @@
         });
     }
 
+    const duplicateSemiCustom = (key) => {
+        const existingData = semiCustom.value?.[key];
+        if (!existingData) {
+            return;
+        }
+
+        storeProducts.setCustom(cloneDeep(existingData));
+    }
+
     const editSemiCustomOuter = (key) => {
         setTimeout(() => {
             window.location.href = `/semi-custom-outer?page=semi-custom-outer&edit_on_index=${key}`;
         });
     }
 
+    const duplicateSemiCustomOuter = (key) => {
+        const existingData = semiCustomOuter.value?.[key];
+        if (!existingData) {
+            return;
+        }
+
+        storeProducts.setCustomOuter(cloneDeep(existingData));
+    }
+
+    const addSemiCustomLightJacket = () => {
+        window.location.href = '/semi-custom-light-jacket?page=semi-custom-light-jacket';
+    }
+
+    const editSemiCustomLightJacket = (key) => {
+        setTimeout(() => {
+            window.location.href = `/semi-custom-light-jacket?page=semi-custom-light-jacket&edit_on_index=${key}`;
+        });
+    }
+
+    const duplicateSemiCustomLightJacket = (key) => {
+        const existingData = semiCustomLightJacket.value?.[key];
+        if (!existingData) {
+            return;
+        }
+
+        storeProducts.setCustomLightJacket(cloneDeep(existingData));
+    }
+
     const btnBack = () => {
+        window.location.href = '/ready-to-wear?page=products';
         // if (props.onPage == 'products') {
             // $emit('btn-next', 'products');
-            window.location.href = '/ready-to-wear?page=products';
         // }else if (props.onPage == 'semi-custom') {
         //     $emit('btn-next', 'semi-custom');
         // }
@@ -280,7 +354,15 @@
                     <tbody>
                         <tr class="border-b" v-for="(product, index) in products">
                             <td class="py-3 pr-6 text-primary-50 text-left">
-                                <div class="text-[#606060]">{{ product.product_name }}</div>
+                                <div class="flex items-center gap-2">
+                                    <div class="text-[#606060]">{{ product.product_name }}</div>
+                                    <div>
+                                        <button
+                                            class="bg-red-500 px-2 py-1 rounded text-white text-xs"
+                                            @click="removeRtwItem(index)"
+                                        >Delete</button>
+                                    </div>
+                                </div>
                                 <template v-if="product.product_actual_stocks">
                                     <template v-if="product.product_actual_stocks.length">
                                         <div class="my-1 text-primary-300 text-xs text-left" v-for="(stock, index) in product.product_actual_stocks" :key="index">
@@ -341,11 +423,16 @@
                                           @click="editSemuCustom(index)"
                                         >Edit</button>
 
+                                                                                <button
+                                                                                        class="bg-secondary-50 px-2 py-1 rounded-lg text-white"
+                                                                                        @click="duplicateSemiCustom(index)"
+                                                                                >Duplicate</button>
+
                                         <!-- delete -->
-                                        <!-- <button
+                                        <button
                                             class="bg-red-500 px-2 py-1 text-white"
                                             @click="storeProducts.removeSemiCustom(index)"
-                                        >Delete</button> -->
+                                        >Delete</button>
 
                                     </div>
                                     <div class="text-[#A3A3A3] text-sm">{{ semiCustom.basic.form.fabric.fabricCode }}</div>
@@ -388,11 +475,16 @@
                                           @click="editSemiCustomOuter(index)"
                                         >Edit</button>
 
+                                                                                <button
+                                                                                        class="bg-secondary-50 px-2 py-1 rounded-lg text-white"
+                                                                                        @click="duplicateSemiCustomOuter(index)"
+                                                                                >Duplicate</button>
+
                                         <!-- delete -->
-                                        <!-- <button
+                                        <button
                                             class="bg-red-500 px-2 py-1 text-white"
                                             @click="storeProducts.removeSemiCustomOuter(index)"
-                                        >Delete</button> -->
+                                        >Delete</button>
 
                                     </div>
                                     <div class="text-[#A3A3A3] text-sm">{{ semiCustomOuter.basic.form.fabric.fabricCode }}</div>
@@ -413,6 +505,39 @@
                 </div>
 
 
+
+                <div :class="{ 'mt-20': products.length !== 0 }" v-if="semiCustomLightJacket.length !== 0">
+                    <table class="w-full">
+                        <thead>
+                            <tr>
+                                <th class="py-3 pr-6 text-primary-50 text-left uppercase name-col">Semi Custom Light Jacket</th>
+                                <th class="px-6 py-3 text-primary-50 text-center uppercase price-col">Price</th>
+                                <th class="px-6 py-3 text-primary-50 text-center uppercase">qty</th>
+                                <th class="px-6 py-3 text-primary-50 text-center uppercase total-col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b" v-for="(lightJacket, index) in semiCustomLightJacket">
+                                <td class="py-3 pr-6 text-primary-50 text-left">
+                                    <div class="flex items-center gap-2 text-[#606060]">
+                                        <span>SEMI-CUSTOM LIGHT JACKET</span>
+                                        <button class="bg-primary-300 px-2 py-1 rounded-lg text-black" @click="editSemiCustomLightJacket(index)">Edit</button>
+                                        <button class="bg-secondary-50 px-2 py-1 rounded-lg text-white" @click="duplicateSemiCustomLightJacket(index)">Duplicate</button>
+                                        <button class="bg-red-500 px-2 py-1 text-white" @click="storeProducts.removeSemiCustomLightJacket(index)">Delete</button>
+                                    </div>
+                                    <div class="text-[#A3A3A3] text-sm">{{ lightJacket.basic.form.fabric.fabricCode }}</div>
+                                </td>
+                                <td class="px-6 py-3 text-primary-50 text-center">
+                                    <div class="text-[#606060] lg:text-lg text-center" v-html="priceFormat(lightJacket.totalPrice)"></div>
+                                </td>
+                                <td class="px-6 py-3 text-primary-50 text-center">1</td>
+                                <td class="px-6 py-3 text-primary-50 text-center">
+                                    <div class="text-secondary-50 lg:text-lg text-center">{{ priceFormat(lightJacket.totalPrice) }}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
                 <div class="flex justify-between bg-secondary px-4 pt-4 pb-3 font-bold text-primary-50 text-lg lg:text-2xl">
                     <div class="col-span-2">TOTAL AMOUNT</div>
@@ -454,6 +579,10 @@
 
                 <button @click="addSemiCustomOuter()" class="flex items-center gap-2 bg-primary-300/80 p-4 lg:p-6 text-white uppercase tracking-widest">
                     <span>Add Semi Custom Outer</span>
+                </button>
+
+                <button @click="addSemiCustomLightJacket()" class="flex items-center gap-2 bg-primary-300/60 p-4 lg:p-6 text-white uppercase tracking-widest">
+                    <span>Add Semi Custom Light Jacket</span>
                 </button>
 
                 <button @click="addRtw()" class="flex items-center gap-2 bg-primary-50 p-4 lg:p-6 text-white uppercase tracking-widest">

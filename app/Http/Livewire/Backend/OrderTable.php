@@ -118,6 +118,8 @@ class OrderTable extends DataTableComponent
                     '' => 'All',
                     'sc' => 'Semi Custom',
                     'sco' => 'Semi Custom Outer',
+                    'sclj' => 'Semi Custom Light Jacket',
+                    'semi_custom_only' => 'Order w All Semi Custom',
                     'rtw' => 'Only Ready to Wear',
                 ])
                 ->filter(function($builder, $value){
@@ -132,6 +134,24 @@ class OrderTable extends DataTableComponent
                             $query->where('product_type', 'App\Models\SemiCustomOuterProduct');
                         });
                     }
+
+
+                    if ($value === 'sclj') {
+                        return $builder->whereHas('orderItems', function($query){
+                            $query->where('product_type', 'App\Models\SemiCustomLightJacketProduct');
+                        });
+                    }
+
+                    if ($value === 'semi_custom_only') {
+                        return $builder->whereHas('orderItems', function($query){
+                            $query->whereIn('product_type', [
+                                'App\Models\SemiCustomProduct',
+                                'App\Models\SemiCustomOuterProduct',
+                                'App\Models\SemiCustomLightJacketProduct',
+                            ]);
+                        });
+                    }
+
 
                     if ($value === 'rtw') {
                         return $builder->whereDoesntHave('orderItems', function($query){
@@ -203,12 +223,14 @@ class OrderTable extends DataTableComponent
                 ->html(),
             BooleanColumn::make("Semi Custom?", "id")
                 ->setCallback(function(string $value, $row) {
-                    return $row->hasSemiCustom() || $row->hasSemiCustomOuter();
+                    return $row->hasSemiCustom() || $row->hasSemiCustomOuter() || $row->hasSemiCustomLightJacket();
                 }),
             Column::make('Semi Custom Status')
                 ->label(fn($row) => view('backend.order.includes.semi_custom_status', ['order' => $row])),
             Column::make('Semi Custom Outer Status')
                 ->label(fn($row) => view('backend.order.includes.semi_custom_outer_status', ['order' => $row])),
+            Column::make('Semi Custom Light Jacket Status')
+                ->label(fn($row) => view('backend.order.includes.semi_custom_light_jacket_status', ['order' => $row])),
             Column::make('Accurate Sync', 'accurate_sync_date')
                 ->format(fn($value, $row) => $value ? $value : "Not Synced"),
             Column::make("Created at", "created_at")
@@ -239,7 +261,7 @@ class OrderTable extends DataTableComponent
             if (!$order || $order->status !== 'completed') {
                 continue;
             }
-            $order->load('orderItems.product', 'store', 'customer');
+            $order->load('orderItems.product', 'store', 'customer', 'orderItems.product_rtw.category');
 
             $autoNumber = 55;
 
@@ -279,23 +301,25 @@ class OrderTable extends DataTableComponent
 
             foreach ($orderItems as $orderItem) {
 
-                if ($orderItem->isSemiCustom() || $orderItem->isSemiCustomOuter()) {
+                if ($orderItem->isSemiCustom() || $orderItem->isSemiCustomOuter() || $orderItem->isSemiCustomLightJacket()) {
+
+                    $itemNo = $orderItem->product_sc->code ?? $orderItem->product_sco->code ?? $orderItem->product_sclj->code ?? 'N/A';
 
                     $target[$id]['types'][$orderItem->type][] = [
                         "price" => $orderItem->price,
-                        'itemNo' => $orderItem->product_sc->code,
+                        'itemNo' => $itemNo,
                         "quantity" => $orderItem->quantity,
                     ];
                 }
 
                 if ($orderItem->isReadyToWear()) {
                     $target[$id]['types'][$orderItem->type][] = [
-                        'itemNo' => $orderItem->product->sku,
+                        'itemNo' => $orderItem->product_rtw->sku,
                         'unitPrice' => $orderItem->price,
                         'itemDiscPercent' => $orderItem->discount_percentage,
-                        'detailName' => $orderItem->product->product_name,
+                        'detailName' => $orderItem->product_rtw->product_name,
                         'quantity' => $orderItem->quantity,
-                        'departmentName' => 'Apparel',
+                        'departmentName' => $orderItem->product_rtw->category->department_name,
                         'warehouseName' => $warehouseName,
                     ];
                 }

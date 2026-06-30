@@ -90,6 +90,16 @@ class OrderController extends Controller
                     'departmentName' => 'Apparel',
                     'warehouseName' => $warehouseName
                 ];
+            } else if($orderItem->isSemiCustomLightJacket())
+            {
+                $detailItem[] = [
+                    'itemNo' => config('accurate.semi_custom_light_jacket_sku'),
+                    'unitPrice' => $orderItem->price,
+                    'detailName' => $orderItem->product->name,
+                    'quantity' => $orderItem->quantity,
+                    'departmentName' => 'Apparel',
+                    'warehouseName' => $warehouseName
+                ];
             }
         }
 

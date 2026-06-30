@@ -44,6 +44,17 @@
                 </div>
                 @endforeach
             @endif
+
+            @if ($dataSemiCustomLightJacket !== null && !$dataSemiCustomLightJacket->isEmpty())
+                @foreach ($dataSemiCustomLightJacket as $key => $value )
+                <div>
+                    <print-semi-custom-light-jacket
+                    :data_config="{{ $dataConfigLightJacket }}"
+                    :data_semi_custom_light_jacket="{{ JSON_encode($value) }}"
+                    ></print-semi-custom-light-jacket>
+                </div>
+                @endforeach
+            @endif
         @endif
 
     </div><!--app-->

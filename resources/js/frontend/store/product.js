@@ -8,6 +8,7 @@ export const useProducts = defineStore('products', {
           setProducts: [],
           setSlug: [],
           coupon_rtw: 0,
+
           semi_custom: [],
           duplicate_semi_custom: [],
           semi_custom_index: null,
@@ -15,6 +16,10 @@ export const useProducts = defineStore('products', {
           semi_custom_outer: [],
           duplicate_semi_custom_outer: [],
           semi_custom_outer_index: null,
+
+          semi_custom_light_jacket: [],
+          duplicate_semi_custom_light_jacket: [],
+          semi_custom_light_jacket_index: null,
         }
     },
 
@@ -60,7 +65,21 @@ export const useProducts = defineStore('products', {
         },
         getDuplicateSmOuter: (state) => {
             return state.duplicate_semi_custom_outer;
-        }
+        },
+        getSemiCustomLightJacket: (state) => {
+            return state.semi_custom_light_jacket;
+        },
+
+        getSemiCustomLightJacketIndex: (state, index) => {
+            return state.semi_custom_light_jacket[index];
+        },
+
+        hasDuplicateLightJacket: (state) => {
+            return state.semi_custom_light_jacket_index !== null ? true : false;
+        },
+        getDuplicateSmLightJacket: (state) => {
+            return state.duplicate_semi_custom_light_jacket;
+        },
     },
 
     actions: {
@@ -122,6 +141,39 @@ export const useProducts = defineStore('products', {
 
         removeSemiCustomOuter(index) {
             this.semi_custom_outer.splice(index, 1);
+        },
+        setCustomLightJacket(custom) {
+            this.semi_custom_light_jacket.push(custom)
+        },
+
+        setCustomLightJacketWithKey(custom, key) {
+            this.semi_custom_light_jacket[key] = custom;
+        },
+
+        setDuplicateSmLightJacket(custom) {
+            this.duplicate_semi_custom_light_jacket = custom;
+        },
+
+        setIndexSemiCustomLightJacket(index) {
+            this.semi_custom_light_jacket_index = index
+        },
+
+        resetSemiCustomLightJacket() {
+            this.semi_custom_light_jacket = []
+            this.semi_custom_light_jacket_index = null
+            this.duplicate_semi_custom_light_jacket = [];
+        },
+
+        resetDuplicateSmLightJacket() {
+            this.duplicate_semi_custom_light_jacket = [];
+        },
+
+        removeSemiCustomLightJacket(index) {
+            this.semi_custom_light_jacket.splice(index, 1);
+        },
+
+        removeProduct(index) {
+            this.setProducts.splice(index, 1);
         },
     },
 

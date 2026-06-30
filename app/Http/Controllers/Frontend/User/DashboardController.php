@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend\User;
 use Carbon\Carbon;
 use App\Models\Order;
 use App\Models\SemiCustomOuterProduct;
+use App\Models\SemiCustomLightJacketProduct;
 use Illuminate\Http\Request;
 use App\Models\SemiCustomProduct;
 
@@ -64,6 +65,20 @@ class DashboardController
         return view('frontend.print.semi-custom', ['dataSemiCustom' => $semiCustomOuter, 'dataConfig' => collect($dataConfig), 'type' => 'semi-custom-outer']);
     }
 
+    public function print_sc_light_jacket($id)
+    {
+        $semiCustomLightJacket = SemiCustomLightJacketProduct::with([
+                'customer',
+                'orderItem',
+                'orderItem.order.user' => function ($query) {
+                    $query->withTrashed();
+                }
+            ])->findOrFail($id);
+        $dataConfig = config('karuizawa-light-jacket-master');
+        $semiCustomLightJacket = $semiCustomLightJacket->toArray();
+        return view('frontend.print.semi-custom', ['dataSemiCustom' => $semiCustomLightJacket, 'dataConfig' => collect($dataConfig), 'type' => 'semi-custom-light-jacket']);
+    }
+
     public function print_bill($id)
     {
         $order = Order::with(['orderItems.product', 'store', 'user', 'payments'])
@@ -104,11 +119,26 @@ class DashboardController
         $dataConfigOuter = config('karuizawa-outer-shirt-master');
         $totalAllSemiCustom += $semiCustomOuter->count();
 
+        $semiCustomLightJacket = SemiCustomLightJacketProduct::with([
+            'customer',
+            'orderItem',
+            'orderItem.order.store' => function ($query) use ($storeId) {
+                $query->where('id', $storeId);
+            },
+            'orderItem.order.user' => function ($query) {
+                $query->withTrashed();
+            }
+        ])->whereDate('created_at', '=', $request->date)->orderBy('created_at', 'desc')->get();
+        $dataConfigLightJacket = config('karuizawa-light-jacket-master');
+        $totalAllSemiCustom += $semiCustomLightJacket->count();
+
         return view('frontend.print.sc-per-day', [
             'dataSemiCustom' => $semiCustom,
             'dataConfig' => collect($dataConfig),
             'dataSemiCustomOuter' => $semiCustomOuter,
             'dataConfigOuter' => collect($dataConfigOuter),
+            'dataSemiCustomLightJacket' => $semiCustomLightJacket,
+            'dataConfigLightJacket' => collect($dataConfigLightJacket),
             'totalAllSemiCustom' => $totalAllSemiCustom,
             'date' => $request->date]);
     }

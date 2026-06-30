@@ -15,6 +15,7 @@
 	const dataConfig = computed(() => props.data_config ?? {});
 	const baseForm = computed(() => dataSemiCustomOuter.value?.basic_form ?? {});
 	const sizeForm = computed(() => dataSemiCustomOuter.value?.size ?? {});
+    const address = computed(() => dataSemiCustomOuter.value?.address ?? props.data_semi_custom_outer.customer.address ?? '-');
 
     const baseAmount = computed(() => {
         let base =  props.data_semi_custom_outer.base_price;
@@ -372,7 +373,7 @@
                                                     </tr>
                                                     <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-outer">
                                                         <th>address</th>
-                                                        <th class="w-full print-props">{{ str_limit(props.data_semi_custom_outer.customer.address, 60) }}</th>
+                                                        <th class="w-full print-props">{{ str_limit(address, 500) }}</th>
                                                     </tr>
                                                     <tr class="*:px-2 *:pt-2 *:pb-1 *:border *:border-primary-outer">
                                                         <th>telp / hp</th>

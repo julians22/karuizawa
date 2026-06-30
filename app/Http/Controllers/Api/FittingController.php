@@ -24,7 +24,7 @@ class FittingController extends Controller
             'product.customer'
         ])
         ->where(function ($query) {
-            $query->whereIn('product_type', [OrderItem::PRODUCT_TYPE_SC, OrderItem::PRODUCT_TYPE_SCO]);
+            $query->whereIn('product_type', [OrderItem::PRODUCT_TYPE_SC, OrderItem::PRODUCT_TYPE_SCO, OrderItem::PRODUCT_TYPE_SCLJ]);
         })
         ->when($store_id, function ($query) use ($store_id) {
             return $query->whereHas('order', function ($query) use ($store_id) {
