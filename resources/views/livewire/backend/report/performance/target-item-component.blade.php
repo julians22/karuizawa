@@ -30,7 +30,7 @@
     @else
         <td>
             @if ($target->isSemiCustomCategory())
-                Semi Custom
+                Semi Custom Shirt
             @elseif ($target->isSemiCustomOuterCategory())
                 Semi Custom Outer
             @elseif ($target->isSemiCustomLightJacketCategory())

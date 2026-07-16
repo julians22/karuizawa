@@ -153,6 +153,10 @@
                                         <th rowspan="2" class="px-1 py-1 border border-primary-light-jacket text-xs text-center uppercase tracking-widest whitespace-nowrap">
                                             Adjustment
                                         </th>
+                                        <!-- Max Size -->
+                                         <th rowspan="2" class="px-1 py-1 border border-primary-light-jacket text-xs text-center uppercase tracking-widest whitespace-nowrap">
+                                            Max <br> Range
+                                        </th>
                                     </tr>
                                     <tr class="bg-primary-light-jacket text-white">
                                         <th class="px-1 py-1 border border-primary-light-jacket w-28 text-xs text-left uppercase tracking-widest whitespace-nowrap">Measurement</th>
@@ -191,8 +195,15 @@
                                         </td>
                                         <td class="px-1 py-1 border border-primary-light-jacket text-center whitespace-nowrap">
                                             {{  key === 'Shoulder Width' ? sizeForm.sa?.shoulder      :
+                                                key === 'Chest'          ? sizeForm.sa?.chest         :
                                                 key === 'Back Length'    ? sizeForm.sa?.backLength     :
                                                 key === 'Sleeve Length'  ? sizeForm.sa?.sleeveLength   : '-' }}
+                                        </td>
+                                        <td class="px-1 py-1 border border-primary-light-jacket text-center whitespace-nowrap">
+                                            {{ key === 'Shoulder Width' ? "+2 cm" :
+                                                  key === 'Chest'    ? "+6 cm" :
+                                                    key === 'Back Length'    ? "+4 cm" :
+                                                        key === 'Sleeve Length'  ? "+10 cm" : '-' }}
                                         </td>
                                     </tr>
                                 </tbody>
@@ -460,7 +471,7 @@
                                         >
                                     </div>
                                     <!-- Long name / Z: individual boxes -->
-                                    <div class="flex box-input-wrapper">
+                                    <div class="flex items-end box-input-wrapper">
                                         <input
                                             v-for="(digit, index) in split(baseForm.embroidery?.initialName?.z ?? '')"
                                             :key="'emb-z-' + index"
@@ -477,6 +488,11 @@
                                                 class="box-input"
                                             >
                                         </template>
+                                        <input
+                                            :value="baseForm.embroidery?.initialName?.note ?? ''"
+                                            type="text" maxlength="50"
+                                            class="block ml-2 p-2 border border-primary-light-jacket w-full text-gray-900 text-base"
+                                        >
                                     </div>
                                 </div>
                                 <div class="mt-1 font-roboto text-[10px] text-primary-light-jacket/70 italic">

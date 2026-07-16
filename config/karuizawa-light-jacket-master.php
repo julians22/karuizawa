@@ -279,7 +279,7 @@ return [
                         'image' => 'img/light-jacket/font-colors/wine-red.png'
                     ],
                     [
-                        'name' => '61 Lavendar',
+                        'name' => '61 Lavender',
                         'slug' => '61-lavendar',
                         'image' => 'img/light-jacket/font-colors/lavendar.png'
                     ],
@@ -310,6 +310,7 @@ return [
                     "x" => '',
                     "dot" => '',
                     "y" => '',
+                    "note" => ''
                 ]
             ]
         ]

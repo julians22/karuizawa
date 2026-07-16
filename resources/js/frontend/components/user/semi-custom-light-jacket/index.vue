@@ -67,6 +67,7 @@ const formSize = reactive({
     measurement_values: {},
     sa: {
         shoulder: '',
+        chest: '',
         backLength: '',
         sleeveLength: '',
     },
@@ -623,6 +624,13 @@ const btnNext = (section) => {
                                     <input v-model="formSize.sa.shoulder"  type="text" inputmode="numeric" class="w-full font-roboto text-center">
                                 </div>
                             </div>
+                            <!-- Chest -->
+                            <div class="flex border-primary-50 border-y-2 border-r-2">
+                                <div>CHEST :</div>
+                                <div>
+                                    <input v-model="formSize.sa.chest"  type="text" inputmode="numeric" class="w-full font-roboto text-center">
+                                </div>
+                            </div>
                             <div class="flex border-primary-50 border-y-2 border-r-2 max-xl:border-l-2">
                                 <div>BACK LENGTH :</div>
                                 <div>
@@ -716,6 +724,7 @@ const btnNext = (section) => {
                                             <input v-model="embroidery.initialName.dot" type="text" maxlength="1" class="block border-primary-50 border-y w-8 h-6 text-gray-900 text-sm text-center">
                                             <input v-model="embroidery.initialName.y" type="text" maxlength="1" class="block p-2 border-primary-50 border-y border-r border-l size-10 text-gray-900 text-sm text-center">
                                             <InputBox :digitCount="9" @update:input="onInputIntialName($event)" :inputValue="embroidery.initialName?.z"/>
+                                            <input v-model="embroidery.initialName.note" type="text" maxlength="50" class="block ml-2 p-2 border border-primary-50 w-full text-gray-900 text-sm">
                                         </div>
                                     </div>
                                 </div>
