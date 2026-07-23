@@ -89,6 +89,17 @@ const addressNote = ref('');
 const discount = ref();
 const price = ref(0);
 
+function onInputBox(val, key = 'fabric', key2 = 'fabricCode')
+{
+    if (key2 == 'fabricCode') {
+        form[key][key2] = val;
+    }
+    if (key2 == 'optionNumber') {
+        form[key] = {};
+        form[key][key2] = val;
+    }
+}
+
 const amount = reactive({
     price: 0,
     discount: 0,
@@ -243,16 +254,6 @@ const currencyFormat = (value) => {
     if (!value) { return 0; }
     return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value);
 };
-
-function onInputBox(val, key = 'fabric', key2 = 'fabricCode') {
-    if (key2 == 'fabricCode') {
-        form[key][key2] = val;
-    }
-    if (key2 == 'optionNumber') {
-        form[key] = {};
-        form[key][key2] = val;
-    }
-}
 
 const onInputIntialName = (val, key = 'z') => {
     embroidery.value.initialName[key] = val;
@@ -500,6 +501,13 @@ const btnNext = (section) => {
                             <div class="font-bold text-primary-light-jacket-50 text-xs 2xl:text-lg text-center uppercase tracking-widest">{{ button.name }}</div>
                             <span class="mt-4 checkbox-inner"></span>
                         </label>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-12 mx-20 my-10">
+                    <div class="font-bold text-primary-50 text-xs 2xl:text-lg uppercase tracking-widest">OPTION</div>
+                    <div class="flex font-roboto">
+                        <InputBox :digitCount="2" @update:input="onInputBox($event, 'button', 'optionNumber')" :inputValue="form.button?.optionNumber"/>
                     </div>
                 </div>
 

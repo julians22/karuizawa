@@ -2,6 +2,8 @@
     import { computed } from 'vue';
     import { priceFormat } from "@frontend/helpers/currency";
     import { str_limit } from '@/frontend/helpers/strlimit';
+    import InputBox from '@frontend/components/utils/fields/InputBox.vue';
+
     import moment from 'moment';
 
     const props = defineProps({
@@ -117,6 +119,13 @@
                                     <div class="font-bold text-primary-light-jacket text-xs text-center uppercase tracking-widest">{{ btn.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4 mx-10 my-3">
+                            <div class="font-bold text-primary-50 text-xs uppercase tracking-widest">OPTION</div>
+                            <div class="flex font-roboto print-props">
+                                <InputBox :digitCount="2" :inputValue="baseForm.button?.optionNumber" />
                             </div>
                         </div>
                     </div>

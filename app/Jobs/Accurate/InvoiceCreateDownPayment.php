@@ -17,13 +17,13 @@ class InvoiceCreateDownPayment implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels, AccurateAccess;
 
-    protected $params;
-    protected $order_id;
+    protected array $params;
+    protected int $order_id;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($params, $order_id)
+    public function __construct(array $params, int $order_id)
     {
         $this->order_id = $order_id;
         $this->params = $params;

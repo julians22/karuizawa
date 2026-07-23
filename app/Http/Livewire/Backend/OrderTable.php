@@ -302,12 +302,23 @@ class OrderTable extends DataTableComponent
             foreach ($orderItems as $orderItem) {
 
                 if ($orderItem->isSemiCustom() || $orderItem->isSemiCustomOuter() || $orderItem->isSemiCustomLightJacket()) {
+                    $itemNo = 'N/A';
 
-                    $itemNo = $orderItem->product_sc->code ?? $orderItem->product_sco->code ?? $orderItem->product_sclj->code ?? 'N/A';
+                    if ($orderItem->isSemiCustom()) {
+                        $itemNo = $orderItem->product_sc->code ?? 'N/A';
+                    }
+
+                    if ($orderItem->isSemiCustomOuter()) {
+                        $itemNo = $orderItem->product_sco->code ?? 'N/A';
+                    }
+
+                    if ($orderItem->isSemiCustomLightJacket()) {
+                        $itemNo = $orderItem->product_sclj->code ?? 'N/A';
+                    }
 
                     $target[$id]['types'][$orderItem->type][] = [
                         "price" => $orderItem->price,
-                        'itemNo' => $itemNo,
+                        "itemNo" => $itemNo,
                         "quantity" => $orderItem->quantity,
                     ];
                 }
@@ -382,6 +393,18 @@ class OrderTable extends DataTableComponent
                     $downPaymentJob[] = new InvoiceCreateDownPayment($dataPass, $id);
                 }
 
+                if ($key === 'SCLJ') {
+                    $dataPass['dpAmount'] = 0;
+                    $dataPass['description'] = 'DP Semi Custom Light Jacket MTM WEB ORDER: ' . $dataPass['description'];
+                    foreach ($type as $item) {
+                        $priceResult = $item['price'] * $item['quantity'];
+                        $dataPass['dpAmount'] += $priceResult;
+                    }
+                    $dataPass['dpAmount'] = number_format($dataPass['dpAmount'], 2, '.', '');
+
+                    $downPaymentJob[] = new InvoiceCreateDownPayment($dataPass, $id);
+                }
+
                 if ($key === 'RTW') {
                     $dataPass['detailItem'] = $type;
                     $dataPass['description'] = 'RTW WEB ORDER: ' . $dataPass['description'];
@@ -420,29 +443,17 @@ class OrderTable extends DataTableComponent
             $order = Order::find($id);
 
             // should be semi custom
-            if (!$order || !$order->hasSemiCustom()) {
+            if (!$order || !$order->hasSemiCustomProducts()) {
                 continue;
             }
 
             $order->load('orderItems.product', 'store', 'customer', 'downPaymentResponse');
 
+
             // check if order is has down payment response
             if (!$order->has('downPaymentResponse')) {
                 continue;
             }
-
-            // check if order.orderItems.product is all finished
-            $orderItems = $order->orderItems;
-            // $allFinished = true;
-
-            // foreach ($orderItems as $orderItem) {
-            //     if ($orderItem->product_sc->isFinish() === false) {
-            //         $allFinished = false;
-            //         break;
-            //     }
-            // }
-
-            // if ($allFinished ===
 
             $orderItems = $order->orderItems;
 
@@ -461,8 +472,19 @@ class OrderTable extends DataTableComponent
 
                 if ($orderItem->isSemiCustomOuter()) {
                     $target[$order->store->code]['detailItem'][] = [
-                        'itemNo' => $orderItem->product_sc->code,
-                        'detailName' => $orderItem->product_sc->name,
+                        'itemNo' => $orderItem->product_sco->code,
+                        'detailName' => $orderItem->product_sco->name,
+                        'unitPrice' => $orderItem->price,
+                        'quantity' => $orderItem->quantity,
+                        'departmentName' => 'Apparel',
+                        'warehouseName' => $order->store->code === 'PIK' ? config('accurate.warehouse_list.PIK') : config('accurate.warehouse_list.AST'),
+                    ];
+                }
+
+                if ($orderItem->isSemiCustomLightJacket()) {
+                    $target[$order->store->code]['detailItem'][] = [
+                        'itemNo' => $orderItem->product_sclj->code,
+                        'detailName' => $orderItem->product_sclj->name,
                         'unitPrice' => $orderItem->price,
                         'quantity' => $orderItem->quantity,
                         'departmentName' => 'Apparel',

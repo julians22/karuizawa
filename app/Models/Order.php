@@ -91,6 +91,17 @@ class Order extends Model
         })->exists();
     }
 
+    public function hasSemiCustomProducts()
+    {
+        return $this->orderItems()->whereHas('product', function ($query) {
+            $query->whereIn('product_type', [
+                'App\Models\SemiCustomProduct',
+                'App\Models\SemiCustomOuterProduct',
+                'App\Models\SemiCustomLightJacketProduct'
+            ]);
+        })->exists();
+    }
+
     public function getDownPaymentAmountAttribute()
     {
         return $this->payments()->where('is_downpayment', 1)->sum('amount');

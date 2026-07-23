@@ -15,12 +15,12 @@ class InvoiceSave implements ShouldQueue
 {
     use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels, AccurateAccess;
 
-    protected $params;
+    protected array $params;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($params)
+    public function __construct(array $params)
     {
         $this->params = $params;
     }
