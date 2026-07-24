@@ -1,8 +1,8 @@
 ---
 deployment:
   tasks:
-    - export PUBLICPATH=/home/wargadjaja/public_html/staging-karuizawa.wargadjaja.com
-    - export DEPLOYPATH=/home/wargadjaja/devproject/store_app
+    - export PUBLICPATH=/home/wargadjaja/public_html/store_app
+    - export DEPLOYPATH=/home/wargadjaja/projects/karuizawa-lts/karuizawa-phase1.1
     - export COMPOSER_PATH=/usr/local/bin/composer
     - export PHP_PATH=/usr/local/bin/ea-php83
     - /bin/cp -R * $DEPLOYPATH
