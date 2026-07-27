@@ -71,7 +71,7 @@ class StoreMonthlyComponent extends Component
         }
 
         if ($this->brand == 2) {
-            $data['Semi Custom'] = [
+            $data['Semi Custom Shirt'] = [
                 'value' => 0,
                 'qty' => 0
             ];
@@ -88,8 +88,8 @@ class StoreMonthlyComponent extends Component
 
             $semiCustom = $this->getSemicustom($this->store->id, $this->month_string, $this->year_string,$this->date ?? null);
             $semiCustom->each(function ($item) use (&$data) {
-                $data['Semi Custom']['value'] += $item->price;
-                $data['Semi Custom']['qty'] += $item->quantity;
+                $data['Semi Custom Shirt']['value'] += $item->price;
+                $data['Semi Custom Shirt']['qty'] += $item->quantity;
             });
 
             $semiCustomOuter = $this->getSemicustomOuter($this->store->id, $this->month_string, $this->year_string,$this->date ?? null);

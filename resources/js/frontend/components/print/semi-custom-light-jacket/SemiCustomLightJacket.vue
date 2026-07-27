@@ -385,7 +385,7 @@
                     <!-- 04. BUTTON SEWING -->
                     <div>
                         <div class="wrap-cat">
-                            <div class="cat-name">BUTTON THREADx</div>
+                            <div class="cat-name">BUTTON THREAD</div>
                         </div>
                         <div class="gap-2 grid grid-cols-6 my-4 px-2 print-props">
                             <div v-for="opt in buttonSewingOptions" :key="'print-bs-' + opt.slug">
@@ -401,12 +401,12 @@
                                     <template v-else>
                                         <div class="flex justify-center items-center bg-gray-100 border border-primary-light-jacket/40 size-8"></div>
                                     </template>
-                                    <div class="font-bold text-primary-light-jacket text-xs text-center uppercase leading-tight tracking-widest">{{ opt.name }}</div>
+                                    <div class="font-bold text-primary-light-jacket text-sm text-center uppercase leading-tight tracking-widest">{{ opt.name }}</div>
                                     <span class="checkbox-inner-sm"></span>
                                 </label>
                             </div>
                         </div>
-                        <div v-if="baseForm.button_sewing?.label" class="px-3 pb-2 text-gray-500 text-xs italic">
+                        <div v-if="baseForm.button_sewing?.label" class="px-3 pb-2 text-gray-500 text-sm italic">
                             {{ baseForm.button_sewing.label }}
                         </div>
                     </div>
@@ -415,7 +415,7 @@
                     <!-- 05. EMBROIDERY -->
                     <div>
                         <div class="wrap-cat">
-                            <div class="mb-2">
+                            <div class="mb-2 cat-name">
                                 05. EMBROIDERY
                             </div>
                         </div>
@@ -423,7 +423,7 @@
                             <!-- Font type -->
                             <div>
                                 <div class="sub-cat-name">Font Type</div>
-                                <div class="gap-2 grid grid-cols-3 print-props">
+                                <div class="gap-2 grid grid-cols-3 py-2 print-props">
                                     <div v-for="font in embroideryFonts" :key="'lj-font-' + font.slug">
                                         <input
                                             :checked="isSelected(baseForm.embroidery?.fontType?.slug, font)"
@@ -431,8 +431,7 @@
                                             :id="'lj-font-' + font.slug"
                                         >
                                         <label class="flex flex-col items-center gap-1 cursor-pointer" :for="'lj-font-' + font.slug">
-                                            <img class="w-full max-w-44 h-auto" :src="`/${font.image}`" alt="">
-                                            <div class="text-primary-light-jacket text-xs text-center uppercase tracking-widest">{{ font.name }}</div>
+                                            <div class="text-primary-light-jacket text-sm text-center uppercase tracking-widest">{{ font.name }}</div>
                                             <span class="checkbox-inner-sm"></span>
                                         </label>
                                     </div>
@@ -450,7 +449,7 @@
                                         >
                                         <label class="flex flex-col items-center gap-0.5 cursor-pointer" :for="'lj-color-' + color.slug">
                                             <img class="size-14 object-contain" :src="`/${color.image}`" alt="">
-                                            <div class="text-primary-light-jacket text-xs text-center uppercase leading-tight tracking-widest">{{ color.name }}</div>
+                                            <div class="text-primary-light-jacket text-sm text-center uppercase leading-tight tracking-widest">{{ color.name }}</div>
                                             <span class="checkbox-inner-sm"></span>
                                         </label>
                                     </div>

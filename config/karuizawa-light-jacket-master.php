@@ -227,17 +227,17 @@ return [
                 'price' => 50000,
                 'fonts' => [
                     [
-                        'name' => '1 Decorative',
+                        'name' => 'Fancy Letter',
                         'slug' => '1-decorative',
                         'image' => 'img/light-jacket/fonts/decorative.png'
                     ],
                     [
-                        'name' => '2 Mincho',
+                        'name' => 'Gothic',
                         'slug' => '2-mincho',
                         'image' => 'img/light-jacket/fonts/mincho.png',
                     ],
                     [
-                        'name' => '3 Script',
+                        'name' => 'Cursive Writing',
                         'slug' => '3-script',
                         'image' => 'img/light-jacket/fonts/script.png',
                     ]
@@ -442,8 +442,8 @@ return [
                         'Chest' => 125.0,
                         'Waist' => 118.0,
                         'Hem' => 124.0,
-                        'Back Length' => 75.0,
-                        'Sleeve Length' => 89.0
+                        'Back Length' => 77.0,
+                        'Sleeve Length' => 91.0
                     ]
                 ]
             ]

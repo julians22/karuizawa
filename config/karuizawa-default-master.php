@@ -745,11 +745,11 @@ return [
                     ],
                     [
                         'slug' => 'curvise-writing',
-                        'name' => 'curvise writing'
+                        'name' => 'cursive writing'
                     ],
                     [
                         'slug' => 'curvise-writing-long',
-                        'name' => 'curvise writing long'
+                        'name' => 'cursive writing long'
                     ],
                 ]
             ],

@@ -652,6 +652,16 @@ const btnNext = (section) => {
                                 </div>
                             </div>
                         </div>
+
+                        <div>
+                            <p class="font-light text-red-500">Max range:</p>
+                            <ul class="font-light text-red-500 list-disc list-inside">
+                                <li>Shoulder: -+ 2cm</li>
+                                <li>Chest: -+ 6cm</li>
+                                <li>Back Length: -+ 4cm</li>
+                                <li>Sleeve Length: -+ 10cm</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
@@ -720,8 +730,8 @@ const btnNext = (section) => {
                         <div class="font-bold text-white lg:text-xl uppercase tracking-widest">embroidery</div>
                     </div>
                     <div class="px-3 py-2">
-                        <div class="gap-x-4 grid grid-cols-2">
-                            <div>
+                        <div class="gap-x-4 grid grid-cols-3">
+                            <div class="col-span-2">
                                 <div class="flex justify-between items-center bg-primary-light-jacket-100 px-4 lg:px-10 py-2">
                                     <div class="font-bold text-white uppercase tracking-widest">Initial / full name</div>
                                 </div>
@@ -732,7 +742,9 @@ const btnNext = (section) => {
                                             <input v-model="embroidery.initialName.dot" type="text" maxlength="1" class="block border-primary-50 border-y w-8 h-6 text-gray-900 text-sm text-center">
                                             <input v-model="embroidery.initialName.y" type="text" maxlength="1" class="block p-2 border-primary-50 border-y border-r border-l size-10 text-gray-900 text-sm text-center">
                                             <InputBox :digitCount="9" @update:input="onInputIntialName($event)" :inputValue="embroidery.initialName?.z"/>
-                                            <input v-model="embroidery.initialName.note" type="text" maxlength="50" class="block ml-2 p-2 border border-primary-50 w-full text-gray-900 text-sm">
+                                        </div>
+                                        <div class="w-full">
+                                            <input v-model="embroidery.initialName.note" type="text" maxlength="50" class="block p-2 border border-primary-50 w-full text-gray-900 text-sm"/>
                                         </div>
                                     </div>
                                 </div>
@@ -740,15 +752,15 @@ const btnNext = (section) => {
 
                             <div>
                                 <div class="flex justify-between items-center bg-primary-light-jacket-100 px-4 lg:px-10 py-2">
-                                    <div class="font-bold text-white uppercase tracking-widest">fonts</div>
+                                    <div class="font-bold text-white uppercase tracking-widest">font type</div>
                                 </div>
-                                <div class="gap-y-4 grid grid-cols-3 my-10 px-6 lg:px-10 xl:px-14">
+                                <div class="gap-y-4 grid grid-cols-1 p-4">
                                     <div v-for="font in data_semi_custom_light_jacket.embroidery.data.options.fonts">
                                         <input :checked="font.slug == embroidery.fontType?.slug" class="hidden" type="radio" v-model="embroidery.fontType" @click.native="embroidery.fontType = null" :value="font" name="font-option"  :id="'font-' + font.slug">
-                                        <label class="flex flex-col justify-between items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'font-' + font.slug">
-                                            <img class="max-w-28 h-auto" :src="font.image" alt="">
-                                            <div class="font-bold text-primary-50 text-xs 2xl:text-lg text-center uppercase tracking-widest">{{ font.name }}</div>
+                                        <label class="flex flex-row items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'font-' + font.slug">
+                                            <!-- <img class="max-w-28 h-auto" :src="font.image" alt=""> -->
                                             <span class="checkbox-inner"></span>
+                                            <div class="font-bold text-primary-50 text-xs 2xl:text-lg text-center uppercase tracking-widest">{{ font.name }}</div>
                                         </label>
                                     </div>
                                 </div>
