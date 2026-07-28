@@ -365,45 +365,58 @@ class OrderTable extends DataTableComponent
                 'description' => $order['description'],
             ];
 
+            $dataPass['dpAmount'] = 0;
+
             collect($order['types'])->map(function($type, $key) use ($dataPass, &$downPaymentJob, &$readyToWearJob, $id) {
 
-                if ($key === 'SC') {
-                    $dataPass['dpAmount'] = 0;
-                    $dataPass['description'] = 'DP Semi Custom MTM WEB ORDER: ' . $dataPass['description'];
+                if ($key === 'SC' || $key === 'SCO' || $key === 'SCLJ') {
 
                     foreach ($type as $item) {
                         $priceResult = $item['price'] * $item['quantity'];
                         $dataPass['dpAmount'] += $priceResult;
                     }
+
                     $dataPass['dpAmount'] = number_format($dataPass['dpAmount'], 2, '.', '');
 
                     $downPaymentJob[] = new InvoiceCreateDownPayment($dataPass, $id);
                 }
+                // if ($key === 'SC') {
+                //     $dataPass['dpAmount'] = 0;
+                //     $dataPass['description'] = 'DP Semi Custom MTM WEB ORDER: ' . $dataPass['description'];
 
-                if ($key === 'SCO') {
-                    $dataPass['dpAmount'] = 0;
-                    $dataPass['description'] = 'DP Semi Custom Outer Shirt MTM WEB ORDER: ' . $dataPass['description'];
+                //     foreach ($type as $item) {
+                //         $priceResult = $item['price'] * $item['quantity'];
+                //         $dataPass['dpAmount'] += $priceResult;
+                //     }
+                //     $dataPass['dpAmount'] = number_format($dataPass['dpAmount'], 2, '.', '');
 
-                    foreach ($type as $item) {
-                        $priceResult = $item['price'] * $item['quantity'];
-                        $dataPass['dpAmount'] += $priceResult;
-                    }
-                    $dataPass['dpAmount'] = number_format($dataPass['dpAmount'], 2, '.', '');
+                //     $downPaymentJob[] = new InvoiceCreateDownPayment($dataPass, $id);
+                // }
 
-                    $downPaymentJob[] = new InvoiceCreateDownPayment($dataPass, $id);
-                }
+                // if ($key === 'SCO') {
+                //     $dataPass['dpAmount'] = 0;
+                //     $dataPass['description'] = 'DP Semi Custom Outer Shirt MTM WEB ORDER: ' . $dataPass['description'];
 
-                if ($key === 'SCLJ') {
-                    $dataPass['dpAmount'] = 0;
-                    $dataPass['description'] = 'DP Semi Custom Light Jacket MTM WEB ORDER: ' . $dataPass['description'];
-                    foreach ($type as $item) {
-                        $priceResult = $item['price'] * $item['quantity'];
-                        $dataPass['dpAmount'] += $priceResult;
-                    }
-                    $dataPass['dpAmount'] = number_format($dataPass['dpAmount'], 2, '.', '');
+                //     foreach ($type as $item) {
+                //         $priceResult = $item['price'] * $item['quantity'];
+                //         $dataPass['dpAmount'] += $priceResult;
+                //     }
+                //     $dataPass['dpAmount'] = number_format($dataPass['dpAmount'], 2, '.', '');
 
-                    $downPaymentJob[] = new InvoiceCreateDownPayment($dataPass, $id);
-                }
+                //     $downPaymentJob[] = new InvoiceCreateDownPayment($dataPass, $id);
+                // }
+
+                // if ($key === 'SCLJ') {
+                //     $dataPass['dpAmount'] = 0;
+                //     $dataPass['description'] = 'DP Semi Custom Light Jacket MTM WEB ORDER: ' . $dataPass['description'];
+                //     foreach ($type as $item) {
+                //         $priceResult = $item['price'] * $item['quantity'];
+                //         $dataPass['dpAmount'] += $priceResult;
+                //     }
+                //     $dataPass['dpAmount'] = number_format($dataPass['dpAmount'], 2, '.', '');
+
+                //     $downPaymentJob[] = new InvoiceCreateDownPayment($dataPass, $id);
+                // }
 
                 if ($key === 'RTW') {
                     $dataPass['detailItem'] = $type;
