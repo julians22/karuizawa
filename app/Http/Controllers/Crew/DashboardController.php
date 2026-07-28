@@ -29,11 +29,14 @@ class DashboardController extends Controller
             $targetsValue[$value->name] = 0;
         }
 
-        $actualSellingValue['Semi Custom'] = 0;
-        $actualSellingQty['Semi Custom'] = 0;
+        $actualSellingValue['Semi Custom Shirt'] = 0;
+        $actualSellingQty['Semi Custom Shirt'] = 0;
 
         $actualSellingValue['Semi Custom Outer'] = 0;
         $actualSellingQty['Semi Custom Outer'] = 0;
+
+        $actualSellingValue['Semi Custom Light Jacket'] = 0;
+        $actualSellingQty['Semi Custom Light Jacket'] = 0;
 
 
         $totalActualSellingValue = 0;
@@ -61,9 +64,11 @@ class DashboardController extends Controller
                     }
                 }else {
                     if ($target->isSemiCustomCategory()) {
-                        $targetsValue['Semi Custom'] = $target->target;
+                        $targetsValue['Semi Custom Shirt'] = $target->target;
                     } elseif ($target->isSemiCustomOuterCategory()) {
                         $targetsValue['Semi Custom Outer'] = $target->target;
+                    } elseif ($target->isSemiCustomLightJacketCategory()) {
+                        $targetsValue['Semi Custom Light Jacket'] = $target->target;
                     }
                 }
 
@@ -83,8 +88,8 @@ class DashboardController extends Controller
         $semiCustom = $this->getSemiCustom($crew->id, $crew->store_id, date('m'), date('Y'));
         if ($semiCustom->count() > 0) {
             foreach ($semiCustom as $item) {
-                $actualSellingQty['Semi Custom'] += $item->quantity;
-                $actualSellingValue['Semi Custom'] += $item->price;
+                $actualSellingQty['Semi Custom Shirt'] += $item->quantity;
+                $actualSellingValue['Semi Custom Shirt'] += $item->price;
             }
             $totalActualSellingQty = collect($actualSellingQty)->sum();
             $totalActualSellingValue = collect($actualSellingValue)->sum();
