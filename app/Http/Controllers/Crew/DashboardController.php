@@ -181,4 +181,26 @@ class DashboardController extends Controller
 
         return $trans;
     }
+
+    protected function getSemiCustomLightJacket($crewId, $store, $month, $year)
+    {
+        $trans = OrderItem::with([
+            'order',
+            'product_sclj',
+            'order.user' => function ($query) {
+                $query->withTrashed();
+            }
+            ])
+            ->whereHas('order', function ($query) use ($store, $month, $year, $crewId) {
+                return $query->whereMonth('order_date', $month)
+                    ->whereYear('order_date', $year)
+                    ->where('store_id', $store)
+                    ->where('status', config('enums.order_status.completed'))
+                    ->where('user_id', $crewId);
+            })
+            ->semiCustomLightJacket()
+            ->get();
+
+        return $trans;
+    }
 }
