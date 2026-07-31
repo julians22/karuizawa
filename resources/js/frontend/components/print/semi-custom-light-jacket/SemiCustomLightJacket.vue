@@ -115,7 +115,7 @@
                                     :id="'print-btn-' + btn.slug"
                                 >
                                 <label class="flex flex-col justify-between items-center gap-2 px-1 rounded h-full cursor-pointer" :for="'print-btn-' + btn.slug">
-                                    <img class="w-full max-w-20 h-auto" :src="`/${btn.image}`" alt="">
+                                    <!-- <img class="w-full max-w-20 h-auto" :src="`/${btn.image}`" alt=""> -->
                                     <div class="font-bold text-primary-light-jacket text-xs text-center uppercase tracking-widest">{{ btn.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
@@ -204,15 +204,15 @@
                                         </td>
                                         <td class="px-1 py-1 border border-primary-light-jacket text-center whitespace-nowrap">
                                             {{  key === 'Shoulder Width' ? sizeForm.sa?.shoulder      :
-                                                key === 'Chest'          ? sizeForm.sa?.chest         :
+                                                key === 'Waist'          ? sizeForm.sa?.waist         :
                                                 key === 'Back Length'    ? sizeForm.sa?.backLength     :
                                                 key === 'Sleeve Length'  ? sizeForm.sa?.sleeveLength   : '-' }}
                                         </td>
                                         <td class="px-1 py-1 border border-primary-light-jacket text-center whitespace-nowrap">
-                                            {{ key === 'Shoulder Width' ? "+2 cm" :
-                                                  key === 'Chest'    ? "+6 cm" :
-                                                    key === 'Back Length'    ? "+4 cm" :
-                                                        key === 'Sleeve Length'  ? "+10 cm" : '-' }}
+                                            {{ key === 'Shoulder Width' ? "∓2 cm" :
+                                                  key === 'Waist'    ? "∓6 cm" :
+                                                    key === 'Back Length'    ? "∓4 cm" :
+                                                        key === 'Sleeve Length'  ? "∓10 cm" : '-' }}
                                         </td>
                                     </tr>
                                 </tbody>

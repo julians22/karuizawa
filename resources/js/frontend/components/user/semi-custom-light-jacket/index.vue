@@ -67,7 +67,7 @@ const formSize = reactive({
     measurement_values: {},
     sa: {
         shoulder: '',
-        chest: '',
+        waist: '',
         backLength: '',
         sleeveLength: '',
     },
@@ -497,7 +497,7 @@ const btnNext = (section) => {
                     <div v-for="button in data_semi_custom_light_jacket.button.data.basic">
                         <input class="hidden" type="radio" name="button-basic" :id="`button-${button.slug}`" v-model="form.button" @click.native="form.button = null" :value="button">
                         <label class="flex flex-col justify-between items-center px-2 rounded h-full cursor-pointer" :for="`button-${button.slug}`">
-                            <img class="h-auto" :src="button.image" alt="">
+                            <!-- <img class="h-auto" :src="button.image" alt=""> -->
                             <div class="font-bold text-primary-light-jacket-50 text-xs 2xl:text-lg text-center uppercase tracking-widest">{{ button.name }}</div>
                             <span class="mt-4 checkbox-inner"></span>
                         </label>
@@ -634,9 +634,9 @@ const btnNext = (section) => {
                             </div>
                             <!-- Chest -->
                             <div class="flex border-primary-50 border-y-2 border-r-2">
-                                <div>CHEST :</div>
+                                <div>WAIST :</div>
                                 <div>
-                                    <input v-model="formSize.sa.chest"  type="text" inputmode="numeric" class="w-full font-roboto text-center">
+                                    <input v-model="formSize.sa.waist"  type="text" inputmode="numeric" class="w-full font-roboto text-center">
                                 </div>
                             </div>
                             <div class="flex border-primary-50 border-y-2 border-r-2 max-xl:border-l-2">
@@ -656,10 +656,10 @@ const btnNext = (section) => {
                         <div>
                             <p class="font-light text-red-500">Max range:</p>
                             <ul class="font-light text-red-500 list-disc list-inside">
-                                <li>Shoulder: -+ 2cm</li>
-                                <li>Chest: -+ 6cm</li>
-                                <li>Back Length: -+ 4cm</li>
-                                <li>Sleeve Length: -+ 10cm</li>
+                                <li>Shoulder: ∓ 2cm</li>
+                                <li>Waist: ∓ 6cm</li>
+                                <li>Back Length: ∓ 4cm</li>
+                                <li>Sleeve Length: ∓ 10cm</li>
                             </ul>
                         </div>
                     </div>
