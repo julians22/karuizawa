@@ -25,10 +25,10 @@
         @else
             @if ($dataSemiCustom !== null || !$dataSemiCustom->isEmpty())
                 @foreach ($dataSemiCustom as $key => $value )
-                <div>
+                <div class="@if ($loop->last) @else break-after @endif">
                     <print-semi-custom
-                    :data_config="{{ $dataConfig }}"
-                    :data_semi_custom="{{ JSON_encode($value) }}"
+                        :data_config="{{ $dataConfig }}"
+                        :data_semi_custom="{{ JSON_encode($value) }}"
                     ></print-semi-custom>
                 </div>
                 @endforeach
@@ -36,10 +36,10 @@
 
             @if ($dataSemiCustomOuter !== null && !$dataSemiCustomOuter->isEmpty())
                 @foreach ($dataSemiCustomOuter as $key => $value )
-                <div>
+                <div class="@if ($loop->last) @else break-after @endif">
                     <print-semi-custom-outer
-                    :data_config="{{ $dataConfigOuter }}"
-                    :data_semi_custom_outer="{{ JSON_encode($value) }}"
+                        :data_config="{{ $dataConfigOuter }}"
+                        :data_semi_custom_outer="{{ JSON_encode($value) }}"
                     ></print-semi-custom-outer>
                 </div>
                 @endforeach
@@ -47,17 +47,18 @@
 
             @if ($dataSemiCustomLightJacket !== null && !$dataSemiCustomLightJacket->isEmpty())
                 @foreach ($dataSemiCustomLightJacket as $key => $value )
-                <div>
+                <div class="@if ($loop->last) @else break-after @endif">
                     <print-semi-custom-light-jacket
-                    :data_config="{{ $dataConfigLightJacket }}"
-                    :data_semi_custom_light_jacket="{{ JSON_encode($value) }}"
+                        :data_config="{{ $dataConfigLightJacket }}"
+                        :data_semi_custom_light_jacket="{{ JSON_encode($value) }}"
                     ></print-semi-custom-light-jacket>
                 </div>
                 @endforeach
             @endif
         @endif
 
-    </div><!--app-->
+    </div>
+    <!--app-->
 
     @stack('before-scripts')
     <script src="{{ mix('js/manifest.js') }}"></script>

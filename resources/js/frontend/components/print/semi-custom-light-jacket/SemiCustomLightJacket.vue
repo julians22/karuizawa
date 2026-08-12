@@ -107,7 +107,7 @@
                         <div class="wrap-cat">
                             <div class="cat-name">02. BUTTON</div>
                         </div>
-                        <div class="grid grid-cols-5 my-4 px-2 print-props">
+                        <div class="gap-y-8 grid grid-cols-5 my-6 px-2 print-props">
                             <div v-for="btn in buttonOptions" :key="'print-btn-' + btn.slug">
                                 <input
                                     :checked="isSelected(baseForm.button?.slug, btn)"
@@ -116,14 +116,14 @@
                                 >
                                 <label class="flex flex-col justify-between items-center gap-2 px-1 rounded h-full cursor-pointer" :for="'print-btn-' + btn.slug">
                                     <!-- <img class="w-full max-w-20 h-auto" :src="`/${btn.image}`" alt=""> -->
-                                    <div class="font-bold text-primary-light-jacket text-xs text-center uppercase tracking-widest">{{ btn.name }}</div>
+                                    <div class="font-bold text-primary-light-jacket text-sm text-center uppercase tracking-widest">{{ btn.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
                             </div>
                         </div>
 
                         <div class="flex items-center gap-4 mx-10 my-3">
-                            <div class="font-bold text-primary-50 text-xs uppercase tracking-widest">OPTION</div>
+                            <div class="font-bold text-primary-50 text-sm uppercase tracking-widest">OPTION</div>
                             <div class="flex font-roboto print-props">
                                 <InputBox :digitCount="2" :inputValue="baseForm.button?.optionNumber" />
                             </div>
@@ -135,7 +135,7 @@
                         <div class="wrap-cat">
                             <div class="cat-name">SIZE</div>
                         </div>
-                        <div class="my-4 px-1 overflow-x-auto print-props">
+                        <div class="my-6 px-1 overflow-x-auto print-props">
                             <table class="border border-primary-light-jacket min-w-full border-collapse table-fixed">
                                 <thead>
                                     <tr class="bg-white">
@@ -156,23 +156,23 @@
                                                 </label>
                                             </div>
                                         </th>
-                                        <th rowspan="2" class="px-1 py-1 border border-primary-light-jacket text-xs text-center uppercase tracking-widest whitespace-nowrap">
+                                        <th rowspan="2" class="px-1 py-1 border border-primary-light-jacket text-sm text-center uppercase tracking-widest whitespace-nowrap">
                                             Actual<br>Measurement
                                         </th>
-                                        <th rowspan="2" class="px-1 py-1 border border-primary-light-jacket text-xs text-center uppercase tracking-widest whitespace-nowrap">
+                                        <th rowspan="2" class="px-1 py-1 border border-primary-light-jacket text-sm text-center uppercase tracking-widest whitespace-nowrap">
                                             Adjustment
                                         </th>
                                         <!-- Max Size -->
-                                         <th rowspan="2" class="px-1 py-1 border border-primary-light-jacket text-xs text-center uppercase tracking-widest whitespace-nowrap">
+                                         <th rowspan="2" class="px-1 py-1 border border-primary-light-jacket text-sm text-center uppercase tracking-widest whitespace-nowrap">
                                             Max <br> Range
                                         </th>
                                     </tr>
                                     <tr class="bg-primary-light-jacket text-white">
-                                        <th class="px-1 py-1 border border-primary-light-jacket w-28 text-xs text-left uppercase tracking-widest whitespace-nowrap">Measurement</th>
+                                        <th class="px-1 py-1 border border-primary-light-jacket w-28 text-sm text-left uppercase tracking-widest whitespace-nowrap">Measurement</th>
                                         <th
                                             v-for="size in sizes"
                                             :key="'size-hd-' + size.slug"
-                                            class="px-1 py-1 border border-primary-light-jacket text-xs text-center uppercase tracking-widest whitespace-nowrap"
+                                            class="px-1 py-1 border border-primary-light-jacket text-sm text-center uppercase tracking-widest whitespace-nowrap"
                                         >
                                             {{ size.name }}
                                         </th>
@@ -254,7 +254,7 @@
                             <div class="col-span-6">
                                 <textarea
                                     :value="data.base_note ?? ''"
-                                    class="p-2 border-2 border-primary-light-jacket w-full h-20 font-roboto print:text-2xl placeholder:tracking-widest placeholder-primary-50"
+                                    class="p-2 border-2 border-primary-light-jacket w-full h-32 font-roboto print:text-2xl placeholder:tracking-widest placeholder-primary-50"
                                     placeholder="NOTE"
                                 ></textarea>
                             </div>
@@ -367,17 +367,17 @@
                                 >
                                 <label class="flex flex-col justify-between items-center gap-1 px-1 rounded h-full cursor-pointer" :for="'print-bh-' + opt.slug">
                                     <template v-if="opt.image">
-                                        <img class="w-full max-w-24 h-auto" :src="`/${opt.image}`" alt="">
+                                        <img class="w-full max-w-32 h-auto" :src="`/${opt.image}`" alt="">
                                     </template>
                                     <template v-else>
                                         <div class="flex justify-center items-center bg-gray-100 border border-primary-light-jacket/40 size-8"></div>
                                     </template>
-                                    <div class="font-bold text-primary-light-jacket text-xs text-center uppercase leading-tight tracking-widest">{{ opt.name }}</div>
+                                    <div class="font-bold text-primary-light-jacket text-sm text-center uppercase leading-tight tracking-widest">{{ opt.name }}</div>
                                     <span class="checkbox-inner-sm"></span>
                                 </label>
                             </div>
                         </div>
-                        <div v-if="baseForm.button_hole?.label" class="px-3 pb-2 text-gray-500 text-xs italic">
+                        <div v-if="baseForm.button_hole?.label" class="px-3 pb-2 text-gray-500 text-sm italic">
                             {{ baseForm.button_hole.label }}
                         </div>
                     </div>
@@ -396,7 +396,7 @@
                                 >
                                 <label class="flex flex-col justify-between items-center gap-1 px-1 rounded h-full cursor-pointer" :for="'print-bs-' + opt.slug">
                                     <template v-if="opt.image">
-                                        <img class="w-full max-w-20 h-auto" :src="`/${opt.image}`" alt="">
+                                        <img class="w-full max-w-28 h-auto" :src="`/${opt.image}`" alt="">
                                     </template>
                                     <template v-else>
                                         <div class="flex justify-center items-center bg-gray-100 border border-primary-light-jacket/40 size-8"></div>
@@ -431,7 +431,7 @@
                                             :id="'lj-font-' + font.slug"
                                         >
                                         <label class="flex flex-col items-center gap-1 cursor-pointer" :for="'lj-font-' + font.slug">
-                                            <div class="text-primary-light-jacket text-sm text-center uppercase tracking-widest">{{ font.name }}</div>
+                                            <div class="text-primary-light-jacket text-base text-center uppercase tracking-widest">{{ font.name }}</div>
                                             <span class="checkbox-inner-sm"></span>
                                         </label>
                                     </div>
@@ -448,7 +448,7 @@
                                             :id="'lj-color-' + color.slug"
                                         >
                                         <label class="flex flex-col items-center gap-0.5 cursor-pointer" :for="'lj-color-' + color.slug">
-                                            <img class="size-14 object-contain" :src="`/${color.image}`" alt="">
+                                            <img class="size-20 object-contain" :src="`/${color.image}`" alt="">
                                             <div class="text-primary-light-jacket text-sm text-center uppercase leading-tight tracking-widest">{{ color.name }}</div>
                                             <span class="checkbox-inner-sm"></span>
                                         </label>
@@ -459,13 +459,13 @@
                             <!-- Embroidery text -->
                             <div>
                                 <div class="sub-cat-name">Embroidery Text</div>
-                                <div class="flex items-end font-roboto print-props">
+                                <div class="flex items-end my-6 font-roboto print-props">
                                     <!-- Initial: X . Y -->
                                     <div class="flex items-end">
                                         <input
                                             :value="baseForm.embroidery?.initialName?.x ?? ''"
                                             type="text" maxlength="1"
-                                            class="block p-2 border border-primary-light-jacket size-10 text-gray-900 text-base text-center"
+                                            class="block p-2 border border-primary-light-jacket size-14 text-gray-900 text-base text-center"
                                         >
                                         <input
                                             :value="baseForm.embroidery?.initialName?.dot ?? ''"
@@ -475,7 +475,7 @@
                                         <input
                                             :value="baseForm.embroidery?.initialName?.y ?? ''"
                                             type="text" maxlength="1"
-                                            class="block p-2 border border-primary-light-jacket size-10 text-gray-900 text-base text-center"
+                                            class="block p-2 border border-primary-light-jacket size-14 text-gray-900 text-base text-center"
                                         >
                                     </div>
                                     <!-- Long name / Z: individual boxes -->
@@ -499,11 +499,11 @@
                                         <input
                                             :value="baseForm.embroidery?.initialName?.note ?? ''"
                                             type="text" maxlength="50"
-                                            class="block ml-2 p-2 border border-primary-light-jacket w-full text-gray-900 text-base"
+                                            class="block flex-1 ml-2 p-2 border border-primary-light-jacket w-full text-gray-900 text-base"
                                         >
                                     </div>
                                 </div>
-                                <div class="mt-1 font-roboto text-[10px] text-primary-light-jacket/70 italic">
+                                <div class="mt-1 font-roboto text-primary-light-jacket/70 text-sm italic">
                                     *write your initial (font type 1, 2, 3) or long name into the boxes
                                 </div>
                             </div>
@@ -568,7 +568,7 @@
     }
 
     .label-name {
-        @apply font-bold text-primary-light-jacket text-xs print:text-xl text-center uppercase tracking-widest;
+        @apply font-bold text-primary-light-jacket text-sm print:text-xl text-center uppercase tracking-widest;
     }
 
     textarea, input {

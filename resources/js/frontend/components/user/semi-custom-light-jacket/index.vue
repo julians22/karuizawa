@@ -493,13 +493,13 @@ const btnNext = (section) => {
                 <div class="flex justify-between items-center bg-primary-light-jacket px-4 lg:px-14 py-2">
                     <div class="font-bold text-white lg:text-xl uppercase tracking-widest">02. BUTTON</div>
                 </div>
-                <div class="gap-4 grid grid-cols-5 xl:grid-cols-9 my-10 px-6 lg:px-10 xl:px-14">
-                    <div v-for="button in data_semi_custom_light_jacket.button.data.basic">
+                <div class="gap-6 grid grid-rows-5 xl:grid-rows-5 grid-flow-col my-10 px-6 lg:px-10 xl:px-14 max-w-[850px]">
+                    <div v-for="button in data_semi_custom_light_jacket.button.data.basic" class="max-w-[650px]">
                         <input class="hidden" type="radio" name="button-basic" :id="`button-${button.slug}`" v-model="form.button" @click.native="form.button = null" :value="button">
-                        <label class="flex flex-col justify-between items-center px-2 rounded h-full cursor-pointer" :for="`button-${button.slug}`">
+                        <label class="flex items-center px-2 rounded h-full cursor-pointer" :for="`button-${button.slug}`">
                             <!-- <img class="h-auto" :src="button.image" alt=""> -->
-                            <div class="font-bold text-primary-light-jacket-50 text-xs 2xl:text-lg text-center uppercase tracking-widest">{{ button.name }}</div>
-                            <span class="mt-4 checkbox-inner"></span>
+                            <span class="mr-4 checkbox-inner"></span>
+                            <div class="font-bold text-primary-light-jacket-50 text-xs 2xl:text-base text-center uppercase tracking-widest">{{ button.name }}</div>
                         </label>
                     </div>
                 </div>

@@ -4,36 +4,116 @@ return [
     'button' => [
         'data' => [
             'basic' => [
+                // HANNI MAHOGANY
+
+                // HANNI BROWN
+
+                // NEYSAN BROWN
+
+                // KEITH CREAM
+
+                // HORN MOCK CHARCOAL
+
+                // HORN MOCK NAVY
+
+                // MARBLE BLACK
+
+                // MARBLE GREY
+
+                // FAKE SHELL BLACK
+
+                // TAUPE
+                // Replace the following button name and image with the correct ones for the new buttons above
                 [
-                    'name' => "7 Nut Curry",
-                    'slug' => "nut-curry",
+                    'name' => '01. Hanni Mahogany',
+                    'slug' => 'hanni-mahogany',
                     'price' => 0,
-                    'image' => 'img/light-jacket/button/nut-curry.png'
+                    'image' => 'img/light-jacket/button/hanni-mahogany.png'
                 ],
                 [
-                    'name' => "8 Nut Ivory",
-                    'slug' => "nut-ivory",
+                    'name' => '02. Hanni Brown',
+                    'slug' => 'hanni-brown',
                     'price' => 0,
-                    'image' => 'img/light-jacket/button/nut-ivory.png'
+                    'image' => 'img/light-jacket/button/hanni-brown.png'
                 ],
                 [
-                    'name' => "9 Nut Glace",
-                    'slug' => "nut-glace",
+                    'name' => '03. Neysan Brown',
+                    'slug' => 'neysan-brown',
                     'price' => 0,
-                    'image' => 'img/light-jacket/button/nut-glace.png'
+                    'image' => 'img/light-jacket/button/neysan-brown.png'
                 ],
                 [
-                    'name' => "10 Nut Chocolate",
-                    'slug' => "nut-chocolate",
+                    'name' => '04. Keith Cream',
+                    'slug' => 'keith-cream',
                     'price' => 0,
-                    'image' => 'img/light-jacket/button/nut-chocolate.png'
+                    'image' => 'img/light-jacket/button/keith-cream.png'
                 ],
                 [
-                    'name' => "12 Nut Navy",
-                    'slug' => "nut-navy",
+                    'name' => '05. Horn Mock Charcoal',
+                    'slug' => 'horn-mock-charcoal',
                     'price' => 0,
-                    'image' => 'img/light-jacket/button/nut-navy.png'
+                    'image' => 'img/light-jacket/button/horn-mock-charcoal.png'
+                ],
+                [
+                    'name' => '06. Horn Mock Navy',
+                    'slug' => 'horn-mock-navy',
+                    'price' => 0,
+                    'image' => 'img/light-jacket/button/horn-mock-navy.png'
+                ],
+                [
+                    'name' => '07. Marble Black',
+                    'slug' => 'marble-black',
+                    'price' => 0,
+                    'image' => 'img/light-jacket/button/marble-black.png'
+                ],
+                [
+                    'name' => "08. Marble Grey",
+                    'slug' => "marble-grey",
+                    'price' => 0,
+                    'image' => "img/light-jacket/button/marble-grey.png"
+                ],
+                [
+                    "name" => "09. Fake Shell Black",
+                    "slug" => "fake-shell-black",
+                    "price" => 0,
+                    "image" => "img/light-jacket/button/fake-shell-black.png"
+                ],
+                [
+                    "name" => "10. Taupe",
+                    "slug" => "taupe",
+                    "price" => 0,
+                    "image" => "img/light-jacket/button/taupe.png"
                 ]
+                // [
+                //     'name' => "7 Nut Curry",
+                //     'slug' => "nut-curry",
+                //     'price' => 0,
+                //     'image' => 'img/light-jacket/button/nut-curry.png'
+                // ],
+                // [
+                //     'name' => "8 Nut Ivory",
+                //     'slug' => "nut-ivory",
+                //     'price' => 0,
+                //     'image' => 'img/light-jacket/button/nut-ivory.png'
+                // ],
+                // [
+                //     'name' => "9 Nut Glace",
+                //     'slug' => "nut-glace",
+                //     'price' => 0,
+                //     'image' => 'img/light-jacket/button/nut-glace.png'
+                // ],
+                // [
+                //     'name' => "10 Nut Chocolate",
+                //     'slug' => "nut-chocolate",
+                //     'price' => 0,
+                //     'image' => 'img/light-jacket/button/nut-chocolate.png'
+                // ],
+                // [
+                //     'name' => "12 Nut Navy",
+                //     'slug' => "nut-navy",
+                //     'price' => 0,
+                //     'image' => 'img/light-jacket/button/nut-navy.png'
+                // ]
             ]
         ]
     ],
