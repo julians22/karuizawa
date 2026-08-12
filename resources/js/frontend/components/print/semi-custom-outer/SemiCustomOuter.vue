@@ -153,7 +153,7 @@
                             <div v-for="collar in collarOptions" :key="'print-collar-' + collar.slug">
                                 <input :checked="isSelected(baseForm.collar, collar)" class="hidden" type="radio" :id="'print-collar-' + collar.slug">
                                 <label class="flex flex-col justify-between items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'print-collar-' + collar.slug">
-                                    <img class="w-full max-w-40 h-auto" :src="`/${collar.image}`" alt="">
+                                    <img class="w-full max-w-56 h-auto" :src="`/${collar.image}`" alt="">
                                     <div class="font-bold text-primary-outer text-center uppercase tracking-widest">{{ collar.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
@@ -169,7 +169,7 @@
                             <div v-for="cuff in cuffOptions" :key="'print-cuff-' + cuff.slug">
                                 <input :checked="isSelected(baseForm.cuff, cuff)" class="hidden" type="radio" :id="'print-cuff-' + cuff.slug">
                                 <label class="flex flex-col justify-between items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'print-cuff-' + cuff.slug">
-                                    <img class="max-w-32 h-auto" :src="`/${cuff.image}`" alt="">
+                                    <img class="w-full max-w-52 h-auto" :src="`/${cuff.image}`" alt="">
                                     <div class="font-bold text-primary-outer text-center uppercase tracking-widest">{{ cuff.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
@@ -180,11 +180,11 @@
                         <div class="wrap-cat">
                             <div class="cat-name">04. BUTTON</div>
                         </div>
-                        <div class="grid grid-cols-5 my-4 px-2 print-props">
+                        <div class="gap-y-4 grid grid-cols-3 my-4 px-2 print-props">
                             <div v-for="button in buttonOptions" :key="'print-button-' + button.slug">
                                 <input :checked="isSelected(baseForm.button, button)" class="hidden" type="radio" :id="'print-button-' + button.slug">
                                 <label class="flex flex-col justify-between items-center gap-4 px-2 rounded h-full cursor-pointer" :for="'print-button-' + button.slug">
-                                    <img class="w-full max-w-32 h-auto" :src="`/${button.image}`" alt="">
+                                    <img class="w-full max-w-36 h-auto" :src="`/${button.image}`" alt="">
                                     <div class="font-bold text-primary-outer text-center uppercase tracking-widest">{{ button.name }}</div>
                                     <span class="checkbox-inner"></span>
                                 </label>
@@ -198,7 +198,7 @@
                         <div class="wrap-cat">
                             <div class="cat-name">SIZE</div>
                         </div>
-                        <div class="my-4 px-1 overflow-x-auto print-props">
+                        <div class="my-6 px-1 overflow-x-auto print-props">
                             <table class="border border-primary-outer min-w-full border-collapse table-fixed">
                                 <thead>
                                     <tr class="bg-white">
@@ -215,26 +215,26 @@
                                                 </label>
                                             </div>
                                         </th>
-                                        <th rowspan="2" class="px-1 py-1 border border-primary-outer text-xs text-center uppercase tracking-widest whitespace-nowrap">
+                                        <th rowspan="2" class="px-1 py-1 border border-primary-outer text-sm text-center uppercase tracking-widest whitespace-nowrap">
                                             <div class="flex flex-col">
                                                 <span>
                                                     ACTUAL <br> MEASUREMENT
                                                 </span>
                                             </div>
                                         </th>
-                                        <th rowspan="2" class="px-1 py-1 border border-primary-outer text-xs text-center uppercase tracking-widest whitespace-nowrap">
+                                        <th rowspan="2" class="px-1 py-1 border border-primary-outer text-sm text-center uppercase tracking-widest whitespace-nowrap">
                                             Adjustment
                                         </th>
-                                        <th rowspan="2" class="px-1 py-1 border border-primary-outer text-xs text-center uppercase tracking-widest whitespace-nowrap">
+                                        <th rowspan="2" class="px-1 py-1 border border-primary-outer text-sm text-center uppercase tracking-widest whitespace-nowrap">
                                             Max <br> Range
                                         </th>
                                     </tr>
                                     <tr class="bg-primary-outer text-white">
-                                        <th class="px-1 py-1 border border-primary-outer w-32 text-xs text-left uppercase tracking-widest whitespace-nowrap">Measurement</th>
+                                        <th class="px-1 py-1 border border-primary-outer w-32 text-sm text-left uppercase tracking-widest whitespace-nowrap">Measurement</th>
                                         <th
                                             v-for="size in sizes"
                                             :key="'size-head-' + size.slug"
-                                            class="px-1 py-1 border border-primary-outer w-8 text-center uppercase tracking-widest whitespace-nowrap"
+                                            class="px-1 py-1 border border-primary-outer w-8 print:text-xl text-center uppercase tracking-widest whitespace-nowrap"
                                         >
                                             {{ size.name }}
                                         </th>
@@ -314,11 +314,11 @@
                             </div>
                             <div class="gap-3 grid grid-cols-5 my-4 px-2">
                                 <div class="col-span-6">
-                                    <textarea v-model="additionalNote" class="p-2 border-2 border-primary-outer w-full h-full font-roboto placeholder:font-josefin print:text-2xl placeholder:tracking-widest placeholder-primary-50" id="" placeholder="NOTE"></textarea>
+                                    <textarea v-model="additionalNote" class="p-2 border-2 border-primary-outer w-full h-48 font-roboto placeholder:font-josefin print:text-2xl placeholder:tracking-widest placeholder-primary-50" id="" placeholder="NOTE"></textarea>
                                 </div>
                                 <div class="col-span-5 bg-secondary p-2 w-full">
                                     <div class="w-full">
-                                        <div class="text-primary-outer text-sm uppercase tracking-widest">Total price</div>
+                                        <div class="mb-2 text-primary-outer text-xl uppercase tracking-widest">Total price</div>
                                         <div class="items-center grid grid-cols-[repeat(27,1fr)] w-full text-center uppercase">
                                             <div class="flex flex-col col-span-6 bg-white border-2 border-primary-outer">
                                                 <div class="bg-primary-outer py-0.5 text-white text-sm text-center">price</div>
@@ -459,13 +459,13 @@
         @apply flex justify-between items-center bg-primary-outer-300 px-4 py-1;
 
         .cat-name {
-            @apply font-bold tracking-widest text-white uppercase
+            @apply font-bold text-lg tracking-widest text-white uppercase
         }
 
     }
 
     .label-name {
-        @apply font-bold text-primary-outer text-xs print:text-xl text-center uppercase tracking-widest;
+        @apply font-bold text-primary-outer text-sm print:text-xl text-center uppercase tracking-widest;
     }
 
     input[type="radio"] + label span.checkbox-inner {
