@@ -25,7 +25,7 @@
         @else
             @if ($dataSemiCustom !== null || !$dataSemiCustom->isEmpty())
                 @foreach ($dataSemiCustom as $key => $value )
-                <div class="@if ($loop->last) @else break-after @endif">
+                <div class="break-after">
                     <print-semi-custom
                         :data_config="{{ $dataConfig }}"
                         :data_semi_custom="{{ JSON_encode($value) }}"
@@ -36,7 +36,7 @@
 
             @if ($dataSemiCustomOuter !== null && !$dataSemiCustomOuter->isEmpty())
                 @foreach ($dataSemiCustomOuter as $key => $value )
-                <div class="@if ($loop->last) @else break-after @endif">
+                <div class="break-after">
                     <print-semi-custom-outer
                         :data_config="{{ $dataConfigOuter }}"
                         :data_semi_custom_outer="{{ JSON_encode($value) }}"

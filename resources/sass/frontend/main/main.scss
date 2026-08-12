@@ -50,7 +50,8 @@
         }
 
         .break-after {
-            page-break-after: always;
+            break-after: always;
+            page-break-after: always; /* Legacy fallback */
         }
 
     }

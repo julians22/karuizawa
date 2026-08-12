@@ -107,7 +107,7 @@
                         <div class="wrap-cat">
                             <div class="cat-name">02. BUTTON</div>
                         </div>
-                        <div class="gap-y-8 grid grid-cols-5 my-6 px-2 print-props">
+                        <div class="gap-y-8 grid grid-cols-5 my-4 px-2 print-props">
                             <div v-for="btn in buttonOptions" :key="'print-btn-' + btn.slug">
                                 <input
                                     :checked="isSelected(baseForm.button?.slug, btn)"
@@ -122,7 +122,7 @@
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-4 mx-10 my-3">
+                        <div class="flex items-center gap-4 mx-10 my-2">
                             <div class="font-bold text-primary-50 text-sm uppercase tracking-widest">OPTION</div>
                             <div class="flex font-roboto print-props">
                                 <InputBox :digitCount="2" :inputValue="baseForm.button?.optionNumber" />
