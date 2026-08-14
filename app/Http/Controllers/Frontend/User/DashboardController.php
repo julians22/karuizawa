@@ -100,7 +100,15 @@ class DashboardController
             'orderItem.order.user' => function ($query) {
                 $query->withTrashed();
             }
-        ])->whereDate('created_at', '=', $request->date)->orderBy('created_at', 'desc')->get();
+        ])
+        ->where(function ($query) use ($storeId) {
+            if ($storeId) {
+                $query->whereHas('orderItem.order.store', function ($query) use ($storeId) {
+                    $query->where('id', $storeId);
+                });
+            }
+        })
+        ->whereDate('created_at', '=', $request->date)->orderBy('created_at', 'desc')->get();
         $dataConfig = config('karuizawa-default-master');
 
         $totalAllSemiCustom += $semiCustom->count();
@@ -115,7 +123,15 @@ class DashboardController
             'orderItem.order.user' => function ($query) {
                 $query->withTrashed();
             }
-        ])->whereDate('created_at', '=', $request->date)->orderBy('created_at', 'desc')->get();
+        ])
+        ->where(function ($query) use ($storeId) {
+            if ($storeId) {
+                $query->whereHas('orderItem.order.store', function ($query) use ($storeId) {
+                    $query->where('id', $storeId);
+                });
+            }
+        })
+        ->whereDate('created_at', '=', $request->date)->orderBy('created_at', 'desc')->get();
         $dataConfigOuter = config('karuizawa-outer-shirt-master');
         $totalAllSemiCustom += $semiCustomOuter->count();
 
@@ -128,7 +144,15 @@ class DashboardController
             'orderItem.order.user' => function ($query) {
                 $query->withTrashed();
             }
-        ])->whereDate('created_at', '=', $request->date)->orderBy('created_at', 'desc')->get();
+        ])
+        ->where(function ($query) use ($storeId) {
+            if ($storeId) {
+                $query->whereHas('orderItem.order.store', function ($query) use ($storeId) {
+                    $query->where('id', $storeId);
+                });
+            }
+        })
+        ->whereDate('created_at', '=', $request->date)->orderBy('created_at', 'desc')->get();
         $dataConfigLightJacket = config('karuizawa-light-jacket-master');
         $totalAllSemiCustom += $semiCustomLightJacket->count();
 
