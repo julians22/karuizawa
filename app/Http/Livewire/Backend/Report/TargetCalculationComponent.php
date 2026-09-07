@@ -110,6 +110,32 @@ class TargetCalculationComponent extends Component
         ->semiCustom()
         ->get();
 
+        $outer = OrderItem::with([
+            'order',
+        ])
+        ->whereHas('order', function ($query) {
+            return $query->whereMonth('order_date', Carbon::parse($this->month)->month)
+                ->whereYear('order_date', Carbon::parse($this->month)->year)
+                ->whereDate('order_date', '<=', $this->date)
+                ->where('store_id', $this->store)
+                ->where('status', config('enums.order_status.completed'));
+        })
+        ->semiCustomOuter()
+        ->get();
+
+        $lightJacket = OrderItem::with([
+            'order',
+        ])
+        ->whereHas('order', function ($query) {
+            return $query->whereMonth('order_date', Carbon::parse($this->month)->month)
+                ->whereYear('order_date', Carbon::parse($this->month)->year)
+                ->whereDate('order_date', '<=', $this->date)
+                ->where('store_id', $this->store)
+                ->where('status', config('enums.order_status.completed'));
+        })
+        ->semiCustomLightJacket()
+        ->get();
+
         $totalSelling = 0;
 
         foreach ($readyToWear as $item) {
@@ -117,6 +143,14 @@ class TargetCalculationComponent extends Component
         }
 
         foreach ($semiCustom as $item) {
+            $totalSelling += $item->price;
+        }
+
+        foreach ($outer as $item) {
+            $totalSelling += $item->price;
+        }
+
+        foreach ($lightJacket as $item) {
             $totalSelling += $item->price;
         }
 
