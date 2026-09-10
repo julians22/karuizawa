@@ -80,6 +80,7 @@ class Kernel extends HttpKernel
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'ensure.customer' => \App\Http\Middleware\EnsureTokenBelongsToCustomer::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'is_admin' => \App\Domains\Auth\Http\Middleware\AdminCheck::class,
         'is_super_admin' => \App\Domains\Auth\Http\Middleware\SuperAdminCheck::class,

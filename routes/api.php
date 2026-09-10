@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\FittingController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\Customer\AuthController as CustomerAuthController;
 use App\Http\Controllers\Frontend\User\SemiCustomController;
 
 /*
@@ -26,6 +27,16 @@ use App\Http\Controllers\Frontend\User\SemiCustomController;
 
 Route::get('products', [ProductController::class, 'index']);
 Route::get('find-product/{slug}', [ProductController::class, 'findBySlug']);
+
+Route::group(['prefix' => 'customer/auth'], function () {
+    Route::post('otp/request', [CustomerAuthController::class, 'requestOtp']);
+    Route::post('otp/verify', [CustomerAuthController::class, 'verifyOtp']);
+
+    Route::middleware(['auth:sanctum', 'ensure.customer'])->group(function () {
+        Route::get('me', [CustomerAuthController::class, 'me']);
+        Route::post('logout', [CustomerAuthController::class, 'logout']);
+    });
+});
 
 // store customer
 
