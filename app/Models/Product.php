@@ -113,6 +113,26 @@ class Product extends Model implements HasMedia
         $query->where('price', '>', 0);
     }
 
+    /**
+     * Scope products that are currently allowed to be sold online (config-driven
+     * category whitelist) and have live stock in product_actual_stocks.
+     */
+    public function scopeOnlineSellable(Builder $query, ?int $store_id = null): void
+    {
+        $allowedCategories = config('catalog.online_categories', ['perfume']);
+
+        $query->whereHas('category', function ($query) use ($allowedCategories) {
+            $query->whereIn('slug', $allowedCategories);
+        })
+        ->where('price', '>', 0)
+        ->whereHas('productActualStocks', function ($query) use ($store_id) {
+            $query->where('stock_quantity', '>', 0);
+            if ($store_id) {
+                $query->where('store_id', $store_id);
+            }
+        });
+    }
+
 
     public function registerMediaCollections(): void
     {

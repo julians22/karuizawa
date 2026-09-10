@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\FittingController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\Catalog\ProductController as CatalogProductController;
 use App\Http\Controllers\Api\Customer\AuthController as CustomerAuthController;
 use App\Http\Controllers\Api\Customer\AddressController as CustomerAddressController;
 use App\Http\Controllers\Frontend\User\SemiCustomController;
@@ -28,6 +29,14 @@ use App\Http\Controllers\Frontend\User\SemiCustomController;
 
 Route::get('products', [ProductController::class, 'index']);
 Route::get('find-product/{slug}', [ProductController::class, 'findBySlug']);
+
+// Public catalog for online/frontend consumption. Products are restricted to
+// categories enabled in config('catalog.online_categories') and always
+// reflect live stock from product_actual_stocks.
+Route::prefix('v1/catalog')->middleware('throttle:60,1')->group(function () {
+    Route::get('products', [CatalogProductController::class, 'index']);
+    Route::get('products/{sku}', [CatalogProductController::class, 'show']);
+});
 
 Route::group(['prefix' => 'customer/auth'], function () {
     Route::post('otp/request', [CustomerAuthController::class, 'requestOtp']);
