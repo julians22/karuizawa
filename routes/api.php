@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\FittingController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\Customer\AuthController as CustomerAuthController;
+use App\Http\Controllers\Api\Customer\AddressController as CustomerAddressController;
 use App\Http\Controllers\Frontend\User\SemiCustomController;
 
 /*
@@ -36,6 +37,15 @@ Route::group(['prefix' => 'customer/auth'], function () {
         Route::get('me', [CustomerAuthController::class, 'me']);
         Route::post('logout', [CustomerAuthController::class, 'logout']);
     });
+});
+
+Route::group(['prefix' => 'customer/addresses', 'middleware' => ['auth:sanctum', 'ensure.customer']], function () {
+    Route::get('/', [CustomerAddressController::class, 'index']);
+    Route::post('/', [CustomerAddressController::class, 'store']);
+    Route::get('{address}', [CustomerAddressController::class, 'show']);
+    Route::patch('{address}', [CustomerAddressController::class, 'update']);
+    Route::delete('{address}', [CustomerAddressController::class, 'destroy']);
+    Route::post('{address}/primary', [CustomerAddressController::class, 'setPrimary']);
 });
 
 // store customer

@@ -47,4 +47,14 @@ class Customer extends Model implements AuthenticatableContract
     {
         return $this->hasMany(Order::class);
     }
+
+    public function addresses()
+    {
+        return $this->hasMany(CustomerAddress::class);
+    }
+
+    public function primaryAddress()
+    {
+        return $this->hasOne(CustomerAddress::class)->where('is_primary', true);
+    }
 }
