@@ -522,8 +522,8 @@ return [
                         'Chest' => 125.0,
                         'Waist' => 118.0,
                         'Hem' => 124.0,
-                        'Back Length' => 77.0,
-                        'Sleeve Length' => 91.0
+                        'Back Length' => 75.0,
+                        'Sleeve Length' => 89.0
                     ]
                 ]
             ]
