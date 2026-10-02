@@ -10,6 +10,9 @@ use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\Catalog\ProductController as CatalogProductController;
 use App\Http\Controllers\Api\Customer\AuthController as CustomerAuthController;
 use App\Http\Controllers\Api\Customer\AddressController as CustomerAddressController;
+use App\Http\Controllers\Api\OnlineSales\CheckoutController as OnlineSalesCheckoutController;
+use App\Http\Controllers\Api\OnlineSales\ShippingController as OnlineSalesShippingController;
+use App\Http\Controllers\Api\OnlineSales\WebhookController as OnlineSalesWebhookController;
 use App\Http\Controllers\Frontend\User\SemiCustomController;
 
 /*
@@ -38,9 +41,32 @@ Route::prefix('v1/catalog')->middleware('throttle:60,1')->group(function () {
     Route::get('products/{sku}', [CatalogProductController::class, 'show']);
 });
 
+// Online Sales checkout + Biteship shipping integration.
+// Checkout requires an authenticated customer (Sanctum token) so orders are always tied to the logged-in user.
+Route::prefix('v1/online-sales')->middleware('throttle:60,1')->group(function () {
+    Route::post('shipping/rates', [OnlineSalesShippingController::class, 'rates']);
+    Route::get('shipping/areas', [OnlineSalesShippingController::class, 'areas']);
+
+    Route::middleware(['auth:sanctum', 'ensure.customer'])->group(function () {
+        Route::post('checkout', [OnlineSalesCheckoutController::class, 'store']);
+    });
+});
+
+// Biteship webhook callback (order/tracking status updates). Authenticated via a shared token, not sanctum.
+Route::post('v1/online-sales/webhooks/biteship', [OnlineSalesWebhookController::class, 'biteship']);
+
 Route::group(['prefix' => 'customer/auth'], function () {
-    Route::post('otp/request', [CustomerAuthController::class, 'requestOtp']);
-    Route::post('otp/verify', [CustomerAuthController::class, 'verifyOtp']);
+    Route::post('register/otp/request', [CustomerAuthController::class, 'requestRegisterOtp']);
+    Route::post('register', [CustomerAuthController::class, 'register']);
+
+    Route::post('set-password/otp/request', [CustomerAuthController::class, 'requestSetPasswordOtp']);
+    Route::post('set-password', [CustomerAuthController::class, 'setPassword']);
+
+    Route::post('login/otp/request', [CustomerAuthController::class, 'requestLoginOtp']);
+    Route::post('login', [CustomerAuthController::class, 'login']);
+
+    Route::post('reset-password/otp/request', [CustomerAuthController::class, 'requestResetPasswordOtp']);
+    Route::post('reset-password', [CustomerAuthController::class, 'resetPassword']);
 
     Route::middleware(['auth:sanctum', 'ensure.customer'])->group(function () {
         Route::get('me', [CustomerAuthController::class, 'me']);

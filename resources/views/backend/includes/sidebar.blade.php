@@ -105,6 +105,27 @@
                     :text="__('Ready To Wear Order')" />
             </li>
 
+            {{-- Online Sales Menu --}}
+            <li class="nav-title">@lang('Online Sales')</li>
+
+            <li class="nav-item">
+                <x-utils.link
+                    class="nav-link"
+                    :href="route('admin.online-sales.report.index')"
+                    :active="activeClass(Route::is('admin.online-sales.report.*'), 'active')"
+                    icon="nav-icon fas fa-chart-line"
+                    :text="__('Online Sales Reporting')" />
+            </li>
+
+            <li class="nav-item">
+                <x-utils.link
+                    class="nav-link"
+                    :href="route('admin.online-sales.order.index')"
+                    :active="activeClass((Route::is('admin.online-sales.order.index') || Route::is('admin.online-sales.order.show')), 'active')"
+                    icon="nav-icon fas fa-truck"
+                    :text="__('Online Sales Management')" />
+            </li>
+
             {{-- Reports --}}
             <li class="nav-title">@lang('Reports')</li>
 

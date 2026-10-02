@@ -10,7 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2 || ^8.3",
-        "arcanedev/log-viewer": "10.0",
+        "arcanedev/log-viewer": "10.1.1",
         "guzzlehttp/guzzle": "^7.10.0",
         "jamesmills/laravel-timezone": "^1.13",
         "lab404/laravel-impersonate": "^1.7.8",

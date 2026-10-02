@@ -25,9 +25,15 @@ class Customer extends Model implements AuthenticatableContract
     protected $fillable = [
         'full_name',
         'email',
+        'password',
         'phone',
         'address',
         'is_male'
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -37,6 +43,9 @@ class Customer extends Model implements AuthenticatableContract
      */
     protected $appends = ['gender'];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 
     public function getGenderAttribute()
     {

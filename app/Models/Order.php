@@ -27,7 +27,8 @@ class Order extends Model
         'order_date',
         'accurate_order_number',
         'accurate_order_id',
-        'accurate_sync_date'
+        'accurate_sync_date',
+        'source'
     ];
 
     protected $casts = [
@@ -68,6 +69,21 @@ class Order extends Model
     public function downPaymentResponse()
     {
         return $this->hasOne(DownPaymentResponse::class);
+    }
+
+    public function shipment()
+    {
+        return $this->hasOne(OrderShipment::class);
+    }
+
+    public function scopeOnline($query)
+    {
+        return $query->where('source', 'online');
+    }
+
+    public function isOnline(): bool
+    {
+        return $this->source === 'online';
     }
 
     public function hasSemiCustom()
