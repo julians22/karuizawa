@@ -89,6 +89,24 @@ class CustomerAuthService
         return ['customer' => $customer, 'token' => $token];
     }
 
+    /**
+     * Issue a Sanctum token for password-verified customers (used by the Kizoku
+     * frontend, which validates the password against the shared database locally).
+     *
+     * @return array{customer: Customer, token: string}
+     */
+    public function issueTokenWithPassword(string $email, string $password): array
+    {
+        $email = Str::lower($email);
+        $customer = $this->resolveExistingCustomer($email);
+
+        if (!$customer || !$customer->password || !Hash::check($password, $customer->password)) {
+            throw new \RuntimeException('Email atau password tidak valid.');
+        }
+
+        return ['customer' => $customer, 'token' => $customer->createToken('customer-api')->plainTextToken];
+    }
+
     public function setPasswordWithOtp(string $email, string $otp, string $password, ?string $fullName = null): Customer
     {
         $email = Str::lower($email);

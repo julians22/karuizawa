@@ -18,7 +18,7 @@ class OrderTable extends DataTableComponent
         $this->setPrimaryKey('id');
         $this->setSingleSortingDisabled();
         $this->setDefaultSort('created_at', 'desc');
-        $this->addAdditionalSelects('status');
+        $this->addAdditionalSelects('orders.id', 'orders.status');
         $this->setSearchPlaceholder('Search by Order ID, Customer Name, Phone');
     }
 
@@ -57,6 +57,7 @@ class OrderTable extends DataTableComponent
     public function builder(): Builder
     {
         return Order::query()
+            ->select('orders.*')
             ->online()
             ->with(['shipment'])
             ->without('payments');

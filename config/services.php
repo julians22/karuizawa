@@ -79,4 +79,10 @@ return [
         'client_secret' => env('TWITTER_CLIENT_SECRET'),
         'redirect' => env('TWITTER_REDIRECT'),
     ],
+
+    'online_sales' => [
+        // Shared token expected in the Authorization header when the Kizoku
+        // frontend relays Midtrans payment notifications to payments/confirm.
+        'payment_token' => env('ONLINE_SALES_PAYMENT_TOKEN'),
+    ],
 ];

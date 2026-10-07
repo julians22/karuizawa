@@ -44,6 +44,7 @@ class CheckoutController extends Controller
                 'status' => config('enums.order_status.pending'),
                 'source' => config('enums.order_source.online'),
                 'order_date' => now(),
+                'midtrans_order_id' => $request->input('midtrans_order_id'),
             ]);
 
             $order->update([
@@ -119,7 +120,9 @@ class CheckoutController extends Controller
             ], 422);
         }
 
-        CreateBiteshipShipmentJob::dispatch($shipment->id);
+        // The Biteship shipment is intentionally NOT created here: it is queued by the
+        // payment confirmation endpoint once the Midtrans payment has settled, so unpaid
+        // orders never reach the courier.
 
         $order->load('orderItems.product', 'customer', 'shipment');
 

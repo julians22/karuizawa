@@ -41,6 +41,8 @@ class CheckoutRequest extends FormRequest
             'courier.shipping_cost' => 'required|numeric|min:0',
             'courier.insurance_cost' => 'sometimes|numeric|min:0',
 
+            'midtrans_order_id' => 'nullable|string|max:100',
+
             'store_id' => 'nullable|exists:stores,id',
         ];
     }

@@ -55,6 +55,10 @@ Route::prefix('v1/online-sales')->middleware('throttle:60,1')->group(function ()
 // Biteship webhook callback (order/tracking status updates). Authenticated via a shared token, not sanctum.
 Route::post('v1/online-sales/webhooks/biteship', [OnlineSalesWebhookController::class, 'biteship']);
 
+// Payment confirmation callback from the Kizoku frontend (Midtrans notification relay).
+// Authenticated via a shared token (services.online_sales.payment_token), not sanctum.
+Route::post('v1/online-sales/payments/confirm', [\App\Http\Controllers\Api\OnlineSales\PaymentController::class, 'confirm']);
+
 Route::group(['prefix' => 'customer/auth'], function () {
     Route::post('register/otp/request', [CustomerAuthController::class, 'requestRegisterOtp']);
     Route::post('register', [CustomerAuthController::class, 'register']);
@@ -64,6 +68,7 @@ Route::group(['prefix' => 'customer/auth'], function () {
 
     Route::post('login/otp/request', [CustomerAuthController::class, 'requestLoginOtp']);
     Route::post('login', [CustomerAuthController::class, 'login']);
+    Route::post('token', [CustomerAuthController::class, 'issueToken']);
 
     Route::post('reset-password/otp/request', [CustomerAuthController::class, 'requestResetPasswordOtp']);
     Route::post('reset-password', [CustomerAuthController::class, 'resetPassword']);
@@ -71,6 +76,7 @@ Route::group(['prefix' => 'customer/auth'], function () {
     Route::middleware(['auth:sanctum', 'ensure.customer'])->group(function () {
         Route::get('me', [CustomerAuthController::class, 'me']);
         Route::post('logout', [CustomerAuthController::class, 'logout']);
+        Route::get('orders', [\App\Http\Controllers\Api\Customer\OrderController::class, 'index']);
     });
 });
 

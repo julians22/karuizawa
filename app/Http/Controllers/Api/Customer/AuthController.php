@@ -102,6 +102,32 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * Issue an API token with email + password only (no OTP). Used by the Kizoku
+     * frontend login, which has no OTP step in its UX.
+     */
+    public function issueToken(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string',
+        ]);
+
+        try {
+            $result = $this->authService->issueTokenWithPassword($request->email, $request->password);
+        } catch (\RuntimeException $e) {
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'token' => $result['token'],
+                'customer' => $result['customer'],
+            ],
+        ]);
+    }
+
     public function requestSetPasswordOtp(Request $request)
     {
         $request->validate([
