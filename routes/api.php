@@ -52,7 +52,7 @@ Route::prefix('v1/online-sales')->middleware('throttle:60,1')->group(function ()
     });
 });
 
-// Biteship webhook callback (order/tracking status updates). Authenticated via a shared token, not sanctum.
+// Biteship webhook callback. Authenticated via a configured signature header or legacy shared token, not sanctum.
 Route::post('v1/online-sales/webhooks/biteship', [OnlineSalesWebhookController::class, 'biteship']);
 
 // Payment confirmation callback from the Kizoku frontend (Midtrans notification relay).

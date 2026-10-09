@@ -4,7 +4,11 @@ return [
     'base_url' => env('BITESHIP_BASE_URL', 'https://api.biteship.com'),
     'api_key' => env('BITESHIP_API_KEY'),
 
-    // Token expected in the `Authorization` header of incoming Biteship webhooks.
+    // When configured, these identify the incoming webhook header and its shared-secret value.
+    'webhook_signature_key' => env('BITESHIP_WEBHOOK_SIGNATURE_KEY'),
+    'webhook_signature_secret' => env('BITESHIP_WEBHOOK_SIGNATURE_SECRET'),
+
+    // Legacy fallback used only when signature key and secret are both absent.
     'webhook_token' => env('BITESHIP_WEBHOOK_TOKEN'),
 
     // Warehouse/store location used as the shipping origin for online orders.

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\OnlineSales;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
 use App\Models\OrderShipment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -17,10 +16,8 @@ class WebhookController extends Controller
      */
     public function biteship(Request $request)
     {
-        $token = config('biteship.webhook_token');
-
-        if ($token && $request->header('Authorization') !== $token) {
-            Log::warning('Rejected Biteship webhook with invalid token');
+        if (!$this->hasValidAuthentication($request)) {
+            Log::warning('Rejected Biteship webhook with invalid authentication');
 
             return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
         }
@@ -97,5 +94,31 @@ class WebhookController extends Controller
         }
 
         return response()->json(['success' => true]);
+    }
+
+    private function hasValidAuthentication(Request $request): bool
+    {
+        $signatureKey = config('biteship.webhook_signature_key');
+        $signatureSecret = config('biteship.webhook_signature_secret');
+
+        if ($signatureKey !== null || $signatureSecret !== null) {
+            if (!is_string($signatureKey) || $signatureKey === '' || !is_string($signatureSecret) || $signatureSecret === '') {
+                Log::error('Biteship webhook signature configuration is incomplete');
+
+                return false;
+            }
+
+            $providedSecret = $request->header($signatureKey);
+
+            return is_string($providedSecret) && hash_equals($signatureSecret, $providedSecret);
+        }
+
+        $token = config('biteship.webhook_token');
+        $providedToken = $request->header('Authorization');
+
+        return is_string($token)
+            && $token !== ''
+            && is_string($providedToken)
+            && hash_equals($token, $providedToken);
     }
 }
