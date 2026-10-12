@@ -25,6 +25,7 @@ class Order extends Model
         'status',
         'order_number',
         'order_date',
+        'midtrans_order_id',
         'accurate_order_number',
         'accurate_order_id',
         'accurate_sync_date',
