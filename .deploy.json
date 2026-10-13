@@ -1,0 +1,22 @@
+{
+    "DEPLOYPATH" : "/home/designcube3/demo_projects/karuizawa",
+    "task" :  [
+        "app",
+        "bootstrap",
+        "config",
+        "database",
+        "public",
+        "resources",
+        "routes",
+        "storage",
+        "tests",
+        "artisan",
+        "composer.json",
+        "composer.lock",
+        "package.json",
+        "package-lock.json",
+        "postcss.config.js",
+        "server.php",
+        "webpack.mix.js"
+    ]
+}
