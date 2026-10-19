@@ -62,8 +62,8 @@
                     <div class="text-sm tracking-widest">Order Form</div>
                 </div>
                 <div class="text-right uppercase">
-                    <div class="text-sm">Order No : {{ data.order_number }}</div>
-                    <div class="text-sm">
+                    <div class="text-base">Order No : {{ data.order_number }}</div>
+                    <div class="text-base">
                         Order Date : {{ moment(data.order_item?.order?.created_at).format('DD/MM/YYYY') }}
                     </div>
                 </div>
