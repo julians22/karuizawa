@@ -105,8 +105,8 @@
                 </div>
                 <div>
                     <div class="text-right uppercase print:scale-150">
-                        <div class="text-sm">Order No : {{ props.data_semi_custom_outer.order_number }}</div>
-                        <div class="text-sm">
+                        <div class="text-base">Order No : {{ props.data_semi_custom_outer.order_number }}</div>
+                        <div class="text-base">
                             <span>Order Date : {{ moment(props.data_semi_custom_outer.order_item.order.created_at).format('DD/MM/YYYY') }}</span>
                             <!--<span> | </span>
                             <span>

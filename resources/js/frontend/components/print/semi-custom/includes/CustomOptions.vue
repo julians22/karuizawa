@@ -196,9 +196,9 @@
                                     </div>
                                 </div>
                                 <div class="flex max-xl:flex-wrap items-center lg:gap-4 col-span-2 mt-4 fabric-code">
-                                    <label for="fabric-code" class="text-primary-50 uppercase tracking-wider whitespace-nowrap">fabric code (4 digit)</label>
+                                    <label for="fabric-code" class="text-primary-50 uppercase tracking-wider whitespace-nowrap">fabric code (4-5 digit)</label>
                                     <div class="flex font-roboto print-props">
-                                        <InputBox :inputValue="formOption.collar?.fabricCode" />
+                                        <InputBox :digitCount="5" :inputValue="formOption.collar?.fabricCode" />
                                     </div>
                                 </div>
                                 <div class="justify-items-end self-end col-3">
@@ -265,9 +265,9 @@
                                         </div>
                                     </div>
                                     <div class="flex max-lg:flex-wrap items-center lg:gap-8 col-span-2 mt-4 fabric-code">
-                                        <label for="fabric-code" class="text-primary-50 uppercase tracking-wider whitespace-nowrap">fabric code (4 digit)</label>
+                                        <label for="fabric-code" class="text-primary-50 uppercase tracking-wider whitespace-nowrap">fabric code (4-5 digit)</label>
                                         <div class="flex font-roboto print-props">
-                                            <InputBox :inputValue="formOption.cuffs?.fabricCode" />
+                                            <InputBox :digitCount="5" :inputValue="formOption.cuffs?.fabricCode" />
                                         </div>
                                     </div>
                                     <div class="justify-items-end self-end cols-3">
@@ -390,12 +390,12 @@
 
                         <div class="flex justify-self-end self-end gap-2">
                             <div class="flex flex-col gap-1 col-span-2 mt-4 fabric-code">
-                                    <label for="fabric-code" class="text-primary-50 uppercase tracking-wider whitespace-nowrap">fabric code (4 digit)</label>
+                                    <label for="fabric-code" class="text-primary-50 uppercase tracking-wider whitespace-nowrap">fabric code (4-5 digit)</label>
                                     <div class="flex font-roboto print-props" v-if="mainCleric?.option == index">
-                                        <InputBox :digitCount="4" @update:input="onInputBox($event, 'cleric', 'fabricCode')" :inputValue="formOption.cleric?.fabricCode"/>
+                                        <InputBox :digitCount="5" @update:input="onInputBox($event, 'cleric', 'fabricCode')" :inputValue="formOption.cleric?.fabricCode"/>
                                     </div>
                                     <div class="flex font-roboto print-props" v-else>
-                                        <InputBox :digitCount="4" @update:input="onInputBox($event, 'cleric', 'fabricCode')" />
+                                        <InputBox :digitCount="5" @update:input="onInputBox($event, 'cleric', 'fabricCode')" />
                                     </div>
                                 </div>
                             <div class="self-end">

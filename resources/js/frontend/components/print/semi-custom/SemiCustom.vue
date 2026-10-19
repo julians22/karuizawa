@@ -34,8 +34,8 @@
 
 <template>
     <div class="min-w-[1900px] pointer-events-none printable">
-        <div class="w-full py-3 mb-2 bg-secondary">
-            <div class="flex items-center justify-between mx-20 text-secondary-50">
+        <div class="bg-secondary mb-2 py-3 w-full">
+            <div class="flex justify-between items-center mx-20 text-secondary-50">
                 <div>
                     <img class="w-60" src="/img/brand/logo-01.png" alt="logo">
                 </div>
@@ -46,15 +46,15 @@
                 </div>
                 <div>
                     <div class="text-right uppercase print:scale-150">
-                        <div class="text-sm">Order No : {{ props.data_semi_custom.order_number }}</div>
-                        <div class="text-sm">
+                        <div class="text-base">Order No : {{ props.data_semi_custom.order_number }}</div>
+                        <div class="text-base">
                             <span>Order Date : {{ moment(props.data_semi_custom.order_item.order.created_at).format('DD/MM/YYYY') }}</span>
                             <span> | </span>
                             <span>
                                 Option
                                 <div class="inline-block">
                                     <input :checked="props.data_semi_custom.option_total > 0" class="hidden" type="radio" :id="`options`">
-                                    <label class="flex items-center h-full rounded cursor-pointer" :for="`options`">
+                                    <label class="flex items-center rounded h-full cursor-pointer" :for="`options`">
                                         <!-- <div class="label-name">1. SLIM SLEEVE</div> -->
                                         <span class="checkbox-inner"></span>
                                     </label>
@@ -67,8 +67,8 @@
         </div>
         <CustomBasic @additionalBasic="additionalBasic" :dataConfig="props.data_config" :dataSemiCustom="props.data_semi_custom" ref="childBasic" />
         <div style="page-break-before: always;"></div>
-        <div class="w-full py-3 mb-2 bg-secondary">
-            <div class="flex items-center justify-between mx-20 text-secondary-50">
+        <div class="bg-secondary mb-2 py-3 w-full">
+            <div class="flex justify-between items-center mx-20 text-secondary-50">
                 <div>
                     <img class="w-60" src="/img/brand/logo-01.png" alt="logo">
                 </div>
@@ -78,7 +78,7 @@
                     <div class="text-sm tracking-widest">Order Form</div>
                 </div>
                 <div>
-                    <div class="text-right uppercase print-props print:scale-150">
+                    <div class="text-right uppercase print:scale-150 print-props">
                         <div class="text-sm">Order No : {{ props.data_semi_custom.order_number }}</div>
                         <div class="text-sm">
                             <span>
@@ -106,13 +106,13 @@
 
 <style scoped>
 input[type="radio"]:checked + label span.checkbox-inner {
-        @apply border-secondary-50 bg-primary-50;
+        @apply bg-primary-50 border-secondary-50;
         color: #fff;
         background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='14px' height='10px' viewBox='0 0 14 10' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3C!-- Generator: Sketch 59.1 (86144) - https://sketch.com --%3E%3Ctitle%3Echeck%3C/title%3E%3Cdesc%3ECreated with Sketch.%3C/desc%3E%3Cg id='Page-1' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='ios_modification' transform='translate(-27.000000, -191.000000)' fill='%23FFFFFF' fill-rule='nonzero'%3E%3Cg id='Group-Copy' transform='translate(0.000000, 164.000000)'%3E%3Cg id='ic-check-18px' transform='translate(25.000000, 23.000000)'%3E%3Cpolygon id='check' points='6.61 11.89 3.5 8.78 2.44 9.84 6.61 14 15.56 5.05 14.5 4'%3E%3C/polygon%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
         background-size: 14px 10px;
     }
     .checkbox-inner {
-        @apply flex justify-center items-center border-secondary-50 border text-transparent size-4;
+        @apply flex justify-center items-center border border-secondary-50 size-4 text-transparent;
         background: transparent no-repeat center;
     }
 
@@ -122,7 +122,7 @@ input[type="radio"]:checked + label span.checkbox-inner {
     }
 
     .box-input-wrapper .box-input {
-        @apply block border-secondary-50 bg-transparent p-2 print:p-px border text-center text-gray-900 text-xs print:text-xl size-7;
+        @apply block bg-transparent p-2 print:p-px border border-secondary-50 size-7 text-gray-900 text-xs print:text-xl text-center;
     }
 
     .box-input-wrapper .box-input:not(:first-child) {

@@ -77,7 +77,7 @@ class BrandTransactionChartComponent extends Component
             foreach ($order->orderItems as $item) {
                 if ($item->isReadyToWear() && $item->product_rtw->brand_id == $brandId) {
                     $storeData[$storeName] += $item->total_price;
-                } elseif ($brandId == 2 && ($item->isSemiCustom() || $item->isSemiCustomOuter())) {
+                } elseif ($brandId == 2 && ($item->isSemiCustom() || $item->isSemiCustomOuter() || $item->isSemiCustomLightJacket())) {
                     $storeData[$storeName] += $item->price;
                 }
             }
