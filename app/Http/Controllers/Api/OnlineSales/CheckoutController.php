@@ -31,7 +31,7 @@ class CheckoutController extends Controller
         try {
             $address = $this->resolveAddress($request, $customer);
 
-            $storeId = $request->input('store_id') ?? config('dummy.store');
+            $storeId = $request->input('store_id') ?? config('dummy.online_store');
 
             $order = Order::create([
                 'customer_id' => $customer->id,
@@ -48,7 +48,7 @@ class CheckoutController extends Controller
             ]);
 
             $order->update([
-                'order_number' => 'ONL-' . $order->store->code . '-' . str_pad($order->id, 5, '0', STR_PAD_LEFT),
+                'order_number' => 'ONL-' . str_pad($order->id, 5, '0', STR_PAD_LEFT),
             ]);
 
             $totalPrice = 0;
