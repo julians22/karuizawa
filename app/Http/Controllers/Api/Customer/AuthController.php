@@ -25,7 +25,7 @@ class AuthController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
         }
 
-        return response()->json(['success' => true, 'message' => 'Kode OTP login telah dikirim ke email Anda.']);
+        return response()->json(['success' => true, 'message' => 'otp_send_to_email']);
     }
 
     public function requestRegisterOtp(Request $request)
@@ -40,7 +40,7 @@ class AuthController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()], 422);
         }
 
-        return response()->json(['success' => true, 'message' => 'Kode OTP registrasi telah dikirim ke email Anda.']);
+        return response()->json(['success' => true, 'message' => 'otp_send_to_email']);
     }
 
     public function register(Request $request)
