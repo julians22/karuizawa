@@ -16,6 +16,12 @@ class WebhookController extends Controller
      */
     public function biteship(Request $request)
     {
+        if (env('REGISTER_STEP_WEBHOOK') == true){
+            Log::info('Step Registration Hit');
+
+            return response()->json(['success' => true, 'message' => 'Webhook registration step'], 200);
+        }
+
         if (!$this->hasValidAuthentication($request)) {
             Log::warning('Rejected Biteship webhook with invalid authentication');
 
